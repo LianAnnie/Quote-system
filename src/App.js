@@ -2,10 +2,12 @@ import styled from "styled-components";
 import './App.css';
 import LogIn from './LogIn';
 import BulletinBoard from './BulletinBoard';
+import Admin from './Admin';
 import {
   BrowserRouter as Router,
   Routes,
-  Route
+  Route,
+  Navigate
 } from "react-router-dom";
 
 const Container = styled.div`
@@ -17,8 +19,10 @@ function App() {
     <Container>
       <Router>
         <Routes>
-          <Route path="/" element={<LogIn/>}/>
-          <Route path="/board" element={<BulletinBoard/>}/>
+          <Route path="/login" element={<LogIn/>}/>
+          <Route path="/" element={<BulletinBoard/>}/>
+          <Route path="/admin" element={<Admin/>}/>
+          <Route path="/*" element={<Navigate to="/"/>} />
         </Routes>
       </Router>
     </Container>

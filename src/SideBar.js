@@ -6,7 +6,7 @@ const Orange = styled.div`
   position: fixed;
   text-align: left;
   color: #fff;
-  background-color: #f44336;
+  background-color: #4236f4;
   width: 300px;
   height: 100vh;
   padding: 94px 48px;
@@ -45,9 +45,9 @@ const Design = styled.div`
 `;
 const HideMobile = styled.nav`
     margin-top: 94px;
-    front-weight 500;
+    font-weight 500;
     font-size: 18px;
-    Line-height 27px;
+    line-height 27px;
     @media screen and (max-width: 991px) {
         display: ${(props) => (props.showNavBar ? "block" : "none")}
     }
@@ -55,6 +55,10 @@ const HideMobile = styled.nav`
 
 const Navbar = styled.div`
   margin-top: 24px;
+`;
+
+const White = styled.div`
+    color: white;
 `;
 
 const Close = styled.div`
@@ -77,35 +81,38 @@ function SideBar() {
           {!showNavBar && (
             <Burger onClick={() => setShowNavBar(true)}>≡</Burger>
           )}
-          <Design>DesignWorks</Design>
+          <Design>ERP System</Design>
         </Title>
         <HideMobile showNavBar={showNavBar}>
-          <Navbar>
-            < NavLink to="/board">待辦通知</NavLink>
+          < Navbar>
+            < NavLink to="/admin"><White>功能測試</White></NavLink>
           </Navbar>
           <Navbar>
-            < NavLink to="/board">客戶產品</NavLink>
+            < NavLink to="/"><White>待辦通知</White></NavLink>
           </Navbar>
           <Navbar>
-            < NavLink to="/board">廠商訊息</NavLink>
+            < NavLink to="/"><White>客戶產品</White></NavLink>
           </Navbar>
           <Navbar>
-            < NavLink to="/board">報價表單</NavLink>
+            < NavLink to="/"><White>廠商訊息</White></NavLink>
           </Navbar>
           <Navbar>
-            < NavLink to="/board">訂單表單</NavLink>
+            < NavLink to="/"><White>報價表單</White></NavLink>
           </Navbar>
           <Navbar>
-            < NavLink to="/board">採購表單</NavLink>
+            < NavLink to="/"><White>訂單表單</White></NavLink>
           </Navbar>
           <Navbar>
-            <NavLink to="/board">出貨發票</NavLink>
+            < NavLink to="/"><White>採購表單</White></NavLink>
           </Navbar>
           <Navbar>
-            <NavLink to="/board">庫存進銷</NavLink>
+            <NavLink to="/"><White>出貨發票</White></NavLink>
           </Navbar>
           <Navbar>
-            <NavLink to="/">登出</NavLink>
+            <NavLink to="/"><White>庫存進銷</White></NavLink>
+          </Navbar>
+          <Navbar>
+            <NavLink to="/login"><White>登出</White></NavLink>
           </Navbar>
         </HideMobile>
       </Header>

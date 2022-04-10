@@ -1,12 +1,9 @@
 import styled from "styled-components";
+import {useState} from "react";
 import SideBar from "./SideBar";
-import { useEffect } from "react";
 import db from "./utils/firebase";
-import { doc, setDoc } from "firebase/firestore";
-import { collection, addDoc } from "firebase/firestore"; 
-import { updateDoc, serverTimestamp } from "firebase/firestore";
-import { arrayUnion, arrayRemove, increment, getDoc, getDocs } from "firebase/firestore";
-import { collectionGroup, query, where } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp, query, onSnapshot } from "firebase/firestore";
+import { useEffect } from "react";
 
 const Container = styled.div`
   text-align: left;
@@ -15,6 +12,17 @@ const Main = styled.div`
   margin-left: 300px;
   padding: 50px 10%;
 `;
+const Title = styled.div`
+  margin-bottom: 50px;
+`;
+const Form = styled.div`
+  border: solid 1px #000000;
+  padding: 20px;
+`;
+const Question = styled.div`
+  display:flex;
+  margin: 5px;
+`
 const Board = styled.div`
   display: flex;
 `;
@@ -26,142 +34,127 @@ const SubTitle = styled.div`
 `;
 const Card = styled.div`
   margin-bottom: 25px;
+  border: solid 1px #000000;
+`;
+const Button = styled.div`
+  border: solid 1px #000000;
+  width: 50px;
+  margin: 5px;
+  text-align: center
 `;
 
 function BulletinBoard() {
   
+  const [type, setType] = useState('');
+  const [status, setStatus] = useState(0);
+  const [comment, setComment] = useState('');
+  const [pmWorkList, setPmWorkList] = useState([]);
+  
 
-    const data1 ={
-      name: 'test1',
-      timestamp: serverTimestamp()
-    }
-    const data2 ={
-      name: 'test2',
-      timestamp: serverTimestamp()
-    }
-    const data3 ={
-      name: 'test3',
-      timestamp: serverTimestamp()
-    }
-    // 寫入資料
-    async function input(){
-      setDoc(doc(db, "testfunction", 'CH' ), data1);
-
-      // 自行形成文件id
-      const ref = await addDoc(collection(db, "testfunction"), data2);
-      console.log("Document written with ID: ", ref.id);
-
-      // 自行形成文件id-2
-      const newCityRef = doc(collection(db, "testfunction"));
-      setDoc(newCityRef, data3)
-
-      //建立子項collection
-      setDoc(doc(collection(db, "testfunction",'CH','test')), {
-        Key: 'sucessful',
-      })
-
-    }    
-    //更新現有資料
-    function update(){
-      //基本更新
-      const washingtonRef = doc(db, "testfunction", "LA");
-      // Set the "capital" field of the city 'LA'
-      updateDoc(washingtonRef, {
-        capital: true,
-        //注意更改object內部資料需要加點,要不然會完全替換object內所有資料
-        "object.key2": 'update value' ,
-        timestamp: serverTimestamp()
+  useEffect(()=>{
+    const q = query(collection(db, "boards"));
+    onSnapshot(q, (querySnapshot) => {
+      const pmWorks = [];
+      querySnapshot.forEach((doc) => {
+          const historyCardData = {
+            id: doc.id,
+            date: doc.data().date,
+            type: doc.data().type,
+            status: doc.data().status,
+            comment: doc.data().comment
+          }
+          pmWorks.push(historyCardData);
       });
-
-
-      // Atomically add a new region to the "regions" array field.
-      updateDoc(washingtonRef, {
-        regions: arrayUnion("greater_virginia2")
-      });
-
-      // Atomically remove a region from the "regions" array field.
-      updateDoc(washingtonRef, {
-        regions: arrayRemove("greater_virginia")
-      });
-
-      //在原本的數值再加
-      updateDoc(washingtonRef, {
-        population: increment(50)
+      setPmWorkList(pmWorks);
     });
+  },[])
 
-
+  async function addCard(){
+    const boards = collection(db,"boards");
+    const cardData = {
+      date: serverTimestamp(),
+      type,
+      status,
+      comment,      
     }
-    //取得資料
-    async function get(){
-
-      //指定得到某doc內容
-      const docRef = doc(db, "testfunction", "SF");
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        console.log("Document data:", docSnap.data());
-      } else {
-        // doc.data() will be undefined in this case
-        console.log("No such document!");
-      }
-
-      //取回全部collection內容
-      const collectionRef = collection(db, "testfunction");
-      const collectionSnap = await getDocs(collectionRef);
-      collectionSnap.forEach((e)=>{
-        console.log(e.id, '=>', e.data())
-      })
-
-      //指定取回某層資料
-      const q = query(collection(db, "testfunction"), where("capital", "==", true));
-
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
-        console.log(doc.id, " => ", doc.data().name);
-      });
-
-    }
-    
-    //從子集和取得資料
-    async function getSubCollectionInformation(){
-      const q = query(collectionGroup(db, "customer"), where("company", "==", 'Wastberg'));
-
-      const querySnapshot = await getDocs(q);
-      console.log(querySnapshot.length);
-      querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
-        console.log(doc.id, " => ", doc.data());
-      });
-    }
-
-    getSubCollectionInformation();
-    
+    console.log(cardData);
+    const ref = await addDoc(boards , cardData);
+    console.log("Document written with ID: ", ref.id);
+    setComment('');
+    setType('');
+    setStatus(0);
+  }
 
   return (
     <Container>
       <SideBar />
-      <Main>
-        <div>待辦通知</div>
+      <Main >
+        <Title>待辦通知</Title>
+        <Form onKeyPress={(e)=>{e.key==='Enter'&&addCard()}}>       
+          <Question>
+            <div>工作類型</div>
+            <input type="text" onChange={(e)=>{setType(e.target.value)}} value={type}/>
+          </Question>
+          <Question>
+            <div>分配部門</div>
+            <input type="text" onChange={(e)=>{setStatus(Number(e.target.value))}} value={status}/>
+          </Question>
+          <Question>
+            <div>提醒事項</div>
+            <input type="text" onChange={(e)=>{setComment(e.target.value)}} value={comment}/>
+          </Question>
+          <Button onClick={()=>{addCard()}}>Add</Button>
+        </Form>
         <Board>
           <Department>
-            <SubTitle>業務部</SubTitle>
-            <Card>Card1</Card>
+            <SubTitle>工程部</SubTitle>
+            {pmWorkList.map((card)=>(
+              card.status===1&&
+                <Card key={card.id}>
+                <div>工作：{card.type}</div>
+                <div>提醒事項：{card.comment}</div>
+              </Card>
+            ))}
           </Department>
           <Department>
             <SubTitle>採購部</SubTitle>
-            <Card>Card1</Card>
+            {pmWorkList.map((card)=>(
+              card.status===2&&
+                <Card key={card.id}>
+                <div>工作：{card.type}</div>
+                <div>提醒事項：{card.comment}</div>
+              </Card>
+            ))}
           </Department>
           <Department>
             <SubTitle>生產部</SubTitle>
-            <Card>Card1</Card>
+            {pmWorkList.map((card)=>(
+              card.status===3&&
+                <Card key={card.id}>
+                <div>工作：{card.type}</div>
+                <div>提醒事項：{card.comment}</div>
+              </Card>
+            ))}
           </Department>
           <Department>
             <SubTitle>船務</SubTitle>
-            <Card>Card1</Card>
+            {pmWorkList.map((card)=>(
+              card.status===4&&
+                <Card key={card.id}>
+                <div>工作：{card.type}</div>
+                <div>提醒事項：{card.comment}</div>
+              </Card>
+            ))}
           </Department>
           <Department>
             <SubTitle>暫停</SubTitle>
-            <Card>Card1</Card>
+            {pmWorkList.map((card,index)=>(
+              card.status===0&&
+                <Card key={index}>
+                <div>工作：{card.type}</div>
+                <div>提醒事項：{card.comment}</div>
+              </Card>
+            ))}
           </Department>
         </Board>
       </Main>
