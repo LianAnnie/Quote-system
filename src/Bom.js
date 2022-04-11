@@ -36,7 +36,7 @@ const Button = styled.div`
 const Product = styled.div`
 `;
 
-function Admin() {
+function Bom() {
   const [company, setCompany] = useState("");
   const [contacts, setContacts] = useState("");
   const [country, setCountry] = useState("");
@@ -147,4 +147,4 @@ function Admin() {
   );
 }
 
-export default Admin;
+export default Bom;
