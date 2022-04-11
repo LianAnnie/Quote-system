@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import SideBar from "./SideBar";
 import db from "./utils/firebase";
 import {
@@ -18,7 +18,6 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { useEffect } from "react";
 
 const Container = styled.div`
   text-align: left;
@@ -35,17 +34,18 @@ const Form = styled.div`
   padding: 20px;
 `;
 const Question = styled.div`
-  display:flex;
+  display: flex;
   margin: 5px;
-`
+`;
 const Button = styled.div`
   border: solid 1px #000000;
   width: 50px;
   margin: 5px;
-  text-align: center
+  text-align: center;
+  cursor:pointer
 `;
 
-function firebaseFunction(){
+function firebaseFunction() {
   const data1 = {
     name: "test1",
     timestamp: serverTimestamp(),
@@ -151,75 +151,102 @@ function firebaseFunction(){
 }
 
 function Admin() {
-  const [company, setCompany] = useState('');
-  const [contacts, setContacts] = useState('');
-  const [country, setCountry] = useState('');
-  const [customerId, setCustomerId] = useState('');
-  const [customerList, setCustomerList] = useState('');
-  console.log(customerId);
+  const [company, setCompany] = useState("");
+  const [contacts, setContacts] = useState("");
+  const [country, setCountry] = useState("");
+  const [customerId, setCustomerId] = useState("");
+  const [customerList, setCustomerList] = useState("");
 
-  useEffect(()=>{
+  useEffect(() => {
     getCustomerList();
-  },[])
+  }, []);
 
-  async function getCustomerList(){
+  async function getCustomerList() {
     const collectionRef = collection(db, "customers");
     const collectionSnap = await getDocs(collectionRef);
     const historyCustomerData = [];
     collectionSnap.forEach((e) => {
       const customerData = {
-        customerId: e.id,
+        id: e.id,
         company: e.data().company,
         contacts: e.data().contacts,
-        country: e.data().country
-      }
+        country: e.data().country,
+      };
       historyCustomerData.push(customerData);
     });
-    setCustomerId(transformId(historyCustomerData.length+1))
+    setCustomerId(transformId(historyCustomerData.length + 1));
     setCustomerList(historyCustomerData);
   }
 
-  async function addCustomer (){
+  async function addCustomer() {
     const customerData = {
       company,
       contacts,
-      country
+      country,
     };
     setDoc(doc(db, "customers", customerId), customerData);
   }
 
-  function transformId(id){
-    if(id.length === 3)
-    return id;
-    else
-    return id.toString().padStart(3,0);
+  function transformId(id) {
+    if (id.length === 3) return id;
+    else return id.toString().padStart(3, 0);
   }
-
 
   return (
     <Container>
       <SideBar />
       <Main>
         <Title>客戶資料表</Title>
-        <Form onKeyPress={(e)=>{e.key==='Enter'&&addCustomer()}}>       
+        <Form
+          onKeyPress={(e) => {
+            e.key === "Enter" && addCustomer();
+          }}
+        >
           <Question>
             <div>company</div>
-            <input type="text" onChange={(e)=>{setCompany(e.target.value)}} value={company}/>
+            <input
+              type="text"
+              onChange={(e) => {
+                setCompany(e.target.value);
+              }}
+              value={company}
+            />
           </Question>
           <Question>
             <div>contacts</div>
-            <input type="text" onChange={(e)=>{setContacts(e.target.value)}} value={contacts}/>
+            <input
+              type="text"
+              onChange={(e) => {
+                setContacts(e.target.value);
+              }}
+              value={contacts}
+            />
           </Question>
           <Question>
             <div>country</div>
-            <input type="text" onChange={(e)=>{setCountry(e.target.value)}} value={country}/>
-          </Question>          
-          <Button onClick={()=>{addCustomer()}}>Add</Button>
+            <input
+              type="text"
+              onChange={(e) => {
+                setCountry(e.target.value);
+              }}
+              value={country}
+            />
+          </Question>
+          <Button
+            onClick={() => {
+              addCustomer();
+            }}
+          >
+            Add
+          </Button>
         </Form>
         <select>
-          {customerList&&customerList.map((customer)=>(
-            <option key={customer.id}>{customer.company},{customer.contacts}, {customer.country}</option>
-          ))}
+          {customerList &&
+            customerList.map((customer) => (
+              <option key={customer.id}>
+                {customer.company},{customer.contacts}, {customer.country}
+              </option>
+            ))}
         </select>
       </Main>
     </Container>
