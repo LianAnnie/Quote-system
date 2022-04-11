@@ -55,6 +55,7 @@ function BulletinBoard() {
   const [status, setStatus] = useState(0);
   const [comment, setComment] = useState("");
   const [pmWorkList, setPmWorkList] = useState([]);
+  console.log(pmWorkList);
 
   useEffect(() => {
     const q = query(collection(db, "boards"));

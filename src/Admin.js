@@ -17,7 +17,6 @@ function Admin() {
     <Container>
       <SideBar />
       <Main>
-        <AdminFirebase/>
         <AdminParts/>
       </Main>
     </Container>

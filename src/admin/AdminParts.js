@@ -17,15 +17,29 @@ const Title = styled.div`
 `;
 const Button = styled.div`
   border: solid 1px #000000;
-  width: 50px;
+  width: 100px;
   margin: 5px;
   text-align: center;
   cursor: pointer;
 `;
+const Table = styled.table`
+  border: solid 1px #000000;
+  padding: 20px;
+`;
+
+const Flex = styled.div`
+  display: flex;
+`;
+const Th = styled.th`
+  padding-right: 50px;
+`
+const Td = styled.td`
+  padding-right: 50px;
+`  
 
 function AdminParts() {
-    const [upList, setUpList] = useState("");
-    const [downList, setDownList] = useState("");
+    const [upList, setUpList] = useState([]);
+    const [downList, setDownList] = useState([]);
   
     async function importList(collectionName) {
       parts.forEach((e) => {
@@ -72,6 +86,7 @@ function AdminParts() {
       <Container>
           <Title>批量資料</Title>
           <div>parts</div>
+          <Flex>
           <Button
             onClick={() => {
               importList('parts');
@@ -86,6 +101,7 @@ function AdminParts() {
           >
             上傳資料
           </Button>
+          </Flex>
           <Button
             onClick={() => {
               getList("parts");
@@ -94,31 +110,53 @@ function AdminParts() {
             firebase資料
           </Button>
           <div>將上傳資料</div>
-          <div>
-            {upList &&
-              upList.map((e) => (
-                <div key={e.id}>
-                  {e.id}
-                  {e.name}
-                  {e.type}
-                  {e.material}
-                  {e.finish}
-                </div>
-              ))}
-          </div>
+          <Table>
+            <thead>
+              <tr>
+                <Th>零件編號</Th>
+                <Th>零件名稱</Th>
+                <Th>處理工藝</Th>
+                <Th>零件材質</Th>
+                <Th>表面處理</Th>
+              </tr>
+            </thead>
+            <tbody>
+              {upList &&
+                upList.map((e) => (
+                  <tr key={e.id}>
+                    <Td>{e.id}</Td>
+                    <Td>{e.name}</Td>
+                    <Td>{e.type}</Td>
+                    <Td>{e.material}</Td>
+                    <Td>{e.finish}</Td>
+                  </tr>
+                ))}
+            </tbody>
+          </Table>
           <div>下載資料</div>
-          <div>
-            {downList &&
-              downList.map((e) => (
-                <div key={e.id}>
-                  {e.id}
-                  {e.name}
-                  {e.type}
-                  {e.material}
-                  {e.finish}
-                </div>
-              ))}
-          </div>
+          <Table>
+            <thead>
+              <tr>
+                <Th>零件編號</Th>
+                <Th>零件名稱</Th>
+                <Th>處理工藝</Th>
+                <Th>零件材質</Th>
+                <Th>表面處理</Th>
+              </tr>
+            </thead>
+            <tbody>
+              {downList &&
+                downList.map((e) => (
+                  <tr key={e.id}>
+                    <Td>{e.id}</Td>
+                    <Td>{e.name}</Td>
+                    <Td>{e.type}</Td>
+                    <Td>{e.material}</Td>
+                    <Td>{e.finish}</Td>
+                  </tr>
+                ))}
+            </tbody>
+          </Table>
       </Container>
     );
   }
