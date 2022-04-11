@@ -8,6 +8,8 @@ import {
   serverTimestamp,
   query,
   onSnapshot,
+  doc,
+  updateDoc
 } from "firebase/firestore";
 import { useEffect } from "react";
 
@@ -91,6 +93,16 @@ function BulletinBoard() {
     setStatus(0);
   }
 
+  function updateCardStatus(id){
+    let changeStatus = prompt('請輸入變更數字0-4',0);
+    if(changeStatus !== null){
+      const docRef = doc(db, "boards", id);
+      updateDoc(docRef,{
+        status:Number(changeStatus),
+      })
+    }
+  }
+
   return (
     <Container>
       <SideBar />
@@ -148,6 +160,7 @@ function BulletinBoard() {
                   <Card key={card.id}>
                     <div>工作：{card.type}</div>
                     <div>提醒事項：{card.comment}</div>
+                    <Button onClick={() => updateCardStatus(card.id)}>修改</Button>
                   </Card>
                 )
             )}
@@ -160,6 +173,7 @@ function BulletinBoard() {
                   <Card key={card.id}>
                     <div>工作：{card.type}</div>
                     <div>提醒事項：{card.comment}</div>
+                    <Button onClick={() => updateCardStatus(card.id)}>修改</Button>
                   </Card>
                 )
             )}
@@ -172,6 +186,7 @@ function BulletinBoard() {
                   <Card key={card.id}>
                     <div>工作：{card.type}</div>
                     <div>提醒事項：{card.comment}</div>
+                    <Button onClick={() => updateCardStatus(card.id)}>修改</Button>
                   </Card>
                 )
             )}
@@ -184,6 +199,7 @@ function BulletinBoard() {
                   <Card key={card.id}>
                     <div>工作：{card.type}</div>
                     <div>提醒事項：{card.comment}</div>
+                    <Button onClick={() => updateCardStatus(card.id)}>修改</Button>
                   </Card>
                 )
             )}
@@ -196,6 +212,7 @@ function BulletinBoard() {
                   <Card key={index}>
                     <div>工作：{card.type}</div>
                     <div>提醒事項：{card.comment}</div>
+                    <Button onClick={() => updateCardStatus(card.id)}>修改</Button>
                   </Card>
                 )
             )}

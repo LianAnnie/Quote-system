@@ -94,22 +94,22 @@ function SideBar() {
             < NavLink to="/bom"><White>客戶產品</White></NavLink>
           </Navbar>
           <Navbar>
-            < NavLink to="/"><White>廠商訊息</White></NavLink>
+            < NavLink to="/admin"><White>廠商訊息</White></NavLink>
           </Navbar>
           <Navbar>
-            < NavLink to="/"><White>報價表單</White></NavLink>
+            < NavLink to="/admin"><White>報價表單</White></NavLink>
           </Navbar>
           <Navbar>
-            < NavLink to="/"><White>訂單表單</White></NavLink>
+            < NavLink to="/admin"><White>訂單表單</White></NavLink>
           </Navbar>
           <Navbar>
-            < NavLink to="/"><White>採購表單</White></NavLink>
+            < NavLink to="/admin"><White>採購表單</White></NavLink>
           </Navbar>
           <Navbar>
-            <NavLink to="/"><White>出貨發票</White></NavLink>
+            <NavLink to="/admin"><White>出貨發票</White></NavLink>
           </Navbar>
           <Navbar>
-            <NavLink to="/"><White>庫存進銷</White></NavLink>
+            <NavLink to="/admin"><White>庫存進銷</White></NavLink>
           </Navbar>
           <Navbar>
             <NavLink to="/login"><White>登出</White></NavLink>

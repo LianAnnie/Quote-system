@@ -59,7 +59,7 @@ function AdminParts() {
       const historyData = [];
       collectionSnap.forEach((e) => {
         const docData = {
-          id: e.id,
+          id: e.data().id,
           name: e.data().name,
           type: e.data().type,
           material: e.data().material,
@@ -73,6 +73,7 @@ function AdminParts() {
     async function addList(collectionName) {
       parts.forEach((e) => {
         const docData = {
+          id: e.id,
           name: e.name,
           type: e.type,
           material: e.material,
