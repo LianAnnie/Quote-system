@@ -11,8 +11,10 @@ const Main = styled.div`
   margin-left: 300px;
   padding: 50px 10%;
 `;
+const Product = styled.div`
+  padding: 50px 10%;
+`;
 const Customers = styled.div`
-  margin-left: 300px;
   padding: 50px 10%;
 `;
 const Title = styled.div`
@@ -33,8 +35,6 @@ const Button = styled.div`
   text-align: center;
   cursor: pointer;
 `;
-const Product = styled.div`
-`;
 
 function Bom() {
   const [company, setCompany] = useState("");
@@ -42,6 +42,10 @@ function Bom() {
   const [country, setCountry] = useState("");
   const [customerId, setCustomerId] = useState("");
   const [customerList, setCustomerList] = useState("");
+  const [productName, setProductName] = useState("");
+  const [productQty, setProductQty] = useState('');
+  const [productQtyList, setProductQtyList] = useState([]);
+  console.log(productQtyList);
 
   useEffect(() => {
     getCustomerList();
@@ -49,19 +53,19 @@ function Bom() {
 
   async function getCustomerList() {
     const collectionRef = collection(db, "customers");
-    const collectionData = await getDocs(collectionRef);      
-      const historyData = [];
-      collectionData.forEach((e) => {
-        const docData = {
-          id: e.id,
-          company: e.data().company,
-          contacts: e.data().contacts,
-          country: e.data().country,
-        };
-        historyData.push(docData);
-      });
-      setCustomerId(transformId(historyData.length + 1));
-      setCustomerList(historyData);
+    const collectionData = await getDocs(collectionRef);
+    const historyData = [];
+    collectionData.forEach((e) => {
+      const docData = {
+        id: e.id,
+        company: e.data().company,
+        contacts: e.data().contacts,
+        country: e.data().country,
+      };
+      historyData.push(docData);
+    });
+    setCustomerId(transformId(historyData.length + 1));
+    setCustomerList(historyData);
   }
 
   async function addCustomer() {
@@ -85,63 +89,86 @@ function Bom() {
     <Container>
       <SideBar />
       <Main>
-        <Customers>
-          <Title>客戶資料表</Title>
-          <Form
-            onKeyPress={(e) => {
-              e.key === "Enter" && addCustomer();
+      <Product>
+          <Title>產品結構表</Title>
+          <Form>
+            <Question>
+            <div>產品編號</div>
+            </Question>
+            <Question>
+              <div>產品名稱</div>
+              <input
+                type="text"
+                onChange={(e) => {
+                  setProductName(e.target.value);
+                }}
+                value={productName}
+              />
+            </Question>
+            <Question>
+              <div>詢價數量</div>
+              <div>{productQtyList.map((e)=>(`${e},`))}</div>
+              <input
+                type="text"
+                onChange={(e) => {
+                  setProductQty(Number(e.target.value));
+                }}
+                value={productQty}
+              />
+              <Button onClick={()=>{setProductQtyList((prev)=>[...prev,productQty])}}>加入</Button>
+            </Question>
+          </Form>          
+      </Product>
+      <Customers>
+        <Title>客戶資料表</Title>
+        <Form>
+          <Question>
+            <div>company</div>
+            <input
+              type="text"
+              onChange={(e) => {
+                setCompany(e.target.value);
+              }}
+              value={company}
+            />
+          </Question>
+          <Question>
+            <div>contacts</div>
+            <input
+              type="text"
+              onChange={(e) => {
+                setContacts(e.target.value);
+              }}
+              value={contacts}
+            />
+          </Question>
+          <Question>
+            <div>country</div>
+            <input
+              type="text"
+              onChange={(e) => {
+                setCountry(e.target.value);
+              }}
+              value={country}
+            />
+          </Question>
+          <Button
+            onClick={() => {
+              addCustomer();
             }}
           >
-            <Question>
-              <div>company</div>
-              <input
-                type="text"
-                onChange={(e) => {
-                  setCompany(e.target.value);
-                }}
-                value={company}
-              />
-            </Question>
-            <Question>
-              <div>contacts</div>
-              <input
-                type="text"
-                onChange={(e) => {
-                  setContacts(e.target.value);
-                }}
-                value={contacts}
-              />
-            </Question>
-            <Question>
-              <div>country</div>
-              <input
-                type="text"
-                onChange={(e) => {
-                  setCountry(e.target.value);
-                }}
-                value={country}
-              />
-            </Question>
-            <Button
-              onClick={() => {
-                addCustomer();
-              }}
-            >
-              Add
-            </Button>
-          </Form>
-          <select>
-            {customerList &&
-              customerList.map((customer) => (
-                <option key={customer.id}>
-                  {customer.company},{customer.contacts}, {customer.country}
-                </option>
-              ))}
-          </select>
-        </Customers>
-        <Product>
-
-        </Product>
+            Add
+          </Button>
+        </Form>
+        <select>
+          {customerList &&
+            customerList.map((customer) => (
+              <option key={customer.id}>
+                {customer.company},{customer.contacts}, {customer.country}
+              </option>
+            ))}
+        </select>
+      </Customers>
       </Main>
     </Container>
   );

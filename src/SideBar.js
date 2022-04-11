@@ -91,7 +91,7 @@ function SideBar() {
             < NavLink to="/"><White>待辦通知</White></NavLink>
           </Navbar>
           <Navbar>
-            < NavLink to="/product"><White>客戶產品</White></NavLink>
+            < NavLink to="/bom"><White>客戶產品</White></NavLink>
           </Navbar>
           <Navbar>
             < NavLink to="/"><White>廠商訊息</White></NavLink>
