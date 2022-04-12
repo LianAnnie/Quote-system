@@ -202,7 +202,7 @@ function Bom() {
           <Form>
             <Question>
               <div>產品名稱</div>
-              <input
+                        <input
                 type="text"
                 onChange={(e) => {
                   setProductName(e.target.value);
