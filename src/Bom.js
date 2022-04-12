@@ -43,7 +43,7 @@ const Question = styled.div`
 `;
 const Button = styled.div`
   border: solid 1px #000000;
-  width: 50px;
+  width: 55px;
   margin: 5px;
   text-align: center;
   cursor: pointer;
@@ -384,7 +384,7 @@ function Bom() {
           </Table>
         </Parts>
         <Submit>
-          <Button onClick={() => submit()}>Subnit</Button>
+          <Button onClick={() => submit()}>Submit</Button>
         </Submit>
       </Main>
     </Container>
