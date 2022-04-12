@@ -2,14 +2,20 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import SideBar from "./SideBar";
 import db from "./utils/firebase";
-import { doc, setDoc, collection, getDocs } from "firebase/firestore";
+import {
+    doc,
+    setDoc,
+    collection,
+    getDocs,
+    Timestamp,
+} from "firebase/firestore";
 
 const Container = styled.div`
     text-align: left;
 `;
 const Main = styled.div`
     margin-left: 300px;
-    padding: 50px 10%;
+    padding: 50px 2%;
 `;
 const Quote = styled.div`
     padding: 20px 10%;
@@ -40,12 +46,18 @@ const Question = styled.div`
 `;
 const Button = styled.div`
     border: solid 1px #000000;
-    width: 55px;
+    width: 70px;
     margin: 5px;
     text-align: center;
     cursor: pointer;
 `;
 const Th = styled.th`
+    padding-right: 20px;
+`;
+
+const ThTwoColSpan = styled.th.attrs({
+    colSpan: 2,
+})`
     padding-right: 20px;
 `;
 const Td = styled.td`
@@ -58,6 +70,7 @@ const Flex = styled.div`
 function Supplier() {
     const [quoteDate, setQuoteDate] = useState("");
     const [validDate, setValidDate] = useState("");
+    const [currency, setCurrency] = useState("");
     const [supplierList, setSupplierList] = useState([]);
     const [selectedSupplier, setSelectedSupplier] = useState(0);
     const [company, setCompany] = useState("");
@@ -67,16 +80,27 @@ function Supplier() {
     const [productList, setProductList] = useState([]);
     const [selectedPart, setSelectedPart] = useState("");
     const [parts, setParts] = useState([]);
+    const [updatedPrice, setUpdatedPrice] = useState(0);
+    const [qtyColumnStatus, setQtyColumnStatus] = useState([]);
     console.log(
         `selectedSupplier value = ${selectedSupplier} = 在supplierList位置`,
     );
     //waiting fix : Bom.js 是否也要這樣寫？
-    console.log(parts);
 
     useEffect(() => {
         getSupplierListFromFirebase();
         getProductListFromFirebase();
     }, []);
+
+    useEffect(() => {
+        getArrayLengthforQtyColumnStatus();
+    }, [parts]);
+
+    function getArrayLengthforQtyColumnStatus() {
+        const arrayLength = parts.length;
+        const array = [...Array(arrayLength)].map(x => false);
+        setQtyColumnStatus(array);
+    }
 
     function transformId(id, number) {
         if (id.length === number) return id;
@@ -129,9 +153,73 @@ function Supplier() {
             )
             .filter(e => e !== undefined)[0];
 
-        let parts = [];
+        const newParts = [];
+        inquiryQtyArray.forEach(qty => {
+            const newpart = JSON.parse(JSON.stringify(part));
+            newpart.qty = qty;
+            newParts.push(newpart);
+        });
+        setParts(prev => [...prev, newParts].flat(1));
+    }
+    function deletePart(itemIndex) {
+        const newPart = parts.filter((_, index) => index !== itemIndex);
+        setParts(newPart);
+    }
 
-        setParts(prev => [...prev, part]);
+    function updatePrice(itemIndex) {
+        console.log(qtyColumnStatus);
+        const newArray = qtyColumnStatus.map((state, index) =>
+            index === itemIndex && state === true
+                ? (state = false)
+                : index === itemIndex && state == false
+                ? (state = true)
+                : (state = false),
+        );
+        console.log(newArray);
+        setQtyColumnStatus(newArray);
+    }
+
+    function confirmePrice(itemIndex) {
+        const newParts = parts;
+        newParts[itemIndex].price = updatedPrice;
+        console.log(parts);
+        console.log(newParts);
+    }
+
+    function submit() {
+        console.log(parts);
+        const supplierId = supplierList.filter(
+            item => item.company === company,
+        )[0].id;
+
+        const quoteData = {
+            id: `0000701001${Math.floor(Date.now() / 100000)}`, //(5零件流水編號-2零件版本-3供應商編號-3報價流水編號)
+            date: new Timestamp(new Date(quoteDate).getTime() / 1000, 0),
+            currency,
+            leadtime: 30,
+            valid: new Timestamp(new Date(validDate).getTime() / 1000, 0),
+        };
+        const newParts = JSON.parse(JSON.stringify(parts));
+        let i = 0;
+        newParts.forEach(e => {
+            const partId = e.id;
+            e.id = `${e.id}${supplierId}${Date.now()}${i}`;
+            e.currency = quoteData.currency;
+            e.date = quoteData.date;
+            e.leadtime = quoteData.leadtime;
+            e.valid = quoteData.valid;
+            e.price = Number(e.price);
+            console.log(e);
+            setDoc(
+                doc(
+                    db,
+                    "partQuotations",
+                    `${partId}${supplierId}${Date.now()}${i}`,
+                ),
+                e,
+            );
+            i++;
+        });
     }
 
     return (
@@ -159,6 +247,16 @@ function Supplier() {
                                     setValidDate(e.target.value);
                                 }}
                                 value={validDate}
+                            />
+                        </Question>
+                        <Question>
+                            <div>報價幣別</div>
+                            <input
+                                type="input"
+                                onChange={e => {
+                                    setCurrency(e.target.value);
+                                }}
+                                value={currency}
                             />
                         </Question>
                     </Form>
@@ -251,8 +349,9 @@ function Supplier() {
                                 <Th>零件材質</Th>
                                 <Th>表面處理</Th>
                                 <Th>報價數量</Th>
-                                <Th>零件單價</Th>
                                 <Th>零件單位</Th>
+                                <ThTwoColSpan>零件單價</ThTwoColSpan>
+                                <ThTwoColSpan>零件交期</ThTwoColSpan>
                             </tr>
                         </thead>
                         <tbody>
@@ -265,14 +364,51 @@ function Supplier() {
                                         <Td>{e.material}</Td>
                                         <Td>{e.finish}</Td>
                                         <Td>{e.qty}</Td>
+                                        <Td>{e.unit}</Td>
+                                        {qtyColumnStatus[index] ? (
+                                            <Td>
+                                                <input
+                                                    type="text"
+                                                    onChange={e =>
+                                                        setUpdatedPrice(
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                    value={updatedPrice}
+                                                />
+                                            </Td>
+                                        ) : (
+                                            <Td>{e.price}</Td>
+                                        )}
                                         <Td>
-                                            {/* <Button
+                                            {qtyColumnStatus[index] ? (
+                                                <Button
+                                                    onClick={() => {
+                                                        updatePrice(index);
+                                                        confirmePrice(index);
+                                                    }}
+                                                >
+                                                    Save
+                                                </Button>
+                                            ) : (
+                                                <Button
+                                                    onClick={() => {
+                                                        updatePrice(index);
+                                                    }}
+                                                >
+                                                    Revised
+                                                </Button>
+                                            )}
+                                        </Td>
+                                        <Td>30</Td>
+                                        <Td>
+                                            <Button
                                                 onClick={() => {
-                                                    deletePart(e.id)
+                                                    deletePart(index);
                                                 }}
                                             >
                                                 Delete
-                                            </Button> */}
+                                            </Button>
                                         </Td>
                                     </tr>
                                 ))}
@@ -280,7 +416,7 @@ function Supplier() {
                     </Table>
                 </PartQuote>
                 <Submit>
-                    {/* <Button onClick={() => submit()}>Submit</Button> */}
+                    <Button onClick={() => submit()}>Submit</Button>
                 </Submit>
             </Main>
         </Container>
