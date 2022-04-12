@@ -1,114 +1,115 @@
-import styled from 'styled-components'
-import { useState, useEffect } from 'react'
-import SideBar from './SideBar'
-import db from './utils/firebase'
-import { doc, setDoc, collection, getDocs } from 'firebase/firestore'
+import styled from "styled-components";
+import { useState, useEffect } from "react";
+import SideBar from "./SideBar";
+import db from "./utils/firebase";
+import { doc, setDoc, collection, getDocs } from "firebase/firestore";
 
 const Container = styled.div`
     text-align: left;
-`
+`;
 const Main = styled.div`
     margin-left: 300px;
     padding: 50px 10%;
-`
+`;
 const Product = styled.div`
     padding: 20px 10%;
-`
+`;
 const Customers = styled.div`
     padding: 20px 10%;
-`
+`;
 const Part = styled.div`
     padding: 20px 10%;
-`
+`;
 const Parts = styled.div`
     padding: 20px 10%;
-`
+`;
 const Submit = styled.div`
     padding: 20px 10%;
-`
+`;
 const Title = styled.div`
     margin-bottom: 20px;
-`
+`;
 const Form = styled.div`
     border: solid 1px #000000;
     padding: 20px;
-`
+`;
 const Table = styled.table`
     border: solid 1px #000000;
     padding: 20px;
-`
+`;
 const Question = styled.div`
     display: flex;
     margin: 5px;
-`
+`;
 const Button = styled.div`
     border: solid 1px #000000;
-    width: 55px;
+    width: 100px;
     margin: 5px;
     text-align: center;
     cursor: pointer;
-`
+`;
 const Th = styled.th`
     padding-right: 50px;
-`
+`;
 const Td = styled.td`
     padding-right: 50px;
-`
+`;
 const Flex = styled.div`
     display: flex;
-`
+`;
 
 function Bom() {
-    const [selectedCustomer, setSelectedCustomer] = useState('')
-    const [company, setCompany] = useState('')
-    const [contacts, setContacts] = useState('')
-    const [country, setCountry] = useState('')
-    const [customerId, setCustomerId] = useState('')
-    const [customerList, setCustomerList] = useState('')
-    const [productName, setProductName] = useState('')
-    const [productQty, setProductQty] = useState('')
-    const [productQtyList, setProductQtyList] = useState([])
-    const [partId, setPartId] = useState('')
-    const [partName, setPartName] = useState('')
-    const [partType, setPartType] = useState('')
-    const [partMaterial, setPartMaterial] = useState('')
-    const [partFinish, setPartFinish] = useState('')
-    const [partList, setPartList] = useState([])
-    const [selectedPart, setSelectedPart] = useState('')
-    const [parts, setParts] = useState([])
+    const [selectedCustomer, setSelectedCustomer] = useState("");
+    const [company, setCompany] = useState("");
+    const [contacts, setContacts] = useState("");
+    const [country, setCountry] = useState("");
+    const [customerId, setCustomerId] = useState("");
+    const [customerList, setCustomerList] = useState("");
+    const [productName, setProductName] = useState("");
+    const [productQty, setProductQty] = useState("");
+    const [productQtyList, setProductQtyList] = useState([]);
+    const [partId, setPartId] = useState("");
+    const [partName, setPartName] = useState("");
+    const [partType, setPartType] = useState("");
+    const [partMaterial, setPartMaterial] = useState("");
+    const [partFinish, setPartFinish] = useState("");
+    const [partList, setPartList] = useState([]);
+    const [selectedPart, setSelectedPart] = useState("");
+    const [parts, setParts] = useState([]);
+    const [updatePartQty, setUpdatePartQty] = useState(2);
 
     useEffect(() => {
-        getCustomerListFromFirebase()
-        getPartListFromFirebase()
-    }, [])
+        getCustomerListFromFirebase();
+        getPartListFromFirebase();
+    }, []);
     function transformId(id, number) {
-        if (id.length === number) return id
-        else return id.toString().padStart(number, 0)
+        if (id.length === number) return id;
+        else return id.toString().padStart(number, 0);
     }
     async function getCustomerListFromFirebase() {
-        const collectionRef = collection(db, 'customers')
-        const collectionData = await getDocs(collectionRef)
-        const historyData = []
+        const collectionRef = collection(db, "customers");
+        const collectionData = await getDocs(collectionRef);
+        const historyData = [];
         collectionData.forEach(e => {
             const docData = {
                 id: e.id,
                 company: e.data().company,
                 contacts: e.data().contacts,
                 country: e.data().country,
-            }
-            historyData.push(docData)
-        })
-        setCustomerId(transformId(historyData.length + 1, 3))
-        setCustomerList(historyData)
+            };
+            historyData.push(docData);
+        });
+        setCustomerId(transformId(historyData.length + 1, 3));
+        setCustomerList(historyData);
     }
     function addExistingCustomer() {
         const inquiryCustomer = customerList.filter(
             e => e.id === selectedCustomer,
-        )
-        setSelectedCustomer(inquiryCustomer)
-        setCompany(inquiryCustomer[0].company)
-        setContacts(inquiryCustomer[0].contacts)
-        setCountry(inquiryCustomer[0].country)
+        );
+        setSelectedCustomer(inquiryCustomer);
+        setCompany(inquiryCustomer[0].company);
+        setContacts(inquiryCustomer[0].contacts);
+        setCountry(inquiryCustomer[0].country);
     }
     async function addCustomerToFirebase() {
         const customerData = {
@@ -116,16 +117,16 @@ function Bom() {
             company,
             contacts,
             country,
-        }
-        setDoc(doc(db, 'customers', customerId), customerData)
-        setCompany('')
-        setContacts('')
-        setCountry('')
+        };
+        setDoc(doc(db, "customers", customerId), customerData);
+        setCompany("");
+        setContacts("");
+        setCountry("");
     }
     async function getPartListFromFirebase() {
-        const collectionRef = collection(db, 'parts')
-        const collectionData = await getDocs(collectionRef)
-        const historyData = []
+        const collectionRef = collection(db, "parts");
+        const collectionData = await getDocs(collectionRef);
+        const historyData = [];
         collectionData.forEach(e => {
             const docData = {
                 id: e.data().id,
@@ -133,11 +134,11 @@ function Bom() {
                 finish: e.data().finish,
                 material: e.data().material,
                 type: e.data().type,
-            }
-            historyData.push(docData)
-        })
-        setPartId(`${transformId(historyData.length + 1, 5)}01`)
-        setPartList(historyData)
+            };
+            historyData.push(docData);
+        });
+        setPartId(`${transformId(historyData.length + 1, 5)}01`);
+        setPartList(historyData);
     }
     async function addPartToFirebase() {
         const data = {
@@ -146,58 +147,88 @@ function Bom() {
             type: partType,
             material: partMaterial,
             finish: partFinish,
-        }
-        setDoc(doc(db, 'parts', partId), data)
-        setPartName('')
-        setPartType('')
-        setPartMaterial('')
-        setPartFinish('')
-        setParts(prev => [...prev, data])
+        };
+        console.log(data);
+        setDoc(doc(db, "parts", partId), data);
+        setPartName("");
+        setPartType("");
+        setPartMaterial("");
+        setPartFinish("");
+        data.qty = 1;
+        data.unit = "pcs";
+        setParts(prev => [...prev, data]);
+        setPartId(prev => transformId(Number(prev) + 100, 7));
     }
     function addExistingPart() {
-        const newPart = partList.filter(e => e.id === selectedPart)
+        const newPart = partList.filter(e => e.id === selectedPart);
+        newPart[0].qty = 1;
+        newPart[0].unit = "pcs";
+        //waiting fix : 加入後應該要能修正數量跟單位
+        console.log(newPart);
         if (parts.length === 0) {
-            setParts(newPart)
-            return
+            setParts(newPart);
+            return;
         }
-        const hadAddInParts = parts.find(e => e.id === selectedPart)
+        const hadAddInParts = parts.find(e => e.id === selectedPart);
         if (hadAddInParts === undefined) {
-            const newArray = []
-            newArray.push(parts)
-            newArray.push(newPart)
-            console.log(newArray.flat(1))
-            setParts(newArray.flat(1))
-            return
+            const newArray = [];
+            newArray.push(parts);
+            newArray.push(newPart);
+            console.log(newArray.flat(1));
+            setParts(newArray.flat(1));
+            return;
         }
-        alert(`此零件已在列表`)
+        alert(`此零件已在列表`);
     }
 
     function deletePart(id) {
-        const newPart = parts.filter(e => e.id !== id)
-        setParts(newPart)
+        const newPart = parts.filter(e => e.id !== id);
+        setParts(newPart);
+    }
+
+    function reduceQty(id) {
+        const newParts = [];
+        parts.forEach(e => {
+            if (e.id === id) {
+                e.qty -= 1;
+            }
+            newParts.push(e);
+        });
+        setParts(newParts);
+    }
+
+    function addQty(id) {
+        const newParts = [];
+        parts.forEach(e => {
+            if (e.id === id) {
+                e.qty += 1;
+            }
+            newParts.push(e);
+        });
+        setParts(newParts);
     }
 
     function submit() {
-        console.log(`${customerId}${Math.floor(Date.now() / 100000)}01`)
+        console.log(`${customerId}${Math.floor(Date.now() / 100000)}01`);
         const data = {
             id: `${customerId}${Math.floor(Date.now() / 100000)}01`,
             name: productName,
             inquiryQty: productQtyList,
-            image: '',
+            image: "",
             bomList: parts,
             customerId: selectedCustomer[0].id,
             company: selectedCustomer[0].company,
             country: selectedCustomer[0].country,
-        }
-        console.log(data)
+        };
+        console.log(data);
         setDoc(
             doc(
                 db,
-                'products',
+                "products",
                 `${customerId}${Math.floor(Date.now() / 100000)}01`,
             ),
             data,
-        )
+        );
     }
 
     return (
@@ -212,7 +243,7 @@ function Bom() {
                             <input
                                 type="text"
                                 onChange={e => {
-                                    setProductName(e.target.value)
+                                    setProductName(e.target.value);
                                 }}
                                 value={productName}
                             />
@@ -223,7 +254,7 @@ function Bom() {
                             <input
                                 type="text"
                                 onChange={e => {
-                                    setProductQty(Number(e.target.value))
+                                    setProductQty(Number(e.target.value));
                                 }}
                                 value={productQty}
                             />
@@ -232,7 +263,7 @@ function Bom() {
                                     setProductQtyList(prev => [
                                         ...prev,
                                         productQty,
-                                    ])
+                                    ]);
                                 }}
                             >
                                 加入
@@ -253,7 +284,7 @@ function Bom() {
                                         key={customer.id}
                                         value={customer.id}
                                     >
-                                        {customer.company},{customer.contacts},{' '}
+                                        {customer.company},{customer.contacts},{" "}
                                         {customer.country}
                                     </option>
                                 ))}
@@ -268,7 +299,7 @@ function Bom() {
                             <input
                                 type="text"
                                 onChange={e => {
-                                    setCompany(e.target.value)
+                                    setCompany(e.target.value);
                                 }}
                                 value={company}
                             />
@@ -278,7 +309,7 @@ function Bom() {
                             <input
                                 type="text"
                                 onChange={e => {
-                                    setContacts(e.target.value)
+                                    setContacts(e.target.value);
                                 }}
                                 value={contacts}
                             />
@@ -288,14 +319,14 @@ function Bom() {
                             <input
                                 type="text"
                                 onChange={e => {
-                                    setCountry(e.target.value)
+                                    setCountry(e.target.value);
                                 }}
                                 value={country}
                             />
                         </Question>
                         <Button
                             onClick={() => {
-                                addCustomerToFirebase()
+                                addCustomerToFirebase();
                             }}
                         >
                             New
@@ -314,7 +345,7 @@ function Bom() {
                             <input
                                 type="text"
                                 onChange={e => {
-                                    setPartName(e.target.value)
+                                    setPartName(e.target.value);
                                 }}
                                 value={partName}
                             />
@@ -324,7 +355,7 @@ function Bom() {
                             <input
                                 type="text"
                                 onChange={e => {
-                                    setPartType(e.target.value)
+                                    setPartType(e.target.value);
                                 }}
                                 value={partType}
                             />
@@ -334,7 +365,7 @@ function Bom() {
                             <input
                                 type="text"
                                 onChange={e => {
-                                    setPartMaterial(e.target.value)
+                                    setPartMaterial(e.target.value);
                                 }}
                                 value={partMaterial}
                             />
@@ -344,14 +375,14 @@ function Bom() {
                             <input
                                 type="text"
                                 onChange={e => {
-                                    setPartFinish(e.target.value)
+                                    setPartFinish(e.target.value);
                                 }}
                                 value={partFinish}
                             />
                         </Question>
                         <Button
                             onClick={() => {
-                                addPartToFirebase()
+                                addPartToFirebase();
                             }}
                         >
                             New
@@ -383,6 +414,8 @@ function Bom() {
                                 <Th>處理工藝</Th>
                                 <Th>零件材質</Th>
                                 <Th>表面處理</Th>
+                                <Th>使用數量</Th>
+                                <Th>計算單位</Th>
                             </tr>
                         </thead>
                         <tbody>
@@ -394,10 +427,26 @@ function Bom() {
                                         <Td>{e.type}</Td>
                                         <Td>{e.material}</Td>
                                         <Td>{e.finish}</Td>
+                                        <Td>{e.qty}</Td>
+                                        <Td>{e.unit}</Td>
                                         <Td>
                                             <Button
                                                 onClick={() => {
-                                                    deletePart(e.id)
+                                                    reduceQty(e.id);
+                                                }}
+                                            >
+                                                Reduce Qty
+                                            </Button>
+                                            <Button
+                                                onClick={() => {
+                                                    addQty(e.id);
+                                                }}
+                                            >
+                                                Add Qty
+                                            </Button>
+                                            <Button
+                                                onClick={() => {
+                                                    deletePart(e.id);
                                                 }}
                                             >
                                                 Delete
@@ -413,6 +462,6 @@ function Bom() {
                 </Submit>
             </Main>
         </Container>
-    )
+    );
 }
-export default Bom
+export default Bom;
