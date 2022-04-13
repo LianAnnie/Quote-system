@@ -130,6 +130,11 @@ function SideBar() {
                         </NavLink>
                     </Navbar>
                     <Navbar>
+                        <NavLink to="/analysis">
+                            <White>成本分析</White>
+                        </NavLink>
+                    </Navbar>
+                    <Navbar>
                         <NavLink to="/login">
                             <White>登出</White>
                         </NavLink>

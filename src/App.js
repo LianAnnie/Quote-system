@@ -4,6 +4,7 @@ import LogIn from "./LogIn";
 import BulletinBoard from "./BulletinBoard";
 import Bom from "./Bom";
 import Supplier from "./Supplier";
+import Analysis from "./Analysis";
 import Admin from "./Admin";
 import {
     BrowserRouter as Router,
@@ -25,6 +26,7 @@ function App() {
                     <Route path="/" element={<BulletinBoard />} />
                     <Route path="/bom" element={<Bom />} />
                     <Route path="/supplier" element={<Supplier />} />
+                    <Route path="/analysis" element={<Analysis />} />
                     <Route path="/admin" element={<Admin />} />
                     <Route path="/*" element={<Navigate to="/" />} />
                 </Routes>
