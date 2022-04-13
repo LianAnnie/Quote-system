@@ -76,7 +76,6 @@ function Bom() {
     const [partList, setPartList] = useState([]);
     const [selectedPart, setSelectedPart] = useState("");
     const [parts, setParts] = useState([]);
-    const [updatePartQty, setUpdatePartQty] = useState(2);
 
     useEffect(() => {
         getCustomerListFromFirebase();

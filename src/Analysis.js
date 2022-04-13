@@ -10,6 +10,7 @@ import {
     Timestamp,
 } from "firebase/firestore";
 import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
 
 const Container = styled.div`
     text-align: left;
@@ -78,6 +79,52 @@ const Flex = styled.div`
 `;
 
 function Analysis() {
+    const options = {
+        chart: {
+            type: "pie",
+            marginBottom: 100,
+        },
+        title: {
+            text: "成本分析",
+        },
+        series: [
+            {
+                allowPointSelect: true,
+                size: "80%",
+                innerSize: "60%",
+                data: [
+                    ["燈頭", 45.0],
+                    ["底座", 26.8],
+                    {
+                        name: "LED",
+                        y: 12.8,
+                        sliced: true, // 突出显示某个扇区，表示强调
+                    },
+                    ["配件", 8.5],
+                    ["LED", 6.2],
+                    ["電器配件", 0.7],
+                ],
+            },
+            {
+                allowPointSelect: true,
+                size: "60%",
+                innerSize: "30%",
+                data: [
+                    ["燈頭", 50],
+                    ["底座", 26.8],
+                    {
+                        name: "LED",
+                        y: 12.8,
+                        sliced: true, // 突出显示某个扇区，表示强调
+                    },
+                    ["配件", 8.5],
+                    ["LED", 6.2],
+                    ["電器配件", 0.7],
+                ],
+            },
+        ],
+    };
+
     return (
         <Container>
             <SideBar />
@@ -85,7 +132,10 @@ function Analysis() {
                 <Cost>
                     <Title>成本分析</Title>
                     <Border>
-                        <HighchartsDrawing id="container"></HighchartsDrawing>
+                        <HighchartsReact
+                            highcharts={Highcharts}
+                            options={options}
+                        />
                     </Border>
                 </Cost>
             </Main>
