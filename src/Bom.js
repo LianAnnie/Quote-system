@@ -1,8 +1,7 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import SideBar from "./SideBar";
-import db from "./utils/firebase";
-import { doc, setDoc, collection, getDocs } from "firebase/firestore";
+import api from "./utils/firebaseApi";
 
 const Container = styled.div`
     text-align: left;
@@ -76,6 +75,7 @@ function Bom() {
     const [partList, setPartList] = useState([]);
     const [selectedPart, setSelectedPart] = useState("");
     const [parts, setParts] = useState([]);
+    console.log(customerId);
 
     useEffect(() => {
         getCustomerListFromFirebase();
@@ -85,22 +85,13 @@ function Bom() {
         if (id.length === number) return id;
         else return id.toString().padStart(number, 0);
     }
+
     async function getCustomerListFromFirebase() {
-        const collectionRef = collection(db, "customers");
-        const collectionData = await getDocs(collectionRef);
-        const historyData = [];
-        collectionData.forEach(e => {
-            const docData = {
-                id: e.id,
-                company: e.data().company,
-                contacts: e.data().contacts,
-                country: e.data().country,
-            };
-            historyData.push(docData);
-        });
-        setCustomerId(transformId(historyData.length + 1, 3));
-        setCustomerList(historyData);
+        const list = await api.getCompleteCollection("customers");
+        setCustomerList(list);
+        setCustomerId(transformId(list.length + 1, 3));
     }
+
     function addExistingCustomer() {
         const inquiryCustomer = customerList.filter(
             e => e.id === selectedCustomer,
@@ -110,6 +101,7 @@ function Bom() {
         setContacts(inquiryCustomer[0].contacts);
         setCountry(inquiryCustomer[0].country);
     }
+
     async function addCustomerToFirebase() {
         const customerData = {
             id: customerId,
@@ -117,27 +109,15 @@ function Bom() {
             contacts,
             country,
         };
-        setDoc(doc(db, "customers", customerId), customerData);
+        api.setDocWithId("customers", customerId, customerData);
         setCompany("");
         setContacts("");
         setCountry("");
     }
     async function getPartListFromFirebase() {
-        const collectionRef = collection(db, "parts");
-        const collectionData = await getDocs(collectionRef);
-        const historyData = [];
-        collectionData.forEach(e => {
-            const docData = {
-                id: e.data().id,
-                name: e.data().name,
-                finish: e.data().finish,
-                material: e.data().material,
-                type: e.data().type,
-            };
-            historyData.push(docData);
-        });
-        setPartId(`${transformId(historyData.length + 1, 5)}01`);
-        setPartList(historyData);
+        const list = await api.getCompleteCollection("parts");
+        setPartId(`${transformId(list.length + 1, 5)}01`);
+        setPartList(list);
     }
     async function addPartToFirebase() {
         const data = {
@@ -148,7 +128,7 @@ function Bom() {
             finish: partFinish,
         };
         console.log(data);
-        setDoc(doc(db, "parts", partId), data);
+        api.setDocWithId("parts", partId, data);
         setPartName("");
         setPartType("");
         setPartMaterial("");
@@ -220,12 +200,9 @@ function Bom() {
             country: selectedCustomer[0].country,
         };
         console.log(data);
-        setDoc(
-            doc(
-                db,
-                "products",
-                `${customerId}${Math.floor(Date.now() / 100000)}01`,
-            ),
+        api.setDocWithId(
+            "products",
+            `${customerId}${Math.floor(Date.now() / 100000)}01`,
             data,
         );
     }

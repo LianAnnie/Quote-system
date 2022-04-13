@@ -62,7 +62,7 @@ function BulletinBoard() {
 
     useEffect(() => {
         const q = query(collection(db, "boards"));
-        onSnapshot(q, querySnapshot => {
+        const unsubscribe = onSnapshot(q, querySnapshot => {
             const pmWorks = [];
             querySnapshot.forEach(doc => {
                 const historyCardData = {
@@ -76,6 +76,7 @@ function BulletinBoard() {
             });
             setPmWorkList(pmWorks);
         });
+        return () => unsubscribe();
     }, []);
 
     async function addCard() {

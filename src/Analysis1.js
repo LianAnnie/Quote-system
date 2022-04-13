@@ -84,36 +84,31 @@ function Analysis() {
     }, []);
 
     useEffect(() => {
-        getQutationData(selectedProduct);
-    }, [selectedProduct]);
+        console.log(quotationData);
+    }, [quotationData]);
 
     async function getQutationData(itemIndx) {
-        async function promiseData() {
-            const partList = productList[itemIndx].bomList.map(e => e.id);
-            let quotationData = [];
-            partList.forEach(async (e, index) => {
-                const partObject = {
-                    partId: e,
-                    quotation: [],
-                };
-                quotationData.push(partObject);
-                const q = query(
-                    collection(db, "partQuotations"),
-                    where("id", "array-contains", e),
-                );
-                const data = await getDocs(q);
-                data.forEach(quote => {
-                    const quoteData = quote.data();
-                    quotationData[index].quotation.push(quoteData);
-                    console.log(quoteData);
-                });
+        const partList = await productList[itemIndx].bomList.map(e => e.id);
+        let quotationData = [];
+        partList.forEach(async (e, index) => {
+            const partObject = {
+                partId: e,
+                quotation: [],
+            };
+            quotationData.push(partObject);
+            const q = query(
+                collection(db, "partQuotations"),
+                where("id", "array-contains", e),
+            );
+            const data = await getDocs(q);
+            data.forEach(quote => {
+                const quoteData = quote.data();
+                quotationData[index].quotation.push(quoteData);
+                console.log(quoteData);
             });
-            setQuotationData(quotationData);
-        }
-        promiseData();
-
-        // console.log(promiseData());
-        // // // setQuotationData(promiseData);
+        });
+        setQuotationData(quotationData);
+        console.log(123);
     }
 
     async function getProductListFromFirebase() {
@@ -199,7 +194,7 @@ function Analysis() {
                             options={options}
                         />
                     </Border>
-                    {quotationData !== [] &&
+                    {quotationData &&
                         quotationData.map((e, index) => (
                             <div key={index}>
                                 <div>{e.id}</div>
@@ -219,16 +214,14 @@ function Analysis() {
                                     {e.quotation &&
                                         e.quotation.map((j, index) => (
                                             <tbody key={index}>
-                                                <tr>
-                                                    <Td>{j.name}</Td>
-                                                    <Td>{j.type}</Td>
-                                                    <Td>{j.material}</Td>
-                                                    <Td>{j.finish}</Td>
-                                                    <Td>{j.qty}</Td>
-                                                    <Td>{j.unit}</Td>
-                                                    <Td>{j.price}</Td>
-                                                    <Td>{j.currency}</Td>
-                                                </tr>
+                                                <Td>{j.name}</Td>
+                                                <Td>{j.type}</Td>
+                                                <Td>{j.material}</Td>
+                                                <Td>{j.finish}</Td>
+                                                <Td>{j.qty}</Td>
+                                                <Td>{j.unit}</Td>
+                                                <Td>{j.price}</Td>
+                                                <Td>{j.currency}</Td>
                                             </tbody>
                                         ))}
                                 </Table>

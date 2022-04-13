@@ -1,14 +1,8 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import SideBar from "./SideBar";
-import db from "./utils/firebase";
-import {
-    doc,
-    setDoc,
-    collection,
-    getDocs,
-    Timestamp,
-} from "firebase/firestore";
+import { Timestamp } from "firebase/firestore";
+import api from "./utils/firebaseApi";
 
 const Container = styled.div`
     text-align: left;
@@ -82,9 +76,9 @@ function Supplier() {
     const [parts, setParts] = useState([]);
     const [updatedPrice, setUpdatedPrice] = useState(0);
     const [qtyColumnStatus, setQtyColumnStatus] = useState([]);
-    console.log(
-        `selectedSupplier value = ${selectedSupplier} = 在supplierList位置`,
-    );
+    // console.log(
+    //     `selectedSupplier value = ${selectedSupplier} = 在supplierList位置`,
+    // );
     //waiting fix : Bom.js 是否也要這樣寫？
 
     useEffect(() => {
@@ -107,9 +101,7 @@ function Supplier() {
         else return id.toString().padStart(number, 0);
     }
     async function getSupplierListFromFirebase() {
-        const collectionRef = collection(db, "suppliers");
-        const collectionData = await getDocs(collectionRef);
-        const list = collectionData.docs.map(e => e.data());
+        const list = await api.getCompleteCollection("suppliers");
         setSupplierId(transformId(list.length + 1, 3));
         setSupplierList(list);
     }
@@ -126,15 +118,13 @@ function Supplier() {
             country,
         };
         console.log(supplierData);
-        setDoc(doc(db, "suppliers", supplierId), supplierData);
+        api.setDocWithId("suppliers", supplierId, supplierData);
         setCompany("");
         setContacts("");
         setCountry("");
     }
     async function getProductListFromFirebase() {
-        const collectionRef = collection(db, "products");
-        const collectionData = await getDocs(collectionRef);
-        const list = collectionData.docs.map(e => e.data());
+        const list = await api.getCompleteCollection("products");
         setProductList(list);
     }
     function addPorduct() {
@@ -165,7 +155,6 @@ function Supplier() {
         const newPart = parts.filter((_, index) => index !== itemIndex);
         setParts(newPart);
     }
-
     function updatePrice(itemIndex) {
         console.log(qtyColumnStatus);
         const newArray = qtyColumnStatus.map((state, index) =>
@@ -178,14 +167,12 @@ function Supplier() {
         console.log(newArray);
         setQtyColumnStatus(newArray);
     }
-
     function confirmePrice(itemIndex) {
         const newParts = parts;
         newParts[itemIndex].price = updatedPrice;
         console.log(parts);
         console.log(newParts);
     }
-
     function submit() {
         console.log(parts);
         const supplierId = supplierList.filter(
@@ -203,19 +190,16 @@ function Supplier() {
         let i = 0;
         newParts.forEach(e => {
             const partId = e.id;
-            e.id = `${e.id}${supplierId}${Date.now()}${i}`;
+            e.id = [e.id, supplierId, `${Date.now()}${i}`];
             e.currency = quoteData.currency;
             e.date = quoteData.date;
             e.leadtime = quoteData.leadtime;
             e.valid = quoteData.valid;
             e.price = Number(e.price);
             console.log(e);
-            setDoc(
-                doc(
-                    db,
-                    "partQuotations",
-                    `${partId}${supplierId}${Date.now()}${i}`,
-                ),
+            api.setDocWithId(
+                "partQuotations",
+                `${partId}${supplierId}${Date.now()}${i}`,
                 e,
             );
             i++;
