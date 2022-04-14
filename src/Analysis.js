@@ -88,36 +88,28 @@ function Analysis() {
     }, [selectedProduct]);
 
     async function getQutationData(itemIndx) {
-        async function promiseData() {
-            const partList = productList[itemIndx].bomList.map(e => e.id);
-            let quotationData = [];
-            partList.forEach(async (e, index) => {
-                const partObject = {
-                    partId: e,
-                    quotation: [],
-                };
-                quotationData.push(partObject);
+        const partList = productList[itemIndx].bomList.map(e => e.id);
+        const partquotationData = [];
+        console.log(partList);
+        await Promise.all(
+            partList.map(async partId => {
                 const q = query(
                     collection(db, "partQuotations"),
-                    where("id", "array-contains", e),
+                    where("id", "array-contains", partId),
                 );
                 const data = await getDocs(q);
-                data.forEach(quote => {
-                    const quoteData = quote.data();
-                    quotationData[index].quotation.push(quoteData);
-                    console.log(quoteData);
+                data.forEach(itemData => {
+                    partquotationData.push(itemData.data());
                 });
-            });
-            setQuotationData(quotationData);
-        }
-        promiseData();
+            }),
+        );
 
-        // console.log(promiseData());
-        // // // setQuotationData(promiseData);
+        setQuotationData(partquotationData);
     }
 
     async function getProductListFromFirebase() {
         const list = await api.getCompleteCollection("products");
+        console.log(list);
         setProductList(list);
     }
 
@@ -193,45 +185,18 @@ function Analysis() {
                             Add
                         </Button>
                     </Flex>
-                    <Border>
+                    {/* <Border>
                         <HighchartsReact
                             highcharts={Highcharts}
                             options={options}
                         />
-                    </Border>
-                    {quotationData !== [] &&
-                        quotationData.map((e, index) => (
-                            <div key={index}>
+                    </Border> */}
+                    {quotationData &&
+                        quotationData.map(e => (
+                            <div>
                                 <div>{e.id}</div>
-                                <Table>
-                                    <thead>
-                                        <tr>
-                                            <Th>零件名稱</Th>
-                                            <Th>處理工藝</Th>
-                                            <Th>零件材質</Th>
-                                            <Th>表面處理</Th>
-                                            <Th>報價數量</Th>
-                                            <Th>零件單位</Th>
-                                            <Th>零件單價</Th>
-                                        </tr>
-                                    </thead>
-
-                                    {e.quotation &&
-                                        e.quotation.map((j, index) => (
-                                            <tbody key={index}>
-                                                <tr>
-                                                    <Td>{j.name}</Td>
-                                                    <Td>{j.type}</Td>
-                                                    <Td>{j.material}</Td>
-                                                    <Td>{j.finish}</Td>
-                                                    <Td>{j.qty}</Td>
-                                                    <Td>{j.unit}</Td>
-                                                    <Td>{j.price}</Td>
-                                                    <Td>{j.currency}</Td>
-                                                </tr>
-                                            </tbody>
-                                        ))}
-                                </Table>
+                                <div>{e.name}</div>
+                                <div>{e.qty}</div>
                             </div>
                         ))}
                 </Cost>
