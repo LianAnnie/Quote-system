@@ -322,20 +322,18 @@ function Analysis() {
                     </select>
                     {/* <Button onClick={()=> setChartType('pie')}>產品零件成本比較</Button>
                     <Button onClick={()=> setChartType('column')}>供應商比價</Button> */}
-                    <Flex>
-                        <Border>
-                            <HighchartsReact
-                                highcharts={Highcharts}
-                                options={options}
-                            />
-                        </Border>
-                        <Border>
-                            <HighchartsReact
-                                highcharts={Highcharts}
-                                options={options2}
-                            />
-                        </Border>
-                    </Flex>
+                    <Border>
+                        <HighchartsReact
+                            highcharts={Highcharts}
+                            options={options}
+                        />
+                    </Border>
+                    <Border>
+                        <HighchartsReact
+                            highcharts={Highcharts}
+                            options={options2}
+                        />
+                    </Border>
                     <Border>
                         <HighchartsReact
                             highcharts={Highcharts}

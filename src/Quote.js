@@ -23,13 +23,6 @@ const Submit = styled.div`
 const Title = styled.div`
     margin-bottom: 20px;
 `;
-const Scroll = styled.div`
-    &::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        width: 15px;
-        height: 15px;
-    }
-`;
 const Form = styled.div`
     border: solid 1px #000000;
     padding: 20px;
@@ -148,14 +141,16 @@ function Quote() {
         <Container>
             <SideBar />
             <Main>
-                <Button onClick={() => getFinalQuotaionListFromFirebase()}>
-                    總表
-                </Button>
-                <Button onClick={() => getProductListFromFirebase()}>
-                    表單頁
-                </Button>
+                <Flex>
+                    <Button onClick={() => getFinalQuotaionListFromFirebase()}>
+                        總表
+                    </Button>
+                    <Button onClick={() => getProductListFromFirebase()}>
+                        表單頁
+                    </Button>
+                </Flex>
                 {finalQuoteList.length === 0 && (
-                    <Main>
+                    <>
                         <Quotation>
                             <Title>報價單</Title>
 
@@ -279,44 +274,43 @@ function Quote() {
                         <Submit>
                             <Button onClick={() => submit()}>Submit</Button>
                         </Submit>
-                    </Main>
+                    </>
                 )}
                 {finalQuoteList.length > 0 && (
-                    <Main>
+                    <>
                         <Products>
                             <Title>報價列表</Title>
-                            <Scroll>
-                                <Table>
-                                    <thead>
-                                        <tr>
-                                            <Th>編號</Th>
-                                            <Th>名稱</Th>
-                                            <Th>圖片</Th>
-                                            <Th>數量</Th>
-                                            <Th>單價</Th>
-                                            <Th>交期</Th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {finalQuoteList &&
-                                            finalQuoteList.map((e, index) => (
-                                                <tr key={index}>
-                                                    <Td>{e.id}</Td>
-                                                    <Td>{e.name}</Td>
-                                                    <Td>{e.image}</Td>
-                                                    <Td>{e.qty}</Td>
-                                                    <Td>{e.price}</Td>
-                                                    <Td>{e.leadTime}</Td>
-                                                </tr>
-                                            ))}
-                                    </tbody>
-                                </Table>
-                            </Scroll>
+                            <Table>
+                                <thead>
+                                    <tr>
+                                        <Th>編號</Th>
+                                        <Th>名稱</Th>
+                                        <Th>圖片</Th>
+                                        <Th>數量</Th>
+                                        <Th>單價</Th>
+                                        <Th>交期</Th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {finalQuoteList &&
+                                        finalQuoteList.map((e, index) => (
+                                            <tr key={index}>
+                                                <Td>{e.id}</Td>
+                                                <Td>{e.name}</Td>
+                                                <Td>{e.image}</Td>
+                                                <Td>{e.qty}</Td>
+                                                <Td>{e.price}</Td>
+                                                <Td>{e.leadTime}</Td>
+                                            </tr>
+                                        ))}
+                                </tbody>
+                            </Table>
                         </Products>
-                    </Main>
+                    </>
                 )}
             </Main>
         </Container>
     );
 }
+
 export default Quote;

@@ -4,7 +4,7 @@ import SideBar from "./SideBar";
 import db from "./utils/firebase";
 import {
     collection,
-    addDoc,
+    deleteDoc,
     serverTimestamp,
     query,
     onSnapshot,
@@ -114,6 +114,11 @@ function BulletinBoard() {
         }
     }
 
+    function deleteCard(id) {
+        console.log(id);
+        deleteDoc(doc(db, "boards", id));
+    }
+
     return (
         <Container>
             <SideBar />
@@ -178,6 +183,13 @@ function BulletinBoard() {
                                         >
                                             修改
                                         </Button>
+                                        <Button
+                                            onClick={() => {
+                                                deleteCard(card.id);
+                                            }}
+                                        >
+                                            刪除
+                                        </Button>
                                     </Card>
                                 ),
                         )}
@@ -196,6 +208,13 @@ function BulletinBoard() {
                                             }
                                         >
                                             修改
+                                        </Button>
+                                        <Button
+                                            onClick={() => {
+                                                deleteCard(card.id);
+                                            }}
+                                        >
+                                            刪除
                                         </Button>
                                     </Card>
                                 ),
@@ -216,6 +235,13 @@ function BulletinBoard() {
                                         >
                                             修改
                                         </Button>
+                                        <Button
+                                            onClick={() => {
+                                                deleteCard(card.id);
+                                            }}
+                                        >
+                                            刪除
+                                        </Button>
                                     </Card>
                                 ),
                         )}
@@ -235,6 +261,13 @@ function BulletinBoard() {
                                         >
                                             修改
                                         </Button>
+                                        <Button
+                                            onClick={() => {
+                                                deleteCard(card.id);
+                                            }}
+                                        >
+                                            刪除
+                                        </Button>
                                     </Card>
                                 ),
                         )}
@@ -253,6 +286,13 @@ function BulletinBoard() {
                                             }
                                         >
                                             修改
+                                        </Button>
+                                        <Button
+                                            onClick={() => {
+                                                deleteCard(card.id);
+                                            }}
+                                        >
+                                            刪除
                                         </Button>
                                     </Card>
                                 ),
