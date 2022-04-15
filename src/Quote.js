@@ -2,6 +2,7 @@ import styled from "styled-components";
 import SideBar from "./SideBar";
 import { useState, useEffect } from "react";
 import api from "./utils/firebaseApi";
+import { Timestamp } from "firebase/firestore";
 
 const Container = styled.div`
     text-align: left;
@@ -21,6 +22,13 @@ const Submit = styled.div`
 `;
 const Title = styled.div`
     margin-bottom: 20px;
+`;
+const Scroll = styled.div`
+    &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 15px;
+        height: 15px;
+    }
 `;
 const Form = styled.div`
     border: solid 1px #000000;
@@ -58,6 +66,8 @@ function Quote() {
     const [productList, setProductList] = useState([]);
     const [selectedProduct, setSelectedProduct] = useState("");
     const [quoteData, setQuoteData] = useState([]);
+    const [finalQuoteList, setFinalQuoteList] = useState([]);
+    console.log(finalQuoteList.length === 0);
 
     useEffect(() => {
         getProductListFromFirebase();
@@ -66,6 +76,12 @@ function Quote() {
     async function getProductListFromFirebase() {
         const list = await api.getCompleteCollection("products");
         setProductList(list);
+        setFinalQuoteList([]);
+    }
+
+    async function getFinalQuotaionListFromFirebase() {
+        const list = await api.getCompleteCollection("productQuotations");
+        setFinalQuoteList(list);
     }
 
     function addPorduct() {
@@ -77,7 +93,7 @@ function Quote() {
             const newQuoteProduct = JSON.parse(JSON.stringify(quoteProduct));
             newQuoteProduct.qty = e;
             newQuoteProduct.price = 0;
-            newQuoteProduct.currency = "";
+            newQuoteProduct.leadTime = "";
             newData.push(newQuoteProduct);
         });
         console.log(newData);
@@ -96,120 +112,209 @@ function Quote() {
         setQuoteData(data);
     }
 
+    function submit() {
+        console.log(quoteDate);
+        console.log(validDate);
+        const sameDate = {
+            date: new Timestamp(new Date(quoteDate).getTime() / 1000, 0),
+            currency: currency,
+            valid: new Timestamp(new Date(validDate).getTime() / 1000, 0),
+        };
+        let i = 0;
+        console.table(quoteData);
+        quoteData.forEach(e => {
+            const productId = e.id.substring(3);
+            const finalData = {
+                id: [productId, 2, `${Date.now()}${i}`],
+                date: sameDate.date,
+                currency: sameDate.currency,
+                valid: sameDate.valid,
+                leadTime: e.leadTime,
+                image: e.image,
+                price: e.price,
+                name: e.name,
+                qty: e.qty,
+            };
+            api.setDocWithId(
+                "productQuotations",
+                `${productId}2${Date.now()}${i}`,
+                finalData,
+            );
+            i++;
+        });
+    }
+
     return (
         <Container>
             <SideBar />
             <Main>
-                <Quotation>
-                    <Title>報價單</Title>
+                <Button onClick={() => getFinalQuotaionListFromFirebase()}>
+                    總表
+                </Button>
+                <Button onClick={() => getProductListFromFirebase()}>
+                    表單頁
+                </Button>
+                {finalQuoteList.length === 0 && (
+                    <Main>
+                        <Quotation>
+                            <Title>報價單</Title>
 
-                    <Form>
-                        <Question>
-                            <div>報價日期</div>
-                            <input
-                                type="date"
-                                onChange={e => {
-                                    setQuoteDate(e.target.value);
-                                }}
-                                value={quoteDate}
-                            />
-                        </Question>
-                        <Question>
-                            <div>有效日期</div>
-                            <input
-                                type="date"
-                                onChange={e => {
-                                    setValidDate(e.target.value);
-                                }}
-                                value={validDate}
-                            />
-                        </Question>
-                        <Question>
-                            <div>報價幣別</div>
-                            <input
-                                type="input"
-                                onChange={e => {
-                                    setCurrency(e.target.value);
-                                }}
-                                value={currency}
-                            />
-                        </Question>
-                    </Form>
-                </Quotation>
-                <Products>
-                    <Title>產品報價明細</Title>
-                    <Flex>
-                        <select
-                            onChange={e => {
-                                setSelectedProduct(e.target.value);
-                            }}
-                            value={selectedProduct}
-                        >
-                            {selectedProduct === "" && (
-                                <option value={0}>請選擇</option>
-                            )}
-                            {productList &&
-                                productList.map((e, index) => (
-                                    <option key={index} value={index}>
-                                        {e.name}
-                                    </option>
-                                ))}
-                        </select>
-                        <Button onClick={() => addPorduct()}>Add</Button>
-                    </Flex>
-                    <Table>
-                        <thead>
-                            <tr>
-                                <Th>產品編號</Th>
-                                <Th>產品名稱</Th>
-                                <Th>產品圖片</Th>
-                                <Th>購買數量</Th>
-                                <Th>產品單價</Th>
-                                <Th>幣值</Th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {quoteData &&
-                                quoteData.map((e, index) => (
-                                    <tr key={index}>
-                                        <Td>{e.id}</Td>
-                                        <Td>{e.name}</Td>
-                                        <Td>{e.image}</Td>
-                                        <Td>{e.qty}</Td>
-                                        <Td>
-                                            <input
-                                                type="text"
-                                                name="price"
-                                                onChange={e =>
-                                                    handleQtyChange(index, e)
-                                                }
-                                                value={e.price}
-                                            />
-                                        </Td>
-                                        <Td>
-                                            <input
-                                                type="text"
-                                                name="currency"
-                                                onChange={e =>
-                                                    handleQtyChange(index, e)
-                                                }
-                                                value={e.currency}
-                                            />
-                                        </Td>
-                                        <Td>
-                                            <Button
-                                                onClick={() => {
-                                                    deleteProduct(index);
-                                                }}
-                                            >
-                                                Delete
-                                            </Button>
-                                        </Td>
+                            <Form>
+                                <Question>
+                                    <div>報價日期</div>
+                                    <input
+                                        type="date"
+                                        onChange={e => {
+                                            setQuoteDate(e.target.value);
+                                        }}
+                                        value={quoteDate}
+                                    />
+                                </Question>
+                                <Question>
+                                    <div>有效日期</div>
+                                    <input
+                                        type="date"
+                                        onChange={e => {
+                                            setValidDate(e.target.value);
+                                        }}
+                                        value={validDate}
+                                    />
+                                </Question>
+                                <Question>
+                                    <div>報價幣別</div>
+                                    <input
+                                        type="input"
+                                        onChange={e => {
+                                            setCurrency(e.target.value);
+                                        }}
+                                        value={currency}
+                                    />
+                                </Question>
+                            </Form>
+                        </Quotation>
+                        <Products>
+                            <Title>產品報價明細</Title>
+                            <Flex>
+                                <select
+                                    onChange={e => {
+                                        setSelectedProduct(e.target.value);
+                                    }}
+                                    value={selectedProduct}
+                                >
+                                    {selectedProduct === "" && (
+                                        <option value={0}>請選擇</option>
+                                    )}
+                                    {productList &&
+                                        productList.map((e, index) => (
+                                            <option key={index} value={index}>
+                                                {e.name}
+                                            </option>
+                                        ))}
+                                </select>
+                                <Button onClick={() => addPorduct()}>
+                                    Add
+                                </Button>
+                            </Flex>
+                            <Table>
+                                <thead>
+                                    <tr>
+                                        <Th>編號</Th>
+                                        <Th>名稱</Th>
+                                        <Th>圖片</Th>
+                                        <Th>數量</Th>
+                                        <Th>單價</Th>
+                                        <Th>交期</Th>
                                     </tr>
-                                ))}
-                        </tbody>
-                    </Table>
-                </Products>
+                                </thead>
+                                <tbody>
+                                    {quoteData &&
+                                        quoteData.map((e, index) => (
+                                            <tr key={index}>
+                                                <Td>{e.id}</Td>
+                                                <Td>{e.name}</Td>
+                                                <Td>{e.image}</Td>
+                                                <Td>{e.qty}</Td>
+                                                <Td>
+                                                    <input
+                                                        type="text"
+                                                        name="price"
+                                                        onChange={e =>
+                                                            handleQtyChange(
+                                                                index,
+                                                                e,
+                                                            )
+                                                        }
+                                                        value={e.price}
+                                                    />
+                                                </Td>
+                                                <Td>
+                                                    <input
+                                                        type="text"
+                                                        name="leadTime"
+                                                        onChange={e =>
+                                                            handleQtyChange(
+                                                                index,
+                                                                e,
+                                                            )
+                                                        }
+                                                        value={e.leadTime}
+                                                    />
+                                                </Td>
+                                                <Td>
+                                                    <Button
+                                                        onClick={() => {
+                                                            deleteProduct(
+                                                                index,
+                                                            );
+                                                        }}
+                                                    >
+                                                        Delete
+                                                    </Button>
+                                                </Td>
+                                            </tr>
+                                        ))}
+                                </tbody>
+                            </Table>
+                        </Products>
+                        <Submit>
+                            <Button onClick={() => submit()}>Submit</Button>
+                        </Submit>
+                    </Main>
+                )}
+                {finalQuoteList.length > 0 && (
+                    <Main>
+                        <Products>
+                            <Title>報價列表</Title>
+                            <Scroll>
+                                <Table>
+                                    <thead>
+                                        <tr>
+                                            <Th>編號</Th>
+                                            <Th>名稱</Th>
+                                            <Th>圖片</Th>
+                                            <Th>數量</Th>
+                                            <Th>單價</Th>
+                                            <Th>交期</Th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {finalQuoteList &&
+                                            finalQuoteList.map((e, index) => (
+                                                <tr key={index}>
+                                                    <Td>{e.id}</Td>
+                                                    <Td>{e.name}</Td>
+                                                    <Td>{e.image}</Td>
+                                                    <Td>{e.qty}</Td>
+                                                    <Td>{e.price}</Td>
+                                                    <Td>{e.leadTime}</Td>
+                                                </tr>
+                                            ))}
+                                    </tbody>
+                                </Table>
+                            </Scroll>
+                        </Products>
+                    </Main>
+                )}
             </Main>
         </Container>
     );

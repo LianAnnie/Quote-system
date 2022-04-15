@@ -174,19 +174,17 @@ function Parts() {
         console.log(newParts);
     }
     function submit() {
-        console.log(parts);
         const supplierId = supplierList.filter(
             item => item.company === company,
         )[0].id;
 
         const quoteData = {
-            id: `0000701001${Math.floor(Date.now() / 100000)}`, //(5零件流水編號-2零件版本-3供應商編號-3報價流水編號)
-            date: new Timestamp(new Date(quoteDate).getTime() / 1000, 0),
             currency,
             leadtime: 30,
             valid: new Timestamp(new Date(validDate).getTime() / 1000, 0),
         };
         const newParts = JSON.parse(JSON.stringify(parts));
+        // waiting check : 有無必要這樣做？
         let i = 0;
         newParts.forEach(e => {
             const partId = e.id;
@@ -197,7 +195,6 @@ function Parts() {
             e.leadtime = quoteData.leadtime;
             e.valid = quoteData.valid;
             e.price = Number(e.price);
-            console.log(e);
             api.setDocWithId(
                 "partQuotations",
                 `${partId}${supplierId}${Date.now()}${i}`,
