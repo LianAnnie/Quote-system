@@ -75,22 +75,28 @@ const Flex = styled.div`
 
 function Analysis() {
     const [productList, setProductList] = useState([]);
-    const [selectedProduct, setSelectedProduct] = useState(0);
+    const [selectedProduct, setSelectedProduct] = useState("");
     const [quotationData, setQuotationData] = useState([]);
-    console.table(quotationData);
+    const [selectedQuote, setSelectedQuote] = useState([]);
+    const [pieData, setPieData] = useState([["產品名稱", 100]]);
+    const [chartType, setChartType] = useState("pie");
+
+    console.log(selectedQuote);
 
     useEffect(() => {
         getProductListFromFirebase();
     }, []);
 
     useEffect(() => {
-        getQutationData(selectedProduct);
+        if (productList.length > 0) {
+            getQutationData(selectedProduct);
+            getSelectProductName(selectedProduct);
+        }
     }, [selectedProduct]);
 
     async function getQutationData(itemIndx) {
         const partList = productList[itemIndx].bomList.map(e => e.id);
-        const partquotationData = [];
-        console.log(partList);
+        let quotationData = [];
         await Promise.all(
             partList.map(async partId => {
                 const q = query(
@@ -99,23 +105,57 @@ function Analysis() {
                 );
                 const data = await getDocs(q);
                 data.forEach(itemData => {
-                    partquotationData.push(itemData.data());
+                    quotationData.push(itemData.data());
                 });
             }),
         );
-
-        setQuotationData(partquotationData);
+        //waiting review
+        quotationData.map(e => (e.id = e.id.join("")));
+        setQuotationData(quotationData);
+        // const array = [...Array(quotationData.length)].map(e => e=false);
+        // const array = quotationData.map(e => ({[e.id.join('')]: false}))
+        // const array = quotationData.map(e => ({'id':e.id.join(''), 'status': false}))
+        const array = quotationData.map(e => [e.id, false]);
+        const object = Object.fromEntries(array);
+        setSelectedQuote(object);
     }
-
+    async function getSelectProductName(itemIndex) {
+        const productName = productList[itemIndex].name;
+        console.log(productName);
+        const setArry = [[productName, 100]];
+        setPieData(setArry);
+    }
     async function getProductListFromFirebase() {
         const list = await api.getCompleteCollection("products");
         console.log(list);
         setProductList(list);
     }
-
+    function changeSelectedQuoteState(e) {
+        const id = e.target.value;
+        const newObject = JSON.parse(JSON.stringify(selectedQuote));
+        // console.log(newObject[id]);
+        newObject[id] = !selectedQuote[id];
+        // console.log(newObject[id]);
+        setSelectedQuote(newObject);
+    }
+    function importSelectedQuote() {
+        const importData = quotationData.filter(e => selectedQuote[e.id] && e);
+        analysisData(importData);
+    }
+    function analysisData(data) {
+        const totalPrice = data.reduce(
+            (previousValue, currentValue) => previousValue + currentValue.price,
+            0,
+        );
+        const getDataArray = data.map(e => [
+            e.name,
+            (e.price / totalPrice) * 100,
+        ]);
+        setPieData(getDataArray);
+    }
     const options = {
         chart: {
-            type: "pie",
+            type: chartType, //"pie","column"
             marginBottom: 100,
         },
         title: {
@@ -124,37 +164,136 @@ function Analysis() {
         series: [
             {
                 allowPointSelect: true,
-                size: "80%",
-                innerSize: "60%",
-                data: [
-                    ["燈頭", 45.0],
-                    ["底座", 26.8],
-                    {
-                        name: "LED",
-                        y: 12.8,
-                        sliced: true, // 突出显示某个扇区，表示强调
-                    },
-                    ["配件", 8.5],
-                    ["LED", 6.2],
-                    ["電器配件", 0.7],
-                ],
-            },
-            {
-                allowPointSelect: true,
                 size: "60%",
                 innerSize: "30%",
-                data: [
-                    ["燈頭", 50],
-                    ["底座", 26.8],
-                    {
-                        name: "LED",
-                        y: 12.8,
-                        sliced: true, // 突出显示某个扇区，表示强调
+                data: pieData,
+            },
+        ],
+    };
+
+    const options2 = {
+        chart: {
+            type: "column",
+        },
+        title: {
+            text: "供應商比價",
+        },
+        xAxis: {
+            categories: [50, 200, 500, 1000],
+            crosshair: true,
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: "NT",
+            },
+        },
+        tooltip: {
+            headerFormat:
+                '<span style="font-size:10px">{point.key}</span><table>', //標示廠商
+            pointFormat:
+                '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.1f} </b></td></tr>',
+            footerFormat: "</table>",
+            shared: true,
+            useHTML: true,
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0,
+            },
+        },
+        credits: {
+            enabled: false,
+        },
+        series: [
+            {
+                name: "Shine",
+                data: [150, 80, 70, 50],
+            },
+            {
+                name: "Slite",
+                data: [0, 0, 130, 100],
+            },
+        ],
+    };
+
+    const options3 = {
+        chart: {
+            zoomType: "xy",
+        },
+        title: {
+            text: "產品利潤比",
+        },
+        xAxis: {
+            categories: [2015, 2016, 2017, 2018, 2019, 2020, 2021],
+            crosshair: true,
+        },
+        yAxis: [
+            {
+                // 第一条Y轴
+                labels: {
+                    format: "{value} NT",
+                    style: {
+                        color: Highcharts.getOptions().colors[1],
                     },
-                    ["配件", 8.5],
-                    ["LED", 6.2],
-                    ["電器配件", 0.7],
-                ],
+                },
+                title: {
+                    text: "產品單價",
+                    style: {
+                        color: Highcharts.getOptions().colors[1],
+                    },
+                },
+            },
+            {
+                // 第二条Y轴
+                title: {
+                    text: "利潤率",
+                    style: {
+                        color: Highcharts.getOptions().colors[0],
+                    },
+                },
+                labels: {
+                    format: "{value}%",
+                    style: {
+                        color: Highcharts.getOptions().colors[0],
+                    },
+                },
+                opposite: true,
+            },
+        ],
+        tooltip: {
+            shared: true,
+        },
+        legend: {
+            layout: "vertical",
+            align: "left",
+            x: 120,
+            verticalAlign: "top",
+            y: 100,
+            floating: true,
+            backgroundColor:
+                (Highcharts.theme && Highcharts.theme.legendBackgroundColor) ||
+                "#FFFFFF",
+        },
+        series: [
+            {
+                name: "利潤率",
+                type: "column",
+                yAxis: 1,
+                data: [20, 25, 13.2, 15, 20, 22, 24],
+                tooltip: {
+                    valueSuffix: "%",
+                },
+            },
+            {
+                name: "產品單價",
+                type: "spline",
+                data: [50, 70, 70, 75, 80, 85, 100],
+                tooltip: {
+                    valueSuffix: "NT",
+                },
             },
         ],
     };
@@ -165,40 +304,90 @@ function Analysis() {
             <Main>
                 <Cost>
                     <Title>成本分析</Title>
+                    <select
+                        onChange={e => {
+                            setSelectedProduct(e.target.value);
+                        }}
+                        value={selectedProduct}
+                    >
+                        {selectedProduct === "" && (
+                            <option value={0}>請選擇</option>
+                        )}
+                        {productList &&
+                            productList.map((e, index) => (
+                                <option key={index} value={index}>
+                                    {e.name}
+                                </option>
+                            ))}
+                    </select>
+                    {/* <Button onClick={()=> setChartType('pie')}>產品零件成本比較</Button>
+                    <Button onClick={()=> setChartType('column')}>供應商比價</Button> */}
                     <Flex>
-                        <select
-                            onChange={e => {
-                                setSelectedProduct(e.target.value);
-                            }}
-                            value={selectedProduct}
-                        >
-                            {productList &&
-                                productList.map((e, index) => (
-                                    <option key={index} value={index}>
-                                        {e.name}
-                                    </option>
-                                ))}
-                        </select>
-                        <Button
-                            onClick={() => getQutationData(selectedProduct)}
-                        >
-                            Add
-                        </Button>
+                        <Border>
+                            <HighchartsReact
+                                highcharts={Highcharts}
+                                options={options}
+                            />
+                        </Border>
+                        <Border>
+                            <HighchartsReact
+                                highcharts={Highcharts}
+                                options={options2}
+                            />
+                        </Border>
                     </Flex>
-                    {/* <Border>
+                    <Border>
                         <HighchartsReact
                             highcharts={Highcharts}
-                            options={options}
+                            options={options3}
                         />
-                    </Border> */}
-                    {quotationData &&
-                        quotationData.map(e => (
-                            <div>
-                                <div>{e.id}</div>
-                                <div>{e.name}</div>
-                                <div>{e.qty}</div>
-                            </div>
-                        ))}
+                    </Border>
+                    <Table>
+                        <thead>
+                            <tr>
+                                <Th>報價單號</Th>
+                                <Th>零件名稱</Th>
+                                <Th>處理工藝</Th>
+                                <Th>零件材質</Th>
+                                <Th>表面處理</Th>
+                                <Th>報價數量</Th>
+                                <Th>零件單位</Th>
+                                <Th>零件單價</Th>
+                                <Th>貨幣</Th>
+                                <Th>供應商</Th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {quotationData &&
+                                quotationData.map(e => (
+                                    <tr key={e.id}>
+                                        <Td>{e.id}</Td>
+                                        <Td>{e.name}</Td>
+                                        <Td>{e.type}</Td>
+                                        <Td>{e.material}</Td>
+                                        <Td>{e.finish}</Td>
+                                        <Td>{e.qty}</Td>
+                                        <Td>{e.unit}</Td>
+                                        <Td>{e.price}</Td>
+                                        <Td>{e.currency}</Td>
+                                        <Td>{e.company}</Td>
+                                        <Td>
+                                            <input
+                                                type="checkbox"
+                                                value={e.id}
+                                                onChange={e =>
+                                                    changeSelectedQuoteState(e)
+                                                }
+                                                checked={selectedQuote.value}
+                                            />
+                                        </Td>
+                                    </tr>
+                                ))}
+                        </tbody>
+                    </Table>
+                    <Button onClick={() => importSelectedQuote()}>
+                        Import
+                    </Button>
                 </Cost>
             </Main>
         </Container>

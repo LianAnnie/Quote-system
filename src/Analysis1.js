@@ -90,25 +90,19 @@ function Analysis() {
     async function getQutationData(itemIndx) {
         const partList = await productList[itemIndx].bomList.map(e => e.id);
         let quotationData = [];
-        partList.forEach(async (e, index) => {
-            const partObject = {
-                partId: e,
-                quotation: [],
-            };
-            quotationData.push(partObject);
-            const q = query(
-                collection(db, "partQuotations"),
-                where("id", "array-contains", e),
-            );
-            const data = await getDocs(q);
-            data.forEach(quote => {
-                const quoteData = quote.data();
-                quotationData[index].quotation.push(quoteData);
-                console.log(quoteData);
-            });
-        });
+        await Promise.all(
+            partList.map(async partId => {
+                const q = query(
+                    collection(db, "partQuotations"),
+                    where("id", "array-contains", partId),
+                );
+                const data = await getDocs(q);
+                data.forEach(itemData => {
+                    quotationData.push(itemData.data());
+                });
+            }),
+        );
         setQuotationData(quotationData);
-        console.log(123);
     }
 
     async function getProductListFromFirebase() {

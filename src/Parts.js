@@ -61,7 +61,7 @@ const Flex = styled.div`
     display: flex;
 `;
 
-function Supplier() {
+function Parts() {
     const [quoteDate, setQuoteDate] = useState("");
     const [validDate, setValidDate] = useState("");
     const [currency, setCurrency] = useState("");
@@ -191,6 +191,7 @@ function Supplier() {
         newParts.forEach(e => {
             const partId = e.id;
             e.id = [e.id, supplierId, `${Date.now()}${i}`];
+            e.company = company;
             e.currency = quoteData.currency;
             e.date = quoteData.date;
             e.leadtime = quoteData.leadtime;
@@ -407,4 +408,4 @@ function Supplier() {
     );
 }
 
-export default Supplier;
+export default Parts;

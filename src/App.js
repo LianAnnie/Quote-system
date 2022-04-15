@@ -3,8 +3,9 @@ import "./App.css";
 import LogIn from "./LogIn";
 import BulletinBoard from "./BulletinBoard";
 import Bom from "./Bom";
-import Supplier from "./Supplier";
+import Parts from "./Parts";
 import Analysis from "./Analysis";
+import Quote from "./Quote";
 import Admin from "./Admin";
 import {
     BrowserRouter as Router,
@@ -25,8 +26,9 @@ function App() {
                     <Route path="/login" element={<LogIn />} />
                     <Route path="/" element={<BulletinBoard />} />
                     <Route path="/bom" element={<Bom />} />
-                    <Route path="/supplier" element={<Supplier />} />
+                    <Route path="/parts" element={<Parts />} />
                     <Route path="/analysis" element={<Analysis />} />
+                    <Route path="/quote" element={<Quote />} />
                     <Route path="/admin" element={<Admin />} />
                     <Route path="/*" element={<Navigate to="/" />} />
                 </Routes>
