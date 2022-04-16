@@ -170,6 +170,7 @@ function Parts() {
         // waiting check : 有無必要這樣做？
         let i = 0;
         console.log(quoteData);
+
         newParts.forEach(e => {
             const id = [e.id, supplier.id, `${Date.now()}${i}`];
             e.id = id;
@@ -188,6 +189,9 @@ function Parts() {
             api.setDocWithId("partQuotations", id.join(""), e);
             i++;
         });
+        if (selectedSupplier === 0) {
+            api.setDocWithId("suppliers", supplier.id, supplier);
+        }
         setParts([]);
     }
 

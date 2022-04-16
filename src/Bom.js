@@ -189,6 +189,9 @@ function Bom() {
         };
         console.log(data);
         api.setDocWithId("products", id.join(""), data);
+        if (selectedCustomer === 0) {
+            api.setDocWithId("customers", customer.id, customer);
+        }
     }
 
     return (

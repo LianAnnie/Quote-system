@@ -112,7 +112,6 @@ function Quote() {
         };
         let i = 0;
         quoteData.forEach(e => {
-            console.log(e.id);
             const productId = e.id.join("").substring(3);
             const id = [productId, 2, i, quoteDate];
             const finalData = {
