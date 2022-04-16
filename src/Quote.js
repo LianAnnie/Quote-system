@@ -111,11 +111,12 @@ function Quote() {
             valid: new Timestamp(new Date(validDate).getTime() / 1000, 0),
         };
         let i = 0;
-        console.table(quoteData);
         quoteData.forEach(e => {
-            const productId = e.id.substring(3);
+            console.log(e.id);
+            const productId = e.id.join("").substring(3);
+            const id = [productId, 2, i, quoteDate];
             const finalData = {
-                id: [productId, 2, `${Date.now()}${i}`],
+                id,
                 date: sameDate.date,
                 currency: sameDate.currency,
                 valid: sameDate.valid,
@@ -125,11 +126,7 @@ function Quote() {
                 name: e.name,
                 qty: e.qty,
             };
-            api.setDocWithId(
-                "productQuotations",
-                `${productId}2${Date.now()}${i}`,
-                finalData,
-            );
+            api.setDocWithId("productQuotations", id.join(""), finalData);
             i++;
         });
     }

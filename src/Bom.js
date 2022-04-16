@@ -81,17 +81,9 @@ function Bom() {
     const [productName, setProductName] = useState("");
     const [productQty, setProductQty] = useState("");
     const [productQtyList, setProductQtyList] = useState([]);
-    const [partId, setPartId] = useState("");
-    // const [partName, setPartName] = useState("");
-    // const [partType, setPartType] = useState("");
-    // const [partMaterial, setPartMaterial] = useState("");
-    // const [partFinish, setPartFinish] = useState("");
     const [partList, setPartList] = useState([]);
     const [selectedPart, setSelectedPart] = useState("");
     const [parts, setParts] = useState([]);
-
-    console.log(newPart);
-    console.log(newPart.id !== "");
 
     useEffect(() => {
         getCustomerListFromFirebase();
@@ -110,7 +102,6 @@ function Bom() {
         setCustomerList(list);
         setCustomerId(form.transformId(list.length + 1, 3));
     }
-
     function addExistingCustomer() {
         const inquiryCustomer = customerList[selectedCustomer];
         console.log(inquiryCustomer);
@@ -125,25 +116,36 @@ function Bom() {
     }
     async function getPartListFromFirebase() {
         const list = await api.getCompleteCollection("parts");
-        setPartId(`${form.transformId(list.length + 1, 5)}01`);
         setPartList(list);
     }
-
     function creatNewPart() {
         const data = JSON.parse(JSON.stringify(newPart));
         //waiting check : 加了這句,原本object才沒有被改變
-        data.id = partId;
+        const maxId = form.getMaxId(partList, 0, 5);
+        const maxIdToString = `${form.transformId(maxId + 1, 5)}01`;
+        data.id = maxIdToString;
         setNewPart(data);
     }
+    function creatNewPartFromExisting() {
+        const existingPart = partList[selectedPart];
+        setNewPart(existingPart);
+    }
     async function addPartToFirebase() {
-        console.log(newPart);
-        api.setDocWithId("parts", partId, newPart);
-        let data = newPart;
-        data.qty = 1;
-        data.unit = "pcs";
-        setParts(prev => [...prev, data]);
-        getPartListFromFirebase();
-        setNewPart(partDataRule);
+        const hadExisitingInParts = partList.find(e => e.id === newPart.id);
+        if (hadExisitingInParts === undefined) {
+            console.log(newPart.id, newPart);
+            api.setDocWithId("parts", newPart.id, newPart);
+            setParts(prev => [...prev, newPart]);
+            getPartListFromFirebase();
+            setNewPart(partDataRule);
+            return;
+        }
+        const partIdWithoutVersionNumber = newPart.id.substring(0, 5);
+        const samePartList = partList.filter(
+            e => e.id.includes(partIdWithoutVersionNumber) && e,
+        );
+        const currentMaxNumber = form.getMaxId(samePartList, 6, 7);
+        alert(`現有零件編號重複了,改款版本號請編寫${currentMaxNumber + 1}`);
     }
     function addExistingPart() {
         const newPart = partList[selectedPart];
@@ -171,25 +173,20 @@ function Bom() {
         setNewCustomer(data);
         setCustomer(data);
     }
-
     function submit() {
+        const id = [customer.id, Math.floor(Date.now()), "01"];
         const data = {
-            id: [customer.id, Math.floor(Date.now() / 100000), "01"],
-            //waiting fix: 要加入現有產品版本考慮
+            id,
+            //waiting add: 要加入現有產品版本考慮
             name: productName,
             inquiryQty: productQtyList,
             image: "",
             bomList: parts,
-            customerId: customer.id,
             company: customer.company,
             country: customer.country,
         };
         console.log(data);
-        api.setDocWithId(
-            "products",
-            `${customer.id}${Math.floor(Date.now() / 100000)}01`,
-            data,
-        );
+        api.setDocWithId("products", id.join(""), data);
     }
 
     return (
@@ -310,19 +307,48 @@ function Bom() {
                     </Form>
                 </Customers>
                 <Part>
-                    <Title>新增零件</Title>
-                    <Button
-                        onClick={() => {
-                            creatNewPart();
-                        }}
-                    >
-                        New
-                    </Button>
+                    <Title>零件表</Title>
+                    <Flex>
+                        <select
+                            onChange={e => setSelectedPart(e.target.value)}
+                            value={selectedPart}
+                        >
+                            {partList &&
+                                partList.map((e, index) => (
+                                    <option key={e.id} value={index}>
+                                        {e.id}-{e.name},{e.type},{e.material},
+                                        {e.finish}
+                                    </option>
+                                ))}
+                        </select>
+                        <Button
+                            onClick={() => {
+                                creatNewPartFromExisting();
+                            }}
+                        >
+                            改款
+                        </Button>
+                        <Button
+                            onClick={() => {
+                                creatNewPart();
+                            }}
+                        >
+                            新增
+                        </Button>
+                        <Button onClick={() => addExistingPart()}>Add</Button>
+                    </Flex>
                     {newPart.id !== "" && (
                         <Form>
                             <Question>
                                 <div>零件編號</div>
-                                <div>{partId}</div>
+                                <input
+                                    type="text"
+                                    name="id"
+                                    onChange={(e, index) => {
+                                        handlePartChange(index, e);
+                                    }}
+                                    value={newPart.id}
+                                />
                             </Question>
                             <Question>
                                 <div>零件名稱</div>
@@ -379,22 +405,6 @@ function Bom() {
                     )}
                 </Part>
                 <Parts>
-                    <Title>零件表</Title>
-                    <Flex>
-                        <select
-                            onChange={e => setSelectedPart(e.target.value)}
-                            value={selectedPart}
-                        >
-                            {partList &&
-                                partList.map((e, index) => (
-                                    <option key={e.id} value={index}>
-                                        {e.name},{e.type},{e.material},
-                                        {e.finish}
-                                    </option>
-                                ))}
-                        </select>
-                        <Button onClick={() => addExistingPart()}>Add</Button>
-                    </Flex>
                     <Table>
                         <thead>
                             <tr>

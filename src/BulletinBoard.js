@@ -5,14 +5,14 @@ import db from "./utils/firebase";
 import {
     collection,
     deleteDoc,
-    serverTimestamp,
     query,
     onSnapshot,
     doc,
     updateDoc,
-    setDoc,
 } from "firebase/firestore";
 import { useEffect } from "react";
+import form from "./component/formChange";
+import api from "./utils/firebaseApi";
 
 const Container = styled.div`
     text-align: left;
@@ -47,76 +47,56 @@ const Card = styled.div`
 `;
 const Button = styled.div`
     border: solid 1px #000000;
-    width: 50px;
+    width: 100px;
     margin: 5px;
     text-align: center;
     cursor: pointer;
 `;
 
+const Flex = styled.div`
+    display: flex;
+`;
+
 function BulletinBoard() {
-    const [type, setType] = useState("");
-    const [status, setStatus] = useState(0);
-    const [comment, setComment] = useState("");
+    const cardDataRule = {
+        id: 0,
+        date: "",
+        type: "Order",
+        status: 0,
+        comment: "comment",
+    };
     const [pmWorkList, setPmWorkList] = useState([]);
-    console.log(pmWorkList);
+    const [card, setCard] = useState(cardDataRule);
+    console.log(card);
 
     useEffect(() => {
         const q = query(collection(db, "boards"));
         const unsubscribe = onSnapshot(q, querySnapshot => {
             const pmWorks = [];
-            querySnapshot.forEach(doc => {
-                const historyCardData = {
-                    id: doc.id,
-                    date: doc.data().date,
-                    type: doc.data().type,
-                    status: doc.data().status,
-                    comment: doc.data().comment,
-                };
-                pmWorks.push(historyCardData);
-            });
+            querySnapshot.forEach(doc => pmWorks.push(doc.data()));
             setPmWorkList(pmWorks);
         });
         return () => unsubscribe();
     }, []);
 
     async function addCard() {
-        // const boards = collection(db, "boards");
-        // const cardData = {
-        //   date: serverTimestamp(),
-        //   type,
-        //   status,
-        //   comment,
-        // };
-        // console.log(cardData);
-        // const ref = await addDoc(boards, cardData);
-        // console.log("Document written with ID: ", ref.id);
-        const boardsRef = doc(collection(db, "boards"));
-        const cardData = {
-            id: boardsRef.id,
-            date: serverTimestamp(),
-            type,
-            status,
-            comment,
-        };
-        setDoc(boardsRef, cardData);
-        setComment("");
-        setType("");
-        setStatus(0);
+        api.setDocWithId("boards", undefined, card);
+        setCard(cardDataRule);
     }
-
-    function updateCardStatus(id) {
-        let changeStatus = prompt("請輸入變更數字0-4", 0);
-        if (changeStatus !== null) {
-            const docRef = doc(db, "boards", id);
-            updateDoc(docRef, {
-                status: Number(changeStatus),
-            });
-        }
-    }
-
     function deleteCard(id) {
         console.log(id);
-        deleteDoc(doc(db, "boards", id));
+        api.deleteDoc("boards", id);
+    }
+    function updateCard() {
+        api.updateDoc("boards", card.id, card);
+        setCard(cardDataRule);
+    }
+    function handleCardChange(e) {
+        const data = form.handleChange("_", e, card);
+        setCard(data);
+    }
+    function reviedCard(e) {
+        setCard(e);
     }
 
     return (
@@ -124,48 +104,73 @@ function BulletinBoard() {
             <SideBar />
             <Main>
                 <Title>待辦通知</Title>
-                <Form
-                    onKeyPress={e => {
-                        e.key === "Enter" && addCard();
-                    }}
-                >
+                <Form>
                     <Question>
                         <div>工作類型</div>
-                        <input
-                            type="text"
+                        <select
+                            name="type"
                             onChange={e => {
-                                setType(e.target.value);
+                                handleCardChange(e);
                             }}
-                            value={type}
-                        />
+                            value={card.type}
+                        >
+                            <option value="Inquiry">Inquiry</option>
+                            <option value="Order">Order</option>
+                        </select>
                     </Question>
                     <Question>
                         <div>分配部門</div>
-                        <input
-                            type="text"
+                        <select
+                            name="status"
                             onChange={e => {
-                                setStatus(Number(e.target.value));
+                                handleCardChange(e);
                             }}
-                            value={status}
-                        />
+                            value={card.status}
+                        >
+                            <option value={0}>暫停</option>
+                            <option value={1}>工程</option>
+                            <option value={2}>採購</option>
+                            <option value={3}>生產</option>
+                            <option value={4}>船務</option>
+                        </select>
                     </Question>
                     <Question>
                         <div>提醒事項</div>
-                        <input
+                        <textarea
                             type="text"
-                            onChange={e => {
-                                setComment(e.target.value);
-                            }}
-                            value={comment}
+                            name="comment"
+                            onChange={e => handleCardChange(e)}
+                            rows="3"
+                            cols="20"
+                            value={card.comment}
                         />
                     </Question>
-                    <Button
-                        onClick={() => {
-                            addCard();
-                        }}
-                    >
-                        Add
-                    </Button>
+                    {card.id === 0 ? (
+                        <Button
+                            onClick={() => {
+                                addCard();
+                            }}
+                        >
+                            新增
+                        </Button>
+                    ) : (
+                        <Flex>
+                            <Button
+                                onClick={() => {
+                                    setCard(cardDataRule);
+                                }}
+                            >
+                                取消修改
+                            </Button>
+                            <Button
+                                onClick={() => {
+                                    updateCard();
+                                }}
+                            >
+                                上傳修改
+                            </Button>
+                        </Flex>
+                    )}
                 </Form>
                 <Board>
                     <Department>
@@ -177,9 +182,7 @@ function BulletinBoard() {
                                         <div>工作：{card.type}</div>
                                         <div>提醒事項：{card.comment}</div>
                                         <Button
-                                            onClick={() =>
-                                                updateCardStatus(card.id)
-                                            }
+                                            onClick={() => reviedCard(card)}
                                         >
                                             修改
                                         </Button>
@@ -203,9 +206,7 @@ function BulletinBoard() {
                                         <div>工作：{card.type}</div>
                                         <div>提醒事項：{card.comment}</div>
                                         <Button
-                                            onClick={() =>
-                                                updateCardStatus(card.id)
-                                            }
+                                            onClick={() => reviedCard(card)}
                                         >
                                             修改
                                         </Button>
@@ -229,9 +230,7 @@ function BulletinBoard() {
                                         <div>工作：{card.type}</div>
                                         <div>提醒事項：{card.comment}</div>
                                         <Button
-                                            onClick={() =>
-                                                updateCardStatus(card.id)
-                                            }
+                                            onClick={() => reviedCard(card)}
                                         >
                                             修改
                                         </Button>
@@ -255,9 +254,7 @@ function BulletinBoard() {
                                         <div>工作：{card.type}</div>
                                         <div>提醒事項：{card.comment}</div>
                                         <Button
-                                            onClick={() =>
-                                                updateCardStatus(card.id)
-                                            }
+                                            onClick={() => reviedCard(card)}
                                         >
                                             修改
                                         </Button>
@@ -281,9 +278,7 @@ function BulletinBoard() {
                                         <div>工作：{card.type}</div>
                                         <div>提醒事項：{card.comment}</div>
                                         <Button
-                                            onClick={() =>
-                                                updateCardStatus(card.id)
-                                            }
+                                            onClick={() => reviedCard(card)}
                                         >
                                             修改
                                         </Button>
