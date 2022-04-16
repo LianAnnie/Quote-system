@@ -3,6 +3,7 @@ import SideBar from "./SideBar";
 import { useState, useEffect } from "react";
 import api from "./utils/firebaseApi";
 import { Timestamp } from "firebase/firestore";
+import form from "./component/formChange";
 
 const Container = styled.div`
     text-align: left;
@@ -94,8 +95,7 @@ function Quote() {
     }
 
     function handleQtyChange(index, e) {
-        let data = [...quoteData];
-        data[index][e.target.name] = e.target.value;
+        const data = form.handleQtyChange(index, e, quoteData);
         setQuoteData(data);
     }
 
@@ -106,8 +106,6 @@ function Quote() {
     }
 
     function submit() {
-        console.log(quoteDate);
-        console.log(validDate);
         const sameDate = {
             date: new Timestamp(new Date(quoteDate).getTime() / 1000, 0),
             currency: currency,

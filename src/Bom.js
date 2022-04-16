@@ -75,7 +75,7 @@ function Bom() {
     const [partList, setPartList] = useState([]);
     const [selectedPart, setSelectedPart] = useState("");
     const [parts, setParts] = useState([]);
-    console.log(customerId);
+    console.log(parts);
 
     useEffect(() => {
         getCustomerListFromFirebase();
@@ -139,27 +139,14 @@ function Bom() {
         setPartId(prev => transformId(Number(prev) + 100, 7));
     }
     function addExistingPart() {
-        const newPart = partList.filter(e => e.id === selectedPart);
-        newPart[0].qty = 1;
-        newPart[0].unit = "pcs";
-        //waiting fix : 加入後應該要能修正數量跟單位
-        console.log(newPart);
-        if (parts.length === 0) {
-            setParts(newPart);
-            return;
-        }
+        const newPart = partList[selectedPart];
         const hadAddInParts = parts.find(e => e.id === selectedPart);
         if (hadAddInParts === undefined) {
-            const newArray = [];
-            newArray.push(parts);
-            newArray.push(newPart);
-            console.log(newArray.flat(1));
-            setParts(newArray.flat(1));
+            setParts(prev => [...prev, newPart]);
             return;
         }
         alert(`此零件已在列表`);
     }
-
     function deletePart(id) {
         const newPart = parts.filter(e => e.id !== id);
         setParts(newPart);
@@ -373,8 +360,8 @@ function Bom() {
                             value={selectedPart}
                         >
                             {partList &&
-                                partList.map(e => (
-                                    <option key={e.id} value={e.id}>
+                                partList.map((e, index) => (
+                                    <option key={e.id} value={index}>
                                         {e.name},{e.type},{e.material},
                                         {e.finish}
                                     </option>
