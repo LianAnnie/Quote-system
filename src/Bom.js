@@ -59,36 +59,39 @@ const Flex = styled.div`
 `;
 
 function Bom() {
-    const [selectedCustomer, setSelectedCustomer] = useState(0);
-    // const [company, setCompany] = useState("");
-    // const [contacts, setContacts] = useState("");
-    // const [country, setCountry] = useState("");
-    const [customerId, setCustomerId] = useState("");
-    const [customerList, setCustomerList] = useState("");
-    const [customer, setCustomer] = useState({
+    const customerDataRule = {
         id: "",
         company: "",
         contacts: "",
         country: "",
-    });
+    };
+    const partDataRule = {
+        id: "",
+        name: "",
+        type: "",
+        material: "",
+        finish: "",
+    };
+    const [selectedCustomer, setSelectedCustomer] = useState(0);
+    const [customerId, setCustomerId] = useState("");
+    const [customerList, setCustomerList] = useState("");
+    const [customer, setCustomer] = useState(customerDataRule);
+    const [newCustomer, setNewCustomer] = useState(customerDataRule);
+    const [newPart, setNewPart] = useState(partDataRule);
     const [productName, setProductName] = useState("");
     const [productQty, setProductQty] = useState("");
     const [productQtyList, setProductQtyList] = useState([]);
     const [partId, setPartId] = useState("");
-    const [partName, setPartName] = useState("");
-    const [partType, setPartType] = useState("");
-    const [partMaterial, setPartMaterial] = useState("");
-    const [partFinish, setPartFinish] = useState("");
+    // const [partName, setPartName] = useState("");
+    // const [partType, setPartType] = useState("");
+    // const [partMaterial, setPartMaterial] = useState("");
+    // const [partFinish, setPartFinish] = useState("");
     const [partList, setPartList] = useState([]);
     const [selectedPart, setSelectedPart] = useState("");
     const [parts, setParts] = useState([]);
-    const [newCustomer, setNewCustomer] = useState({
-        id: "",
-        company: "",
-        contacts: "",
-        country: "",
-    });
-    console.log(customer);
+
+    console.log(newPart);
+    console.log(newPart.id !== "");
 
     useEffect(() => {
         getCustomerListFromFirebase();
@@ -125,26 +128,23 @@ function Bom() {
         setPartId(`${form.transformId(list.length + 1, 5)}01`);
         setPartList(list);
     }
+
+    function creatNewPart() {
+        const data = JSON.parse(JSON.stringify(newPart));
+        //waiting check : 加了這句,原本object才沒有被改變
+        data.id = partId;
+        setNewPart(data);
+    }
     async function addPartToFirebase() {
-        const data = {
-            id: partId,
-            name: partName,
-            type: partType,
-            material: partMaterial,
-            finish: partFinish,
-        };
-        console.log(data);
-        api.setDocWithId("parts", partId, data);
-        setPartName("");
-        setPartType("");
-        setPartMaterial("");
-        setPartFinish("");
+        console.log(newPart);
+        api.setDocWithId("parts", partId, newPart);
+        let data = newPart;
         data.qty = 1;
         data.unit = "pcs";
         setParts(prev => [...prev, data]);
-        setPartId(prev => form.transformId(Number(prev) + 100, 7));
+        getPartListFromFirebase();
+        setNewPart(partDataRule);
     }
-    //waiting fix -> 改成客戶資料方式
     function addExistingPart() {
         const newPart = partList[selectedPart];
         const hadAddInParts = parts.find(e => e.id === selectedPart);
@@ -162,6 +162,10 @@ function Bom() {
         const data = form.handleChange(index, e, parts);
         setParts(data);
     }
+    function handlePartChange(index, e) {
+        const data = form.handleChange(index, e, newPart);
+        setNewPart(data);
+    }
     function handleCustomerChange(index, e) {
         const data = form.handleChange(index, e, newCustomer);
         setNewCustomer(data);
@@ -169,21 +173,21 @@ function Bom() {
     }
 
     function submit() {
-        console.log(`${customerId}${Math.floor(Date.now() / 100000)}01`);
         const data = {
-            id: `${customerId}${Math.floor(Date.now() / 100000)}01`,
+            id: [customer.id, Math.floor(Date.now() / 100000), "01"],
+            //waiting fix: 要加入現有產品版本考慮
             name: productName,
             inquiryQty: productQtyList,
             image: "",
             bomList: parts,
-            customerId: selectedCustomer.id,
-            company: selectedCustomer.company,
-            country: selectedCustomer.country,
+            customerId: customer.id,
+            company: customer.company,
+            country: customer.country,
         };
         console.log(data);
         api.setDocWithId(
             "products",
-            `${customerId}${Math.floor(Date.now() / 100000)}01`,
+            `${customer.id}${Math.floor(Date.now() / 100000)}01`,
             data,
         );
     }
@@ -307,59 +311,72 @@ function Bom() {
                 </Customers>
                 <Part>
                     <Title>新增零件</Title>
-                    <Form>
-                        <Question>
-                            <div>零件編號</div>
-                            <div>{partId}</div>
-                        </Question>
-                        <Question>
-                            <div>零件名稱</div>
-                            <input
-                                type="text"
-                                onChange={e => {
-                                    setPartName(e.target.value);
+                    <Button
+                        onClick={() => {
+                            creatNewPart();
+                        }}
+                    >
+                        New
+                    </Button>
+                    {newPart.id !== "" && (
+                        <Form>
+                            <Question>
+                                <div>零件編號</div>
+                                <div>{partId}</div>
+                            </Question>
+                            <Question>
+                                <div>零件名稱</div>
+                                <input
+                                    type="text"
+                                    name="name"
+                                    onChange={(e, index) => {
+                                        handlePartChange(index, e);
+                                    }}
+                                    value={newPart.name}
+                                />
+                            </Question>
+                            <Question>
+                                <div>處理工藝</div>
+                                <input
+                                    type="text"
+                                    name="type"
+                                    onChange={(e, index) => {
+                                        handlePartChange(index, e);
+                                    }}
+                                    value={newPart.type}
+                                />
+                            </Question>
+                            <Question>
+                                <div>材質型號</div>
+                                <input
+                                    type="text"
+                                    name="material"
+                                    onChange={(e, index) => {
+                                        handlePartChange(index, e);
+                                    }}
+                                    value={newPart.material}
+                                />
+                            </Question>
+                            <Question>
+                                <div>表面外觀</div>
+                                <input
+                                    type="text"
+                                    name="finish"
+                                    onChange={(e, index) => {
+                                        handlePartChange(index, e);
+                                    }}
+                                    value={newPart.finish}
+                                />
+                            </Question>
+                            <Button
+                                onClick={() => {
+                                    addPartToFirebase();
                                 }}
-                                value={partName}
-                            />
-                        </Question>
-                        <Question>
-                            <div>處理工藝</div>
-                            <input
-                                type="text"
-                                onChange={e => {
-                                    setPartType(e.target.value);
-                                }}
-                                value={partType}
-                            />
-                        </Question>
-                        <Question>
-                            <div>材質型號</div>
-                            <input
-                                type="text"
-                                onChange={e => {
-                                    setPartMaterial(e.target.value);
-                                }}
-                                value={partMaterial}
-                            />
-                        </Question>
-                        <Question>
-                            <div>表面外觀</div>
-                            <input
-                                type="text"
-                                onChange={e => {
-                                    setPartFinish(e.target.value);
-                                }}
-                                value={partFinish}
-                            />
-                        </Question>
-                        <Button
-                            onClick={() => {
-                                addPartToFirebase();
-                            }}
-                        >
-                            New
-                        </Button>
-                    </Form>
+                            >
+                                Add
+                            </Button>
+                        </Form>
+                    )}
                 </Part>
                 <Parts>
                     <Title>零件表</Title>
