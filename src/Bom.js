@@ -104,7 +104,6 @@ function Bom() {
     }
     function addExistingCustomer() {
         const inquiryCustomer = customerList[selectedCustomer];
-        console.log(inquiryCustomer);
         setCustomer(inquiryCustomer);
     }
     function creatNewCusomer() {
@@ -179,8 +178,11 @@ function Bom() {
             id,
             //waiting add: 要加入現有產品版本考慮
             name: productName,
-            inquiryQty: productQtyList,
+            inquiryQty: productQtyList.sort(function (a, b) {
+                return a - b;
+            }),
             image: "",
+            //waiting add: 要加入放圖片的功能
             bomList: parts,
             company: customer.company,
             country: customer.country,

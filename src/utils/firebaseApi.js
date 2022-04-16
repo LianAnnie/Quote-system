@@ -21,15 +21,15 @@ const api = {
     },
 
     async setDocWithId(collectionName, docId, data) {
+        const collectionRef = doc(collection(db, collectionName));
         if (collectionName === "boards") {
-            const collectionRef = doc(collection(db, collectionName));
             data.id = collectionRef.id;
             data.date = serverTimestamp();
             docId = collectionRef.id;
             data.status = Number(data.status);
         }
         await setDoc(doc(db, collectionName, docId), data);
-        //waiting fix : setDoc 沒有response 嗎？  沒有：(void) https://firebase.google.com/docs/reference/js/firestore_lite.md#setdoc_2
+        //waiting check: setDoc 沒有response 嗎？  沒有：(void) https://firebase.google.com/docs/reference/js/firestore_lite.md#setdoc_2
     },
 
     async deleteDoc(collectionName, docId) {

@@ -15,7 +15,6 @@ const form = {
     },
     handleChange(itemIndex, e, originData) {
         let data;
-        console.log(originData.length);
         if (originData.length === undefined) {
             data = JSON.parse(JSON.stringify(originData));
             //waiting check: 這樣寫才rerender,真的是拷貝問題？
@@ -25,6 +24,7 @@ const form = {
         if (originData.length > 0) {
             data = [...originData];
             console.log(data);
+            console.log(itemIndex);
             data[itemIndex][e.target.name] = e.target.value;
         }
         return data;
