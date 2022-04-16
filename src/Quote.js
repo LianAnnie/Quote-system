@@ -94,8 +94,8 @@ function Quote() {
         setQuoteData(prev => [...prev, newData].flat(1));
     }
 
-    function handleQtyChange(index, e) {
-        const data = form.handleQtyChange(index, e, quoteData);
+    function handleChange(index, e) {
+        const data = form.handleChange(index, e, quoteData);
         setQuoteData(data);
     }
 
@@ -232,7 +232,7 @@ function Quote() {
                                                         type="text"
                                                         name="price"
                                                         onChange={e =>
-                                                            handleQtyChange(
+                                                            handleChange(
                                                                 index,
                                                                 e,
                                                             )
@@ -245,7 +245,7 @@ function Quote() {
                                                         type="text"
                                                         name="leadTime"
                                                         onChange={e =>
-                                                            handleQtyChange(
+                                                            handleChange(
                                                                 index,
                                                                 e,
                                                             )

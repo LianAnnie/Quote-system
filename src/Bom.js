@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import SideBar from "./SideBar";
 import api from "./utils/firebaseApi";
+import form from "./component/formChange";
 
 const Container = styled.div`
     text-align: left;
@@ -152,26 +153,9 @@ function Bom() {
         setParts(newPart);
     }
 
-    function reduceQty(id) {
-        const newParts = [];
-        parts.forEach(e => {
-            if (e.id === id) {
-                e.qty -= 1;
-            }
-            newParts.push(e);
-        });
-        setParts(newParts);
-    }
-
-    function addQty(id) {
-        const newParts = [];
-        parts.forEach(e => {
-            if (e.id === id) {
-                e.qty += 1;
-            }
-            newParts.push(e);
-        });
-        setParts(newParts);
+    function handleChange(index, e) {
+        const data = form.handleChange(index, e, parts);
+        setParts(data);
     }
 
     function submit() {
@@ -383,30 +367,34 @@ function Bom() {
                         </thead>
                         <tbody>
                             {parts &&
-                                parts.map(e => (
+                                parts.map((e, index) => (
                                     <tr key={e.id}>
                                         <Td>{e.id}</Td>
                                         <Td>{e.name}</Td>
                                         <Td>{e.type}</Td>
                                         <Td>{e.material}</Td>
                                         <Td>{e.finish}</Td>
-                                        <Td>{e.qty}</Td>
-                                        <Td>{e.unit}</Td>
                                         <Td>
-                                            <Button
-                                                onClick={() => {
-                                                    reduceQty(e.id);
-                                                }}
-                                            >
-                                                Reduce Qty
-                                            </Button>
-                                            <Button
-                                                onClick={() => {
-                                                    addQty(e.id);
-                                                }}
-                                            >
-                                                Add Qty
-                                            </Button>
+                                            <input
+                                                type="text"
+                                                name="qty"
+                                                onChange={e =>
+                                                    handleChange(index, e)
+                                                }
+                                                value={e.qty}
+                                            />
+                                        </Td>
+                                        <Td>
+                                            <input
+                                                type="text"
+                                                name="unit"
+                                                onChange={e =>
+                                                    handleChange(index, e)
+                                                }
+                                                value={e.unit}
+                                            />
+                                        </Td>
+                                        <Td>
                                             <Button
                                                 onClick={() => {
                                                     deletePart(e.id);
