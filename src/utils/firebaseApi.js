@@ -1,20 +1,5 @@
 import db from "./firebase";
-import {
-    doc,
-    setDoc,
-    collection,
-    addDoc,
-    updateDoc,
-    serverTimestamp,
-    arrayUnion,
-    arrayRemove,
-    increment,
-    getDoc,
-    getDocs,
-    collectionGroup,
-    query,
-    where,
-} from "firebase/firestore";
+import { doc, setDoc, collection, getDocs } from "firebase/firestore";
 
 const api = {
     async getCompleteCollection(collectionName) {

@@ -59,12 +59,18 @@ const Flex = styled.div`
 `;
 
 function Bom() {
-    const [selectedCustomer, setSelectedCustomer] = useState("");
-    const [company, setCompany] = useState("");
-    const [contacts, setContacts] = useState("");
-    const [country, setCountry] = useState("");
+    const [selectedCustomer, setSelectedCustomer] = useState(0);
+    // const [company, setCompany] = useState("");
+    // const [contacts, setContacts] = useState("");
+    // const [country, setCountry] = useState("");
     const [customerId, setCustomerId] = useState("");
     const [customerList, setCustomerList] = useState("");
+    const [customer, setCustomer] = useState({
+        id: "",
+        company: "",
+        contacts: "",
+        country: "",
+    });
     const [productName, setProductName] = useState("");
     const [productQty, setProductQty] = useState("");
     const [productQtyList, setProductQtyList] = useState([]);
@@ -76,48 +82,47 @@ function Bom() {
     const [partList, setPartList] = useState([]);
     const [selectedPart, setSelectedPart] = useState("");
     const [parts, setParts] = useState([]);
-    console.log(parts);
+    const [newCustomer, setNewCustomer] = useState({
+        id: "",
+        company: "",
+        contacts: "",
+        country: "",
+    });
+    console.log(customer);
 
     useEffect(() => {
         getCustomerListFromFirebase();
         getPartListFromFirebase();
     }, []);
-    function transformId(id, number) {
-        if (id.length === number) return id;
-        else return id.toString().padStart(number, 0);
-    }
+
+    useEffect(() => {
+        console.log(typeof selectedCustomer, selectedCustomer);
+        if (typeof selectedCustomer === "string") {
+            addExistingCustomer();
+        }
+    }, [selectedCustomer]);
 
     async function getCustomerListFromFirebase() {
         const list = await api.getCompleteCollection("customers");
         setCustomerList(list);
-        setCustomerId(transformId(list.length + 1, 3));
+        setCustomerId(form.transformId(list.length + 1, 3));
     }
 
     function addExistingCustomer() {
-        const inquiryCustomer = customerList.filter(
-            e => e.id === selectedCustomer,
-        );
-        setSelectedCustomer(inquiryCustomer);
-        setCompany(inquiryCustomer[0].company);
-        setContacts(inquiryCustomer[0].contacts);
-        setCountry(inquiryCustomer[0].country);
+        const inquiryCustomer = customerList[selectedCustomer];
+        console.log(inquiryCustomer);
+        setCustomer(inquiryCustomer);
     }
-
-    async function addCustomerToFirebase() {
-        const customerData = {
-            id: customerId,
-            company,
-            contacts,
-            country,
-        };
-        api.setDocWithId("customers", customerId, customerData);
-        setCompany("");
-        setContacts("");
-        setCountry("");
+    function creatNewCusomer() {
+        setSelectedCustomer(0);
+        const newCustomerData = newCustomer;
+        newCustomerData.id = customerId;
+        setNewCustomer(newCustomerData);
+        setCustomer(newCustomerData);
     }
     async function getPartListFromFirebase() {
         const list = await api.getCompleteCollection("parts");
-        setPartId(`${transformId(list.length + 1, 5)}01`);
+        setPartId(`${form.transformId(list.length + 1, 5)}01`);
         setPartList(list);
     }
     async function addPartToFirebase() {
@@ -137,8 +142,9 @@ function Bom() {
         data.qty = 1;
         data.unit = "pcs";
         setParts(prev => [...prev, data]);
-        setPartId(prev => transformId(Number(prev) + 100, 7));
+        setPartId(prev => form.transformId(Number(prev) + 100, 7));
     }
+    //waiting fix -> 改成客戶資料方式
     function addExistingPart() {
         const newPart = partList[selectedPart];
         const hadAddInParts = parts.find(e => e.id === selectedPart);
@@ -148,14 +154,18 @@ function Bom() {
         }
         alert(`此零件已在列表`);
     }
-    function deletePart(id) {
-        const newPart = parts.filter(e => e.id !== id);
-        setParts(newPart);
+    function deletePart(index) {
+        const data = form.deleteProduct(index, parts);
+        setParts(data);
     }
-
-    function handleChange(index, e) {
+    function handlePartsChange(index, e) {
         const data = form.handleChange(index, e, parts);
         setParts(data);
+    }
+    function handleCustomerChange(index, e) {
+        const data = form.handleChange(index, e, newCustomer);
+        setNewCustomer(data);
+        setCustomer(data);
     }
 
     function submit() {
@@ -166,9 +176,9 @@ function Bom() {
             inquiryQty: productQtyList,
             image: "",
             bomList: parts,
-            customerId: selectedCustomer[0].id,
-            company: selectedCustomer[0].company,
-            country: selectedCustomer[0].country,
+            customerId: selectedCustomer.id,
+            company: selectedCustomer.company,
+            country: selectedCustomer.country,
         };
         console.log(data);
         api.setDocWithId(
@@ -225,59 +235,74 @@ function Bom() {
                             onChange={e => setSelectedCustomer(e.target.value)}
                             value={selectedCustomer}
                         >
+                            {selectedCustomer === 0 && (
+                                <option value={0}>請選擇客戶</option>
+                            )}
                             {customerList &&
-                                customerList.map(customer => (
-                                    <option
-                                        key={customer.id}
-                                        value={customer.id}
-                                    >
-                                        {customer.company},{customer.contacts},{" "}
-                                        {customer.country}
+                                customerList.map((e, index) => (
+                                    <option key={e.id} value={index}>
+                                        {e.company},{e.contacts}, {e.country}
                                     </option>
                                 ))}
                         </select>
-                        <Button onClick={() => addExistingCustomer()}>
-                            Add
-                        </Button>
-                    </Flex>
-                    <Form>
-                        <Question>
-                            <div>公司名稱</div>
-                            <input
-                                type="text"
-                                onChange={e => {
-                                    setCompany(e.target.value);
-                                }}
-                                value={company}
-                            />
-                        </Question>
-                        <Question>
-                            <div>聯繫資料</div>
-                            <input
-                                type="text"
-                                onChange={e => {
-                                    setContacts(e.target.value);
-                                }}
-                                value={contacts}
-                            />
-                        </Question>
-                        <Question>
-                            <div>詢價國家</div>
-                            <input
-                                type="text"
-                                onChange={e => {
-                                    setCountry(e.target.value);
-                                }}
-                                value={country}
-                            />
-                        </Question>
                         <Button
                             onClick={() => {
-                                addCustomerToFirebase();
+                                creatNewCusomer();
                             }}
                         >
                             New
                         </Button>
+                    </Flex>
+                    <Form>
+                        <Question>
+                            <div>公司編號</div>
+                            <div>{customer.id}</div>
+                        </Question>
+                        <Question>
+                            <div>公司名稱</div>
+                            {selectedCustomer !== 0 ? (
+                                <div>{customer.company}</div>
+                            ) : (
+                                <input
+                                    type="text"
+                                    name="company"
+                                    onChange={(e, index) => {
+                                        handleCustomerChange(index, e);
+                                    }}
+                                    value={newCustomer.company}
+                                />
+                            )}
+                        </Question>
+                        <Question>
+                            <div>聯繫資料</div>
+                            {selectedCustomer !== 0 ? (
+                                <div>{customer.contacts}</div>
+                            ) : (
+                                <input
+                                    type="text"
+                                    name="contacts"
+                                    onChange={(e, index) => {
+                                        handleCustomerChange(index, e);
+                                    }}
+                                    value={newCustomer.contacts}
+                                />
+                            )}
+                        </Question>
+                        <Question>
+                            <div>詢價國家</div>
+                            {selectedCustomer !== 0 ? (
+                                <div>{customer.country}</div>
+                            ) : (
+                                <input
+                                    type="text"
+                                    name="country"
+                                    onChange={(e, index) => {
+                                        handleCustomerChange(index, e);
+                                    }}
+                                    value={newCustomer.country}
+                                />
+                            )}
+                        </Question>
                     </Form>
                 </Customers>
                 <Part>
@@ -379,7 +404,11 @@ function Bom() {
                                                 type="text"
                                                 name="qty"
                                                 onChange={e =>
-                                                    handleChange(index, e)
+                                                    handlePartsChange(
+                                                        index,
+                                                        e,
+                                                        parts,
+                                                    )
                                                 }
                                                 value={e.qty}
                                             />
@@ -389,7 +418,11 @@ function Bom() {
                                                 type="text"
                                                 name="unit"
                                                 onChange={e =>
-                                                    handleChange(index, e)
+                                                    handlePartsChange(
+                                                        index,
+                                                        e,
+                                                        parts,
+                                                    )
                                                 }
                                                 value={e.unit}
                                             />
@@ -397,7 +430,7 @@ function Bom() {
                                         <Td>
                                             <Button
                                                 onClick={() => {
-                                                    deletePart(e.id);
+                                                    deletePart(index);
                                                 }}
                                             >
                                                 Delete

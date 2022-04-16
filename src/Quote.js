@@ -100,8 +100,7 @@ function Quote() {
     }
 
     function deleteProduct(itemIndex) {
-        console.log(itemIndex);
-        const data = quoteData.filter((_, index) => index !== itemIndex);
+        const data = form.deleteProduct(itemIndex, quoteData);
         setQuoteData(data);
     }
 
