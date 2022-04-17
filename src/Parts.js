@@ -260,57 +260,59 @@ function Parts() {
                             New
                         </Button>
                     </Flex>
-                    <Form>
-                        <Question>
-                            <div>廠商編號</div>
-                            <div>{supplier.id}</div>
-                        </Question>
-                        <Question>
-                            <div>公司名稱</div>
-                            {selectedSupplier === 0 ? (
-                                <input
-                                    type="text"
-                                    name="company"
-                                    onChange={e => {
-                                        handleSupplierChange(e);
-                                    }}
-                                    value={supplier.company}
-                                />
-                            ) : (
-                                <div>{supplier.company}</div>
-                            )}
-                        </Question>
-                        <Question>
-                            <div>聯繫人員</div>
-                            {selectedSupplier === 0 ? (
-                                <input
-                                    type="text"
-                                    name="contacts"
-                                    onChange={e => {
-                                        handleSupplierChange(e);
-                                    }}
-                                    value={supplier.contacts}
-                                />
-                            ) : (
-                                <div>{supplier.contacts}</div>
-                            )}
-                        </Question>
-                        <Question>
-                            <div>供應國家</div>
-                            {selectedSupplier === 0 ? (
-                                <input
-                                    type="text"
-                                    name="country"
-                                    onChange={e => {
-                                        handleSupplierChange(e);
-                                    }}
-                                    value={supplier.country}
-                                />
-                            ) : (
-                                <div>{supplier.country}</div>
-                            )}
-                        </Question>
-                    </Form>
+                    {supplier.id !== "" && (
+                        <Form>
+                            <Question>
+                                <div>廠商編號</div>
+                                <div>{supplier.id}</div>
+                            </Question>
+                            <Question>
+                                <div>公司名稱</div>
+                                {selectedSupplier === 0 ? (
+                                    <input
+                                        type="text"
+                                        name="company"
+                                        onChange={e => {
+                                            handleSupplierChange(e);
+                                        }}
+                                        value={supplier.company}
+                                    />
+                                ) : (
+                                    <div>{supplier.company}</div>
+                                )}
+                            </Question>
+                            <Question>
+                                <div>聯繫人員</div>
+                                {selectedSupplier === 0 ? (
+                                    <input
+                                        type="text"
+                                        name="contacts"
+                                        onChange={e => {
+                                            handleSupplierChange(e);
+                                        }}
+                                        value={supplier.contacts}
+                                    />
+                                ) : (
+                                    <div>{supplier.contacts}</div>
+                                )}
+                            </Question>
+                            <Question>
+                                <div>供應國家</div>
+                                {selectedSupplier === 0 ? (
+                                    <input
+                                        type="text"
+                                        name="country"
+                                        onChange={e => {
+                                            handleSupplierChange(e);
+                                        }}
+                                        value={supplier.country}
+                                    />
+                                ) : (
+                                    <div>{supplier.country}</div>
+                                )}
+                            </Question>
+                        </Form>
+                    )}
                 </Suppliers>
                 <PartQuote>
                     <Title>零件報價明細</Title>

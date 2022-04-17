@@ -109,7 +109,7 @@ function SideBar() {
                             <White>報價表單</White>
                         </NavLink>
                     </Navbar>
-                    <Navbar>
+                    {/* <Navbar>
                         <NavLink to="/admin">
                             <White>訂單表單</White>
                         </NavLink>
@@ -128,10 +128,15 @@ function SideBar() {
                         <NavLink to="/admin">
                             <White>庫存進銷</White>
                         </NavLink>
-                    </Navbar>
+                    </Navbar> */}
                     <Navbar>
                         <NavLink to="/analysis">
                             <White>成本分析</White>
+                        </NavLink>
+                    </Navbar>
+                    <Navbar>
+                        <NavLink to="/analysis2">
+                            <White>成本分析2</White>
                         </NavLink>
                     </Navbar>
                     <Navbar>
