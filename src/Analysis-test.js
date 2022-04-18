@@ -41,6 +41,9 @@ const Border = styled.div`
     border: solid 1px #000000;
     padding: 20px;
 `;
+const Flex = styled.div`
+    display: flex;
+`;
 
 function Analysis2() {
     const [productList, setProductList] = useState([]);
@@ -49,6 +52,8 @@ function Analysis2() {
     const [price, setPrice] = useState(0);
     const [sumCost, setSumCost] = useState(0);
     const [profitMargin, setProfitMargin] = useState(0);
+    const [caculateData, setCaculatedData] = useState([]);
+    const [expectedProfitMargin, setExpectedProfitMargin] = useState(0);
     const gaugeOptions = {
         chart: {
             type: "solidgauge",
@@ -143,14 +148,14 @@ function Analysis2() {
         console.log(sumCost);
         console.log((price / sumCost) * 100);
 
-        const caculate = Math.floor((price / sumCost - 1) * 100);
+        const caculate = Math.floor((price / sumCost) * 100 - 100);
         console.log(caculate);
         if (sumCost === 0) {
             setProfitMargin(0);
             return;
         }
         setProfitMargin(caculate);
-    }, [price]);
+    }, [price, caculateData]);
 
     async function getProductListFromFirebase() {
         const list = await api.getCompleteCollection("products");
@@ -204,24 +209,44 @@ function Analysis2() {
     async function handleImportChange(e, itemIndex) {
         const qty = Number(e.target.value);
         const partList = selectedList[itemIndex].bomList.map(e => e.id);
-        let quotationData = [];
-        await Promise.all(
-            partList.map(async e => {
-                console.log(e);
-                const q = query(
-                    collection(db, "partQuotations"),
-                    where("id", "array-contains", e),
-                    where("qty", "==", qty),
-                );
 
-                const data = await getDocs(q);
-                data.forEach(itemData => {
-                    quotationData.push(itemData.data());
-                });
-            }),
+        const quotationDataPromise = partList.map(async e => {
+            console.log(e);
+            const q = query(
+                collection(db, "partQuotations"),
+                where("id", "array-contains", e),
+                where("qty", ">=", qty),
+            );
+            const data = await getDocs(q);
+            const promiseData = data.docs.map(e => e.data());
+            //    console.log(test3);
+            return promiseData;
+        });
+
+        const quotationData = await Promise.all(quotationDataPromise);
+        console.log(quotationData);
+        const newCaculateData = quotationData.map(e => (e[0] ? e[0] : []));
+        console.log(newCaculateData);
+        setCaculatedData(newCaculateData);
+        setSumCost(
+            newCaculateData.map(e => e.price).reduce((sum, e) => sum + e),
         );
-        setSumCost(quotationData.map(e => e.price).reduce((sum, e) => sum + e));
         setImportData(quotationData);
+    }
+
+    function hadleQuotationChange(partIndex, quotationEelement) {
+        const quotationIndex = Number(quotationEelement.target.value);
+        console.log(partIndex, quotationIndex);
+        const selectedImportData = importData[partIndex][quotationIndex];
+        console.log(selectedImportData);
+        const newCaculateData = JSON.parse(JSON.stringify(caculateData));
+        newCaculateData[partIndex] = selectedImportData;
+        console.log(caculateData);
+        console.log(newCaculateData);
+        setCaculatedData(newCaculateData);
+        setSumCost(
+            newCaculateData.map(e => e.price).reduce((sum, e) => sum + e),
+        );
     }
 
     function showAllProduceList() {
@@ -402,27 +427,65 @@ function Analysis2() {
                         <tr>
                             <Th>編號</Th>
                             <Th>名稱</Th>
+                            <Th>數量</Th>
                             <Th>單價</Th>
                         </tr>
                     </thead>
                     <tbody>
                         {importData &&
-                            importData.map((e, index) => (
-                                <tr key={e.id}>
-                                    <Td>{e.id.join("")}</Td>
-                                    <Td>{e.name}</Td>
-                                    <Td>{e.price}</Td>
+                            importData.map((quotations, index) => (
+                                <tr key={index}>
+                                    <Td>{caculateData[index].id}</Td>
+                                    <Td>{caculateData[index].name}</Td>
+                                    <Td>
+                                        <select
+                                            name="qty"
+                                            onChange={e =>
+                                                hadleQuotationChange(index, e)
+                                            }
+                                        >
+                                            {quotations.map((e, index2) => (
+                                                <option
+                                                    key={e.id}
+                                                    value={index2}
+                                                >
+                                                    {e.qty}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </Td>
+                                    <Td>{caculateData[index].price}</Td>
                                     <Td></Td>
                                 </tr>
                             ))}
                     </tbody>
                 </Table>
-                <Title>預計產品單價</Title>
-                <input
-                    type="text"
-                    onChange={e => setPrice(e.target.value)}
-                    value={price}
-                />
+                <Flex>
+                    <Title>目前總成本</Title>
+                    <div>{sumCost}</div>
+                </Flex>
+                <Flex>
+                    <Title>輸入期望利潤</Title>
+                    <input
+                        type="text"
+                        onChange={e => setExpectedProfitMargin(e.target.value)}
+                        value={expectedProfitMargin}
+                    />
+                    <Title>需提報最低單價</Title>
+                    <div>
+                        {sumCost * expectedProfitMargin < 0
+                            ? "利潤率需大於0"
+                            : (sumCost * expectedProfitMargin) / 100}
+                    </div>
+                </Flex>
+                <Flex>
+                    <Title>預計產品單價</Title>
+                    <input
+                        type="text"
+                        onChange={e => setPrice(e.target.value)}
+                        value={price}
+                    />
+                </Flex>
                 <Border>
                     <HighchartsReact
                         highcharts={Highcharts}
