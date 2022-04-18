@@ -192,6 +192,10 @@ function Bom() {
         if (selectedCustomer === 0) {
             api.setDocWithId("customers", customer.id, customer);
         }
+        setParts([]);
+        setProductName("");
+        setProductQty("");
+        setProductQtyList([]);
     }
 
     return (
