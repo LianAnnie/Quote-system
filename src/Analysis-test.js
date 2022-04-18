@@ -2,6 +2,13 @@ import styled from "styled-components";
 import SideBar from "./SideBar";
 import api from "./utils/firebaseApi";
 import { useState, useEffect } from "react";
+import db from "./utils/firebase";
+import { query, collection, where, getDocs } from "firebase/firestore";
+import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
+import more from "highcharts/highcharts-more";
+more(Highcharts);
+require("highcharts/modules/solid-gauge")(Highcharts);
 
 const Container = styled.div`
     text-align: left;
@@ -30,16 +37,120 @@ const Button = styled.div`
     text-align: center;
     cursor: pointer;
 `;
+const Border = styled.div`
+    border: solid 1px #000000;
+    padding: 20px;
+`;
 
 function Analysis2() {
     const [productList, setProductList] = useState([]);
     const [selectedList, setSelectedList] = useState([]);
-    const [importProduct, setImportProduct] = useState([]);
-    console.log(importProduct);
+    const [importData, setImportData] = useState([]);
+    const [price, setPrice] = useState(0);
+    const [sumCost, setSumCost] = useState(0);
+    const [profitMargin, setProfitMargin] = useState(0);
+    const gaugeOptions = {
+        chart: {
+            type: "solidgauge",
+        },
+        title: null,
+        pane: {
+            center: ["50%", "85%"],
+            size: "100%",
+            startAngle: -90,
+            endAngle: 90,
+            background: {
+                backgroundColor:
+                    Highcharts.defaultOptions.legend.backgroundColor || "#EEE",
+                innerRadius: "60%",
+                outerRadius: "100%",
+                shape: "arc",
+            },
+        },
+
+        exporting: {
+            enabled: false,
+        },
+
+        tooltip: {
+            enabled: false,
+        },
+
+        // the value axis
+        yAxis: {
+            stops: [
+                [0.1, "#55BF3B"], // green
+                [0.5, "#DDDF0D"], // yellow
+                [0.9, "#DF5353"], // red
+            ],
+            lineWidth: 0,
+            tickWidth: 0,
+            minorTickInterval: null,
+            tickAmount: 2,
+            title: {
+                y: -70,
+            },
+            labels: {
+                y: 16,
+            },
+        },
+
+        plotOptions: {
+            solidgauge: {
+                dataLabels: {
+                    y: 5,
+                    borderWidth: 0,
+                    useHTML: true,
+                },
+            },
+        },
+        yAxis: {
+            min: -100,
+            max: 100,
+            title: {
+                text: "利潤率",
+            },
+        },
+
+        credits: {
+            enabled: false,
+        },
+
+        series: [
+            {
+                name: "利潤率",
+                data: [profitMargin],
+                dataLabels: {
+                    format:
+                        '<div style="text-align:center">' +
+                        '<span style="font-size:25px">{y}</span><br/>' +
+                        '<span style="font-size:12px;opacity:0.4">％</span>' +
+                        "</div>",
+                },
+                tooltip: {
+                    valueSuffix: "%",
+                },
+            },
+        ],
+    };
 
     useEffect(() => {
         getProductListFromFirebase();
     }, []);
+
+    useEffect(() => {
+        console.log(price);
+        console.log(sumCost);
+        console.log((price / sumCost) * 100);
+
+        const caculate = Math.floor((price / sumCost - 1) * 100);
+        console.log(caculate);
+        if (sumCost === 0) {
+            setProfitMargin(0);
+            return;
+        }
+        setProfitMargin(caculate);
+    }, [price]);
 
     async function getProductListFromFirebase() {
         const list = await api.getCompleteCollection("products");
@@ -90,20 +201,27 @@ function Analysis2() {
         return;
     }
 
-    function handleImportChange(e) {
-        const targetId = e.target.value.replace(",", "").replace(",", "");
-        const removeList = importProduct.filter(
-            m => m.id.join("") !== targetId,
-        );
-        if (removeList.length < importProduct.length) {
-            setImportProduct(removeList);
-        } else {
-            const data = selectedList.filter(
-                m => m.id.join("") === targetId,
-            )[0];
+    async function handleImportChange(e, itemIndex) {
+        const qty = Number(e.target.value);
+        const partList = selectedList[itemIndex].bomList.map(e => e.id);
+        let quotationData = [];
+        await Promise.all(
+            partList.map(async e => {
+                console.log(e);
+                const q = query(
+                    collection(db, "partQuotations"),
+                    where("id", "array-contains", e),
+                    where("qty", "==", qty),
+                );
 
-            setImportProduct(prev => [...prev, data]);
-        }
+                const data = await getDocs(q);
+                data.forEach(itemData => {
+                    quotationData.push(itemData.data());
+                });
+            }),
+        );
+        setSumCost(quotationData.map(e => e.price).reduce((sum, e) => sum + e));
+        setImportData(quotationData);
     }
 
     function showAllProduceList() {
@@ -253,7 +371,7 @@ function Analysis2() {
                     </thead>
                     <tbody>
                         {selectedList &&
-                            selectedList.map(e => (
+                            selectedList.map((e, index) => (
                                 <tr key={e.id}>
                                     <Td>{e.id[1]}</Td>
                                     <Td>{e.id[2]}</Td>
@@ -262,19 +380,56 @@ function Analysis2() {
                                     <Td>{e.name}</Td>
                                     <Td></Td>
                                     <Td>
-                                        <input
-                                            type="checkbox"
-                                            value={e.id}
+                                        <select
+                                            value={e.inquiryQty[0]}
                                             onChange={e =>
-                                                handleImportChange(e)
+                                                handleImportChange(e, index)
                                             }
-                                            checked={e.checked}
-                                        />
+                                            name="inquiryQty"
+                                        >
+                                            {e.inquiryQty.map(e => (
+                                                <option key={e}>{e}</option>
+                                            ))}
+                                        </select>
+                                        {/* <Button onClick={()=>importDataToAnalysis(index)}>Import</Button> */}
                                     </Td>
                                 </tr>
                             ))}
                     </tbody>
                 </Table>
+                <Table>
+                    <thead>
+                        <tr>
+                            <Th>編號</Th>
+                            <Th>名稱</Th>
+                            <Th>單價</Th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {importData &&
+                            importData.map((e, index) => (
+                                <tr key={e.id}>
+                                    <Td>{e.id.join("")}</Td>
+                                    <Td>{e.name}</Td>
+                                    <Td>{e.price}</Td>
+                                    <Td></Td>
+                                </tr>
+                            ))}
+                    </tbody>
+                </Table>
+                <Title>預計產品單價</Title>
+                <input
+                    type="text"
+                    onChange={e => setPrice(e.target.value)}
+                    value={price}
+                />
+                <Border>
+                    <HighchartsReact
+                        highcharts={Highcharts}
+                        options={gaugeOptions}
+                        containerProps={{ className: "chart-container" }}
+                    />
+                </Border>
             </Main>
         </Container>
     );
