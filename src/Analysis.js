@@ -4,6 +4,7 @@ import api from "./utils/firebaseApi";
 import { useState, useEffect } from "react";
 import db from "./utils/firebase";
 import { query, collection, where, getDocs } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import more from "highcharts/highcharts-more";
@@ -67,7 +68,7 @@ function Analysis() {
     const [profitMargin, setProfitMargin] = useState(0);
     const [pieData, setPieData] = useState([["產品名稱", 100]]);
 
-    const [loading, setLoading] = useState(true);
+    // const [loading, setLoading] = useState(true);
 
     const gaugeOptions = {
         chart: {
@@ -254,28 +255,32 @@ function Analysis() {
     }
 
     async function handleProductChange(data) {
-        console.log(data);
-        setSelectedProduct([]);
+        setPartQuotationsData([]);
+        setCaculatedData([]);
+        // console.log(data);
         const renderProductData = changeSelectedProductToRander(data);
-        console.log(renderProductData);
+        // console.log(renderProductData);
         setSelectedProduct(renderProductData);
+        // setPartQuotationsData(renderProductData);
         const partIdList = data.bomList.map(e => e.id);
         const quotationData = await getPartsQtationsFromFireBase(partIdList);
         console.log(quotationData);
         const newCaculateData = quotationData.map(e => (e[0] ? e[0] : []));
         console.log(newCaculateData);
-        setCaculatedData(newCaculateData);
-        const usageList = data.bomList.map(e => Number(e.qty));
-        console.log(usageList);
+        const usageList = data.bomList?.map(e => Number(e.qty));
+        // console.log(usageList);
 
         const sum = newCaculateData
             .map(e => e.price)
             .reduce((sum1, m, index) => sum1 + m * usageList[index], 0);
 
-        console.log(newCaculateData);
-        console.log(sum);
-        setSumCost(sum);
+        // console.log(newCaculateData);
+        // console.log(sum, typeof sum);
+
+        setSumCost(isNaN(sum) ? 0 : sum);
         getPieData(newCaculateData, sum);
+
+        setCaculatedData(newCaculateData);
         setPartQuotationsData(quotationData);
     }
 
@@ -347,7 +352,7 @@ function Analysis() {
 
     function handleQuotationChange(partIndex, quotationEelement) {
         const quotationIndex = Number(quotationEelement.target.value);
-        console.log(partIndex, quotationIndex);
+        // console.log(partIndex, quotationIndex);
         const selectedImportData =
             partQuotationsData[partIndex][quotationIndex];
         // console.log(selectedImportData);
@@ -364,8 +369,8 @@ function Analysis() {
         const maxLeadTime = newCaculateData
             .map(e => e.leadTime)
             .reduce((max, day) => (day > max ? (max = day) : max), 0);
-        console.log(maxLeadTime);
-        setSumCost(sum);
+        // console.log(maxLeadTime);
+        // setSumCost(sum);
         const newPrice = selectedProduct[analysisProductIndex].margin * sum;
         const data = [...selectedProduct];
         const quoteIdList = newCaculateData.map(e => e.id);
@@ -375,8 +380,8 @@ function Analysis() {
         data[analysisProductIndex].analysisList = newAnalysisList;
         data[analysisProductIndex].price = newPrice;
         data[analysisProductIndex].leadTime = maxLeadTime;
-        console.log(selectedProduct);
-        console.log(data[analysisProductIndex].leadTime);
+        // console.log(selectedProduct);
+        // console.log(data[analysisProductIndex].leadTime);
         setSelectedProduct([...data]);
     }
 
@@ -399,28 +404,39 @@ function Analysis() {
         setSelectedList(productList);
     }
 
+    function test() {
+        const data = { 123: "123" };
+        api.setDocWithId("analysis", "123", data);
+    }
+
     function submit() {
-        console.log(selectedProduct);
+        // console.log(selectedProduct);
         let i = 0;
 
         selectedProduct.map(e => {
+            let id = [...e.id, form.transformId(i, 2)];
             const data = {
-                id: [...e.id, Date.now(), form.transformId(i, 2)],
+                id,
                 date: Date.now(),
                 currency: "NT",
-                //waiting fix: 加入匯率考慮之後要能調整
+                // waiting fix: 加入匯率考慮之後要能調整
                 name: e.name,
                 qty: e.qty,
-                image: e.image,
+                image: "",
                 price: e.price,
                 margin: e.margin,
                 leadTime: e.leadTime,
                 analysisList: e.analysisList,
             };
             console.log(data);
+            api.setDocWithId("analysis", id.join(""), data);
             i++;
         });
     }
+
+    // console.log(selectedProduct)
+    console.log(partQuotationsData);
+    console.log(caculateData);
 
     return (
         <Container>
@@ -705,9 +721,8 @@ function Analysis() {
                         <tbody>
                             {/* waiting fix: 這裡一直爆開是非同步的問題？ */}
                             {partQuotationsData.length > 0 &&
-                                partQuotationsData.map((quotations, index) => (
+                                partQuotationsData?.map((quotations, index) => (
                                     <tr key={index}>
-                                        {/* {console.log(caculateData[index].qty)} */}
                                         <Td>{caculateData[index].id}</Td>
                                         <Td>{caculateData[index].name}</Td>
                                         <Td>
@@ -722,7 +737,7 @@ function Analysis() {
                                             >
                                                 {quotations.map((e, index2) => (
                                                     <option
-                                                        key={e.id}
+                                                        key={index2}
                                                         value={index2}
                                                     >
                                                         {e.qty}
@@ -731,11 +746,11 @@ function Analysis() {
                                             </select>
                                         </Td>
                                         <Td>
+                                            {console.log(selectedProduct)}
                                             {selectedProduct &&
                                                 selectedProduct.length > 0 &&
-                                                selectedProduct[0].analysisList[
-                                                    index
-                                                ].qty}
+                                                selectedProduct[0]
+                                                    .analysisList[0].qty}
                                         </Td>
                                         <Td>{caculateData[index].price}</Td>
                                         <Td>{caculateData[index].currency}</Td>
