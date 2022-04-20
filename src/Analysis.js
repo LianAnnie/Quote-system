@@ -67,6 +67,8 @@ function Analysis() {
     const [profitMargin, setProfitMargin] = useState(0);
     const [pieData, setPieData] = useState([["產品名稱", 100]]);
 
+    const [loading, setLoading] = useState(true);
+
     const gaugeOptions = {
         chart: {
             type: "solidgauge",
@@ -173,10 +175,6 @@ function Analysis() {
     }, []);
 
     useEffect(() => {
-        // console.log(price);
-        // console.log(sumCost);
-        // console.log((price / sumCost) * 100);
-
         if (selectedProduct.length > 0) {
             const caculate = Math.floor(
                 (selectedProduct[analysisProductIndex].price / sumCost) * 100 -
@@ -189,7 +187,7 @@ function Analysis() {
             }
             setProfitMargin(caculate);
         }
-    }, [selectedProduct, caculateData]);
+    }, [selectedProduct, caculateData, analysisProductIndex, sumCost]);
 
     async function getProductListFromFirebase() {
         const list = await api.getCompleteCollection("products");
@@ -240,36 +238,6 @@ function Analysis() {
         return;
     }
 
-    // async function handleImportChange(e, itemIndex) {
-    //     const qty = Number(e.target.value);
-    //     const partList = selectedList[itemIndex].bomList.map(e => e.id);
-    //     // console.log(selectedList[itemIndex]);
-
-    //     const quotationDataPromise = partList.map(async e => {
-    //         const q = query(
-    //             collection(db, "partQuotations"),
-    //             where("id", "array-contains", e),
-    //             where("qty", ">=", qty),
-    //         );
-    //         const data = await getDocs(q);
-    //         const promiseData = data.docs.map(e => e.data());
-    //         return promiseData;
-    //     });
-
-    //     const quotationData = await Promise.all(quotationDataPromise);
-    //     // console.log(quotationData);
-    //     const newCaculateData = quotationData.map(e => (e[0] ? e[0] : []));
-    //     console.log(newCaculateData);
-
-    //     setCaculatedData(newCaculateData);
-    //     const sum = newCaculateData
-    //         .map(e => e.price)
-    //         .reduce((sum, e) => sum + e);
-    //     setSumCost(sum);
-    //     getPieData(newCaculateData, sum);
-    //     setPartQuotationsData(quotationData);
-    // }
-
     async function getPartsQtationsFromFireBase(partIdList) {
         const quotationDataPromise = partIdList.map(async e => {
             const q = query(
@@ -287,6 +255,7 @@ function Analysis() {
 
     async function handleProductChange(data) {
         console.log(data);
+        setSelectedProduct([]);
         const renderProductData = changeSelectedProductToRander(data);
         console.log(renderProductData);
         setSelectedProduct(renderProductData);
@@ -319,12 +288,17 @@ function Analysis() {
         if (selectedProduct[itemIndex].price === 0) {
             const data = [...selectedProduct];
             const quoteIdList = caculateData.map(e => e.id);
+            const maxLeadTime = caculateData
+                .map(e => e.leadTime)
+                .reduce((max, day) => (day > max ? (max = day) : max), 0);
+            console.log(maxLeadTime);
             console.log(quoteIdList);
             const newAnalysisList = data[itemIndex].analysisList.map(
                 (e, index) => ({ ...e, quoteId: quoteIdList[index] }),
             );
             data[itemIndex].analysisList = newAnalysisList;
             data[itemIndex].price = sumCost;
+            data[itemIndex].leadTime = maxLeadTime;
             setSelectedProduct(data);
         }
     }
@@ -350,6 +324,7 @@ function Analysis() {
                 margin: 1,
                 currency: "",
                 analysisList,
+                leadTime: 30,
             };
             return renderData;
         });
@@ -386,6 +361,10 @@ function Analysis() {
         const sum = newCaculateData
             .map(e => e.price)
             .reduce((sum1, m, index) => sum1 + m * usageList[index], 0);
+        const maxLeadTime = newCaculateData
+            .map(e => e.leadTime)
+            .reduce((max, day) => (day > max ? (max = day) : max), 0);
+        console.log(maxLeadTime);
         setSumCost(sum);
         const newPrice = selectedProduct[analysisProductIndex].margin * sum;
         const data = [...selectedProduct];
@@ -395,8 +374,9 @@ function Analysis() {
         );
         data[analysisProductIndex].analysisList = newAnalysisList;
         data[analysisProductIndex].price = newPrice;
+        data[analysisProductIndex].leadTime = maxLeadTime;
         console.log(selectedProduct);
-        console.log(data);
+        console.log(data[analysisProductIndex].leadTime);
         setSelectedProduct([...data]);
     }
 
@@ -419,8 +399,27 @@ function Analysis() {
         setSelectedList(productList);
     }
 
-    function exportTofireBase() {
-        console.log(123);
+    function submit() {
+        console.log(selectedProduct);
+        let i = 0;
+
+        selectedProduct.map(e => {
+            const data = {
+                id: [...e.id, Date.now(), form.transformId(i, 2)],
+                date: Date.now(),
+                currency: "NT",
+                //waiting fix: 加入匯率考慮之後要能調整
+                name: e.name,
+                qty: e.qty,
+                image: e.image,
+                price: e.price,
+                margin: e.margin,
+                leadTime: e.leadTime,
+                analysisList: e.analysisList,
+            };
+            console.log(data);
+            i++;
+        });
     }
 
     return (
@@ -610,7 +609,10 @@ function Analysis() {
                     </Table>
                 </Products>
                 <Product>
-                    <Title>分析產品</Title>
+                    <Flex>
+                        <Title>分析產品</Title>
+                        <Button onClick={() => submit()}>Submit</Button>
+                    </Flex>
                     <Table>
                         <thead>
                             <tr>
@@ -687,7 +689,6 @@ function Analysis() {
                                 ))}
                         </tbody>
                     </Table>
-                    <Button onClick={() => exportTofireBase()}>Export</Button>
                 </Product>
                 <Quotes>
                     <Table>
@@ -702,11 +703,11 @@ function Analysis() {
                             </tr>
                         </thead>
                         <tbody>
-                            {/* 這裡應該是非同步的問題？ */}
-                            {caculateData.length > 0 &&
+                            {/* waiting fix: 這裡一直爆開是非同步的問題？ */}
+                            {partQuotationsData.length > 0 &&
                                 partQuotationsData.map((quotations, index) => (
                                     <tr key={index}>
-                                        {/* {console.log(caculateData[index].id)} */}
+                                        {/* {console.log(caculateData[index].qty)} */}
                                         <Td>{caculateData[index].id}</Td>
                                         <Td>{caculateData[index].name}</Td>
                                         <Td>
@@ -730,7 +731,8 @@ function Analysis() {
                                             </select>
                                         </Td>
                                         <Td>
-                                            {selectedProduct.length > 0 &&
+                                            {selectedProduct &&
+                                                selectedProduct.length > 0 &&
                                                 selectedProduct[0].analysisList[
                                                     index
                                                 ].qty}
