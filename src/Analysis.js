@@ -2,7 +2,7 @@ import styled from "styled-components";
 import SideBar from "./SideBar";
 import api from "./utils/firebaseApi";
 import { useState, useEffect } from "react";
-import db from "./utils/firebase";
+import { db } from "./utils/firebase";
 import { query, collection, where, getDocs } from "firebase/firestore";
 import { doc, setDoc } from "firebase/firestore";
 import Highcharts from "highcharts";

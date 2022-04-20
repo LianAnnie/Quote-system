@@ -3,6 +3,13 @@ import { useState, useEffect } from "react";
 import SideBar from "./SideBar";
 import api from "./utils/firebaseApi";
 import form from "./component/formChange";
+import { storage } from "./utils/firebase";
+import {
+    ref,
+    uploadBytes,
+    uploadBytesResumable,
+    getDownloadURL,
+} from "firebase/storage";
 
 const Container = styled.div`
     text-align: left;
@@ -82,8 +89,9 @@ function Bom() {
     const [productQty, setProductQty] = useState("");
     const [productQtyList, setProductQtyList] = useState([]);
     const [partList, setPartList] = useState([]);
-    const [selectedPart, setSelectedPart] = useState("");
+    const [selectedPart, setSelectedPart] = useState(0);
     const [parts, setParts] = useState([]);
+    const [imageUrl, setImageUrl] = useState("");
 
     useEffect(() => {
         getCustomerListFromFirebase();
@@ -181,7 +189,7 @@ function Bom() {
             inquiryQty: productQtyList.sort(function (a, b) {
                 return a - b;
             }),
-            image: "",
+            image: imageUrl,
             //waiting add: 要加入放圖片的功能
             bomList: parts,
             company: customer.company,
@@ -196,6 +204,28 @@ function Bom() {
         setProductName("");
         setProductQty("");
         setProductQtyList([]);
+    }
+
+    function upLoad(e) {
+        let file = e.target.files[0];
+        console.log(file);
+        const storageRef = ref(storage, "images/" + file.name);
+        const uploadTask = uploadBytesResumable(storageRef, file);
+        uploadTask.on(
+            "state_changed",
+            snapshot => {
+                const progress =
+                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                console.log("Upload is " + progress + "% done");
+            },
+            error => {},
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
+                    console.log("File available at", downloadURL);
+                    setImageUrl(downloadURL);
+                });
+            },
+        );
     }
 
     return (
@@ -235,6 +265,13 @@ function Bom() {
                             >
                                 加入
                             </Button>
+                        </Question>
+                        <Question>
+                            <div>上傳圖片</div>
+                            <input type="file" onChange={e => upLoad(e)} />
+                            {imageUrl.length > 0 && (
+                                <img src={imageUrl} alt="產品圖片" />
+                            )}
                         </Question>
                     </Form>
                 </Product>

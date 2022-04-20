@@ -95,6 +95,11 @@ function SideBar() {
                         </NavLink>
                     </Navbar>
                     <Navbar>
+                        <NavLink to="/overview">
+                            <White>銷售概覽</White>
+                        </NavLink>
+                    </Navbar>
+                    <Navbar>
                         <NavLink to="/bom">
                             <White>客戶產品</White>
                         </NavLink>

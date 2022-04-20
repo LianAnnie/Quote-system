@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
 import SideBar from "./SideBar";
-import db from "./utils/firebase";
+import { db } from "./utils/firebase";
 import { collection, query, onSnapshot } from "firebase/firestore";
 import { useEffect } from "react";
 import form from "./component/formChange";

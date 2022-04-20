@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import api from "./utils/firebaseApi";
-import db from "./utils/firebase";
+import { db } from "./utils/firebase";
 import { query, collection, where, getDocs } from "firebase/firestore";
 import SideBar from "./SideBar";
 import mapData from "./utils/mapData";
