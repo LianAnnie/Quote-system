@@ -5,7 +5,7 @@ import BulletinBoard from "./BulletinBoard";
 import Bom from "./Bom";
 import Parts from "./Parts";
 import Analysis from "./Analysis";
-import Analysis2 from "./Analysis-test";
+import AnalysisTest from "./AnalysisTest";
 import Quote from "./Quote";
 import Admin from "./Admin";
 import {
@@ -29,7 +29,7 @@ function App() {
                     <Route path="/bom" element={<Bom />} />
                     <Route path="/parts" element={<Parts />} />
                     <Route path="/analysis" element={<Analysis />} />
-                    <Route path="/analysis2" element={<Analysis2 />} />
+                    <Route path="/analysis2" element={<AnalysisTest />} />
                     <Route path="/quote" element={<Quote />} />
                     <Route path="/admin" element={<Admin />} />
                     <Route path="/*" element={<Navigate to="/" />} />
