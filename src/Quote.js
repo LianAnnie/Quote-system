@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import SideBar from "./SideBar";
+import SideBar from "./component/SideBar";
 import { useState, useEffect } from "react";
 import api from "./utils/firebaseApi";
 import { Timestamp } from "firebase/firestore";
@@ -54,6 +54,23 @@ const Flex = styled.div`
 `;
 
 function Quote() {
+    const quoteDataRule = {
+        id: ["3客人id", "13產品編號", "02產品版本號", "報價日期"],
+        date: "2022-04-01",
+        valid: "2022-04-01",
+        currency: "報價幣別",
+        image: "產品圖片",
+        quoteList: [
+            {
+                qty: "報價數量",
+                price: "產品單價",
+                analysisId: "分析id",
+                leadTime: "生產天數",
+            },
+        ],
+    };
+    //同款產品一張報價單
+    //!!!分析單上考慮報價零件有效期限,
     const [quoteDate, setQuoteDate] = useState("");
     const [validDate, setValidDate] = useState("");
     const [currency, setCurrency] = useState("");
@@ -61,7 +78,7 @@ function Quote() {
     const [selectedProduct, setSelectedProduct] = useState("");
     const [quoteData, setQuoteData] = useState([]);
     const [finalQuoteList, setFinalQuoteList] = useState([]);
-    console.log(finalQuoteList.length === 0);
+    const [exportQuoteData, setExportQuoteData] = useState(quoteDataRule);
 
     useEffect(() => {
         getProductListFromFirebase();
@@ -136,10 +153,10 @@ function Quote() {
             <Main>
                 <Flex>
                     <Button onClick={() => getFinalQuotaionListFromFirebase()}>
-                        總表
+                        報價總表
                     </Button>
                     <Button onClick={() => getProductListFromFirebase()}>
-                        表單頁
+                        表單
                     </Button>
                 </Flex>
                 {finalQuoteList.length === 0 && (

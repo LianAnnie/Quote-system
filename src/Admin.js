@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import SideBar from "./SideBar";
+import SideBar from "./component/SideBar";
 
 import AdminParts from "./admin/AdminParts";
 const Container = styled.div`

@@ -114,12 +114,12 @@ function SideBar() {
                             <White>報價表單</White>
                         </NavLink>
                     </Navbar>
-                    {/* <Navbar>
-                        <NavLink to="/admin">
-                            <White>訂單表單</White>
+                    <Navbar>
+                        <NavLink to="/order">
+                            <White>訂單資料</White>
                         </NavLink>
                     </Navbar>
-                    <Navbar>
+                    {/* <Navbar>
                         <NavLink to="/admin">
                             <White>採購表單</White>
                         </NavLink>

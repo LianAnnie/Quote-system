@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import SideBar from "./SideBar";
+import SideBar from "./component/SideBar";
 import HighchartsReact from "highcharts-react-official";
 let Highcharts = require("highcharts/highmaps.js");
 let topojson = require("@highcharts/map-collection/custom/world.topo.json");

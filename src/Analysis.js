@@ -1,12 +1,12 @@
 import styled from "styled-components";
-import SideBar from "./SideBar";
+import SideBar from "./component/SideBar";
+import Drawing from "./component/Drawing";
+import List from "./component/List";
 import api from "./utils/firebaseApi";
 import { useState, useEffect } from "react";
 import { db } from "./utils/firebase";
-import { query, collection, where, getDocs } from "firebase/firestore";
-import { doc, setDoc } from "firebase/firestore";
+import { Timestamp, serverTimestamp } from "firebase/firestore";
 import Highcharts from "highcharts";
-import HighchartsReact from "highcharts-react-official";
 import more from "highcharts/highcharts-more";
 import form from "./component/formChange";
 more(Highcharts);
@@ -64,116 +64,11 @@ function Analysis() {
     const [partQuotationsData, setPartQuotationsData] = useState([]); //Bom表內所有零件報價
     const [caculateData, setCaculatedData] = useState([]); //選定數量的零件報價
 
-    const [sumCost, setSumCost] = useState(0); //
+    const [sumCost, setSumCost] = useState(0);
     const [profitMargin, setProfitMargin] = useState(0);
     const [pieData, setPieData] = useState([["產品名稱", 100]]);
 
     // const [loading, setLoading] = useState(true);
-
-    const gaugeOptions = {
-        chart: {
-            type: "solidgauge",
-        },
-        title: null,
-        pane: {
-            center: ["50%", "85%"],
-            size: "100%",
-            startAngle: -90,
-            endAngle: 90,
-            background: {
-                backgroundColor:
-                    Highcharts.defaultOptions.legend.backgroundColor || "#EEE",
-                innerRadius: "60%",
-                outerRadius: "100%",
-                shape: "arc",
-            },
-        },
-
-        exporting: {
-            enabled: false,
-        },
-
-        tooltip: {
-            enabled: false,
-        },
-
-        // the value axis
-        yAxis: {
-            stops: [
-                [0.1, "#55BF3B"], // green
-                [0.5, "#DDDF0D"], // yellow
-                [0.9, "#DF5353"], // red
-            ],
-            lineWidth: 0,
-            tickWidth: 0,
-            minorTickInterval: null,
-            tickAmount: 2,
-            title: {
-                y: -70,
-            },
-            labels: {
-                y: 16,
-            },
-        },
-
-        plotOptions: {
-            solidgauge: {
-                dataLabels: {
-                    y: 5,
-                    borderWidth: 0,
-                    useHTML: true,
-                },
-            },
-        },
-        yAxis: {
-            min: -100,
-            max: 100,
-            title: {
-                text: "利潤率",
-            },
-        },
-
-        credits: {
-            enabled: false,
-        },
-
-        series: [
-            {
-                name: "利潤率",
-                data: [profitMargin],
-                dataLabels: {
-                    format:
-                        '<div style="text-align:center">' +
-                        '<span style="font-size:25px">{y}</span><br/>' +
-                        '<span style="font-size:12px;opacity:0.4">％</span>' +
-                        "</div>",
-                },
-                tooltip: {
-                    valueSuffix: "%",
-                },
-            },
-        ],
-    };
-    const options = {
-        chart: {
-            type: "pie", //"pie","column"
-            marginBottom: 100,
-        },
-        title: {
-            text: "成本分析",
-        },
-        series: [
-            {
-                allowPointSelect: true,
-                size: "60%",
-                innerSize: "30%",
-                data: pieData,
-            },
-        ],
-    };
-    useEffect(() => {
-        getProductListFromFirebase();
-    }, []);
 
     useEffect(() => {
         if (selectedProduct.length > 0) {
@@ -190,104 +85,7 @@ function Analysis() {
         }
     }, [selectedProduct, caculateData, analysisProductIndex, sumCost]);
 
-    async function getProductListFromFirebase() {
-        const list = await api.getCompleteCollection("products");
-        // console.table(list);
-        setProductList(list);
-        setSelectedList(list);
-    }
-
-    function handleListChange(e) {
-        // console.log(e.target.value, "+", e.target, "+", e.target.name);
-        const key = e.target.name;
-        let value = e.target.value;
-        console.log(key);
-        if (value !== "noAction") {
-            if (key === "id") {
-                value = Number(e.target.value);
-                let newList = selectedList.filter(e => e[key][1] === value);
-                console.log(newList);
-                if (newList.length === 0) {
-                    newList = productList.filter(e => e[key][1] === value);
-                }
-                setSelectedList(newList);
-                return;
-            }
-            if (key === "bomList") {
-                let newList = selectedList.filter(e =>
-                    e.bomList.some(m => m.id === value),
-                );
-                console.log(newList);
-                if (newList.length === 0) {
-                    newList = productList.filter(e =>
-                        e.bomList.some(m => m.id === value),
-                    );
-                }
-                setSelectedList(newList);
-
-                return;
-            }
-
-            value = e.target.value;
-            console.log(e.target.value);
-            let newList = selectedList.filter(e => e[key] === value);
-            if (newList.length === 0) {
-                newList = productList.filter(e => e[key] === value);
-            }
-            setSelectedList(newList);
-        }
-        return;
-    }
-
-    async function getPartsQtationsFromFireBase(partIdList) {
-        const quotationDataPromise = partIdList.map(async e => {
-            const q = query(
-                collection(db, "partQuotations"),
-                where("id", "array-contains", e),
-            );
-            const data = await getDocs(q);
-            const promiseData = data.docs.map(e => e.data());
-            return promiseData;
-        });
-
-        const quotationData = await Promise.all(quotationDataPromise);
-        return quotationData;
-    }
-
-    async function handleProductChange(data) {
-        setPartQuotationsData([]);
-        setCaculatedData([]);
-        // console.log(data);
-        const renderProductData = changeSelectedProductToRander(data);
-        // console.log(renderProductData);
-        setSelectedProduct(renderProductData);
-        // setPartQuotationsData(renderProductData);
-        const partIdList = data.bomList.map(e => e.id);
-        const quotationData = await getPartsQtationsFromFireBase(partIdList);
-        console.log(quotationData);
-        const newCaculateData = quotationData.map(e => (e[0] ? e[0] : []));
-        console.log(newCaculateData);
-        const usageList = data.bomList?.map(e => Number(e.qty));
-        // console.log(usageList);
-
-        const sum = newCaculateData
-            .map(e => e.price)
-            .reduce((sum1, m, index) => sum1 + m * usageList[index], 0);
-
-        // console.log(newCaculateData);
-        // console.log(sum, typeof sum);
-
-        setSumCost(isNaN(sum) ? 0 : sum);
-        getPieData(newCaculateData, sum);
-
-        setCaculatedData(newCaculateData);
-        setPartQuotationsData(quotationData);
-    }
-
     function handleAnalysisProductChange(itemIndex) {
-        // console.log(itemIndex, data);
-        // console.log(caculateData);
-
         setAnalysisProductIndex(itemIndex);
 
         if (selectedProduct[itemIndex].price === 0) {
@@ -296,7 +94,10 @@ function Analysis() {
             const maxLeadTime = caculateData
                 .map(e => e.leadTime)
                 .reduce((max, day) => (day > max ? (max = day) : max), 0);
-            console.log(maxLeadTime);
+            const minValid = caculateData
+                .map(e => e.valid.seconds)
+                .reduce((min, date) => (date < min ? (min = date) : min));
+            console.log(minValid);
             console.log(quoteIdList);
             const newAnalysisList = data[itemIndex].analysisList.map(
                 (e, index) => ({ ...e, quoteId: quoteIdList[index] }),
@@ -304,36 +105,9 @@ function Analysis() {
             data[itemIndex].analysisList = newAnalysisList;
             data[itemIndex].price = sumCost;
             data[itemIndex].leadTime = maxLeadTime;
+            data[itemIndex].valid = minValid;
             setSelectedProduct(data);
         }
-    }
-
-    function changeSelectedProductToRander(data) {
-        console.log(data);
-        const analysisList = data.bomList.map(e => {
-            const partUseage = {
-                qty: Number(e.qty),
-                quoteId: e.id,
-            };
-            return partUseage;
-        });
-        console.log(analysisList);
-        const newArray = data.inquiryQty.map(e => {
-            const renderData = {
-                id: data.id,
-                qty: e,
-                company: data.company,
-                country: data.country,
-                name: data.name,
-                price: 0,
-                margin: 1,
-                currency: "",
-                analysisList,
-                leadTime: 30,
-            };
-            return renderData;
-        });
-        return newArray;
     }
 
     function handleProductPriceChange(index, e) {
@@ -369,7 +143,10 @@ function Analysis() {
         const maxLeadTime = newCaculateData
             .map(e => e.leadTime)
             .reduce((max, day) => (day > max ? (max = day) : max), 0);
-        // console.log(maxLeadTime);
+        const minValid = newCaculateData
+            .map(e => e.valid.seconds)
+            .reduce((min, date) => (date < min ? (min = date) : min));
+        console.log(minValid);
         // setSumCost(sum);
         const newPrice = selectedProduct[analysisProductIndex].margin * sum;
         const data = [...selectedProduct];
@@ -380,6 +157,7 @@ function Analysis() {
         data[analysisProductIndex].analysisList = newAnalysisList;
         data[analysisProductIndex].price = newPrice;
         data[analysisProductIndex].leadTime = maxLeadTime;
+        data[analysisProductIndex].valid = minValid;
         // console.log(selectedProduct);
         // console.log(data[analysisProductIndex].leadTime);
         setSelectedProduct([...data]);
@@ -400,15 +178,6 @@ function Analysis() {
         setSelectedProduct([...selectedProduct]);
     }
 
-    function showAllProduceList() {
-        setSelectedList(productList);
-    }
-
-    function test() {
-        const data = { 123: "123" };
-        api.setDocWithId("analysis", "123", data);
-    }
-
     function submit() {
         // console.log(selectedProduct);
         let i = 0;
@@ -417,7 +186,7 @@ function Analysis() {
             let id = [...e.id, form.transformId(i, 2)];
             const data = {
                 id,
-                date: Date.now(),
+                date: serverTimestamp(),
                 currency: "NT",
                 // waiting fix: 加入匯率考慮之後要能調整
                 name: e.name,
@@ -426,6 +195,7 @@ function Analysis() {
                 price: e.price,
                 margin: e.margin,
                 leadTime: e.leadTime,
+                valid: new Timestamp(e.valid, 0),
                 analysisList: e.analysisList,
             };
             console.log(data);
@@ -434,196 +204,25 @@ function Analysis() {
         });
     }
 
-    // console.log(selectedProduct)
-    console.log(partQuotationsData);
-    console.log(caculateData);
+    console.log(selectedProduct);
+    // console.log(partQuotationsData);
+    // console.log(caculateData);
 
     return (
         <Container>
             <SideBar />
             <Main>
-                <Products>
-                    <Title>產品列表</Title>
-                    <Button onClick={() => showAllProduceList()}>
-                        取消篩選
-                    </Button>
-                    <Table>
-                        <thead>
-                            <tr>
-                                <Th>編號</Th>
-                                <Th>版本</Th>
-                                <Th>地區</Th>
-                                <Th>客戶</Th>
-                                <Th>名稱</Th>
-                                <Th>零件</Th>
-                            </tr>
-                            <tr>
-                                <Th>
-                                    <select
-                                        name="id"
-                                        onChange={e => handleListChange(e)}
-                                        value={productList.id}
-                                    >
-                                        <option value="noAction">請選擇</option>
-                                        {productList &&
-                                            productList.map((e, index) => (
-                                                <option
-                                                    key={index}
-                                                    value={e.id[1]}
-                                                >
-                                                    {e.id[1]}
-                                                </option>
-                                            ))}
-                                    </select>
-                                </Th>
-                                <Th></Th>
-                                <Th>
-                                    <select
-                                        name="country"
-                                        onChange={e => handleListChange(e)}
-                                        value={productList.coutry}
-                                    >
-                                        <option value="noAction">請選擇</option>
-                                        {productList &&
-                                            productList
-                                                .filter(
-                                                    (e, index, array) =>
-                                                        array
-                                                            .map(n => n.country)
-                                                            .indexOf(
-                                                                e.country,
-                                                            ) === index,
-                                                )
-                                                .map((j, index) => (
-                                                    <option
-                                                        key={index}
-                                                        value={j.country}
-                                                    >
-                                                        {j.country}
-                                                    </option>
-                                                ))}
-                                    </select>
-                                </Th>
-                                <Th>
-                                    <select
-                                        name="company"
-                                        onChange={e => handleListChange(e)}
-                                        value={productList.company}
-                                    >
-                                        <option value="noAction">請選擇</option>
-                                        {productList &&
-                                            productList
-                                                .filter(
-                                                    (e, index, array) =>
-                                                        array
-                                                            .map(n => n.company)
-                                                            .indexOf(
-                                                                e.company,
-                                                            ) === index,
-                                                )
-                                                .map((j, index) => (
-                                                    <option
-                                                        key={index}
-                                                        value={j.company}
-                                                    >
-                                                        {j.company}
-                                                    </option>
-                                                ))}
-                                    </select>
-                                </Th>
-                                <Th>
-                                    <select
-                                        name="name"
-                                        onChange={e => handleListChange(e)}
-                                        value={productList.name}
-                                    >
-                                        <option value="noAction">請選擇</option>
-                                        {productList &&
-                                            productList
-                                                .filter(
-                                                    (e, index, array) =>
-                                                        array
-                                                            .map(n => n.name)
-                                                            .indexOf(e.name) ===
-                                                        index,
-                                                )
-                                                .map((j, index) => (
-                                                    <option
-                                                        key={index}
-                                                        value={j.name}
-                                                    >
-                                                        {j.name}
-                                                    </option>
-                                                ))}
-                                    </select>
-                                </Th>
-                                <Th>
-                                    <select
-                                        name="bomList"
-                                        onChange={e => handleListChange(e)}
-                                        value={productList.bomList}
-                                    >
-                                        <option value="noAction">請選擇</option>
-                                        {productList &&
-                                            productList
-                                                .map(e => e.bomList.map(n => n))
-                                                .flat(1)
-                                                .filter(
-                                                    (m, index, array) =>
-                                                        array
-                                                            .map(o => o.id)
-                                                            .indexOf(m.id) ===
-                                                        index,
-                                                )
-                                                .map((p, index2) => (
-                                                    <option
-                                                        key={index2}
-                                                        value={p.id}
-                                                    >
-                                                        {p.name}
-                                                    </option>
-                                                ))}
-                                    </select>
-                                </Th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {selectedList &&
-                                selectedList.map((e, index) => (
-                                    <tr key={index}>
-                                        <Td>{e.id[1]}</Td>
-                                        <Td>{e.id[2]}</Td>
-                                        <Td>{e.country}</Td>
-                                        <Td>{e.company}</Td>
-                                        <Td>{e.name}</Td>
-                                        <Td></Td>
-                                        <Td>
-                                            <input
-                                                type="radio"
-                                                name="product"
-                                                onClick={() =>
-                                                    handleProductChange(e)
-                                                }
-                                            />
-                                        </Td>
-                                        {/* <Td>
-                                            <select
-                                                value={e.inquiryQty[0]}
-                                                onChange={e =>
-                                                    handleImportChange(e, index)
-                                                }
-                                                name="inquiryQty"
-                                            >
-                                                {e.inquiryQty.map(e => (
-                                                    <option key={e}>{e}</option>
-                                                ))}
-                                            </select>
-                                        </Td> */}
-                                    </tr>
-                                ))}
-                        </tbody>
-                    </Table>
-                </Products>
+                <List
+                    productList={productList}
+                    setPartQuotationsData={setPartQuotationsData}
+                    setCaculatedData={setCaculatedData}
+                    setSelectedProduct={setSelectedProduct}
+                    setSumCost={setSumCost}
+                    setPieData={setPieData}
+                    setProductList={setProductList}
+                    setSelectedList={setSelectedList}
+                    selectedList={selectedList}
+                />
                 <Product>
                     <Flex>
                         <Title>分析產品</Title>
@@ -719,7 +318,6 @@ function Analysis() {
                             </tr>
                         </thead>
                         <tbody>
-                            {/* waiting fix: 這裡一直爆開是非同步的問題？ */}
                             {partQuotationsData.length > 0 &&
                                 partQuotationsData?.map((quotations, index) => (
                                     <tr key={index}>
@@ -746,7 +344,6 @@ function Analysis() {
                                             </select>
                                         </Td>
                                         <Td>
-                                            {console.log(selectedProduct)}
                                             {selectedProduct &&
                                                 selectedProduct.length > 0 &&
                                                 selectedProduct[0]
@@ -754,6 +351,13 @@ function Analysis() {
                                         </Td>
                                         <Td>{caculateData[index].price}</Td>
                                         <Td>{caculateData[index].currency}</Td>
+                                        <Td>
+                                            {new Date(
+                                                caculateData[
+                                                    index
+                                                ].valid.toDate(),
+                                            ).toLocaleDateString()}
+                                        </Td>
                                     </tr>
                                 ))}
                         </tbody>
@@ -794,18 +398,7 @@ function Analysis() {
                             />
                         )}
                     </Flex>
-                    <Flex>
-                        <HighchartsReact
-                            highcharts={Highcharts}
-                            options={gaugeOptions}
-                            containerProps={{ className: "chart-container" }}
-                        />
-
-                        <HighchartsReact
-                            highcharts={Highcharts}
-                            options={options}
-                        />
-                    </Flex>
+                    <Drawing profitMargin={profitMargin} pieData={pieData} />
                 </Border>
             </Main>
         </Container>

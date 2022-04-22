@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import SideBar from "./SideBar";
+import SideBar from "./component/SideBar";
 import { db } from "./utils/firebase";
 import { collection, query, onSnapshot } from "firebase/firestore";
 import form from "./component/formChange";
@@ -141,7 +141,7 @@ function BulletinBoard() {
         setCard(data);
     }
     async function addCard() {
-        // api.setDocWithId("boards", undefined, card);
+        api.setDocWithId("boards", undefined, card);
         setCard(cardDataRule);
     }
 
@@ -149,10 +149,15 @@ function BulletinBoard() {
         const q = query(collection(db, "boards"));
         const unsubscribe = onSnapshot(q, querySnapshot => {
             const pmWorks = [];
-            // querySnapshot.forEach(doc => pmWorks.push(doc.data()));
-            // for(let i=0; i<5; i++) {
-            //     columnsFromBackend[i].items = pmWorks.filter(item => item.status===i&&item);
-            // }
+            querySnapshot.forEach(doc => {
+                pmWorks.push(doc.data());
+                console.log(`note!!!`);
+            });
+            for (let i = 0; i < 5; i++) {
+                columnsFromBackend[i].items = pmWorks.filter(
+                    item => item.status === i && item,
+                );
+            }
             setColumns(columnsFromBackend);
         });
         return () => unsubscribe();

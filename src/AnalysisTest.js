@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import api from "./utils/firebaseApi";
 import { db } from "./utils/firebase";
 import { query, collection, where, getDocs } from "firebase/firestore";
-import SideBar from "./SideBar";
+import SideBar from "./component/SideBar";
 import mapData from "./utils/mapData";
 // import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";

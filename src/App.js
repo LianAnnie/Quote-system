@@ -8,6 +8,7 @@ import Parts from "./Parts";
 import Analysis from "./Analysis";
 import AnalysisTest from "./AnalysisTest";
 import Quote from "./Quote";
+import Order from "./Order";
 import Admin from "./Admin";
 import {
     BrowserRouter as Router,
@@ -33,6 +34,7 @@ function App() {
                     <Route path="/analysis" element={<Analysis />} />
                     <Route path="/analysis2" element={<AnalysisTest />} />
                     <Route path="/quote" element={<Quote />} />
+                    <Route path="/order" element={<Order />} />
                     <Route path="/admin" element={<Admin />} />
                     <Route path="/*" element={<Navigate to="/" />} />
                 </Routes>

@@ -9,6 +9,7 @@ import {
     serverTimestamp,
     deleteDoc,
     updateDoc,
+    where,
 } from "firebase/firestore";
 
 const api = {
@@ -17,6 +18,16 @@ const api = {
         const q = query(collectionRef, orderBy("id", "asc"));
         const collectionData = await getDocs(q);
         const data = collectionData.docs.map(e => e.data());
+        return data;
+    },
+
+    async getCollectionWithQuery(collectionName, key, searchWay, value) {
+        const q = query(
+            collection(db, collectionName),
+            where(key, searchWay, value),
+        );
+        const querySnapshot = await getDocs(q);
+        const data = querySnapshot.map(e => e.data());
         return data;
     },
 

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import SideBar from "./SideBar";
+import SideBar from "./component/SideBar";
 import { Timestamp } from "firebase/firestore";
 import api from "./utils/firebaseApi";
 import form from "./component/formChange";
