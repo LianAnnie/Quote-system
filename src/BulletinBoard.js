@@ -4,6 +4,8 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import SideBar from "./SideBar";
 import { db } from "./utils/firebase";
 import { collection, query, onSnapshot } from "firebase/firestore";
+import form from "./component/formChange";
+import api from "./utils/firebaseApi";
 
 const Container = styled.div`
     text-align: left;
@@ -12,31 +14,75 @@ const Main = styled.div`
     margin-left: 300px;
     padding: 50px 10%;
 `;
+const Title = styled.div`
+    margin-bottom: 50px;
+`;
+const Form = styled.div`
+    border: solid 1px #000000;
+    padding: 20px;
+`;
+const Question = styled.div`
+    display: flex;
+    margin: 5px;
+`;
+const Boards = styled.div`
+    display: flex;
+    justify-content: center;
+    height: 100%;
+`;
+
+const BoardContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`;
+
+const CardsContainer = styled.div`
+    margin: 8px;
+`;
+const Button = styled.div`
+    border: solid 1px #000000;
+    width: 100px;
+    margin: 5px;
+    text-align: center;
+    cursor: pointer;
+`;
+const Flex = styled.div`
+    display: flex;
+`;
 
 function BulletinBoard() {
-    const [pmWorkList, setPmWorkList] = useState([]);
+    const cardDataRule = {
+        id: 0,
+        date: "",
+        type: "Order",
+        status: 0,
+        comment: "comment",
+    };
     const [columns, setColumns] = useState([]);
-    const itemsFromBackend = pmWorkList;
+    const [card, setCard] = useState(cardDataRule);
     const columnsFromBackend = {
-        0: {
-            name: "工程",
-            items: [],
-            // items: itemsFromBackend,
-        },
         1: {
-            name: "採購",
+            name: "工程",
             items: [],
         },
         2: {
-            name: "生產",
+            name: "採購",
             items: [],
         },
         3: {
+            name: "生產",
+            items: [],
+        },
+        4: {
             name: "船務",
             items: [],
         },
+        0: {
+            name: "暫停",
+            items: [],
+        },
     };
-
     const onDragEnd = (result, columns, setColumns) => {
         if (!result.destination) return;
         const { source, destination } = result;
@@ -48,6 +94,12 @@ function BulletinBoard() {
             const destItems = [...destColumn.items];
             const [removed] = sourceItems.splice(source.index, 1);
             destItems.splice(destination.index, 0, removed);
+            console.log(source.droppableId); //原本位置
+            console.log(destination.droppableId); //新的位置-status要改的數字
+            // console.log(sourceColumn);
+            console.log(sourceItems);
+            // console.log(destColumn);
+            console.log(destItems);
             setColumns({
                 ...columns,
                 [source.droppableId]: {
@@ -59,11 +111,17 @@ function BulletinBoard() {
                     items: destItems,
                 },
             });
+            destItems.forEach(e => {
+                e.status = destination.droppableId;
+                updateCard(e);
+            });
         } else {
             const column = columns[source.droppableId];
             const copiedItems = [...column.items];
             const [removed] = copiedItems.splice(source.index, 1);
             copiedItems.splice(destination.index, 0, removed);
+            // console.log(column);
+            // console.log(copiedItems)
             setColumns({
                 ...columns,
                 [source.droppableId]: {
@@ -74,15 +132,27 @@ function BulletinBoard() {
         }
     };
 
-    console.log(columns, pmWorkList);
+    function updateCard(card) {
+        api.updateDoc("boards", card.id, card);
+    }
+
+    function handleCardChange(e) {
+        const data = form.handleChange("_", e, card);
+        setCard(data);
+    }
+    async function addCard() {
+        // api.setDocWithId("boards", undefined, card);
+        setCard(cardDataRule);
+    }
 
     useEffect(() => {
         const q = query(collection(db, "boards"));
         const unsubscribe = onSnapshot(q, querySnapshot => {
             const pmWorks = [];
-            querySnapshot.forEach(doc => pmWorks.push(doc.data()));
-            setPmWorkList(pmWorks);
-            columnsFromBackend[0].items = pmWorks;
+            // querySnapshot.forEach(doc => pmWorks.push(doc.data()));
+            // for(let i=0; i<5; i++) {
+            //     columnsFromBackend[i].items = pmWorks.filter(item => item.status===i&&item);
+            // }
             setColumns(columnsFromBackend);
         });
         return () => unsubscribe();
@@ -92,13 +162,76 @@ function BulletinBoard() {
         <Container>
             <SideBar />
             <Main>
-                <div
-                    style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        height: "100%",
-                    }}
-                >
+                <Title>待辦通知</Title>
+                <Form>
+                    <Question>
+                        <div>工作類型</div>
+                        <select
+                            name="type"
+                            onChange={e => {
+                                handleCardChange(e);
+                            }}
+                            value={card.type}
+                        >
+                            <option value="Inquiry">Inquiry</option>
+                            <option value="Order">Order</option>
+                        </select>
+                    </Question>
+                    <Question>
+                        <div>分配部門</div>
+                        <select
+                            name="status"
+                            onChange={e => {
+                                handleCardChange(e);
+                            }}
+                            value={card.status}
+                        >
+                            <option value={0}>暫停</option>
+                            <option value={1}>工程</option>
+                            <option value={2}>採購</option>
+                            <option value={3}>生產</option>
+                            <option value={4}>船務</option>
+                        </select>
+                    </Question>
+                    <Question>
+                        <div>提醒事項</div>
+                        <textarea
+                            type="text"
+                            name="comment"
+                            onChange={e => handleCardChange(e)}
+                            rows="3"
+                            cols="20"
+                            value={card.comment}
+                        />
+                    </Question>
+                    {card.id === 0 ? (
+                        <Button
+                            onClick={() => {
+                                addCard();
+                            }}
+                        >
+                            新增
+                        </Button>
+                    ) : (
+                        <Flex>
+                            <Button
+                                onClick={() => {
+                                    setCard(cardDataRule);
+                                }}
+                            >
+                                取消修改
+                            </Button>
+                            <Button
+                                onClick={() => {
+                                    updateCard();
+                                }}
+                            >
+                                上傳修改
+                            </Button>
+                        </Flex>
+                    )}
+                </Form>
+                <Boards>
                     <DragDropContext
                         onDragEnd={result =>
                             onDragEnd(result, columns, setColumns)
@@ -107,16 +240,9 @@ function BulletinBoard() {
                         {Object.entries(columns).map(
                             ([columnId, column], index) => {
                                 return (
-                                    <div
-                                        style={{
-                                            display: "flex",
-                                            flexDirection: "column",
-                                            alignItems: "center",
-                                        }}
-                                        key={columnId}
-                                    >
+                                    <BoardContainer key={columnId}>
                                         <h2>{column.name}</h2>
-                                        <div style={{ margin: 8 }}>
+                                        <CardsContainer>
                                             <Droppable
                                                 droppableId={columnId}
                                                 key={columnId}
@@ -207,13 +333,13 @@ function BulletinBoard() {
                                                     );
                                                 }}
                                             </Droppable>
-                                        </div>
-                                    </div>
+                                        </CardsContainer>
+                                    </BoardContainer>
                                 );
                             },
                         )}
                     </DragDropContext>
-                </div>
+                </Boards>
             </Main>
         </Container>
     );

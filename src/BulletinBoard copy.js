@@ -270,7 +270,7 @@ function BulletinBoard() {
                                     <Card key={index}>
                                         <div>工作：{card.type}</div>
                                         <div>提醒事項：{card.comment}</div>
-                                        <Button
+                                        {/* <Button
                                             onClick={() => reviedCard(card)}
                                         >
                                             修改
@@ -281,7 +281,7 @@ function BulletinBoard() {
                                             }}
                                         >
                                             刪除
-                                        </Button>
+                                        </Button> */}
                                     </Card>
                                 ),
                         )}
