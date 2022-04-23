@@ -81,7 +81,7 @@ function SideBar() {
                     {!showNavBar && (
                         <Burger onClick={() => setShowNavBar(true)}>≡</Burger>
                     )}
-                    <Design>ERP System</Design>
+                    <Design>Quote System</Design>
                 </Title>
                 <HideMobile showNavBar={showNavBar}>
                     <Navbar>
