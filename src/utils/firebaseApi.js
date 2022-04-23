@@ -50,6 +50,10 @@ const api = {
         if (collectionName === "boards") {
             data.status = Number(data.status);
         }
+        // if(collectionName === 'customers2'){
+        //     console.log(docId,data)
+        //     return
+        // }
         const docRef = doc(db, collectionName, docId);
         updateDoc(docRef, data);
     },

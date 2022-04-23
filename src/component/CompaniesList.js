@@ -27,7 +27,7 @@ const Button = styled.div`
     cursor: pointer;
 `;
 
-function List({ list, setList }) {
+function List({ collectionName, list, setList }) {
     const [filterList, setFilterList] = useState([]);
     const [filterCondition, setFilterCondition] = useState({});
     const [revisedStatus, setRevisedStatus] = useState([]);
@@ -36,14 +36,9 @@ function List({ list, setList }) {
 
     useEffect(() => {
         setFilterList(list);
+        revisedStatusArray(list);
+        setRevisedData(list);
     }, [list]);
-
-    useEffect(() => {
-        if (filterList.length !== revisedStatus.length) {
-            revisedStatusArray(filterList);
-        }
-        setRevisedData(filterList);
-    }, [filterList]);
 
     function handleConditionChange(e) {
         const name = e.target.name;
@@ -58,11 +53,16 @@ function List({ list, setList }) {
                 `沒有符合篩選結果,清除原本篩選條件,按最後一次需求篩選資料`,
             );
             setFilterCondition({ [name]: value });
-            setFilterList(handleListChange({ [name]: value }, list));
+            const resetList = handleListChange({ [name]: value }, list);
+            setFilterList(resetList);
+            revisedStatusArray(resetList);
+            setRevisedData(resetList);
             return;
         }
         setFilterCondition(newFilterCondition);
         setFilterList(newFilterList);
+        revisedStatusArray(newFilterList);
+        setRevisedData(newFilterList);
     }
 
     function handleListChange(condition, data) {
@@ -87,22 +87,28 @@ function List({ list, setList }) {
         setRevisedStatus(newArray);
     }
 
-    function handleRevisedStatus(e, index, save) {
+    function handleRevisedStatus(index, save) {
         // console.log(revisedStatus,index, e);
         const newRevisedStatus = [...revisedStatus];
         const newRevisedData = [...revisedData];
         const newfilterList = [...filterList];
         if (newRevisedStatus[index]) {
             if (save) {
+                console.log(save);
                 newfilterList[index] = revisedData[index];
+                api.updateDoc(
+                    collectionName,
+                    revisedData[index].id.join(""),
+                    revisedData[index],
+                );
                 setFilterList(newfilterList);
             } else {
+                console.log(save);
                 newRevisedData[index] = filterList[index];
                 setRevisedData(newRevisedData);
             }
         }
         newRevisedStatus[index] = !newRevisedStatus[index];
-        console.log(newRevisedStatus);
         setRevisedStatus(newRevisedStatus);
     }
 
@@ -111,6 +117,8 @@ function List({ list, setList }) {
         const data = form.handleChange(index, e, revisedData);
         setRevisedData(data);
     }
+
+    console.log(revisedData);
 
     return (
         <Contanier>
@@ -169,7 +177,7 @@ function List({ list, setList }) {
                                     <Td>
                                         <Button
                                             onClick={() =>
-                                                handleRevisedStatus(e, index)
+                                                handleRevisedStatus(index)
                                             }
                                         >
                                             更新
@@ -208,11 +216,7 @@ function List({ list, setList }) {
                                     <Td>
                                         <Button
                                             onClick={() =>
-                                                handleRevisedStatus(
-                                                    e,
-                                                    index,
-                                                    true,
-                                                )
+                                                handleRevisedStatus(index, true)
                                             }
                                         >
                                             儲存
@@ -222,9 +226,8 @@ function List({ list, setList }) {
                                         <Button
                                             onClick={() =>
                                                 handleRevisedStatus(
-                                                    e,
                                                     index,
-                                                    true,
+                                                    false,
                                                 )
                                             }
                                         >
@@ -250,7 +253,11 @@ function CompaniesList({
 }) {
     return (
         <>
-            <List list={customerList} setList={setCustomerList} />
+            <List
+                collectionName={"customers2"}
+                list={customerList}
+                setList={setCustomerList}
+            />
             {/* <SupplierList
                 supplierList={supplierList}
                 setSupplierList={setSupplierList}
