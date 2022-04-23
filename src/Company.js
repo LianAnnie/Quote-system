@@ -46,9 +46,7 @@ function Company() {
                 />
                 <CompaniesList
                     customerList={customerList}
-                    setCustomerList={setCustomerList}
                     supplierList={supplierList}
-                    setSupplierList={setSupplierList}
                 />
             </Main>
         </Container>

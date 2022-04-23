@@ -27,12 +27,16 @@ const Button = styled.div`
     cursor: pointer;
 `;
 
-function List({ collectionName, list, setList }) {
+function List({ collectionName, list }) {
     const [filterList, setFilterList] = useState([]);
     const [filterCondition, setFilterCondition] = useState({});
     const [revisedStatus, setRevisedStatus] = useState([]);
     const [revisedData, setRevisedData] = useState({});
     const objectkey = ["id", "company", "contacts", "country"];
+    const collections = {
+        customers2: "客戶",
+        suppliers2: "供應商",
+    };
 
     useEffect(() => {
         setFilterList(list);
@@ -127,11 +131,11 @@ function List({ collectionName, list, setList }) {
         setFilterList(newFilterList);
     }
 
-    console.log(revisedData);
+    console.log(list);
 
     return (
         <Contanier>
-            <Title>列表</Title>
+            <Title>{collections[collectionName]}列表</Title>
             <Button
                 onClick={() => {
                     handleListChange(0);
@@ -142,7 +146,7 @@ function List({ collectionName, list, setList }) {
             <Table>
                 <thead>
                     <tr>
-                        <Th>編號</Th>
+                        <Th>{collections[collectionName]}編號</Th>
                         <Th>公司名稱</Th>
                         <Th>聯繫人</Th>
                         <Th>國家</Th>
@@ -258,23 +262,11 @@ function List({ collectionName, list, setList }) {
 
 // function SupplierList({ supplierList, setSupplierList }) {}
 
-function CompaniesList({
-    customerList,
-    setCustomerList,
-    supplierList,
-    setSupplierList,
-}) {
+function CompaniesList({ customerList, supplierList }) {
     return (
         <>
-            <List
-                collectionName={"customers2"}
-                list={customerList}
-                setList={setCustomerList}
-            />
-            {/* <SupplierList
-                supplierList={supplierList}
-                setSupplierList={setSupplierList}
-            /> */}
+            <List collectionName={"customers2"} list={customerList} />
+            <List collectionName={"suppliers2"} list={supplierList} />
         </>
     );
 }
