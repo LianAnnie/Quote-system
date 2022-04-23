@@ -118,6 +118,15 @@ function List({ collectionName, list, setList }) {
         setRevisedData(data);
     }
 
+    function deleteData(itemIndex) {
+        const deleteData = filterList[itemIndex];
+        const newFilterList = filterList.filter(
+            (_, index) => index !== itemIndex,
+        );
+        api.deleteDoc(collectionName, deleteData.id.join(""));
+        setFilterList(newFilterList);
+    }
+
     console.log(revisedData);
 
     return (
@@ -184,7 +193,11 @@ function List({ collectionName, list, setList }) {
                                         </Button>
                                     </Td>
                                     <Td>
-                                        <Button>刪除</Button>
+                                        <Button
+                                            onClick={() => deleteData(index)}
+                                        >
+                                            刪除
+                                        </Button>
                                     </Td>
                                 </tr>
                             ) : (
