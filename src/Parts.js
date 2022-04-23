@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import SideBar from "./component/SideBar";
 import { Timestamp } from "firebase/firestore";
 import api from "./utils/firebaseApi";
-import form from "./component/formChange";
+import form from "./utils/formChange";
 
 const Container = styled.div`
     text-align: left;

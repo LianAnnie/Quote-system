@@ -4,7 +4,7 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import SideBar from "./component/SideBar";
 import { db } from "./utils/firebase";
 import { collection, query, onSnapshot } from "firebase/firestore";
-import form from "./component/formChange";
+import form from "./utils/formChange";
 import api from "./utils/firebaseApi";
 
 const Container = styled.div`

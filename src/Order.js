@@ -2,7 +2,7 @@ import styled from "styled-components";
 import SideBar from "./component/SideBar";
 import { useState, useEffect } from "react";
 import api from "./utils/firebaseApi";
-import form from "./component/formChange";
+import form from "./utils/formChange";
 
 const Container = styled.div`
     text-align: left;

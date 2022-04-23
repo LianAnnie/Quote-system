@@ -18,13 +18,13 @@ const form = {
         if (originData.length === undefined) {
             data = JSON.parse(JSON.stringify(originData));
             //waiting check: 這樣寫才rerender,真的是拷貝問題？
-            console.log(e.target.name);
+            // console.log(e.target.name);
             data[e.target.name] = e.target.value;
         }
         if (originData.length > 0) {
-            data = [...originData];
-            console.log(data);
-            console.log(itemIndex);
+            data = JSON.parse(JSON.stringify(originData));
+            // console.log(data);
+            // console.log(itemIndex);
             data[itemIndex][e.target.name] = e.target.value;
         }
         return data;

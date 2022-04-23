@@ -100,6 +100,11 @@ function SideBar() {
                         </NavLink>
                     </Navbar>
                     <Navbar>
+                        <NavLink to="/company">
+                            <White>客戶廠商</White>
+                        </NavLink>
+                    </Navbar>
+                    <Navbar>
                         <NavLink to="/bom">
                             <White>客戶產品</White>
                         </NavLink>

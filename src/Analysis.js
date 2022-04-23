@@ -8,7 +8,7 @@ import { db } from "./utils/firebase";
 import { Timestamp, serverTimestamp } from "firebase/firestore";
 import Highcharts from "highcharts";
 import more from "highcharts/highcharts-more";
-import form from "./component/formChange";
+import form from "./utils/formChange";
 more(Highcharts);
 require("highcharts/modules/solid-gauge")(Highcharts);
 

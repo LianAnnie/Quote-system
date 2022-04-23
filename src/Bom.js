@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import SideBar from "./component/SideBar";
 import api from "./utils/firebaseApi";
-import form from "./component/formChange";
+import form from "./utils/formChange";
 import { storage } from "./utils/firebase";
 import {
     ref,

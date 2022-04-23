@@ -3,6 +3,7 @@ import "./App.css";
 import LogIn from "./LogIn";
 import BulletinBoard from "./BulletinBoard";
 import Overview from "./Overview";
+import Company from "./Company";
 import Bom from "./Bom";
 import Parts from "./Parts";
 import Analysis from "./Analysis";
@@ -29,10 +30,11 @@ function App() {
                     <Route path="/login" element={<LogIn />} />
                     <Route path="/" element={<BulletinBoard />} />
                     <Route path="/overview" element={<Overview />} />
+                    <Route path="/company" element={<Company />} />
+                    {/* <Route path="/analysis2" element={<AnalysisTest />} /> */}
                     <Route path="/bom" element={<Bom />} />
                     <Route path="/parts" element={<Parts />} />
                     <Route path="/analysis" element={<Analysis />} />
-                    <Route path="/analysis2" element={<AnalysisTest />} />
                     <Route path="/quote" element={<Quote />} />
                     <Route path="/order" element={<Order />} />
                     <Route path="/admin" element={<Admin />} />
