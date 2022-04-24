@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import api from "../utils/firebaseApi";
 import form from "../utils/formChange";
 import data from "../utils/data";
+import Input from "./Input";
 
 const Data = styled.div`
     padding: 20px 10%;
@@ -117,28 +118,18 @@ function Companies({
                     <div>公司編號</div>
                     <div>{exportData.id}</div>
                 </Question>
-                <Question>
-                    <div>公司名稱</div>
-                    <input
-                        type="text"
-                        name="company"
-                        onChange={e => {
-                            handleExportDataInputChange(e);
-                        }}
-                        value={exportData.company}
-                    />
-                </Question>
-                <Question>
-                    <div>聯繫資料</div>
-                    <input
-                        type="text"
-                        name="contacts"
-                        onChange={e => {
-                            handleExportDataInputChange(e);
-                        }}
-                        value={exportData.contacts}
-                    />
-                </Question>
+                <Input
+                    title="公司名稱"
+                    handleDataChange={handleExportDataInputChange}
+                    data={exportData}
+                    name="company"
+                />
+                <Input
+                    title="聯繫資料"
+                    handleDataChange={handleExportDataInputChange}
+                    data={exportData}
+                    name="contacts"
+                />
                 <Question>
                     <div>國家</div>
                     <select
@@ -148,7 +139,7 @@ function Companies({
                             handleExportDataIdChange(e);
                         }}
                     >
-                        {data.countryList.map((country, index) => (
+                        {data.countryList.map(country => (
                             <option key={country[0]} value={country[1]}>
                                 {country[1]}
                             </option>

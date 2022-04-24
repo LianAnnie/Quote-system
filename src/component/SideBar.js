@@ -85,11 +85,6 @@ function SideBar() {
                 </Title>
                 <HideMobile showNavBar={showNavBar}>
                     <Navbar>
-                        <NavLink to="/admin">
-                            <White>功能測試</White>
-                        </NavLink>
-                    </Navbar>
-                    <Navbar>
                         <NavLink to="/">
                             <White>待辦通知</White>
                         </NavLink>
@@ -105,6 +100,11 @@ function SideBar() {
                         </NavLink>
                     </Navbar>
                     <Navbar>
+                        <NavLink to="/bom">
+                            <White>產品零件</White>
+                        </NavLink>
+                    </Navbar>
+                    {/* <Navbar>
                         <NavLink to="/bom">
                             <White>客戶產品</White>
                         </NavLink>
@@ -124,31 +124,11 @@ function SideBar() {
                             <White>訂單資料</White>
                         </NavLink>
                     </Navbar>
-                    {/* <Navbar>
-                        <NavLink to="/admin">
-                            <White>採購表單</White>
-                        </NavLink>
-                    </Navbar>
-                    <Navbar>
-                        <NavLink to="/admin">
-                            <White>出貨發票</White>
-                        </NavLink>
-                    </Navbar>
-                    <Navbar>
-                        <NavLink to="/admin">
-                            <White>庫存進銷</White>
-                        </NavLink>
-                    </Navbar> */}
                     <Navbar>
                         <NavLink to="/analysis">
                             <White>成本分析</White>
                         </NavLink>
-                    </Navbar>
-                    <Navbar>
-                        <NavLink to="/analysis2">
-                            <White>成本分析2</White>
-                        </NavLink>
-                    </Navbar>
+                    </Navbar> */}
                     <Navbar>
                         <NavLink to="/login">
                             <White>登出</White>

@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import api from "./utils/firebaseApi";
-import { db } from "./utils/firebase";
+import api from "../utils/firebaseApi";
+import { db } from "../utils/firebase";
 import { query, collection, where, getDocs } from "firebase/firestore";
-import SideBar from "./component/SideBar";
-import mapData from "./utils/mapData";
+import SideBar from "../component/SideBar";
+import mapData from "../utils/mapData";
 // import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 // require("highcharts/modules/map")(Highcharts);
