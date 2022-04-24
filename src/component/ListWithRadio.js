@@ -30,7 +30,7 @@ const Button = styled.div`
     cursor: pointer;
 `;
 
-function List({ collectionName, list }) {
+function ListWithRadio({ collectionName, list }) {
     const [filterList, setFilterList] = useState([]);
     const [filterCondition, setFilterCondition] = useState({});
     const [revisedStatus, setRevisedStatus] = useState([]);
@@ -38,12 +38,12 @@ function List({ collectionName, list }) {
     const collections = {
         customers2: [
             "客戶",
-            ["客戶編號", "公司名稱", "聯繫人", "地區", "更新", "刪除"],
+            ["客戶編號", "公司名稱", "聯繫人", "地區", "選取"],
             ["id", "company", "contacts", "country"],
         ],
         suppliers2: [
             "廠商",
-            ["廠商編號", "公司名稱", "聯繫人", "地區", "更新", "刪除"],
+            ["廠商編號", "公司名稱", "聯繫人", "地區", "選取"],
             ["id", "company", "contacts", "country"],
         ],
         products2: [
@@ -57,8 +57,7 @@ function List({ collectionName, list }) {
                 "款式",
                 "特殊",
                 "備註",
-                "更新",
-                "刪除",
+                "選取",
             ],
             [
                 "id",
@@ -81,8 +80,7 @@ function List({ collectionName, list }) {
                 "規格1",
                 "規格2",
                 "規格3",
-                "更新",
-                "刪除",
+                "選取",
             ],
             ["id", "mark", "class", "group", "spec1", "spec2", "spec3"],
         ],
@@ -235,88 +233,20 @@ function List({ collectionName, list }) {
                 </thead>
                 <tbody>
                     {filterList &&
-                        filterList.map((e, index) =>
-                            !revisedStatus[index] ? (
-                                <tr key={e.id}>
-                                    {collections[collectionName][2].map(
-                                        keyName => (
-                                            <Td key={keyName}>{e[keyName]}</Td>
-                                        ),
-                                    )}
-                                    <Td>
-                                        <Button
-                                            onClick={() =>
-                                                handleRevisedStatus(index)
-                                            }
-                                        >
-                                            更新
-                                        </Button>
-                                    </Td>
-                                    <Td>
-                                        <Button
-                                            onClick={() => deleteData(index)}
-                                        >
-                                            刪除
-                                        </Button>
-                                    </Td>
-                                </tr>
-                            ) : (
-                                <tr key={e.id}>
-                                    {collections[collectionName][2].map(
-                                        (keyName, keyIndex) =>
-                                            keyName === "id" ||
-                                            keyName === "country" ? (
-                                                <Td key={keyIndex}>
-                                                    {e[keyName]}
-                                                </Td>
-                                            ) : (
-                                                <Td>
-                                                    <input
-                                                        key={keyIndex}
-                                                        name={keyName}
-                                                        value={
-                                                            revisedData[index][
-                                                                keyName
-                                                            ]
-                                                        }
-                                                        onChange={e =>
-                                                            handleRevisedData(
-                                                                index,
-                                                                e,
-                                                            )
-                                                        }
-                                                    ></input>
-                                                </Td>
-                                            ),
-                                    )}
-                                    <Td>
-                                        <Button
-                                            onClick={() =>
-                                                handleRevisedStatus(index, true)
-                                            }
-                                        >
-                                            儲存
-                                        </Button>
-                                    </Td>
-                                    <Td>
-                                        <Button
-                                            onClick={() =>
-                                                handleRevisedStatus(
-                                                    index,
-                                                    false,
-                                                )
-                                            }
-                                        >
-                                            取消
-                                        </Button>
-                                    </Td>
-                                </tr>
-                            ),
-                        )}
+                        filterList.map((e, index) => (
+                            <tr key={e.id}>
+                                {collections[collectionName][2].map(keyName => (
+                                    <Td key={keyName}>{e[keyName]}</Td>
+                                ))}
+                                <Td>
+                                    <input type="radio" name="product" />
+                                </Td>
+                            </tr>
+                        ))}
                 </tbody>
             </Table>
         </Contanier>
     );
 }
 
-export default List;
+export default ListWithRadio;

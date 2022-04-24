@@ -4,6 +4,7 @@ import SideBar from "./component/SideBar";
 import Product from "./component/Product";
 import Part from "./component/Part";
 import List from "./component/List";
+import Structure from "./component/Structure";
 import api from "./utils/firebaseApi";
 
 const Container = styled.div`
@@ -61,18 +62,23 @@ function Bom() {
                         />
                         <List collectionName="products2" list={productList} />
                     </>
-                ) : (
-                    page === 1 && (
-                        <>
-                            <Part
-                                collectionName="parts2"
-                                list={partList}
-                                setList={setPartList}
-                            />
+                ) : page === 1 ? (
+                    <>
+                        <Part
+                            collectionName="parts2"
+                            list={partList}
+                            setList={setPartList}
+                        />
 
-                            <List collectionName="parts2" list={partList} />
-                        </>
-                    )
+                        <List collectionName="parts2" list={partList} />
+                    </>
+                ) : (
+                    <>
+                        <Structure
+                            collectionName="products2"
+                            list={productList}
+                        />
+                    </>
                 )}
             </Main>
         </Container>

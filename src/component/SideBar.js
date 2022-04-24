@@ -118,22 +118,22 @@ function SideBar() {
                         <NavLink to="/parts">
                             <White>廠商訊息</White>
                         </NavLink>
-                    </Navbar>
+                    </Navbar> */}
                     <Navbar>
                         <NavLink to="/quote">
-                            <White>報價表單</White>
+                            <Black>報價表單</Black>
                         </NavLink>
                     </Navbar>
                     <Navbar>
                         <NavLink to="/order">
-                            <White>訂單資料</White>
+                            <Black>訂單資料</Black>
                         </NavLink>
                     </Navbar>
                     <Navbar>
                         <NavLink to="/analysis">
-                            <White>成本分析</White>
+                            <Black>成本分析</Black>
                         </NavLink>
-                    </Navbar> */}
+                    </Navbar>
                     <Navbar>
                         <NavLink style={{ textDecoration: "none" }} to="/login">
                             <Black>登出</Black>

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import SideBar from "./component/SideBar";
 import Drawing from "./component/Drawing";
-import List from "./component/List";
+import List from "./remove/List";
 import api from "./utils/firebaseApi";
 import { useState, useEffect } from "react";
 import { db } from "./utils/firebase";

@@ -106,8 +106,8 @@ function Part({ collectionName, list, setList }) {
             data: exportData,
             name: "spec1",
             optionArray: [
-                ["Br", "黃銅"],
-                ["Co", "紅銅"],
+                ["BR", "黃銅"],
+                ["CO", "紅銅"],
                 ["ST", "鋼"],
                 ["AL", "鋁"],
                 ["SL", "不鏽鋼"],

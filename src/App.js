@@ -6,9 +6,9 @@ import Overview from "./Overview";
 import Company from "./Company";
 import Bom from "./Bom";
 // import Parts from "./Parts";
-// import Analysis from "./Analysis";
-// import Quote from "./Quote";
-// import Order from "./Order";
+import Analysis from "./Analysis";
+import Quote from "./Quote";
+import Order from "./Order";
 import {
     BrowserRouter as Router,
     Routes,
@@ -30,10 +30,10 @@ function App() {
                     <Route path="/overview" element={<Overview />} />
                     <Route path="/company" element={<Company />} />
                     <Route path="/bom" element={<Bom />} />
-                    {/* <Route path="/parts" element={<Parts />} />
+                    {/* <Route path="/parts" element={<Parts />} />*/}
                     <Route path="/analysis" element={<Analysis />} />
                     <Route path="/quote" element={<Quote />} />
-                    <Route path="/order" element={<Order />} /> */}
+                    <Route path="/order" element={<Order />} />
                     <Route path="/*" element={<Navigate to="/" />} />
                 </Routes>
             </Router>
