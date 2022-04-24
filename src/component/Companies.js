@@ -5,15 +5,17 @@ import form from "../utils/formChange";
 import data from "../utils/data";
 import Input from "./Input";
 
-const Data = styled.div`
-    padding: 20px 10%;
+const Container = styled.div`
+    padding: 20px 5%;
 `;
 const Title = styled.div`
     margin-bottom: 20px;
 `;
 const Form = styled.div`
     border: solid 1px #000000;
+    border-radius: 10px;
     padding: 20px;
+    background-color: #fff;
 `;
 const Question = styled.div`
     display: flex;
@@ -100,7 +102,7 @@ function Companies({
     }
 
     return (
-        <Data>
+        <Container>
             <Title>公司資料表</Title>
             <Form>
                 <Question>
@@ -148,7 +150,7 @@ function Companies({
                 </Question>
             </Form>
             <Button onClick={() => submit()}>Submit</Button>
-        </Data>
+        </Container>
     );
 }
 

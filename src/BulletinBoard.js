@@ -9,6 +9,8 @@ import api from "./utils/firebaseApi";
 
 const Container = styled.div`
     text-align: left;
+    background-color: #fffae3;
+    height: 100vh;
 `;
 const Main = styled.div`
     margin-left: 300px;
@@ -19,7 +21,9 @@ const Title = styled.div`
 `;
 const Form = styled.div`
     border: solid 1px #000000;
+    border-radius: 10px;
     padding: 20px;
+    background-color: #fff;
 `;
 const Question = styled.div`
     display: flex;
@@ -260,11 +264,13 @@ function BulletinBoard() {
                                                                 provided.innerRef
                                                             }
                                                             style={{
+                                                                borderRadius:
+                                                                    "10px",
                                                                 background:
                                                                     snapshot.isDraggingOver
-                                                                        ? "lightblue"
-                                                                        : "lightgrey",
-                                                                padding: 4,
+                                                                        ? "#A39171"
+                                                                        : "#F1D9A7",
+                                                                padding: 10,
                                                                 width: 250,
                                                                 minHeight: 500,
                                                             }}
@@ -302,12 +308,14 @@ function BulletinBoard() {
                                                                                                 "none",
                                                                                             padding: 16,
                                                                                             margin: "0 0 8px 0",
+                                                                                            borderRadius:
+                                                                                                "10px",
                                                                                             minHeight:
                                                                                                 "50px",
                                                                                             backgroundColor:
                                                                                                 snapshot.isDragging
-                                                                                                    ? "#263B4A"
-                                                                                                    : "#456C86",
+                                                                                                    ? "#513c2c"
+                                                                                                    : "#513c2c",
                                                                                             color: "white",
                                                                                             ...provided
                                                                                                 .draggableProps

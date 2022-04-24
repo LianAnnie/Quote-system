@@ -5,15 +5,17 @@ import { useState, useEffect } from "react";
 import api from "../utils/firebaseApi";
 import form from "../utils/formChange";
 
-const Data = styled.div`
-    padding: 20px 10%;
+const Container = styled.div`
+    padding: 20px 5%;
 `;
 const Title = styled.div`
     margin-bottom: 20px;
 `;
 const Form = styled.div`
     border: solid 1px #000000;
+    border-radius: 10px;
     padding: 20px;
+    background-color: #fff;
 `;
 const Question = styled.div`
     display: flex;
@@ -112,6 +114,7 @@ function Part({ collectionName, list, setList }) {
                 ["AB", "ABS塑膠"],
                 ["PP", "PP塑膠"],
                 ["PC", "PC塑膠"],
+                ["PA", "PA塑膠"],
             ],
         },
         {
@@ -159,9 +162,7 @@ function Part({ collectionName, list, setList }) {
                 ["ST", "鋼"],
                 ["AL", "鋁"],
                 ["SL", "不鏽鋼"],
-                ["AB", "ABS塑膠"],
-                ["PP", "PP塑膠"],
-                ["PC", "PC塑膠"],
+                ["PL", "塑膠"],
             ],
         },
         {
@@ -221,7 +222,7 @@ function Part({ collectionName, list, setList }) {
         setExportData(newExportData);
     }
 
-    function submit() {
+    async function submit() {
         const result = Object.values(exportData).some(
             e => typeof e === "number",
         );
@@ -229,10 +230,13 @@ function Part({ collectionName, list, setList }) {
             console.log(`請將規格選齊`);
             return;
         }
-        api.setDocWithId(collectionName, exportData.id.join(""), exportData);
-        console.log(exportData);
+        const newExportData = await api.setDocWithId(
+            collectionName,
+            exportData.id.join(""),
+            exportData,
+        );
         setExportData(ruleData);
-        setList(prev => [...prev, exportData]);
+        setList(prev => [...prev, newExportData]);
     }
 
     function handleSNNumberChange(data, list) {
@@ -251,7 +255,7 @@ function Part({ collectionName, list, setList }) {
     }
 
     return (
-        <Data>
+        <Container>
             <Title>零件資料表</Title>
             <Form>
                 <Question>
@@ -310,7 +314,7 @@ function Part({ collectionName, list, setList }) {
                       ))}
             </Form>
             <Button onClick={() => submit()}>Submit</Button>
-        </Data>
+        </Container>
     );
 }
 

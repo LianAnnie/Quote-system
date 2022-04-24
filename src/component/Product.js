@@ -5,15 +5,17 @@ import { useState, useEffect } from "react";
 import api from "../utils/firebaseApi";
 import form from "../utils/formChange";
 
-const Data = styled.div`
-    padding: 20px 10%;
+const Container = styled.div`
+    padding: 20px 5%;
 `;
 const Title = styled.div`
     margin-bottom: 20px;
 `;
 const Form = styled.div`
     border: solid 1px #000000;
+    border-radius: 10px;
     padding: 20px;
+    background-color: #fff;
 `;
 const Question = styled.div`
     display: flex;
@@ -149,7 +151,7 @@ function Product({ collectionName, list, setList }) {
         setExportData(newExportData);
     }
 
-    function submit() {
+    async function submit() {
         const result = Object.values(exportData).some(
             e => typeof e === "number",
         );
@@ -157,9 +159,13 @@ function Product({ collectionName, list, setList }) {
             console.log(`請將規格選齊`);
             return;
         }
-        api.setDocWithId(collectionName, exportData.id.join(""), exportData);
-        // setExportData(ruleData);
-        setList(prev => [...prev, exportData]);
+        const newExportData = await api.setDocWithId(
+            collectionName,
+            exportData.id.join(""),
+            exportData,
+        );
+        setExportData(ruleData);
+        setList(prev => [...prev, newExportData]);
     }
 
     function handleSNNumberChange(data, list) {
@@ -178,7 +184,7 @@ function Product({ collectionName, list, setList }) {
     }
 
     return (
-        <Data>
+        <Container>
             <Title>產品資料表</Title>
             <Form>
                 <Question>
@@ -204,7 +210,7 @@ function Product({ collectionName, list, setList }) {
                 />
             </Form>
             <Button onClick={() => submit()}>Submit</Button>
-        </Data>
+        </Container>
     );
 }
 

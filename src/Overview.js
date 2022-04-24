@@ -6,6 +6,8 @@ let topojson = require("@highcharts/map-collection/custom/world.topo.json");
 
 const Container = styled.div`
     text-align: left;
+    background-color: #fffae3;
+    height: 100vh;
 `;
 const Main = styled.div`
     margin-left: 300px;
@@ -20,6 +22,7 @@ const Title = styled.div`
 const Border = styled.div`
     border: solid 1px #000000;
     padding: 20px;
+    background-color: #fff;
 `;
 
 const data = [

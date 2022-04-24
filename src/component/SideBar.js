@@ -5,8 +5,8 @@ import { useState } from "react";
 const Orange = styled.div`
     position: fixed;
     text-align: left;
-    color: #fff;
-    background-color: #4236f4;
+    color: #000;
+    background-color: #c4d6b0;
     width: 300px;
     height: 100vh;
     padding: 94px 48px;
@@ -57,10 +57,6 @@ const Navbar = styled.div`
     margin-top: 24px;
 `;
 
-const White = styled.div`
-    color: white;
-`;
-
 const Close = styled.div`
     display: none;
     @media screen and (max-width: 991px) {
@@ -69,6 +65,9 @@ const Close = styled.div`
         top: 27px;
         left: 254px;
     }
+`;
+const Black = styled.div`
+    color: #000;
 `;
 
 function SideBar() {
@@ -85,23 +84,29 @@ function SideBar() {
                 </Title>
                 <HideMobile showNavBar={showNavBar}>
                     <Navbar>
-                        <NavLink to="/">
-                            <White>待辦通知</White>
+                        <NavLink style={{ textDecoration: "none" }} to="/">
+                            <Black>待辦通知</Black>
                         </NavLink>
                     </Navbar>
                     <Navbar>
-                        <NavLink to="/overview">
-                            <White>銷售概覽</White>
+                        <NavLink
+                            style={{ textDecoration: "none" }}
+                            to="/overview"
+                        >
+                            <Black>銷售概覽</Black>
                         </NavLink>
                     </Navbar>
                     <Navbar>
-                        <NavLink to="/company">
-                            <White>客戶廠商</White>
+                        <NavLink
+                            style={{ textDecoration: "none" }}
+                            to="/company"
+                        >
+                            <Black>客戶廠商</Black>
                         </NavLink>
                     </Navbar>
                     <Navbar>
-                        <NavLink to="/bom">
-                            <White>產品零件</White>
+                        <NavLink style={{ textDecoration: "none" }} to="/bom">
+                            <Black>產品零件</Black>
                         </NavLink>
                     </Navbar>
                     {/* <Navbar>
@@ -130,8 +135,8 @@ function SideBar() {
                         </NavLink>
                     </Navbar> */}
                     <Navbar>
-                        <NavLink to="/login">
-                            <White>登出</White>
+                        <NavLink style={{ textDecoration: "none" }} to="/login">
+                            <Black>登出</Black>
                         </NavLink>
                     </Navbar>
                 </HideMobile>

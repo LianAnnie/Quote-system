@@ -7,6 +7,7 @@ import api from "./utils/firebaseApi";
 
 const Container = styled.div`
     text-align: left;
+    background-color: #fffae3;
 `;
 const Main = styled.div`
     margin-left: 300px;

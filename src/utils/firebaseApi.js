@@ -52,7 +52,7 @@ const api = {
             );
             console.log(newData);
             await setDoc(doc(db, collectionName, docId), newData);
-            return;
+            return newData;
         }
         await setDoc(doc(db, collectionName, docId), data);
         //waiting check: setDoc 沒有response 嗎？  沒有：(void) https://firebase.google.com/docs/reference/js/firestore_lite.md#setdoc_2

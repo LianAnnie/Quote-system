@@ -4,14 +4,17 @@ import api from "../utils/firebaseApi";
 import form from "../utils/formChange";
 
 const Contanier = styled.div`
-    padding: 20px 10%;
+    padding: 20px 5%;
 `;
 const Title = styled.div`
     margin-bottom: 20px;
 `;
 const Table = styled.table`
     border: solid 1px #000000;
-    padding: 20px;
+    border-radius: 10px;
+    padding: 20px 5%;
+    width: 100%;
+    background-color: #fff;
 `;
 const Th = styled.th`
     padding-right: 20px;
@@ -70,8 +73,8 @@ function List({ collectionName, list }) {
         ],
         parts2: [
             "零件",
-            ["零件編號", "項目", "系列", "規格1", "規格2", "規格3", "備註"],
-            ["id", "class", "group", "spec1", "spec2", "spec3", "mark"],
+            ["零件編號", "型號", "項目", "系列", "規格1", "規格2", "規格3"],
+            ["id", "mark", "class", "group", "spec1", "spec2", "spec3"],
         ],
     };
 

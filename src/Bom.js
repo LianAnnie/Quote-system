@@ -8,9 +8,11 @@ import api from "./utils/firebaseApi";
 
 const Container = styled.div`
     text-align: left;
+    background-color: #fffae3;
+    height: 100vh;
 `;
 const Main = styled.div`
-    margin-left: 300px;
+    margin-left: 200px;
     padding: 50px 10%;
 `;
 const Button = styled.div`

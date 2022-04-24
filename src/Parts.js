@@ -7,6 +7,7 @@ import form from "./utils/formChange";
 
 const Container = styled.div`
     text-align: left;
+    background-color: #fffae3;
 `;
 const Main = styled.div`
     margin-left: 300px;
@@ -29,6 +30,7 @@ const Title = styled.div`
 `;
 const Form = styled.div`
     border: solid 1px #000000;
+    border-radius: 10px;
     padding: 20px;
 `;
 const Table = styled.table`
