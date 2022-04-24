@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Input from "./Input";
 import Select from "./Select";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import api from "../utils/firebaseApi";
 import form from "../utils/formChange";
 
@@ -28,27 +28,18 @@ const Button = styled.div`
     cursor: pointer;
 `;
 
-function Product({ list, setList }) {
-    const productRuleData = {
-        id: ["P", "A", "A", "B", "NNNN", "T", "NN", "00"],
-        //產品,燈具,系列,材質,色碼,桌燈,特殊備註
-        class: "燈具",
-        group: "w102",
-        material: "黃銅",
-        color: "材質本色",
-        type: "桌燈",
-        special: "無",
+function Product({ collectionName, list, setList }) {
+    const ruleData = {
+        id: ["P", 0, 0, 0, 0, 0, 0, 0],
+        class: 0,
+        group: 0,
+        material: 0,
+        color: 0,
+        type: 0,
+        special: 0,
         mark: "",
     };
-    const partRuleData = {
-        id: ["S", "A", "A", "27", "06", "90", "_V8", "00"],
-        //零件,大類,電器,色溫,瓦數,CRI,型號
-        id: ["S", "A", "B", "PP", "01", "01", "_2m", "00"],
-        //零件,大類,零件,材質,工藝,表面處理,尺寸
-        id: ["S", "A", "C", "01", "00", "00", "00", "00"],
-        //零件,大類,原料,色母,型號
-    };
-    const [exportData, setExportData] = useState(productRuleData);
+    const [exportData, setExportData] = useState(ruleData);
 
     const selectComponentArray = [
         {
@@ -115,7 +106,7 @@ function Product({ list, setList }) {
             ],
         },
         {
-            title: "特殊備註",
+            title: "特殊",
             handleDataChange: handleExportDataChange,
             data: exportData,
             name: "special",
@@ -132,18 +123,25 @@ function Product({ list, setList }) {
         },
     ];
 
+    useEffect(() => {
+        const newExportData = JSON.parse(JSON.stringify(exportData));
+        const snId = handleSNNumberChange(exportData, list);
+        newExportData.id[ruleData.id.length - 1] = snId;
+        setExportData(newExportData);
+    }, [list]);
+
     function handleExportDataChange(e) {
         const value = e.target.value;
         const name = e.target.name;
         const option = value.split(",");
         const newExportData = JSON.parse(JSON.stringify(exportData));
         if (name !== "mark") {
-            const keyArray = Object.keys(productRuleData);
+            const keyArray = Object.keys(ruleData);
             const idIndex = keyArray.findIndex(e => e === name);
             newExportData.id[idIndex] = option[0];
             const snId = handleSNNumberChange(newExportData, list);
-            newExportData.id[keyArray.length - 1] = snId;
-            //mark不考慮id,length-1
+            console.log(snId);
+            newExportData.id[ruleData.id.length - 1] = snId;
             newExportData[name] = option;
         } else {
             newExportData[name] = value;
@@ -152,10 +150,16 @@ function Product({ list, setList }) {
     }
 
     function submit() {
-        api.setDocWithId("products2", exportData.id.join(""), exportData);
-        console.log(exportData);
-        setExportData(productRuleData);
-        setList(prev => [...prev, productRuleData]);
+        const result = Object.values(exportData).some(
+            e => typeof e === "number",
+        );
+        if (result) {
+            console.log(`請將規格選齊`);
+            return;
+        }
+        api.setDocWithId(collectionName, exportData.id.join(""), exportData);
+        // setExportData(ruleData);
+        setList(prev => [...prev, exportData]);
     }
 
     function handleSNNumberChange(data, list) {
@@ -172,8 +176,6 @@ function Product({ list, setList }) {
         );
         return form.transformId(number, 2);
     }
-
-    console.log(list);
 
     return (
         <Data>

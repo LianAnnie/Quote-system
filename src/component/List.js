@@ -1,10 +1,9 @@
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import api from "../utils/firebaseApi";
-import { db } from "../utils/firebase";
-import { query, collection, where, getDocs } from "firebase/firestore";
+import form from "../utils/formChange";
 
-const Products = styled.div`
+const Contanier = styled.div`
     padding: 20px 10%;
 `;
 const Title = styled.div`
@@ -22,311 +21,249 @@ const Td = styled.td`
 `;
 const Button = styled.div`
     border: solid 1px #000000;
-    width: 150px;
+    width: 100px;
     margin: 5px;
     text-align: center;
     cursor: pointer;
 `;
 
-function List({
-    productList,
-    setPartQuotationsData,
-    setCaculatedData,
-    setSelectedProduct,
-    setSumCost,
-    setPieData,
-    setProductList,
-    selectedList,
-    setSelectedList,
-}) {
-    // const { selectedList, setSelectedList } = useState([]);
+function List({ collectionName, list }) {
+    const [filterList, setFilterList] = useState([]);
+    const [filterCondition, setFilterCondition] = useState({});
+    const [revisedStatus, setRevisedStatus] = useState([]);
+    const [revisedData, setRevisedData] = useState({});
+    const objectkey = ["id", "company", "contacts", "country"];
+    const collections = {
+        customers2: "客戶",
+        suppliers2: "供應商",
+    };
 
     useEffect(() => {
-        getProductListFromFirebase();
-    }, []);
+        setFilterList(list);
+        revisedStatusArray(list);
+        setRevisedData(list);
+    }, [list]);
 
-    function showAllProduceList() {
-        setSelectedList(productList);
-    }
-    function handleListChange(e) {
-        const key = e.target.name;
-        let value = e.target.value;
-        console.log(key);
-        if (value !== "noAction") {
-            if (key === "id") {
-                value = Number(e.target.value);
-                let newList = selectedList.filter(e => e[key][1] === value);
-                console.log(newList);
-                if (newList.length === 0) {
-                    newList = productList.filter(e => e[key][1] === value);
-                }
-                setSelectedList(newList);
-                return;
-            }
-            if (key === "bomList") {
-                let newList = selectedList.filter(e =>
-                    e.bomList.some(m => m.id === value),
-                );
-                console.log(newList);
-                if (newList.length === 0) {
-                    newList = productList.filter(e =>
-                        e.bomList.some(m => m.id === value),
-                    );
-                }
-                setSelectedList(newList);
-
-                return;
-            }
-
-            value = e.target.value;
-            console.log(e.target.value);
-            let newList = selectedList.filter(e => e[key] === value);
-            if (newList.length === 0) {
-                newList = productList.filter(e => e[key] === value);
-            }
-            setSelectedList(newList);
+    function handleConditionChange(e) {
+        if (e === 0) {
+            setFilterCondition({});
+            setFilterList(list);
+            revisedStatusArray(list);
+            setRevisedData(list);
+            return;
         }
-        return;
-    }
-    async function getPartsQtationsFromFireBase(partIdList) {
-        const quotationDataPromise = partIdList.map(async e => {
-            const q = query(
-                collection(db, "partQuotations"),
-                where("id", "array-contains", e),
+        const name = e.target.name;
+        const value = e.target.value;
+        console.log(name, value);
+        console.log(filterCondition[name]);
+        const newFilterCondition = JSON.parse(JSON.stringify(filterCondition));
+        newFilterCondition[name] = value;
+        const newFilterList = handleListChange(newFilterCondition, filterList);
+        if (newFilterList.length === 0) {
+            console.log(
+                `沒有符合篩選結果,清除原本篩選條件,按最後一次需求篩選資料`,
             );
-            const data = await getDocs(q);
-            const promiseData = data.docs.map(e => e.data());
-            return promiseData;
-        });
-
-        const quotationData = await Promise.all(quotationDataPromise);
-        return quotationData;
-    }
-    function changeSelectedProductToRander(data) {
-        console.log(data);
-        const analysisList = data.bomList.map(e => {
-            const partUseage = {
-                qty: Number(e.qty),
-                quoteId: e.id,
-            };
-            return partUseage;
-        });
-        console.log(analysisList);
-        const newArray = data.inquiryQty.map(e => {
-            const renderData = {
-                id: data.id,
-                qty: e,
-                company: data.company,
-                country: data.country,
-                name: data.name,
-                price: 0,
-                margin: 1,
-                currency: "",
-                analysisList,
-                leadTime: 30,
-            };
-            return renderData;
-        });
-        return newArray;
-    }
-    async function handleProductChange(data) {
-        setPartQuotationsData([]);
-        setCaculatedData([]);
-        // console.log(data);
-        const renderProductData = changeSelectedProductToRander(data);
-        // console.log(renderProductData);
-        setSelectedProduct(renderProductData);
-        // setPartQuotationsData(renderProductData);
-        const partIdList = data.bomList.map(e => e.id);
-        const quotationData = await getPartsQtationsFromFireBase(partIdList);
-        console.log(quotationData);
-        const newCaculateData = quotationData.map(e => (e[0] ? e[0] : []));
-        console.log(newCaculateData);
-        const usageList = data.bomList?.map(e => Number(e.qty));
-        // console.log(usageList);
-
-        const sum = newCaculateData
-            .map(e => e.price)
-            .reduce((sum1, m, index) => sum1 + m * usageList[index], 0);
-
-        // console.log(newCaculateData);
-        // console.log(sum, typeof sum);
-
-        setSumCost(isNaN(sum) ? 0 : sum);
-        getPieData(newCaculateData, sum);
-
-        setCaculatedData(newCaculateData);
-        setPartQuotationsData(quotationData);
+            setFilterCondition({ [name]: value });
+            const resetList = handleListChange({ [name]: value }, list);
+            setFilterList(resetList);
+            revisedStatusArray(resetList);
+            setRevisedData(resetList);
+            return;
+        }
+        setFilterCondition(newFilterCondition);
+        setFilterList(newFilterList);
+        revisedStatusArray(newFilterList);
+        setRevisedData(newFilterList);
     }
 
-    function getPieData(data, totalPrice) {
-        const getDataArray = data.map(e => [
-            e.name,
-            Math.floor((e.price / totalPrice) * 100),
-        ]);
-        setPieData(getDataArray);
+    function handleListChange(condition, data) {
+        const filterKeyArray = Object.keys(condition);
+        let copyFilterList = [...data];
+        const newFilterList = copyFilterList.filter(
+            m =>
+                !filterKeyArray
+                    .map(key =>
+                        key === "id"
+                            ? m[key].join("") === condition[key]
+                            : m[key] === condition[key],
+                    )
+                    .some(e => !e),
+        );
+        return newFilterList;
     }
 
-    async function getProductListFromFirebase() {
-        const list = await api.getCompleteCollection("products");
-        // console.table(list);
-        setProductList(list);
-        setSelectedList(list);
+    function revisedStatusArray(filterList) {
+        const length = filterList.length;
+        const newArray = new Array(length).fill(false);
+        setRevisedStatus(newArray);
     }
+
+    function handleRevisedStatus(index, save) {
+        // console.log(revisedStatus,index, e);
+        const newRevisedStatus = [...revisedStatus];
+        const newRevisedData = [...revisedData];
+        const newfilterList = [...filterList];
+        if (newRevisedStatus[index]) {
+            if (save) {
+                console.log(save);
+                newfilterList[index] = revisedData[index];
+                api.updateDoc(
+                    collectionName,
+                    revisedData[index].id.join(""),
+                    revisedData[index],
+                );
+                setFilterList(newfilterList);
+            } else {
+                console.log(save);
+                newRevisedData[index] = filterList[index];
+                setRevisedData(newRevisedData);
+            }
+        }
+        newRevisedStatus[index] = !newRevisedStatus[index];
+        setRevisedStatus(newRevisedStatus);
+    }
+
+    function handleRevisedData(index, e) {
+        console.log(filterList);
+        const data = form.handleChange(index, e, revisedData);
+        setRevisedData(data);
+    }
+
+    function deleteData(itemIndex) {
+        const deleteData = filterList[itemIndex];
+        const newFilterList = filterList.filter(
+            (_, index) => index !== itemIndex,
+        );
+        api.deleteDoc(collectionName, deleteData.id.join(""));
+        setFilterList(newFilterList);
+    }
+
+    console.log(list);
 
     return (
-        <Products>
-            <Title>產品列表</Title>
-            <Button onClick={() => showAllProduceList()}>取消篩選</Button>
+        <Contanier>
+            <Title>{collections[collectionName]}列表</Title>
+            <Button
+                onClick={() => {
+                    handleConditionChange(0);
+                }}
+            >
+                取消篩選
+            </Button>
             <Table>
                 <thead>
                     <tr>
-                        <Th>編號</Th>
-                        <Th>版本</Th>
-                        <Th>地區</Th>
-                        <Th>客戶</Th>
-                        <Th>名稱</Th>
-                        <Th>零件</Th>
+                        <Th>{collections[collectionName]}編號</Th>
+                        <Th>公司名稱</Th>
+                        <Th>聯繫人</Th>
+                        <Th>國家</Th>
+                        <Th>更新</Th>
+                        <Th>刪除</Th>
                     </tr>
                     <tr>
-                        <Th>
-                            <select
-                                name="id"
-                                onChange={e => handleListChange(e)}
-                                value={productList.id}
-                            >
-                                <option value="noAction">請選擇</option>
-                                {productList &&
-                                    productList.map((e, index) => (
-                                        <option key={index} value={e.id[1]}>
-                                            {e.id[1]}
-                                        </option>
-                                    ))}
-                            </select>
-                        </Th>
-                        <Th></Th>
-                        <Th>
-                            <select
-                                name="country"
-                                onChange={e => handleListChange(e)}
-                                value={productList.coutry}
-                            >
-                                <option value="noAction">請選擇</option>
-                                {productList &&
-                                    productList
-                                        .filter(
-                                            (e, index, array) =>
-                                                array
-                                                    .map(n => n.country)
-                                                    .indexOf(e.country) ===
-                                                index,
-                                        )
-                                        .map((j, index) => (
-                                            <option
-                                                key={index}
-                                                value={j.country}
-                                            >
-                                                {j.country}
-                                            </option>
-                                        ))}
-                            </select>
-                        </Th>
-                        <Th>
-                            <select
-                                name="company"
-                                onChange={e => handleListChange(e)}
-                                value={productList.company}
-                            >
-                                <option value="noAction">請選擇</option>
-                                {productList &&
-                                    productList
-                                        .filter(
-                                            (e, index, array) =>
-                                                array
-                                                    .map(n => n.company)
-                                                    .indexOf(e.company) ===
-                                                index,
-                                        )
-                                        .map((j, index) => (
-                                            <option
-                                                key={index}
-                                                value={j.company}
-                                            >
-                                                {j.company}
-                                            </option>
-                                        ))}
-                            </select>
-                        </Th>
-                        <Th>
-                            <select
-                                name="name"
-                                onChange={e => handleListChange(e)}
-                                value={productList.name}
-                            >
-                                <option value="noAction">請選擇</option>
-                                {productList &&
-                                    productList
-                                        .filter(
-                                            (e, index, array) =>
-                                                array
-                                                    .map(n => n.name)
-                                                    .indexOf(e.name) === index,
-                                        )
-                                        .map((j, index) => (
-                                            <option key={index} value={j.name}>
-                                                {j.name}
-                                            </option>
-                                        ))}
-                            </select>
-                        </Th>
-                        <Th>
-                            <select
-                                name="bomList"
-                                onChange={e => handleListChange(e)}
-                                value={productList.bomList}
-                            >
-                                <option value="noAction">請選擇</option>
-                                {productList &&
-                                    productList
-                                        .map(e => e.bomList.map(n => n))
-                                        .flat(1)
+                        {objectkey.map(keyName => (
+                            <Th key={keyName}>
+                                <select
+                                    name={keyName}
+                                    onChange={e => handleConditionChange(e)}
+                                    value={list[keyName]}
+                                >
+                                    {list
                                         .filter(
                                             (m, index, array) =>
                                                 array
-                                                    .map(o => o.id)
-                                                    .indexOf(m.id) === index,
+                                                    .map(n => n[keyName])
+                                                    .indexOf(m[keyName]) ===
+                                                index,
                                         )
-                                        .map((p, index2) => (
-                                            <option key={index2} value={p.id}>
-                                                {p.name}
+                                        .map((o, index) => (
+                                            <option key={index}>
+                                                {o[keyName]}
                                             </option>
                                         ))}
-                            </select>
-                        </Th>
+                                </select>
+                            </Th>
+                        ))}
                     </tr>
                 </thead>
                 <tbody>
-                    {selectedList &&
-                        selectedList.map((e, index) => (
-                            <tr key={index}>
-                                <Td>{e.id[1]}</Td>
-                                <Td>{e.id[2]}</Td>
-                                <Td>{e.country}</Td>
-                                <Td>{e.company}</Td>
-                                <Td>{e.name}</Td>
-                                <Td></Td>
-                                <Td>
-                                    <input
-                                        type="radio"
-                                        name="product"
-                                        onClick={() => handleProductChange(e)}
-                                    />
-                                </Td>
-                            </tr>
-                        ))}
+                    {filterList &&
+                        filterList.map((e, index) =>
+                            !revisedStatus[index] ? (
+                                <tr key={e.id}>
+                                    {objectkey.map(keyName => (
+                                        <Td key={keyName}>{e[keyName]}</Td>
+                                    ))}
+                                    <Td>
+                                        <Button
+                                            onClick={() =>
+                                                handleRevisedStatus(index)
+                                            }
+                                        >
+                                            更新
+                                        </Button>
+                                    </Td>
+                                    <Td>
+                                        <Button
+                                            onClick={() => deleteData(index)}
+                                        >
+                                            刪除
+                                        </Button>
+                                    </Td>
+                                </tr>
+                            ) : (
+                                <tr key={e.id}>
+                                    {objectkey.map((keyName, keyIndex) =>
+                                        keyName === "id" ||
+                                        keyName === "country" ? (
+                                            <Td key={keyIndex}>{e[keyName]}</Td>
+                                        ) : (
+                                            <Td>
+                                                <input
+                                                    key={keyIndex}
+                                                    name={keyName}
+                                                    value={
+                                                        revisedData[index][
+                                                            keyName
+                                                        ]
+                                                    }
+                                                    onChange={e =>
+                                                        handleRevisedData(
+                                                            index,
+                                                            e,
+                                                        )
+                                                    }
+                                                ></input>
+                                            </Td>
+                                        ),
+                                    )}
+                                    <Td>
+                                        <Button
+                                            onClick={() =>
+                                                handleRevisedStatus(index, true)
+                                            }
+                                        >
+                                            儲存
+                                        </Button>
+                                    </Td>
+                                    <Td>
+                                        <Button
+                                            onClick={() =>
+                                                handleRevisedStatus(
+                                                    index,
+                                                    false,
+                                                )
+                                            }
+                                        >
+                                            取消
+                                        </Button>
+                                    </Td>
+                                </tr>
+                            ),
+                        )}
                 </tbody>
             </Table>
-        </Products>
+        </Contanier>
     );
 }
 
