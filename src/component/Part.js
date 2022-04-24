@@ -31,7 +31,7 @@ const Button = styled.div`
 function Part({ collectionName, list, setList }) {
     const ruleData = {
         id: ["S", "A", 0, 0, 0, 0, 0],
-        classs: ["A", "半成品"],
+        class: ["A", "半成品"],
         group: 0,
         spec1: 0,
         spec2: 0,
