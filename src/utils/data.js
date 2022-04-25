@@ -6,6 +6,14 @@ const data = {
         ["fr", "法國"],
         ["tw", "台灣"],
     ],
+    currencyList: [
+        ["USD", "美金"],
+        ["NTD", "台幣"],
+        ["RMB", "人民幣"],
+        ["HKD", "港幣"],
+        ["EUR", "歐元"],
+        ["JPY", "日幣"],
+    ],
 };
 
 export default data;

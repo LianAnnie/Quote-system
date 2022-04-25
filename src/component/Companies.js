@@ -122,12 +122,14 @@ function Companies({
                 </Question>
                 <Input
                     title="公司名稱"
+                    type="text"
                     handleDataChange={handleExportDataInputChange}
                     data={exportData}
                     name="company"
                 />
                 <Input
                     title="聯繫資料"
+                    type="text"
                     handleDataChange={handleExportDataInputChange}
                     data={exportData}
                     name="contacts"

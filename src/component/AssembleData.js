@@ -1,4 +1,4 @@
-import { Section, Title, Table, Th, Td } from "./StyleComponent";
+import { Section, Title, Table, Th, Td, Button } from "./StyleComponent";
 import form from "../utils/formChange";
 
 function AssembleData({ collectionName, processingData, setProcessingData }) {
@@ -9,19 +9,45 @@ function AssembleData({ collectionName, processingData, setProcessingData }) {
             ["id", "group", "material", "color", "type"],
             ["零件編號", "型號"],
             ["id", "mark"],
-            ["使用量", "單位", "順序"],
+            ["使用量", "單位", "順序", "刪除"],
             ["qty", "unit", "index"],
+        ],
+        partQuotations2: [
+            "零件",
+            ["報價日期", "有效日期", "幣別"],
+            ["date", "valid", "currency"],
+            ["零件編號", "型號"],
+            ["id", "mark"],
+            ["數量", "單價", "交期", "刪除"],
+            ["inquiryQty", "price", "leadTime"],
+        ],
+        productQuotations2: [
+            "產品",
+            ["報價日期", "有效日期", "幣別"],
+            ["date", "valid", "currency"],
+            ["產品編號", "系列"],
+            ["id", "group"],
+            ["數量", "單價", "交期", "刪除"],
+            ["inquiryQty", "price", "leadTime"],
         ],
     };
 
-    function handleAddDataChange(index, e) {
-        const newChildData = form.handleChange(
-            index,
-            e,
-            processingData.childData,
-        );
-        const newProcessingData = processingData;
+    function handleAddDataChange(itemIndex, e) {
+        const newProcessingData = JSON.parse(JSON.stringify(processingData));
+        let newChildData;
+        if (e.id === undefined) {
+            newChildData = form.handleChange(
+                itemIndex,
+                e,
+                processingData.childData,
+            );
+        } else {
+            newChildData = processingData.childData.filter(
+                (_, index) => index !== itemIndex,
+            );
+        }
         newProcessingData.childData = newChildData;
+        console.log(newProcessingData);
         setProcessingData(newProcessingData);
     }
 
@@ -61,7 +87,7 @@ function AssembleData({ collectionName, processingData, setProcessingData }) {
                 <tbody>
                     {processingData &&
                         processingData.childData.map((e, index) => (
-                            <tr key={e.id}>
+                            <tr key={[e.id, index]}>
                                 {collections[collectionName][4].map(keyName => (
                                     <Td key={keyName}>{e[keyName]}</Td>
                                 ))}
@@ -77,6 +103,15 @@ function AssembleData({ collectionName, processingData, setProcessingData }) {
                                         />
                                     </Td>
                                 ))}
+                                <Td>
+                                    <Button
+                                        onClick={() =>
+                                            handleAddDataChange(index, e)
+                                        }
+                                    >
+                                        刪除
+                                    </Button>
+                                </Td>
                             </tr>
                         ))}
                 </tbody>

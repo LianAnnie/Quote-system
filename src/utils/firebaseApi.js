@@ -11,6 +11,7 @@ import {
     updateDoc,
     where,
 } from "firebase/firestore";
+import form from "../utils/formChange";
 
 const api = {
     async getCompleteCollection(collectionName) {
@@ -64,6 +65,27 @@ const api = {
                 id: idArray[index],
                 qty: e.qty,
                 unit: e.unit,
+            }));
+            dataArray.forEach(async e => {
+                await setDoc(doc(db, collectionName, e.id.join("")), e);
+            });
+            console.log(`${dataArray.length}files, finish`);
+            return dataArray;
+        }
+        if (collectionName === "partQuotations2") {
+            console.log(docId, data);
+            const idArray = data.childData.map(e => {
+                const inquiryQtyId = form.transformId(e.inquiryQty, 6);
+                return [e.id.join(""), inquiryQtyId, data.parentData.date];
+            });
+            const dataArray = data.childData.map((e, index) => ({
+                id: idArray[index],
+                inquiryQty: e.inquiryQty,
+                leadTime: e.leadTime,
+                price: e.price,
+                date: data.parentData.date,
+                valid: data.parentData.valid,
+                currency: data.parentData.currency,
             }));
             dataArray.forEach(async e => {
                 await setDoc(doc(db, collectionName, e.id.join("")), e);

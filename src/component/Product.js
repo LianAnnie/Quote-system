@@ -204,6 +204,7 @@ function Product({ collectionName, list, setList }) {
                 ))}
                 <Input
                     title="備註"
+                    type="text"
                     handleDataChange={handleExportDataChange}
                     data={exportData}
                     name="mark"

@@ -4,31 +4,7 @@ import Select from "./Select";
 import { useState, useEffect } from "react";
 import api from "../utils/firebaseApi";
 import form from "../utils/formChange";
-
-const Container = styled.div`
-    padding: 20px 5%;
-`;
-const Title = styled.div`
-    margin-bottom: 20px;
-`;
-const Form = styled.div`
-    border: solid 1px #000000;
-    border-radius: 10px;
-    padding: 20px;
-    background-color: #fff;
-`;
-const Question = styled.div`
-    display: flex;
-    margin: 5px;
-`;
-
-const Button = styled.div`
-    border: solid 1px #000000;
-    width: 100px;
-    margin: 5px;
-    text-align: center;
-    cursor: pointer;
-`;
+import { Section, Title, Form, Question, Button } from "./StyleComponent";
 
 function Part({ collectionName, list, setList }) {
     const ruleData = {
@@ -256,7 +232,7 @@ function Part({ collectionName, list, setList }) {
     }
 
     return (
-        <Container>
+        <Section>
             <Title>零件資料表</Title>
             <Form>
                 <Question>
@@ -265,6 +241,7 @@ function Part({ collectionName, list, setList }) {
                 </Question>
                 <Input
                     title="型號"
+                    type="text"
                     handleDataChange={handleExportDataChange}
                     data={exportData}
                     name="mark"
@@ -315,7 +292,7 @@ function Part({ collectionName, list, setList }) {
                       ))}
             </Form>
             <Button onClick={() => submit()}>Submit</Button>
-        </Container>
+        </Section>
     );
 }
 

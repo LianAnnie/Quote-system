@@ -14,12 +14,23 @@ const Section = styled.div`
 const Title = styled.div`
     margin-bottom: 20px;
 `;
+const Form = styled.div`
+    border: solid 1px #000000;
+    border-radius: 10px;
+    padding: 20px 5%;
+    width: 100%;
+    background-color: #fff;
+`;
 const Table = styled.table`
     border: solid 1px #000000;
     border-radius: 10px;
     padding: 20px 5%;
     width: 100%;
     background-color: #fff;
+`;
+const Question = styled.div`
+    display: flex;
+    margin: 5px;
 `;
 const Th = styled.th`
     padding-right: 20px;
@@ -38,4 +49,16 @@ const Flex = styled.div`
     display: flex;
 `;
 
-export { Container, Main, Section, Title, Table, Th, Td, Button, Flex };
+export {
+    Container,
+    Main,
+    Section,
+    Title,
+    Form,
+    Table,
+    Question,
+    Th,
+    Td,
+    Button,
+    Flex,
+};

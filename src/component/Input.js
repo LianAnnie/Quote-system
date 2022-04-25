@@ -4,12 +4,12 @@ const Question = styled.div`
     margin: 5px;
 `;
 
-function Input({ title, handleDataChange, data, name }) {
+function Input({ title, type, handleDataChange, data, name }) {
     return (
         <Question>
             <div>{title}</div>
             <input
-                type="text"
+                type={type}
                 name={name}
                 onChange={e => {
                     handleDataChange(e);
