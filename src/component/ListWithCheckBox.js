@@ -1,34 +1,5 @@
-import styled from "styled-components";
 import { useEffect, useState } from "react";
-import api from "../utils/firebaseApi";
-import form from "../utils/formChange";
-
-const Contanier = styled.div`
-    padding: 20px 5%;
-`;
-const Title = styled.div`
-    margin-bottom: 20px;
-`;
-const Table = styled.table`
-    border: solid 1px #000000;
-    border-radius: 10px;
-    padding: 20px 5%;
-    width: 100%;
-    background-color: #fff;
-`;
-const Th = styled.th`
-    padding-right: 20px;
-`;
-const Td = styled.td`
-    padding-right: 50px;
-`;
-const Button = styled.div`
-    border: solid 1px #000000;
-    width: 100px;
-    margin: 5px;
-    text-align: center;
-    cursor: pointer;
-`;
+import { Section, Title, Table, Th, Td, Button } from "./StyleComponent";
 
 function ListWithRadio({
     collectionName,
@@ -137,11 +108,15 @@ function ListWithRadio({
     }
 
     function handleImportProduct(e) {
-        setProcessingData(e);
+        const dataId = e.id;
+        const filterData = processingData.filter(data => data.id !== dataId);
+        filterData.length === processingData.length
+            ? setProcessingData(prev => [...prev, e])
+            : setProcessingData(filterData);
     }
 
     return (
-        <Contanier>
+        <Section>
             <Title>{collections[collectionName][0]}列表</Title>
             <Button
                 onClick={() => {
@@ -192,8 +167,8 @@ function ListWithRadio({
                                 ))}
                                 <Td>
                                     <input
-                                        type="radio"
-                                        name="main"
+                                        type="checkbox"
+                                        name="child"
                                         onClick={() => handleImportProduct(e)}
                                     />
                                 </Td>
@@ -201,7 +176,7 @@ function ListWithRadio({
                         ))}
                 </tbody>
             </Table>
-        </Contanier>
+        </Section>
     );
 }
 

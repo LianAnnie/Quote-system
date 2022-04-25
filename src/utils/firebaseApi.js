@@ -54,6 +54,23 @@ const api = {
             await setDoc(doc(db, collectionName, docId), newData);
             return newData;
         }
+        if (collectionName === "bom") {
+            const idArray = data.childData.map(e => [
+                data.parentData.id.join(""),
+                e.id.join(""),
+                "00",
+            ]);
+            const dataArray = data.childData.map((e, index) => ({
+                id: idArray[index],
+                qty: e.qty,
+                unit: e.unit,
+            }));
+            dataArray.forEach(async e => {
+                await setDoc(doc(db, collectionName, e.id.join("")), e);
+            });
+            console.log(`${dataArray.length}files, finish`);
+            return dataArray;
+        }
         await setDoc(doc(db, collectionName, docId), data);
         //waiting check: setDoc 沒有response 嗎？  沒有：(void) https://firebase.google.com/docs/reference/js/firestore_lite.md#setdoc_2
     },

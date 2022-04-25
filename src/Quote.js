@@ -227,7 +227,7 @@ function Quote() {
                                     <tr>
                                         <Th>編號</Th>
                                         <Th>名稱</Th>
-                                        <Th>圖片</Th>
+                                        {/* <Th>圖片</Th> */}
                                         <Th>數量</Th>
                                         <Th>單價</Th>
                                         <Th>交期</Th>
@@ -239,7 +239,7 @@ function Quote() {
                                             <tr key={index}>
                                                 <Td>{e.id}</Td>
                                                 <Td>{e.name}</Td>
-                                                <Td>{e.image}</Td>
+                                                {/* <Td>{e.image}</Td> */}
                                                 <Td>{e.qty}</Td>
                                                 <Td>
                                                     <input

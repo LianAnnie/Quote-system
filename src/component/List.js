@@ -1,34 +1,7 @@
-import styled from "styled-components";
 import { useEffect, useState } from "react";
 import api from "../utils/firebaseApi";
 import form from "../utils/formChange";
-
-const Contanier = styled.div`
-    padding: 20px 5%;
-`;
-const Title = styled.div`
-    margin-bottom: 20px;
-`;
-const Table = styled.table`
-    border: solid 1px #000000;
-    border-radius: 10px;
-    padding: 20px 5%;
-    width: 100%;
-    background-color: #fff;
-`;
-const Th = styled.th`
-    padding-right: 20px;
-`;
-const Td = styled.td`
-    padding-right: 50px;
-`;
-const Button = styled.div`
-    border: solid 1px #000000;
-    width: 100px;
-    margin: 5px;
-    text-align: center;
-    cursor: pointer;
-`;
+import { Section, Title, Table, Th, Td, Button } from "./StyleComponent";
 
 function List({ collectionName, list }) {
     const [filterList, setFilterList] = useState([]);
@@ -86,6 +59,11 @@ function List({ collectionName, list }) {
             ],
             ["id", "mark", "class", "group", "spec1", "spec2", "spec3"],
         ],
+        bom: [
+            "結構",
+            ["產品編號", "零件編號", "SN", "用量", "單位", "更新", "刪除"],
+            ["id0", "id1", "id2", "qty", "unit"],
+        ],
     };
 
     useEffect(() => {
@@ -104,8 +82,6 @@ function List({ collectionName, list }) {
         }
         const name = e.target.name;
         const value = e.target.value;
-        console.log(name, value);
-        console.log(filterCondition[name]);
         const newFilterCondition = JSON.parse(JSON.stringify(filterCondition));
         newFilterCondition[name] = value;
         const newFilterList = handleListChange(newFilterCondition, filterList);
@@ -149,22 +125,24 @@ function List({ collectionName, list }) {
     }
 
     function handleRevisedStatus(index, save) {
-        // console.log(revisedStatus,index, e);
         const newRevisedStatus = [...revisedStatus];
         const newRevisedData = [...revisedData];
         const newfilterList = [...filterList];
         if (newRevisedStatus[index]) {
             if (save) {
-                console.log(save);
                 newfilterList[index] = revisedData[index];
-                api.updateDoc(
-                    collectionName,
-                    revisedData[index].id.join(""),
-                    revisedData[index],
-                );
+                if (collectionName === "bom") {
+                    const newData = transListToffirebase(revisedData[index]);
+                    api.updateDoc(collectionName, newData.id.join(""), newData);
+                } else {
+                    api.updateDoc(
+                        collectionName,
+                        revisedData[index].id.join(""),
+                        revisedData[index],
+                    );
+                }
                 setFilterList(newfilterList);
             } else {
-                console.log(save);
                 newRevisedData[index] = filterList[index];
                 setRevisedData(newRevisedData);
             }
@@ -173,8 +151,16 @@ function List({ collectionName, list }) {
         setRevisedStatus(newRevisedStatus);
     }
 
+    function transListToffirebase(data) {
+        const newObject = {
+            id: [data.id0, data.id1, data.id2],
+            qty: data.qty,
+            unit: data.unit,
+        };
+        return newObject;
+    }
+
     function handleRevisedData(index, e) {
-        console.log(filterList);
         const data = form.handleChange(index, e, revisedData);
         setRevisedData(data);
     }
@@ -188,10 +174,8 @@ function List({ collectionName, list }) {
         setFilterList(newFilterList);
     }
 
-    console.log(list);
-
     return (
-        <Contanier>
+        <Section>
             <Title>{collections[collectionName][0]}列表</Title>
             <Button
                 onClick={() => {
@@ -237,7 +221,7 @@ function List({ collectionName, list }) {
                     {filterList &&
                         filterList.map((e, index) =>
                             !revisedStatus[index] ? (
-                                <tr key={e.id}>
+                                <tr key={index}>
                                     {collections[collectionName][2].map(
                                         keyName => (
                                             <Td key={keyName}>{e[keyName]}</Td>
@@ -265,7 +249,10 @@ function List({ collectionName, list }) {
                                     {collections[collectionName][2].map(
                                         (keyName, keyIndex) =>
                                             keyName === "id" ||
-                                            keyName === "country" ? (
+                                            keyName === "country" ||
+                                            keyName === "id0" ||
+                                            keyName === "id1" ||
+                                            keyName === "id2" ? (
                                                 <Td key={keyIndex}>
                                                     {e[keyName]}
                                                 </Td>
@@ -315,7 +302,7 @@ function List({ collectionName, list }) {
                         )}
                 </tbody>
             </Table>
-        </Contanier>
+        </Section>
     );
 }
 
