@@ -39,6 +39,7 @@ function Part({ collectionName, list, setList }) {
         spec2: 0,
         spec3: 0,
         mark: "",
+        dependency: [],
     };
     const [exportData, setExportData] = useState(ruleData);
 

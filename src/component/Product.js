@@ -40,6 +40,7 @@ function Product({ collectionName, list, setList }) {
         type: 0,
         special: 0,
         mark: "",
+        dependency: [],
     };
     const [exportData, setExportData] = useState(ruleData);
 

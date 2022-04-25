@@ -46,7 +46,7 @@ const api = {
             const newData = JSON.parse(JSON.stringify(data));
             const keyArray = Object.keys(newData);
             keyArray.forEach(key =>
-                key !== "id" && key !== "mark"
+                key !== "id" && key !== "mark" && key !== "dependency"
                     ? (newData[key] = data[key][1])
                     : "",
             );
