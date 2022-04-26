@@ -23,24 +23,26 @@ function Quotes({ handleDataChange, processingData }) {
     ];
 
     return (
-        <Form>
-            {inputComponentArray.map(e => (
-                <Input
-                    key={e.title}
-                    title={e.title}
-                    type="date"
+        <Section>
+            <Form>
+                {inputComponentArray.map(e => (
+                    <Input
+                        key={e.title}
+                        title={e.title}
+                        type="date"
+                        handleDataChange={handleDataChange}
+                        data={processingData}
+                        name={e.name}
+                    />
+                ))}
+                <Select
+                    title="幣別"
                     handleDataChange={handleDataChange}
-                    data={processingData}
-                    name={e.name}
+                    name="currency"
+                    optionArray={data.currencyList}
                 />
-            ))}
-            <Select
-                title="幣別"
-                handleDataChange={handleDataChange}
-                name="currency"
-                optionArray={data.currencyList}
-            />
-        </Form>
+            </Form>
+        </Section>
     );
 }
 

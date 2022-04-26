@@ -4,6 +4,7 @@ import form from "../utils/formChange";
 import { Section, Title, Table, Th, Td, Button } from "./StyleComponent";
 
 function List({ collectionName, list }) {
+    console.log(list);
     const [filterList, setFilterList] = useState([]);
     const [filterCondition, setFilterCondition] = useState({});
     const [revisedStatus, setRevisedStatus] = useState([]);
@@ -65,6 +66,31 @@ function List({ collectionName, list }) {
             ["id0", "id1", "id2", "qty", "unit"],
         ],
         partQuotations2: [
+            "零件報價",
+            [
+                "零件編號",
+                "供應商編號",
+                "數量",
+                "單價",
+                "幣別",
+                "交期",
+                "報價日期",
+                "報價效期",
+                "更新",
+                "刪除",
+            ],
+            [
+                "id0",
+                "id1",
+                "inquiryQty",
+                "price",
+                "currency",
+                "leadTime",
+                "date",
+                "valid",
+            ],
+        ],
+        productQuotations2: [
             "零件報價",
             [
                 "零件編號",

@@ -60,7 +60,11 @@ function Structure({
                 key => (newProcessingData.parentData[key] = data[key]),
             );
         } else {
-            if (assembleCollectionName !== "partQuotations2") {
+            if (
+                assembleCollectionName !== "partQuotations2" &&
+                assembleCollectionName !== "productQuotations2"
+            ) {
+                console.log(assembleCollectionName);
                 newProcessingData.childData = data;
             } else {
                 const newData = data.map(e =>
@@ -99,7 +103,10 @@ function Structure({
             }));
             return newListtoRender;
         }
-        if (assembleCollectionName === "partQuotations2") {
+        if (
+            assembleCollectionName === "partQuotations2" ||
+            assembleCollectionName === "productQuotations2"
+        ) {
             const newListtoRender = assembleList.map(e => ({
                 id0: e.id[0],
                 id1: e.id[1],
@@ -118,12 +125,13 @@ function Structure({
 
     return (
         <>
-            {assembleCollectionName === "partQuotations2" && (
-                <Quotes
-                    handleDataChange={handleProcessingDataChange}
-                    processingData={processingData}
-                />
-            )}
+            {assembleCollectionName === "partQuotations2" ||
+                (assembleCollectionName === "productQuotations2" && (
+                    <Quotes
+                        handleDataChange={handleProcessingDataChange}
+                        processingData={processingData}
+                    />
+                ))}
             <ListWithRadio
                 collectionName={parentCollectionName}
                 list={parentList}

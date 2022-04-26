@@ -72,7 +72,10 @@ const api = {
             console.log(`${dataArray.length}files, finish`);
             return dataArray;
         }
-        if (collectionName === "partQuotations2") {
+        if (
+            collectionName === "partQuotations2" ||
+            collectionName === "productQuotations2"
+        ) {
             console.log(docId, data);
             const idArray = data.childData.map(e => {
                 const inquiryQtyId = form.transformId(e.inquiryQty, 6);
@@ -97,6 +100,10 @@ const api = {
             });
             console.log(`${dataArray.length}files, finish`);
             return dataArray;
+        }
+        if (collectionName === "productQuotations2") {
+            console.log("productQuotations2", data);
+            return;
         }
         await setDoc(doc(db, collectionName, docId), data);
         //waiting check: setDoc 沒有response 嗎？  沒有：(void) https://firebase.google.com/docs/reference/js/firestore_lite.md#setdoc_2
