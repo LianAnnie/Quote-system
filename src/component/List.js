@@ -64,6 +64,31 @@ function List({ collectionName, list }) {
             ["產品編號", "零件編號", "SN", "用量", "單位", "更新", "刪除"],
             ["id0", "id1", "id2", "qty", "unit"],
         ],
+        partQuotations2: [
+            "零件報價",
+            [
+                "零件編號",
+                "供應商編號",
+                "數量",
+                "單價",
+                "幣別",
+                "交期",
+                "報價日期",
+                "報價效期",
+                "更新",
+                "刪除",
+            ],
+            [
+                "id0",
+                "id1",
+                "inquiryQty",
+                "price",
+                "currency",
+                "leadTime",
+                "date",
+                "valid",
+            ],
+        ],
     };
 
     useEffect(() => {
@@ -170,7 +195,23 @@ function List({ collectionName, list }) {
         const newFilterList = filterList.filter(
             (_, index) => index !== itemIndex,
         );
-        api.deleteDoc(collectionName, deleteData.id.join(""));
+        if (collectionName === "bom") {
+            const deleteIdArray = deleteData.id0.concat(
+                deleteData.id1,
+                deleteData.id2,
+            );
+            api.deleteDoc(collectionName, deleteIdArray);
+        } else if (collectionName === "partQuotations2") {
+            console.log(deleteData);
+            const deleteIdArray = deleteData.id0.concat(
+                deleteData.id1,
+                deleteData.id2,
+                deleteData.id3,
+            );
+            api.deleteDoc(collectionName, deleteIdArray);
+        } else {
+            api.deleteDoc(collectionName, deleteData.id.join(""));
+        }
         setFilterList(newFilterList);
     }
 
@@ -252,7 +293,8 @@ function List({ collectionName, list }) {
                                             keyName === "country" ||
                                             keyName === "id0" ||
                                             keyName === "id1" ||
-                                            keyName === "id2" ? (
+                                            keyName === "id2" ||
+                                            keyName === "id3" ? (
                                                 <Td key={keyIndex}>
                                                     {e[keyName]}
                                                 </Td>

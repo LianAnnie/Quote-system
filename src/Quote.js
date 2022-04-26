@@ -1,31 +1,32 @@
 import SideBar from "./component/SideBar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Container, Main, Flex, Button } from "./component/StyleComponent";
-import Quotes from "./component/Quotes";
+// import Quotes from "./component/Quotes";
+import Structure from "./component/Structure";
+import api from "./utils/firebaseApi";
 
 function Quote() {
     const [page, setPage] = useState(0);
-    const quoteDataRule = {
-        id: ["3客人id", "13產品編號", "02產品版本號", "報價日期"],
-        date: "2022-04-01",
-        valid: "2022-04-01",
-        currency: "報價幣別",
-        image: "產品圖片",
-        quoteList: [
-            {
-                qty: "報價數量",
-                price: "產品單價",
-                analysisId: "分析id",
-                leadTime: "生產天數",
-            },
-        ],
-    };
+    const [productList, setProductList] = useState([]);
+    const [partList, setPartList] = useState([]);
+    const [bomList, setBomList] = useState([]);
+    const parentCollectionName = "suppliers2";
+    const childCollectionName = "parts2";
+    const assembleCollectionName = "partQuotations2";
+    const inquiryQty = [250, 1000, 5000];
 
-    const partCollectionName = "parts2";
-    const partQuotationCollectionName = "partQuotations2";
-    const productCollectionName = "products2";
-    const productQuotationCollectionName = "productQuotations2";
-    const inquiryQty = [10, 250, 1000, 5000];
+    useEffect(() => {
+        getListFromFirebase();
+    }, []);
+
+    async function getListFromFirebase() {
+        const list1 = await api.getCompleteCollection(parentCollectionName);
+        setProductList(list1);
+        const list2 = await api.getCompleteCollection(childCollectionName);
+        setPartList(list2);
+        const list3 = await api.getCompleteCollection(assembleCollectionName);
+        setBomList(list3);
+    }
 
     return (
         <Container>
@@ -36,10 +37,14 @@ function Quote() {
                     <Button onClick={() => setPage(1)}>產品報價</Button>
                 </Flex>
                 {/* {page === 0 ? ( */}
-                <Quotes
-                    collectionName={partCollectionName}
-                    assembleCollectionName={partQuotationCollectionName}
-                    inquiryQt={inquiryQty}
+                <Structure
+                    parentCollectionName={parentCollectionName}
+                    parentList={productList}
+                    childCollectionName={childCollectionName}
+                    childList={partList}
+                    assembleCollectionName={assembleCollectionName}
+                    assembleList={bomList}
+                    setAssembleList={setBomList}
                 />
                 {/* ) : (
                     <Quotes

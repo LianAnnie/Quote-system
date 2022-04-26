@@ -39,6 +39,8 @@ function ListWithRadio({
     const [filterList, setFilterList] = useState([]);
     const [filterCondition, setFilterCondition] = useState({});
 
+    // console.log(list);
+
     const collections = {
         customers2: [
             "客戶",

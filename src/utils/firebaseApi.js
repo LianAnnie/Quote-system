@@ -76,7 +76,12 @@ const api = {
             console.log(docId, data);
             const idArray = data.childData.map(e => {
                 const inquiryQtyId = form.transformId(e.inquiryQty, 6);
-                return [e.id.join(""), inquiryQtyId, data.parentData.date];
+                return [
+                    e.id.join(""),
+                    data.parentData.id.join(""),
+                    inquiryQtyId,
+                    data.parentData.date,
+                ];
             });
             const dataArray = data.childData.map((e, index) => ({
                 id: idArray[index],

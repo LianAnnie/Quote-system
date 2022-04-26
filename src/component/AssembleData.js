@@ -14,8 +14,8 @@ function AssembleData({ collectionName, processingData, setProcessingData }) {
         ],
         partQuotations2: [
             "零件",
-            ["報價日期", "有效日期", "幣別"],
-            ["date", "valid", "currency"],
+            ["報價日期", "有效日期", "幣別", "廠商編號", "公司名稱"],
+            ["date", "valid", "currency", "id", "company"],
             ["零件編號", "型號"],
             ["id", "mark"],
             ["數量", "單價", "交期", "刪除"],
@@ -23,8 +23,8 @@ function AssembleData({ collectionName, processingData, setProcessingData }) {
         ],
         productQuotations2: [
             "產品",
-            ["報價日期", "有效日期", "幣別"],
-            ["date", "valid", "currency"],
+            ["報價日期", "有效日期", "幣別", "客戶編號", "公司名稱"],
+            ["date", "valid", "currency", "id", "company"],
             ["產品編號", "系列"],
             ["id", "group"],
             ["數量", "單價", "交期", "刪除"],
