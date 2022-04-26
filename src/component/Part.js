@@ -1,10 +1,10 @@
-import styled from "styled-components";
 import Input from "./Input";
 import Select from "./Select";
 import { useState, useEffect } from "react";
 import api from "../utils/firebaseApi";
 import form from "../utils/formChange";
 import { Section, Title, Form, Question, Button } from "./StyleComponent";
+import data from "../utils/data";
 
 function Part({ collectionName, list, setList }) {
     const ruleData = {
@@ -18,158 +18,6 @@ function Part({ collectionName, list, setList }) {
         dependency: [],
     };
     const [exportData, setExportData] = useState(ruleData);
-
-    const selectComponentArray = [
-        {
-            title: "項目",
-            handleDataChange: handleExportDataChange,
-            data: exportData,
-            name: "class",
-            optionArray: [["A", "半成品"]],
-        },
-        {
-            title: "系列",
-            handleDataChange: handleExportDataChange,
-            data: exportData,
-            name: "group",
-            optionArray: [
-                ["A", "電器"],
-                ["B", "零件"],
-                ["C", "原料"],
-            ],
-        },
-    ];
-
-    const A = [
-        {
-            title: "色溫",
-            handleDataChange: handleExportDataChange,
-            data: exportData,
-            name: "spec1",
-            optionArray: [
-                ["27", "2700K"],
-                ["30", "3000K"],
-                ["40", "4000K"],
-            ],
-        },
-        {
-            title: "瓦數",
-            handleDataChange: handleExportDataChange,
-            data: exportData,
-            name: "spec2",
-            optionArray: [
-                ["06", "6W"],
-                ["08", "8W"],
-                ["10", "10W"],
-            ],
-        },
-        {
-            title: "CRI",
-            handleDataChange: handleExportDataChange,
-            data: exportData,
-            name: "spec3",
-            optionArray: [
-                ["90", "90"],
-                ["95", "95"],
-                ["80", "80"],
-            ],
-        },
-    ];
-
-    const B = [
-        {
-            title: "材質",
-            handleDataChange: handleExportDataChange,
-            data: exportData,
-            name: "spec1",
-            optionArray: [
-                ["BR", "黃銅"],
-                ["CO", "紅銅"],
-                ["ST", "鋼"],
-                ["AL", "鋁"],
-                ["SL", "不鏽鋼"],
-                ["AB", "ABS塑膠"],
-                ["PP", "PP塑膠"],
-                ["PC", "PC塑膠"],
-                ["PA", "PA塑膠"],
-            ],
-        },
-        {
-            title: "工藝",
-            handleDataChange: handleExportDataChange,
-            data: exportData,
-            name: "spec2",
-            optionArray: [
-                ["IJ", "注塑"],
-                ["DC", "壓鑄"],
-                ["FG", "鍛造"],
-                ["BD", "折彎"],
-                ["ET", "擠型"],
-                ["WE", "焊接"],
-                ["AS", "組裝"],
-                ["NN", "其他"],
-            ],
-        },
-        {
-            title: "表面",
-            handleDataChange: handleExportDataChange,
-            data: exportData,
-            name: "spec3",
-            optionArray: [
-                ["PA", "液烤"],
-                ["PC", "粉烤"],
-                ["PO", "拋光"],
-                ["PL", "電鍍"],
-                ["SB", "噴砂"],
-                ["BO", "染黑"],
-                ["NN", "去毛刺"],
-            ],
-        },
-    ];
-
-    const C = [
-        {
-            title: "材質",
-            handleDataChange: handleExportDataChange,
-            data: exportData,
-            name: "spec1",
-            optionArray: [
-                ["Br", "黃銅"],
-                ["Co", "紅銅"],
-                ["ST", "鋼"],
-                ["AL", "鋁"],
-                ["SL", "不鏽鋼"],
-                ["PL", "塑膠"],
-            ],
-        },
-        {
-            title: "規格",
-            handleDataChange: handleExportDataChange,
-            data: exportData,
-            name: "spec2",
-            optionArray: [
-                ["00", "原料"],
-                ["01", "板材"],
-                ["02", "管材"],
-                ["10", "塑膠本色"],
-                ["11", "塑膠黑色"],
-                ["12", "塑膠色母"],
-                ["13", "塑膠色粉"],
-            ],
-        },
-        {
-            title: "顏色",
-            handleDataChange: handleExportDataChange,
-            data: exportData,
-            name: "spec3",
-            optionArray: [
-                ["00", "原料"],
-                ["01", "灰色"],
-                ["02", "紅色"],
-                ["03", "白色"],
-            ],
-        },
-    ];
 
     useEffect(() => {
         const newExportData = JSON.parse(JSON.stringify(exportData));
@@ -239,6 +87,49 @@ function Part({ collectionName, list, setList }) {
                     <div>零件編號</div>
                     <div>{exportData.id}</div>
                 </Question>
+                {data.part.selectComponentArray.map((e, index) => (
+                    <Select
+                        key={index}
+                        title={e.title}
+                        handleDataChange={handleExportDataChange}
+                        data={exportData}
+                        name={e.name}
+                        optionArray={e.optionArray}
+                    />
+                ))}
+                {exportData.id && exportData.id[2] === "A"
+                    ? data.part.A.map((e, index) => (
+                          <Select
+                              key={index}
+                              title={e.title}
+                              handleDataChange={handleExportDataChange}
+                              data={exportData}
+                              name={e.name}
+                              optionArray={e.optionArray}
+                          />
+                      ))
+                    : exportData.id[2] === "B"
+                    ? data.part.B.map((e, index) => (
+                          <Select
+                              key={index}
+                              title={e.title}
+                              handleDataChange={handleExportDataChange}
+                              data={exportData}
+                              name={e.name}
+                              optionArray={e.optionArray}
+                          />
+                      ))
+                    : exportData.id[2] === "C" &&
+                      data.part.C.map((e, index) => (
+                          <Select
+                              key={index}
+                              title={e.title}
+                              handleDataChange={handleExportDataChange}
+                              data={exportData}
+                              name={e.name}
+                              optionArray={e.optionArray}
+                          />
+                      ))}
                 <Input
                     title="型號"
                     type="text"
@@ -247,49 +138,6 @@ function Part({ collectionName, list, setList }) {
                     name="mark"
                     value={exportData.mark}
                 />
-                {selectComponentArray.map((e, index) => (
-                    <Select
-                        key={index}
-                        title={e.title}
-                        handleDataChange={e.handleDataChange}
-                        data={e.data}
-                        name={e.name}
-                        optionArray={e.optionArray}
-                    />
-                ))}
-                {exportData.id && exportData.id[2] === "A"
-                    ? A.map((e, index) => (
-                          <Select
-                              key={index}
-                              title={e.title}
-                              handleDataChange={e.handleDataChange}
-                              data={e.data}
-                              name={e.name}
-                              optionArray={e.optionArray}
-                          />
-                      ))
-                    : exportData.id[2] === "B"
-                    ? B.map((e, index) => (
-                          <Select
-                              key={index}
-                              title={e.title}
-                              handleDataChange={e.handleDataChange}
-                              data={e.data}
-                              name={e.name}
-                              optionArray={e.optionArray}
-                          />
-                      ))
-                    : exportData.id[2] === "C" &&
-                      C.map((e, index) => (
-                          <Select
-                              key={index}
-                              title={e.title}
-                              handleDataChange={e.handleDataChange}
-                              data={e.data}
-                              name={e.name}
-                              optionArray={e.optionArray}
-                          />
-                      ))}
             </Form>
             <Button onClick={() => submit()}>Submit</Button>
         </Section>

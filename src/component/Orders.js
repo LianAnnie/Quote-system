@@ -3,27 +3,15 @@ import Select from "./Select";
 import { Section, Form } from "./StyleComponent";
 import data from "../utils/data";
 
-function Quotes({ handleDataChange, processingData }) {
-    // console.log(processingData);
-    const inputComponentArray = [
-        {
-            title: "報價日期",
-            name: "date",
-        },
-        {
-            title: "有效日期",
-            name: "valid",
-        },
-    ];
-
+function Orders({ handleDataChange, processingData }) {
     return (
         <Section>
             <Form>
-                {inputComponentArray.map(e => (
+                {data.order.inputComponentArray.map(e => (
                     <Input
                         key={e.title}
                         title={e.title}
-                        type="date"
+                        type={e.type}
                         handleDataChange={handleDataChange}
                         data={processingData}
                         name={e.name}
@@ -40,4 +28,4 @@ function Quotes({ handleDataChange, processingData }) {
     );
 }
 
-export default Quotes;
+export default Orders;

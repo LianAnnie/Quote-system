@@ -1,8 +1,19 @@
-import styled from "styled-components";
 import SideBar from "./component/SideBar";
 import Drawing from "./component/Drawing";
 import List from "./remove/List";
 import api from "./utils/firebaseApi";
+import {
+    Container,
+    Main,
+    Section,
+    Title,
+    Table,
+    Th,
+    Td,
+    Button,
+    Border,
+    Flex,
+} from "./component/StyleComponent";
 import { useState, useEffect } from "react";
 import { db } from "./utils/firebase";
 import { Timestamp, serverTimestamp } from "firebase/firestore";
@@ -11,50 +22,6 @@ import more from "highcharts/highcharts-more";
 import form from "./utils/formChange";
 more(Highcharts);
 require("highcharts/modules/solid-gauge")(Highcharts);
-
-const Container = styled.div`
-    text-align: left;
-`;
-const Main = styled.div`
-    margin-left: 300px;
-    padding: 50px 2%;
-`;
-const Products = styled.div`
-    padding: 20px 10%;
-`;
-const Product = styled.div`
-    padding: 20px 10%;
-`;
-const Quotes = styled.div`
-    padding: 20px 10%;
-`;
-const Title = styled.div`
-    margin-bottom: 20px;
-`;
-const Table = styled.table`
-    border: solid 1px #000000;
-    padding: 20px;
-`;
-const Th = styled.th`
-    padding-right: 20px;
-`;
-const Td = styled.td`
-    padding-right: 50px;
-`;
-const Button = styled.div`
-    border: solid 1px #000000;
-    width: 150px;
-    margin: 5px;
-    text-align: center;
-    cursor: pointer;
-`;
-const Border = styled.div`
-    border: solid 1px #000000;
-    padding: 20px;
-`;
-const Flex = styled.div`
-    display: flex;
-`;
 
 function Analysis() {
     const [productList, setProductList] = useState([]); //總產品列表
@@ -204,10 +171,6 @@ function Analysis() {
         });
     }
 
-    console.log(selectedProduct);
-    // console.log(partQuotationsData);
-    // console.log(caculateData);
-
     return (
         <Container>
             <SideBar />
@@ -223,7 +186,7 @@ function Analysis() {
                     setSelectedList={setSelectedList}
                     selectedList={selectedList}
                 />
-                <Product>
+                <Section>
                     <Flex>
                         <Title>分析產品</Title>
                         <Button onClick={() => submit()}>Submit</Button>
@@ -304,8 +267,8 @@ function Analysis() {
                                 ))}
                         </tbody>
                     </Table>
-                </Product>
-                <Quotes>
+                </Section>
+                <Section>
                     <Table>
                         <thead>
                             <tr>
@@ -362,8 +325,8 @@ function Analysis() {
                                 ))}
                         </tbody>
                     </Table>
-                </Quotes>
-                <Border>
+                </Section>
+                <Section>
                     <Flex>
                         <Title>目前總成本</Title>
                         <div>{sumCost}</div>
@@ -399,7 +362,7 @@ function Analysis() {
                         )}
                     </Flex>
                     <Drawing profitMargin={profitMargin} pieData={pieData} />
-                </Border>
+                </Section>
             </Main>
         </Container>
     );

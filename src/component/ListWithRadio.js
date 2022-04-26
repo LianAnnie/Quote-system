@@ -1,34 +1,6 @@
-import styled from "styled-components";
 import { useEffect, useState } from "react";
-import api from "../utils/firebaseApi";
-import form from "../utils/formChange";
-
-const Contanier = styled.div`
-    padding: 20px 5%;
-`;
-const Title = styled.div`
-    margin-bottom: 20px;
-`;
-const Table = styled.table`
-    border: solid 1px #000000;
-    border-radius: 10px;
-    padding: 20px 5%;
-    width: 100%;
-    background-color: #fff;
-`;
-const Th = styled.th`
-    padding-right: 20px;
-`;
-const Td = styled.td`
-    padding-right: 50px;
-`;
-const Button = styled.div`
-    border: solid 1px #000000;
-    width: 100px;
-    margin: 5px;
-    text-align: center;
-    cursor: pointer;
-`;
+import { Section, Title, Table, Th, Td, Button } from "./StyleComponent";
+import data from "../utils/data";
 
 function ListWithRadio({
     collectionName,
@@ -38,59 +10,6 @@ function ListWithRadio({
 }) {
     const [filterList, setFilterList] = useState([]);
     const [filterCondition, setFilterCondition] = useState({});
-
-    // console.log(list);
-
-    const collections = {
-        customers2: [
-            "客戶",
-            ["客戶編號", "公司名稱", "聯繫人", "地區", "選取"],
-            ["id", "company", "contacts", "country"],
-        ],
-        suppliers2: [
-            "廠商",
-            ["廠商編號", "公司名稱", "聯繫人", "地區", "選取"],
-            ["id", "company", "contacts", "country"],
-        ],
-        products2: [
-            "產品",
-            [
-                "產品編號",
-                "類別",
-                "系列",
-                "材質",
-                "色碼",
-                "款式",
-                "特殊",
-                "備註",
-                "選取",
-            ],
-            [
-                "id",
-                "class",
-                "group",
-                "material",
-                "color",
-                "type",
-                "special",
-                "mark",
-            ],
-        ],
-        parts2: [
-            "零件",
-            [
-                "零件編號",
-                "型號",
-                "項目",
-                "系列",
-                "規格1",
-                "規格2",
-                "規格3",
-                "選取",
-            ],
-            ["id", "mark", "class", "group", "spec1", "spec2", "spec3"],
-        ],
-    };
 
     useEffect(() => {
         setFilterList(list);
@@ -143,8 +62,10 @@ function ListWithRadio({
     }
 
     return (
-        <Contanier>
-            <Title>{collections[collectionName][0]}列表</Title>
+        <Section>
+            <Title>
+                {data.listWithRadioCollections[collectionName][0]}列表
+            </Title>
             <Button
                 onClick={() => {
                     handleConditionChange(0);
@@ -155,41 +76,47 @@ function ListWithRadio({
             <Table>
                 <thead>
                     <tr>
-                        {collections[collectionName][1].map((e, index) => (
-                            <Th key={index}>{e}</Th>
-                        ))}
+                        {data.listWithRadioCollections[collectionName][1].map(
+                            (e, index) => (
+                                <Th key={index}>{e}</Th>
+                            ),
+                        )}
                     </tr>
                     <tr>
-                        {collections[collectionName][2].map(keyName => (
-                            <Th key={keyName}>
-                                <select
-                                    name={keyName}
-                                    onChange={e => handleConditionChange(e)}
-                                    value={list[keyName]}
-                                >
-                                    {list
-                                        .filter(
-                                            (m, index, array) =>
-                                                array
-                                                    .map(n => n[keyName])
-                                                    .indexOf(m[keyName]) ===
-                                                index,
-                                        )
-                                        .map((o, index) => (
-                                            <option key={index}>
-                                                {o[keyName]}
-                                            </option>
-                                        ))}
-                                </select>
-                            </Th>
-                        ))}
+                        {data.listWithRadioCollections[collectionName][2].map(
+                            keyName => (
+                                <Th key={keyName}>
+                                    <select
+                                        name={keyName}
+                                        onChange={e => handleConditionChange(e)}
+                                        value={list[keyName]}
+                                    >
+                                        {list
+                                            .filter(
+                                                (m, index, array) =>
+                                                    array
+                                                        .map(n => n[keyName])
+                                                        .indexOf(m[keyName]) ===
+                                                    index,
+                                            )
+                                            .map((o, index) => (
+                                                <option key={index}>
+                                                    {o[keyName]}
+                                                </option>
+                                            ))}
+                                    </select>
+                                </Th>
+                            ),
+                        )}
                     </tr>
                 </thead>
                 <tbody>
                     {filterList &&
                         filterList.map((e, index) => (
                             <tr key={e.id}>
-                                {collections[collectionName][2].map(keyName => (
+                                {data.listWithRadioCollections[
+                                    collectionName
+                                ][2].map(keyName => (
                                     <Td key={keyName}>{e[keyName]}</Td>
                                 ))}
                                 <Td>
@@ -203,7 +130,7 @@ function ListWithRadio({
                         ))}
                 </tbody>
             </Table>
-        </Contanier>
+        </Section>
     );
 }
 

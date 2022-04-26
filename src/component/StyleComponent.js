@@ -28,6 +28,10 @@ const Table = styled.table`
     width: 100%;
     background-color: #fff;
 `;
+const Border = styled.div`
+    border: solid 1px #000000;
+    padding: 20px;
+`;
 const Question = styled.div`
     display: flex;
     margin: 5px;
@@ -56,6 +60,7 @@ export {
     Title,
     Form,
     Table,
+    Border,
     Question,
     Th,
     Td,

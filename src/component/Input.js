@@ -1,8 +1,4 @@
-import styled from "styled-components";
-const Question = styled.div`
-    display: flex;
-    margin: 5px;
-`;
+import { Question } from "./StyleComponent";
 
 function Input({ title, type, handleDataChange, data, name }) {
     return (

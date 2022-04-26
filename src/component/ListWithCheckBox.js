@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Section, Title, Table, Th, Td, Button } from "./StyleComponent";
+import data from "../utils/data";
 
 function ListWithRadio({
     collectionName,
@@ -9,57 +10,6 @@ function ListWithRadio({
 }) {
     const [filterList, setFilterList] = useState([]);
     const [filterCondition, setFilterCondition] = useState({});
-
-    const collections = {
-        customers2: [
-            "客戶",
-            ["客戶編號", "公司名稱", "聯繫人", "地區", "選取"],
-            ["id", "company", "contacts", "country"],
-        ],
-        suppliers2: [
-            "廠商",
-            ["廠商編號", "公司名稱", "聯繫人", "地區", "選取"],
-            ["id", "company", "contacts", "country"],
-        ],
-        products2: [
-            "產品",
-            [
-                "產品編號",
-                "類別",
-                "系列",
-                "材質",
-                "色碼",
-                "款式",
-                "特殊",
-                "備註",
-                "選取",
-            ],
-            [
-                "id",
-                "class",
-                "group",
-                "material",
-                "color",
-                "type",
-                "special",
-                "mark",
-            ],
-        ],
-        parts2: [
-            "零件",
-            [
-                "零件編號",
-                "型號",
-                "項目",
-                "系列",
-                "規格1",
-                "規格2",
-                "規格3",
-                "選取",
-            ],
-            ["id", "mark", "class", "group", "spec1", "spec2", "spec3"],
-        ],
-    };
 
     useEffect(() => {
         setFilterList(list);
@@ -117,7 +67,9 @@ function ListWithRadio({
 
     return (
         <Section>
-            <Title>{collections[collectionName][0]}列表</Title>
+            <Title>
+                {data.listWithCheckBoxCollections[collectionName][0]}列表
+            </Title>
             <Button
                 onClick={() => {
                     handleConditionChange(0);
@@ -128,12 +80,16 @@ function ListWithRadio({
             <Table>
                 <thead>
                     <tr>
-                        {collections[collectionName][1].map((e, index) => (
+                        {data.listWithCheckBoxCollections[
+                            collectionName
+                        ][1].map((e, index) => (
                             <Th key={index}>{e}</Th>
                         ))}
                     </tr>
                     <tr>
-                        {collections[collectionName][2].map(keyName => (
+                        {data.listWithCheckBoxCollections[
+                            collectionName
+                        ][2].map(keyName => (
                             <Th key={keyName}>
                                 <select
                                     name={keyName}
@@ -162,7 +118,9 @@ function ListWithRadio({
                     {filterList &&
                         filterList.map((e, index) => (
                             <tr key={e.id}>
-                                {collections[collectionName][2].map(keyName => (
+                                {data.listWithCheckBoxCollections[
+                                    collectionName
+                                ][2].map(keyName => (
                                     <Td key={keyName}>{e[keyName]}</Td>
                                 ))}
                                 <Td>

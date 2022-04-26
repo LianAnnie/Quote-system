@@ -109,6 +109,11 @@ function SideBar() {
                             <Black>產品零件</Black>
                         </NavLink>
                     </Navbar>
+                    <Navbar>
+                        <NavLink style={{ textDecoration: "none" }} to="/quote">
+                            <Black>報價表單</Black>
+                        </NavLink>
+                    </Navbar>
                     {/* <Navbar>
                         <NavLink to="/bom">
                             <White>客戶產品</White>
@@ -119,18 +124,17 @@ function SideBar() {
                             <White>廠商訊息</White>
                         </NavLink>
                     </Navbar> */}
+
                     <Navbar>
-                        <NavLink to="/quote">
-                            <Black>報價表單</Black>
-                        </NavLink>
-                    </Navbar>
-                    {/* <Navbar>
-                        <NavLink to="/order">
+                        <NavLink style={{ textDecoration: "none" }} to="/order">
                             <Black>訂單資料</Black>
                         </NavLink>
-                    </Navbar> */}
+                    </Navbar>
                     <Navbar>
-                        <NavLink to="/analysis">
+                        <NavLink
+                            style={{ textDecoration: "none" }}
+                            to="/analysis"
+                        >
                             <Black>成本分析</Black>
                         </NavLink>
                     </Navbar>

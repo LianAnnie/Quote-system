@@ -1,34 +1,9 @@
-import styled from "styled-components";
 import { useState, useEffect } from "react";
+import { Container, Title, Form, Question, Button } from "./StyleComponent";
 import api from "../utils/firebaseApi";
 import form from "../utils/formChange";
 import data from "../utils/data";
 import Input from "./Input";
-
-const Container = styled.div`
-    padding: 20px 5%;
-`;
-const Title = styled.div`
-    margin-bottom: 20px;
-`;
-const Form = styled.div`
-    border: solid 1px #000000;
-    border-radius: 10px;
-    padding: 20px;
-    background-color: #fff;
-`;
-const Question = styled.div`
-    display: flex;
-    margin: 5px;
-`;
-
-const Button = styled.div`
-    border: solid 1px #000000;
-    width: 100px;
-    margin: 5px;
-    text-align: center;
-    cursor: pointer;
-`;
 
 function Companies({
     customerList,

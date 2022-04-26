@@ -98,12 +98,35 @@ const api = {
             dataArray.forEach(async e => {
                 await setDoc(doc(db, collectionName, e.id.join("")), e);
             });
-            console.log(`${dataArray.length}files, finish`);
+            console.log(`${dataArray.length}files`);
             return dataArray;
         }
-        if (collectionName === "productQuotations2") {
-            console.log("productQuotations2", data);
-            return;
+        if (collectionName === "order") {
+            const idArray = data.childData.map(e => {
+                return [
+                    data.parentData.id.join(""),
+                    e.id.join(""),
+                    data.parentData.date,
+                    data.parentData.valid,
+                ];
+            });
+            const dataArray = data.childData.map((e, index) => ({
+                id: idArray[index],
+                orderId: data.parentData.orderId,
+                sum: data.parentData.sum,
+                currency: data.parentData.currency,
+                qty: e.qty,
+                price: e.price,
+                date: data.parentData.date,
+                requestedDate: data.parentData.requestedDate,
+                remark: e.remark,
+            }));
+            dataArray.forEach(async e => {
+                console.log(e);
+                await setDoc(doc(db, collectionName, e.id.join("")), e);
+            });
+            console.log(`${dataArray.length}files`);
+            return dataArray;
         }
         await setDoc(doc(db, collectionName, docId), data);
         //waiting check: setDoc 沒有response 嗎？  沒有：(void) https://firebase.google.com/docs/reference/js/firestore_lite.md#setdoc_2

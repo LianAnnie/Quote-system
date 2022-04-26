@@ -2,121 +2,13 @@ import { useEffect, useState } from "react";
 import api from "../utils/firebaseApi";
 import form from "../utils/formChange";
 import { Section, Title, Table, Th, Td, Button } from "./StyleComponent";
+import data from "../utils/data";
 
 function List({ collectionName, list }) {
-    console.log(list);
     const [filterList, setFilterList] = useState([]);
     const [filterCondition, setFilterCondition] = useState({});
     const [revisedStatus, setRevisedStatus] = useState([]);
     const [revisedData, setRevisedData] = useState({});
-    const collections = {
-        customers2: [
-            "客戶",
-            ["客戶編號", "公司名稱", "聯繫人", "地區", "更新", "刪除"],
-            ["id", "company", "contacts", "country"],
-        ],
-        suppliers2: [
-            "廠商",
-            ["廠商編號", "公司名稱", "聯繫人", "地區", "更新", "刪除"],
-            ["id", "company", "contacts", "country"],
-        ],
-        products2: [
-            "產品",
-            [
-                "產品編號",
-                "類別",
-                "系列",
-                "材質",
-                "色碼",
-                "款式",
-                "特殊",
-                "備註",
-                "更新",
-                "刪除",
-            ],
-            [
-                "id",
-                "class",
-                "group",
-                "material",
-                "color",
-                "type",
-                "special",
-                "mark",
-            ],
-        ],
-        parts2: [
-            "零件",
-            [
-                "零件編號",
-                "型號",
-                "項目",
-                "系列",
-                "規格1",
-                "規格2",
-                "規格3",
-                "更新",
-                "刪除",
-            ],
-            ["id", "mark", "class", "group", "spec1", "spec2", "spec3"],
-        ],
-        bom: [
-            "結構",
-            ["產品編號", "零件編號", "SN", "用量", "單位", "更新", "刪除"],
-            ["id0", "id1", "id2", "qty", "unit"],
-        ],
-        partQuotations2: [
-            "零件報價",
-            [
-                "零件編號",
-                "供應商編號",
-                "數量",
-                "單價",
-                "幣別",
-                "交期",
-                "報價日期",
-                "報價效期",
-                "更新",
-                "刪除",
-            ],
-            [
-                "id0",
-                "id1",
-                "inquiryQty",
-                "price",
-                "currency",
-                "leadTime",
-                "date",
-                "valid",
-            ],
-        ],
-        productQuotations2: [
-            "零件報價",
-            [
-                "零件編號",
-                "供應商編號",
-                "數量",
-                "單價",
-                "幣別",
-                "交期",
-                "報價日期",
-                "報價效期",
-                "更新",
-                "刪除",
-            ],
-            [
-                "id0",
-                "id1",
-                "inquiryQty",
-                "price",
-                "currency",
-                "leadTime",
-                "date",
-                "valid",
-            ],
-        ],
-    };
-
     useEffect(() => {
         setFilterList(list);
         revisedStatusArray(list);
@@ -182,7 +74,12 @@ function List({ collectionName, list }) {
         if (newRevisedStatus[index]) {
             if (save) {
                 newfilterList[index] = revisedData[index];
-                if (collectionName === "bom") {
+                if (
+                    collectionName === "bom" ||
+                    collectionName === "partQuotations2" ||
+                    collectionName === "productQuotations2" ||
+                    collectionName === "order"
+                ) {
                     const newData = transListToffirebase(revisedData[index]);
                     api.updateDoc(collectionName, newData.id.join(""), newData);
                 } else {
@@ -203,11 +100,42 @@ function List({ collectionName, list }) {
     }
 
     function transListToffirebase(data) {
-        const newObject = {
-            id: [data.id0, data.id1, data.id2],
-            qty: data.qty,
-            unit: data.unit,
-        };
+        let newObject;
+        if (collectionName === "bom") {
+            newObject = {
+                id: [data.id0, data.id1, data.id2],
+                qty: data.qty,
+                unit: data.unit,
+            };
+        }
+        if (
+            collectionName === "productQuotations2" ||
+            collectionName === "partQuotations2"
+        ) {
+            newObject = {
+                id: [data.id0, data.id1, data.id2, data.id3],
+                date: data.date,
+                currency: data.currency,
+                inquiryQty: data.inquiryQty,
+                leadTime: data.leadTime,
+                price: data.price,
+                valid: data.valid,
+            };
+        }
+        if (collectionName === "order") {
+            console.log(data);
+            newObject = {
+                id: [data.id0, data.id1, data.id2, data.id3],
+                orderId: data.orderId,
+                sum: data.sum,
+                currency: data.currency,
+                qty: data.qty,
+                price: data.price,
+                date: data.date,
+                requestedDate: data.requestedDate,
+                remark: data.remark,
+            };
+        }
         return newObject;
     }
 
@@ -227,7 +155,10 @@ function List({ collectionName, list }) {
                 deleteData.id2,
             );
             api.deleteDoc(collectionName, deleteIdArray);
-        } else if (collectionName === "partQuotations2") {
+        } else if (
+            collectionName === "partQuotations2" ||
+            collectionName === "order"
+        ) {
             console.log(deleteData);
             const deleteIdArray = deleteData.id0.concat(
                 deleteData.id1,
@@ -243,7 +174,7 @@ function List({ collectionName, list }) {
 
     return (
         <Section>
-            <Title>{collections[collectionName][0]}列表</Title>
+            <Title>{data.listCollections[collectionName][0]}列表</Title>
             <Button
                 onClick={() => {
                     handleConditionChange(0);
@@ -254,34 +185,38 @@ function List({ collectionName, list }) {
             <Table>
                 <thead>
                     <tr>
-                        {collections[collectionName][1].map((e, index) => (
-                            <Th key={index}>{e}</Th>
-                        ))}
+                        {data.listCollections[collectionName][1].map(
+                            (e, index) => (
+                                <Th key={index}>{e}</Th>
+                            ),
+                        )}
                     </tr>
                     <tr>
-                        {collections[collectionName][2].map(keyName => (
-                            <Th key={keyName}>
-                                <select
-                                    name={keyName}
-                                    onChange={e => handleConditionChange(e)}
-                                    value={list[keyName]}
-                                >
-                                    {list
-                                        .filter(
-                                            (m, index, array) =>
-                                                array
-                                                    .map(n => n[keyName])
-                                                    .indexOf(m[keyName]) ===
-                                                index,
-                                        )
-                                        .map((o, index) => (
-                                            <option key={index}>
-                                                {o[keyName]}
-                                            </option>
-                                        ))}
-                                </select>
-                            </Th>
-                        ))}
+                        {data.listCollections[collectionName][2].map(
+                            keyName => (
+                                <Th key={keyName}>
+                                    <select
+                                        name={keyName}
+                                        onChange={e => handleConditionChange(e)}
+                                        value={list[keyName]}
+                                    >
+                                        {list
+                                            .filter(
+                                                (m, index, array) =>
+                                                    array
+                                                        .map(n => n[keyName])
+                                                        .indexOf(m[keyName]) ===
+                                                    index,
+                                            )
+                                            .map((o, index) => (
+                                                <option key={index}>
+                                                    {o[keyName]}
+                                                </option>
+                                            ))}
+                                    </select>
+                                </Th>
+                            ),
+                        )}
                     </tr>
                 </thead>
                 <tbody>
@@ -289,11 +224,11 @@ function List({ collectionName, list }) {
                         filterList.map((e, index) =>
                             !revisedStatus[index] ? (
                                 <tr key={index}>
-                                    {collections[collectionName][2].map(
-                                        keyName => (
-                                            <Td key={keyName}>{e[keyName]}</Td>
-                                        ),
-                                    )}
+                                    {data.listCollections[
+                                        collectionName
+                                    ][2].map(keyName => (
+                                        <Td key={keyName}>{e[keyName]}</Td>
+                                    ))}
                                     <Td>
                                         <Button
                                             onClick={() =>
@@ -313,36 +248,37 @@ function List({ collectionName, list }) {
                                 </tr>
                             ) : (
                                 <tr key={e.id}>
-                                    {collections[collectionName][2].map(
-                                        (keyName, keyIndex) =>
-                                            keyName === "id" ||
-                                            keyName === "country" ||
-                                            keyName === "id0" ||
-                                            keyName === "id1" ||
-                                            keyName === "id2" ||
-                                            keyName === "id3" ? (
-                                                <Td key={keyIndex}>
-                                                    {e[keyName]}
-                                                </Td>
-                                            ) : (
-                                                <Td>
-                                                    <input
-                                                        key={keyIndex}
-                                                        name={keyName}
-                                                        value={
-                                                            revisedData[index][
-                                                                keyName
-                                                            ]
-                                                        }
-                                                        onChange={e =>
-                                                            handleRevisedData(
-                                                                index,
-                                                                e,
-                                                            )
-                                                        }
-                                                    ></input>
-                                                </Td>
-                                            ),
+                                    {data.listCollections[
+                                        collectionName
+                                    ][2].map((keyName, keyIndex) =>
+                                        keyName === "id" ||
+                                        keyName === "country" ||
+                                        keyName === "id0" ||
+                                        keyName === "id1" ||
+                                        keyName === "id2" ||
+                                        keyName === "id3" ? (
+                                            <Td key={[keyName, keyIndex]}>
+                                                {e[keyName]}
+                                            </Td>
+                                        ) : (
+                                            <Td>
+                                                <input
+                                                    key={[keyName, keyIndex]}
+                                                    name={keyName}
+                                                    value={
+                                                        revisedData[index][
+                                                            keyName
+                                                        ]
+                                                    }
+                                                    onChange={e =>
+                                                        handleRevisedData(
+                                                            index,
+                                                            e,
+                                                        )
+                                                    }
+                                                ></input>
+                                            </Td>
+                                        ),
                                     )}
                                     <Td>
                                         <Button

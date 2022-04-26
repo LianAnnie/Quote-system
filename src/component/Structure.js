@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { Button, Form } from "./StyleComponent";
 import api from "../utils/firebaseApi";
 import Quotes from "./Quotes";
+import Orders from "./Orders";
 
 function Structure({
     parentCollectionName,
@@ -45,17 +46,13 @@ function Structure({
     }, [assembleList]);
 
     function handleProcessingDataChange(data) {
-        // console.log(data);
-        // console.log(processingData);
         const newProcessingData = JSON.parse(JSON.stringify(processingData));
         if (data.target !== undefined) {
             const name = data.target.name;
             const value = data.target.value;
             newProcessingData.parentData[name] = value;
         } else if (data.length === undefined) {
-            // newProcessingData.parentData = Object.assign(processingData, data);
             const keyArray = Object.keys(data);
-            // console.log(keyArray);
             keyArray.forEach(
                 key => (newProcessingData.parentData[key] = data[key]),
             );
@@ -93,8 +90,9 @@ function Structure({
     }
 
     function transAssembleListToRender(assembleCollectionName, assembleList) {
+        let newListtoRender;
         if (assembleCollectionName === "bom") {
-            const newListtoRender = assembleList.map(e => ({
+            newListtoRender = assembleList.map(e => ({
                 id0: e.id[0],
                 id1: e.id[1],
                 id2: e.id[2],
@@ -107,7 +105,7 @@ function Structure({
             assembleCollectionName === "partQuotations2" ||
             assembleCollectionName === "productQuotations2"
         ) {
-            const newListtoRender = assembleList.map(e => ({
+            newListtoRender = assembleList.map(e => ({
                 id0: e.id[0],
                 id1: e.id[1],
                 id2: e.id[2],
@@ -119,19 +117,42 @@ function Structure({
                 date: e.date,
                 valid: e.valid,
             }));
-            return newListtoRender;
         }
+        if (assembleCollectionName === "order") {
+            newListtoRender = assembleList.map(e => ({
+                id0: e.id[0],
+                id1: e.id[1],
+                id2: e.id[2],
+                id3: e.id[3],
+                orderId: e.orderId,
+                sum: e.sum,
+                currency: e.currency,
+                qty: e.qty,
+                price: e.price,
+                date: e.date,
+                requestedDate: e.requestedDate,
+                remark: e.remark,
+            }));
+        }
+        return newListtoRender;
     }
 
     return (
         <>
-            {assembleCollectionName === "partQuotations2" ||
-                (assembleCollectionName === "productQuotations2" && (
-                    <Quotes
-                        handleDataChange={handleProcessingDataChange}
-                        processingData={processingData}
-                    />
-                ))}
+            {(assembleCollectionName === "partQuotations2" ||
+                assembleCollectionName === "productQuotations2") && (
+                <Quotes
+                    handleDataChange={handleProcessingDataChange}
+                    processingData={processingData}
+                />
+            )}
+            {(assembleCollectionName === "order" ||
+                assembleCollectionName === "purchase") && (
+                <Orders
+                    handleDataChange={handleProcessingDataChange}
+                    processingData={processingData}
+                />
+            )}
             <ListWithRadio
                 collectionName={parentCollectionName}
                 list={parentList}
