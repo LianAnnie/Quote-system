@@ -30,6 +30,7 @@ function Part({ collectionName, list, setList }) {
         const value = e.target.value;
         const name = e.target.name;
         const option = value.split(",");
+        checkChangeData(name, option);
         let newExportData = JSON.parse(JSON.stringify(exportData));
         if (name !== "mark") {
             if (name === "group") {
@@ -45,6 +46,10 @@ function Part({ collectionName, list, setList }) {
             newExportData[name] = value;
         }
         setExportData(newExportData);
+    }
+
+    function checkChangeData(key, value) {
+        console.log(key, value);
     }
 
     async function submit() {
@@ -65,18 +70,7 @@ function Part({ collectionName, list, setList }) {
     }
 
     function handleSNNumberChange(data, list) {
-        const checkId = [...data.id];
-        const copyList = JSON.parse(JSON.stringify(list));
-        const listId = copyList.map(e => {
-            e.id.pop();
-            return e.id.join("");
-        });
-        checkId.pop();
-        const number = listId.reduce(
-            (sum, id) => (id === checkId.join("") ? sum + 1 : sum),
-            0,
-        );
-        return form.transformId(number, 2);
+        return form.handleSNNumberChange(data, list);
     }
 
     return (

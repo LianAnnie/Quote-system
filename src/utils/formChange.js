@@ -62,6 +62,20 @@ const form = {
         );
         return newFilterList;
     },
+    handleSNNumberChange(data, list) {
+        const checkId = [...data.id];
+        checkId.pop();
+        const copyList = JSON.parse(JSON.stringify(list));
+        const snArray = copyList
+            .map(e => {
+                const lastId = e.id.pop();
+                return [e.id.join(""), lastId];
+            })
+            .map(e => (e[0] === checkId.join("") ? Number(e[1]) : undefined))
+            .filter(sn => sn !== undefined);
+        const maxsn = form.getMaxsn(snArray);
+        return form.transformId(maxsn, 2);
+    },
 };
 
 export default form;

@@ -31,6 +31,7 @@ function Product({ collectionName, list, setList }) {
         const value = e.target.value;
         const name = e.target.name;
         const option = value.split(",");
+        console.log(option);
         const newExportData = JSON.parse(JSON.stringify(exportData));
         if (name !== "mark") {
             const keyArray = Object.keys(ruleData);
@@ -47,35 +48,29 @@ function Product({ collectionName, list, setList }) {
     }
 
     async function submit() {
-        const result = Object.values(exportData).some(
-            e => typeof e === "number",
-        );
-        if (result) {
-            console.log(`請將規格選齊`);
-            return;
+        const checkResult = checkExportData(exportData);
+        if (checkResult) {
+            const newExportData = await api.setDocWithId(
+                collectionName,
+                exportData.id.join(""),
+                exportData,
+            );
+            setExportData(ruleData);
+            setList(prev => [...prev, newExportData]);
         }
-        const newExportData = await api.setDocWithId(
-            collectionName,
-            exportData.id.join(""),
-            exportData,
-        );
-        setExportData(ruleData);
-        setList(prev => [...prev, newExportData]);
+    }
+
+    function checkExportData(data) {
+        const result = Object.values(data).some(e => typeof e === "number");
+        if (result) {
+            alert(`請將規格選齊`);
+            return false;
+        }
+        return true;
     }
 
     function handleSNNumberChange(data, list) {
-        const checkId = [...data.id];
-        const copyList = JSON.parse(JSON.stringify(list));
-        const listId = copyList.map(e => {
-            e.id.pop();
-            return e.id.join("");
-        });
-        checkId.pop();
-        const number = listId.reduce(
-            (sum, id) => (id === checkId.join("") ? sum + 1 : sum),
-            0,
-        );
-        return form.transformId(number, 2);
+        return form.handleSNNumberChange(data, list);
     }
 
     return (
