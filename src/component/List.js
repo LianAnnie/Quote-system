@@ -4,42 +4,57 @@ import form from "../utils/formChange";
 import { Section, Title, Table, Th, Td, Button } from "./StyleComponent";
 import data from "../utils/data";
 
-function List({ collectionName, list }) {
+function List({ collectionName, list, setList }) {
+    const filterConditionRule = {};
     const [filterList, setFilterList] = useState([]);
-    const [filterCondition, setFilterCondition] = useState({});
+    const [filterCondition, setFilterCondition] = useState(filterConditionRule);
     const [revisedStatus, setRevisedStatus] = useState([]);
     const [revisedData, setRevisedData] = useState({});
+
     useEffect(() => {
         setFilterList(list);
-        revisedStatusArray(list);
-        setRevisedData(list);
+        console.log(filterCondition);
+        if (Object.keys(list).length > 0) {
+            handleConditionChange(1);
+        }
     }, [list]);
 
     function handleConditionChange(e) {
+        let newFilterList;
+        let name;
+        let value;
         if (e === 0) {
-            setFilterCondition({});
             setFilterList(list);
             revisedStatusArray(list);
             setRevisedData(list);
             return;
         }
-        const name = e.target.name;
-        const value = e.target.value;
-        const newFilterCondition = JSON.parse(JSON.stringify(filterCondition));
-        newFilterCondition[name] = value;
-        const newFilterList = handleListChange(newFilterCondition, filterList);
+        if (e !== 1) {
+            console.log(e.target.value);
+            name = e.target.name;
+            value = e.target.value;
+            const newFilterCondition = filterCondition;
+            newFilterCondition[name] = value;
+            console.log(newFilterCondition);
+            newFilterList = handleListChange(newFilterCondition, list);
+            setFilterCondition(newFilterCondition);
+        } else {
+            newFilterList = handleListChange(filterCondition, list);
+            setFilterCondition(filterCondition);
+        }
         if (newFilterList.length === 0) {
             console.log(
                 `沒有符合篩選結果,清除原本篩選條件,按最後一次需求篩選資料`,
             );
-            setFilterCondition({ [name]: value });
+            const newFilterCondition = filterConditionRule;
+            newFilterCondition[name] = value;
+            setFilterCondition(newFilterCondition);
             const resetList = handleListChange({ [name]: value }, list);
             setFilterList(resetList);
             revisedStatusArray(resetList);
             setRevisedData(resetList);
             return;
         }
-        setFilterCondition(newFilterCondition);
         setFilterList(newFilterList);
         revisedStatusArray(newFilterList);
         setRevisedData(newFilterList);
@@ -53,8 +68,13 @@ function List({ collectionName, list }) {
                 !filterKeyArray
                     .map(key =>
                         key === "id"
-                            ? m[key].join("") === condition[key]
-                            : m[key] === condition[key],
+                            ? m[key]
+                                  .join("")
+                                  .toLowerCase()
+                                  .includes(condition[key].toLowerCase())
+                            : m[key]
+                                  .toLowerCase()
+                                  .includes(condition[key].toLowerCase()),
                     )
                     .some(e => !e),
         );
@@ -71,6 +91,7 @@ function List({ collectionName, list }) {
         const newRevisedStatus = [...revisedStatus];
         const newRevisedData = [...revisedData];
         const newfilterList = [...filterList];
+        const newList = list;
         if (newRevisedStatus[index]) {
             if (save) {
                 newfilterList[index] = revisedData[index];
@@ -81,13 +102,22 @@ function List({ collectionName, list }) {
                     collectionName === "order"
                 ) {
                     const newData = transListToffirebase(revisedData[index]);
+                    console.log(revisedData[index]);
                     api.updateDoc(collectionName, newData.id.join(""), newData);
                 } else {
+                    const itemIndexInList = list
+                        .map(e => e.id.join(""))
+                        .indexOf(revisedData[index].id.join(""));
+                    console.log(revisedData[index].id.join(""));
+                    console.log(list.map(e => e.id.join("")));
+                    console.log("這裡數字不應該都出現0", itemIndexInList);
+                    newList[itemIndexInList] = revisedData[index];
                     api.updateDoc(
                         collectionName,
                         revisedData[index].id.join(""),
                         revisedData[index],
                     );
+                    setList(newList);
                 }
                 setFilterList(newfilterList);
             } else {
@@ -146,6 +176,7 @@ function List({ collectionName, list }) {
 
     function deleteData(itemIndex) {
         const deleteData = filterList[itemIndex];
+        const newList = list.filter(e => e.id !== deleteData.id);
         const newFilterList = filterList.filter(
             (_, index) => index !== itemIndex,
         );
@@ -169,8 +200,13 @@ function List({ collectionName, list }) {
         } else {
             api.deleteDoc(collectionName, deleteData.id.join(""));
         }
+        console.log(newList);
+        setList(newList);
         setFilterList(newFilterList);
     }
+
+    console.log(list);
+    console.log(filterList);
 
     return (
         <Section>
@@ -195,7 +231,14 @@ function List({ collectionName, list }) {
                         {data.listCollections[collectionName][2].map(
                             keyName => (
                                 <Th key={keyName}>
+                                    <input
+                                        type="text"
+                                        name={keyName}
+                                        onChange={e => handleConditionChange(e)}
+                                        value={filterCondition[keyName]}
+                                    />
                                     <select
+                                        id={keyName}
                                         name={keyName}
                                         onChange={e => handleConditionChange(e)}
                                         value={list[keyName]}
@@ -239,11 +282,18 @@ function List({ collectionName, list }) {
                                         </Button>
                                     </Td>
                                     <Td>
-                                        <Button
-                                            onClick={() => deleteData(index)}
-                                        >
-                                            刪除
-                                        </Button>
+                                        {e.dependency &&
+                                        e.dependency.length === 0 ? (
+                                            <Button
+                                                onClick={() =>
+                                                    deleteData(index)
+                                                }
+                                            >
+                                                刪除
+                                            </Button>
+                                        ) : (
+                                            ""
+                                        )}
                                     </Td>
                                 </tr>
                             ) : (
@@ -251,12 +301,7 @@ function List({ collectionName, list }) {
                                     {data.listCollections[
                                         collectionName
                                     ][2].map((keyName, keyIndex) =>
-                                        keyName === "id" ||
-                                        keyName === "country" ||
-                                        keyName === "id0" ||
-                                        keyName === "id1" ||
-                                        keyName === "id2" ||
-                                        keyName === "id3" ? (
+                                        keyName.includes("id") ? (
                                             <Td key={[keyName, keyIndex]}>
                                                 {e[keyName]}
                                             </Td>

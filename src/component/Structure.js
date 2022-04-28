@@ -175,6 +175,7 @@ function Structure({
             <List
                 collectionName={assembleCollectionName}
                 list={renderAssembledList}
+                setList={setAssembleList}
             />
         </>
     );

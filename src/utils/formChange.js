@@ -33,6 +33,15 @@ const form = {
         const data = originData.filter((_, index) => index !== itemIndex);
         return data;
     },
+    getMaxsn(array) {
+        const maxsn =
+            array.reduce(
+                (max, sn) =>
+                    Number(max) > Number(sn) ? Number(max) : Number(sn),
+                0,
+            ) + 1;
+        return maxsn;
+    },
 };
 
 export default form;

@@ -1,10 +1,16 @@
 const data = {
     countryList: [
-        ["us", "美國"],
-        ["se", "瑞典"],
-        ["cn", "中國"],
-        ["fr", "法國"],
-        ["tw", "台灣"],
+        ["US", "美國"],
+        ["SE", "瑞典"],
+        ["CN", "中國"],
+        ["FR", "法國"],
+        ["TW", "台灣"],
+        ["JP", "日本"],
+        ["KR", "南韓"],
+        ["AU", "澳洲"],
+        ["CA", "加拿大"],
+        ["IT", "義大利"],
+        ["DE", "德國"],
     ],
     currencyList: [
         ["USD", "美金"],
@@ -17,12 +23,12 @@ const data = {
     listCollections: {
         customers2: [
             "客戶",
-            ["客戶編號", "公司名稱", "聯繫人", "地區", "更新", "刪除"],
+            ["客戶編號", "公司名稱", "聯繫", "地區", "更新", "刪除"],
             ["id", "company", "contacts", "country"],
         ],
         suppliers2: [
             "廠商",
-            ["廠商編號", "公司名稱", "聯繫人", "地區", "更新", "刪除"],
+            ["廠商編號", "公司名稱", "聯繫", "地區", "更新", "刪除"],
             ["id", "company", "contacts", "country"],
         ],
         products2: [
@@ -300,6 +306,18 @@ const data = {
             ["id", "group"],
             ["數量", "單價", "備註", "刪除"],
             ["qty", "price", "remark"],
+        ],
+    },
+    companies: {
+        inputComponentArray: [
+            {
+                title: "公司名稱",
+                name: "company",
+            },
+            {
+                title: "聯繫資料",
+                name: "contacts",
+            },
         ],
     },
     part: {

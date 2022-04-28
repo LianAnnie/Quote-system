@@ -49,6 +49,7 @@ function Bom() {
                         <List
                             collectionName={parentCollectionName}
                             list={productList}
+                            setList={setProductList}
                         />
                     </>
                 ) : page === 1 ? (
@@ -62,6 +63,7 @@ function Bom() {
                         <List
                             collectionName={childCollectionName}
                             list={partList}
+                            setList={setPartList}
                         />
                     </>
                 ) : (
