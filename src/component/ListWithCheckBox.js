@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Section, Title, Table, Th, Td, Button } from "./StyleComponent";
 import data from "../utils/data";
+import form from "../utils/formChange";
 
 function ListWithRadio({
     collectionName,
@@ -8,6 +9,7 @@ function ListWithRadio({
     setProcessingData,
     processingData,
 }) {
+    const filterConditionRule = {};
     const [filterList, setFilterList] = useState([]);
     const [filterCondition, setFilterCondition] = useState({});
 
@@ -16,44 +18,37 @@ function ListWithRadio({
     }, [list]);
 
     function handleConditionChange(e) {
+        let newFilterList;
+        let name;
+        let value;
         if (e === 0) {
             setFilterCondition({});
             setFilterList(list);
             return;
         }
-        const name = e.target.name;
-        const value = e.target.value;
-        console.log(name, value);
-        console.log(filterCondition[name]);
-        const newFilterCondition = JSON.parse(JSON.stringify(filterCondition));
+        name = e.target.name;
+        value = e.target.value;
+        const newFilterCondition = filterCondition;
         newFilterCondition[name] = value;
-        const newFilterList = handleListChange(newFilterCondition, filterList);
+        console.log(newFilterCondition);
+        newFilterList = handleListChange(newFilterCondition, list);
+        setFilterCondition(newFilterCondition);
         if (newFilterList.length === 0) {
             console.log(
                 `沒有符合篩選結果,清除原本篩選條件,按最後一次需求篩選資料`,
             );
-            setFilterCondition({ [name]: value });
+            const newFilterCondition = filterConditionRule;
+            newFilterCondition[name] = value;
+            setFilterCondition(newFilterCondition);
             const resetList = handleListChange({ [name]: value }, list);
             setFilterList(resetList);
             return;
         }
-        setFilterCondition(newFilterCondition);
         setFilterList(newFilterList);
     }
 
     function handleListChange(condition, data) {
-        const filterKeyArray = Object.keys(condition);
-        let copyFilterList = [...data];
-        const newFilterList = copyFilterList.filter(
-            m =>
-                !filterKeyArray
-                    .map(key =>
-                        key === "id"
-                            ? m[key].join("") === condition[key]
-                            : m[key] === condition[key],
-                    )
-                    .some(e => !e),
-        );
+        const newFilterList = form.handleListChange(condition, data);
         return newFilterList;
     }
 
@@ -91,6 +86,12 @@ function ListWithRadio({
                             collectionName
                         ][2].map(keyName => (
                             <Th key={keyName}>
+                                <input
+                                    type="text"
+                                    name={keyName}
+                                    onChange={e => handleConditionChange(e)}
+                                    value={list[keyName]}
+                                />
                                 <select
                                     name={keyName}
                                     onChange={e => handleConditionChange(e)}

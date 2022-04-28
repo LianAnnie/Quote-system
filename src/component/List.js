@@ -30,7 +30,6 @@ function List({ collectionName, list, setList }) {
             return;
         }
         if (e !== 1) {
-            console.log(e.target.value);
             name = e.target.name;
             value = e.target.value;
             const newFilterCondition = filterCondition;
@@ -61,23 +60,7 @@ function List({ collectionName, list, setList }) {
     }
 
     function handleListChange(condition, data) {
-        const filterKeyArray = Object.keys(condition);
-        let copyFilterList = [...data];
-        const newFilterList = copyFilterList.filter(
-            m =>
-                !filterKeyArray
-                    .map(key =>
-                        key === "id"
-                            ? m[key]
-                                  .join("")
-                                  .toLowerCase()
-                                  .includes(condition[key].toLowerCase())
-                            : m[key]
-                                  .toLowerCase()
-                                  .includes(condition[key].toLowerCase()),
-                    )
-                    .some(e => !e),
-        );
+        const newFilterList = form.handleListChange(condition, data);
         return newFilterList;
     }
 
@@ -204,9 +187,6 @@ function List({ collectionName, list, setList }) {
         setList(newList);
         setFilterList(newFilterList);
     }
-
-    console.log(list);
-    console.log(filterList);
 
     return (
         <Section>

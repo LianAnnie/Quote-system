@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Section, Title, Table, Th, Td, Button } from "./StyleComponent";
 import data from "../utils/data";
+import form from "../utils/formChange";
 
 function ListWithRadio({
     collectionName,
@@ -42,18 +43,7 @@ function ListWithRadio({
     }
 
     function handleListChange(condition, data) {
-        const filterKeyArray = Object.keys(condition);
-        let copyFilterList = [...data];
-        const newFilterList = copyFilterList.filter(
-            m =>
-                !filterKeyArray
-                    .map(key =>
-                        key === "id"
-                            ? m[key].join("") === condition[key]
-                            : m[key] === condition[key],
-                    )
-                    .some(e => !e),
-        );
+        const newFilterList = form.handleListChange(condition, data);
         return newFilterList;
     }
 

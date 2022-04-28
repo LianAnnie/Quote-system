@@ -42,6 +42,26 @@ const form = {
             ) + 1;
         return maxsn;
     },
+    handleListChange(condition, data) {
+        const filterKeyArray = Object.keys(condition);
+        let copyFilterList = [...data];
+        const newFilterList = copyFilterList.filter(
+            m =>
+                !filterKeyArray
+                    .map(key =>
+                        key === "id"
+                            ? m[key]
+                                  .join("")
+                                  .toLowerCase()
+                                  .includes(condition[key].toLowerCase())
+                            : m[key]
+                                  .toLowerCase()
+                                  .includes(condition[key].toLowerCase()),
+                    )
+                    .some(e => !e),
+        );
+        return newFilterList;
+    },
 };
 
 export default form;
