@@ -7,6 +7,7 @@ import { Button, Form } from "./StyleComponent";
 import api from "../utils/firebaseApi";
 import Quotes from "./Quotes";
 import Orders from "./Orders";
+import data from "../utils/data";
 
 function Structure({
     parentCollectionName,
@@ -26,7 +27,6 @@ function Structure({
     const [parentData, setParentData] = useState({});
     const [childData, setChildData] = useState([]);
     const [renderAssembledList, setRenderAssembledList] = useState([]);
-    const inquiryQty = [10, 250, 1000, 5000];
 
     // console.log(parentList);
     useEffect(() => {
@@ -45,16 +45,16 @@ function Structure({
         setRenderAssembledList(renderList);
     }, [assembleList]);
 
-    function handleProcessingDataChange(data) {
+    function handleProcessingDataChange(parameterData) {
         const newProcessingData = JSON.parse(JSON.stringify(processingData));
-        if (data.target !== undefined) {
-            const name = data.target.name;
-            const value = data.target.value;
+        if (parameterData.target !== undefined) {
+            const name = parameterData.target.name;
+            const value = parameterData.target.value;
             newProcessingData.parentData[name] = value;
-        } else if (data.length === undefined) {
-            const keyArray = Object.keys(data);
+        } else if (parameterData.length === undefined) {
+            const keyArray = Object.keys(parameterData);
             keyArray.forEach(
-                key => (newProcessingData.parentData[key] = data[key]),
+                key => (newProcessingData.parentData[key] = parameterData[key]),
             );
         } else {
             if (
@@ -62,10 +62,10 @@ function Structure({
                 assembleCollectionName !== "productQuotations2"
             ) {
                 console.log(assembleCollectionName);
-                newProcessingData.childData = data;
+                newProcessingData.childData = parameterData;
             } else {
-                const newData = data.map(e =>
-                    inquiryQty.map(qty => {
+                const newData = parameterData.map(e =>
+                    data.inquiryQty.map(qty => {
                         const q = JSON.parse(JSON.stringify(e));
                         q.inquiryQty = qty;
                         q.price = "0";
@@ -81,12 +81,22 @@ function Structure({
     }
 
     async function submit() {
+        // checkProcessingData(processingData)
         const newDataArray = await api.setDocWithId(
             assembleCollectionName,
             0,
             processingData,
         );
         setAssembleList(prev => prev.concat(newDataArray));
+    }
+
+    function checkProcessingData(data) {
+        console.log(data);
+        console.log(Object.keys(data.parentData));
+        if (Object.keys(data.parentData).length === 0) {
+            console.log(`父層沒有資料`);
+            return false;
+        }
     }
 
     function transAssembleListToRender(assembleCollectionName, assembleList) {

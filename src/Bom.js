@@ -67,17 +67,15 @@ function Bom() {
                         />
                     </>
                 ) : (
-                    <>
-                        <Structure
-                            parentCollectionName={parentCollectionName}
-                            parentList={productList}
-                            childCollectionName={childCollectionName}
-                            childList={partList}
-                            assembleCollectionName={assembleCollectionName}
-                            assembleList={bomList}
-                            setAssembleList={setBomList}
-                        />
-                    </>
+                    <Structure
+                        parentCollectionName={parentCollectionName}
+                        parentList={productList}
+                        childCollectionName={childCollectionName}
+                        childList={partList}
+                        assembleCollectionName={assembleCollectionName}
+                        assembleList={bomList}
+                        setAssembleList={setBomList}
+                    />
                 )}
             </Main>
         </Container>

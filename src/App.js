@@ -15,17 +15,29 @@ import {
     Route,
     Navigate,
 } from "react-router-dom";
+import { useState } from "react";
 
 const Container = styled.div`
     text-align: left;
 `;
 
 function App() {
+    const [loginStatus, setLoginStatus] = useState(0);
+    const [userId, setUserId] = useState("");
     return (
         <Container>
             <Router>
                 <Routes>
-                    <Route path="/login" element={<LogIn />} />
+                    <Route
+                        path="/login"
+                        element={
+                            <LogIn
+                                loginStatus={loginStatus}
+                                setLoginStatus={setLoginStatus}
+                                setUserId={setUserId}
+                            />
+                        }
+                    />
                     <Route path="/" element={<BulletinBoard />} />
                     <Route path="/overview" element={<Overview />} />
                     <Route path="/company" element={<Company />} />

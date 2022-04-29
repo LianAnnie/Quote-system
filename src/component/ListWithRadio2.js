@@ -2,30 +2,60 @@ import { useEffect, useState } from "react";
 import { Section, Title, Table, Th, Td, Button } from "./StyleComponent";
 import data from "../utils/data";
 import form from "../utils/formChange";
+import { db } from "../utils/firebase";
+import { doc, getDoc } from "firebase/firestore";
 
-function ListWithRadio({
-    collectionName,
-    list,
-    setProcessingData,
-    processingData,
-}) {
+function ListWithRadio2({ collectionName, list, setProcessingData }) {
+    const [renderList, setRenderList] = useState([]);
     const [filterList, setFilterList] = useState([]);
     const [filterCondition, setFilterCondition] = useState({});
+    const parameters = {
+        parentRenderCollectionName: "products2",
+        idIndex: 0,
+    };
 
     useEffect(() => {
-        setFilterList(list);
+        getParentRenderList(list);
     }, [list]);
+
+    useEffect(() => {
+        setFilterList(renderList);
+    }, [renderList]);
+
+    async function getParentRenderList(list) {
+        const idArray = getRenderListId(list, parameters.idIndex);
+        const renderData = await getPartsQtationsFromFireBase(idArray);
+        setRenderList(renderData);
+    }
+
+    function getRenderListId(data, idIndex) {
+        const idArray = data.map(e => e.id[idIndex]);
+        // console.log(idArray);
+        const idArrayWithuniqueness = [...new Set(idArray)];
+        // console.log(idArrayWithuniqueness);
+        return idArrayWithuniqueness;
+    }
+
+    async function getPartsQtationsFromFireBase(idList) {
+        const quotationDataPromise = idList.map(async id => {
+            // console.log(id.toString().trim());
+            const docRef = doc(db, parameters.parentRenderCollectionName, id);
+            const data = await getDoc(docRef);
+            return data.data();
+        });
+
+        const quotationData = await Promise.all(quotationDataPromise);
+        return quotationData;
+    }
 
     function handleConditionChange(e) {
         if (e === 0) {
             setFilterCondition({});
-            setFilterList(list);
+            setFilterList(renderList);
             return;
         }
         const name = e.target.name;
         const value = e.target.value;
-        console.log(name, value);
-        console.log(filterCondition[name]);
         const newFilterCondition = JSON.parse(JSON.stringify(filterCondition));
         newFilterCondition[name] = value;
         const newFilterList = handleListChange(newFilterCondition, filterList);
@@ -48,6 +78,7 @@ function ListWithRadio({
     }
 
     function handleImportProduct(e) {
+        // console.log(e);
         setProcessingData(e);
     }
 
@@ -80,14 +111,14 @@ function ListWithRadio({
                                         type="text"
                                         name={keyName}
                                         onChange={e => handleConditionChange(e)}
-                                        value={list[keyName]}
+                                        value={renderList[keyName]}
                                     />
                                     <select
                                         name={keyName}
                                         onChange={e => handleConditionChange(e)}
-                                        value={list[keyName]}
+                                        value={renderList[keyName]}
                                     >
-                                        {list
+                                        {renderList
                                             .filter(
                                                 (m, index, array) =>
                                                     array
@@ -108,7 +139,7 @@ function ListWithRadio({
                 </thead>
                 <tbody>
                     {filterList &&
-                        filterList.map((e, index) => (
+                        filterList.map(e => (
                             <tr key={e.id}>
                                 {data.listWithRadioCollections[
                                     collectionName
@@ -130,4 +161,4 @@ function ListWithRadio({
     );
 }
 
-export default ListWithRadio;
+export default ListWithRadio2;

@@ -263,7 +263,9 @@ function List({ collectionName, list, setList }) {
                                     </Td>
                                     <Td>
                                         {e.dependency &&
-                                        e.dependency.length === 0 ? (
+                                        e.dependency.length !== 0 ? (
+                                            ""
+                                        ) : (
                                             <Button
                                                 onClick={() =>
                                                     deleteData(index)
@@ -271,8 +273,6 @@ function List({ collectionName, list, setList }) {
                                             >
                                                 刪除
                                             </Button>
-                                        ) : (
-                                            ""
                                         )}
                                     </Td>
                                 </tr>

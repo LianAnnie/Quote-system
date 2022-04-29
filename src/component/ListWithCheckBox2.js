@@ -9,6 +9,7 @@ function ListWithRadio({
     setProcessingData,
     processingData,
 }) {
+    const filterConditionRule = {};
     const [filterList, setFilterList] = useState([]);
     const [filterCondition, setFilterCondition] = useState({});
 
@@ -17,28 +18,32 @@ function ListWithRadio({
     }, [list]);
 
     function handleConditionChange(e) {
+        let newFilterList;
+        let name;
+        let value;
         if (e === 0) {
             setFilterCondition({});
             setFilterList(list);
             return;
         }
-        const name = e.target.name;
-        const value = e.target.value;
-        console.log(name, value);
-        console.log(filterCondition[name]);
-        const newFilterCondition = JSON.parse(JSON.stringify(filterCondition));
+        name = e.target.name;
+        value = e.target.value;
+        const newFilterCondition = filterCondition;
         newFilterCondition[name] = value;
-        const newFilterList = handleListChange(newFilterCondition, filterList);
+        console.log(newFilterCondition);
+        newFilterList = handleListChange(newFilterCondition, list);
+        setFilterCondition(newFilterCondition);
         if (newFilterList.length === 0) {
             console.log(
                 `沒有符合篩選結果,清除原本篩選條件,按最後一次需求篩選資料`,
             );
-            setFilterCondition({ [name]: value });
+            const newFilterCondition = filterConditionRule;
+            newFilterCondition[name] = value;
+            setFilterCondition(newFilterCondition);
             const resetList = handleListChange({ [name]: value }, list);
             setFilterList(resetList);
             return;
         }
-        setFilterCondition(newFilterCondition);
         setFilterList(newFilterList);
     }
 
@@ -48,13 +53,18 @@ function ListWithRadio({
     }
 
     function handleImportProduct(e) {
-        setProcessingData(e);
+        const dataId = e.id;
+        const filterData = processingData.filter(data => data.id !== dataId);
+        filterData.length === processingData.length
+            ? setProcessingData(prev => [...prev, e])
+            : setProcessingData(filterData);
     }
 
+    // console.log(list);
     return (
         <Section>
             <Title>
-                {data.listWithRadioCollections[collectionName][0]}列表
+                {data.listWithCheckBoxCollections[collectionName][0]}列表
             </Title>
             <Button
                 onClick={() => {
@@ -66,16 +76,18 @@ function ListWithRadio({
             <Table>
                 <thead>
                     <tr>
-                        {data.listWithRadioCollections[collectionName][1].map(
-                            (e, index) => (
-                                <Th key={index}>{e}</Th>
-                            ),
-                        )}
+                        {data.listWithCheckBoxCollections[
+                            collectionName
+                        ][1].map((e, index) => (
+                            <Th key={index}>{e}</Th>
+                        ))}
                     </tr>
                     <tr>
-                        {data.listWithRadioCollections[collectionName][2].map(
-                            keyName => (
-                                <Th key={keyName}>
+                        {list &&
+                            data.listWithCheckBoxCollections[
+                                collectionName
+                            ][2].map((keyName, index) => (
+                                <Th key={index}>
                                     <input
                                         type="text"
                                         name={keyName}
@@ -102,23 +114,22 @@ function ListWithRadio({
                                             ))}
                                     </select>
                                 </Th>
-                            ),
-                        )}
+                            ))}
                     </tr>
                 </thead>
                 <tbody>
                     {filterList &&
                         filterList.map((e, index) => (
                             <tr key={e.id}>
-                                {data.listWithRadioCollections[
+                                {data.listWithCheckBoxCollections[
                                     collectionName
                                 ][2].map(keyName => (
                                     <Td key={keyName}>{e[keyName]}</Td>
                                 ))}
                                 <Td>
                                     <input
-                                        type="radio"
-                                        name="main"
+                                        type="checkbox"
+                                        name="child"
                                         onClick={() => handleImportProduct(e)}
                                     />
                                 </Td>
