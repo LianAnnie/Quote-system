@@ -55,11 +55,11 @@ function Part({ collectionName, list, setList }) {
         const result = Object.values(exportData).some(
             e => typeof e === "number",
         );
-        console.log(exportData.id[2]);
+
         if (
-            !exportData.id[2].includes("A") ||
-            !exportData.id[2].includes("B") ||
-            !exportData.id[2].includes("C")
+            exportData.id[2] !== "A" &&
+            exportData.id[2] !== "B" &&
+            exportData.id[2] !== "C"
         ) {
             alert(`請選擇系列分類(3擇1)`);
             return;
@@ -70,10 +70,6 @@ function Part({ collectionName, list, setList }) {
             );
             return;
         }
-        // if (result) {
-        //     alert(`規格資料全部都`);
-        //     return;
-        // }
         const newExportData = await api.setDocWithId(
             collectionName,
             exportData.id.join(""),

@@ -81,35 +81,75 @@ function Structure({
     }
 
     async function submit() {
-        // checkProcessingData(processingData)
-        console.log(processingData);
-        const newDataArray = await api.setDocWithId(
-            assembleCollectionName,
-            0,
+        const result = checkProcessingData(
             processingData,
+            assembleCollectionName,
         );
-        setAssembleList(prev => prev.concat(newDataArray));
+        console.log(result);
+        if (!result) {
+            return;
+        } else {
+            const newDataArray = await api.setDocWithId(
+                assembleCollectionName,
+                0,
+                processingData,
+            );
+            console.log(newDataArray);
+            setAssembleList(prev => prev.concat(newDataArray));
+        }
     }
 
-    function checkProcessingData(data) {
+    const errorMessage = {
+        bom: [
+            "請選擇一個產品",
+            "請選擇產品對應零件",
+            "使用量需要填寫數字,非數字字元：",
+            "順序需要為數字且唯一",
+        ],
+    };
+
+    function checkProcessingData(data, collectionName) {
         console.log(data);
-        console.log(Object.keys(data.parentData));
         if (Object.keys(data.parentData).length === 0) {
-            console.log(`父層沒有資料`);
+            alert(errorMessage[collectionName][0]);
             return false;
         }
+        if (data.childData.length === 0) {
+            alert(errorMessage[collectionName][1]);
+            return false;
+        }
+        const qtyArry = data.childData
+            .map(e => e.qty)
+            .filter(e => isNaN(Number(e)));
+        if (qtyArry.length > 0) {
+            console.log(qtyArry);
+            alert(errorMessage[collectionName][2]);
+            return false;
+        }
+
+        const indexArray = data.childData.map(e => Number(e.index));
+        const array = [...new Set(indexArray)];
+        if (indexArray.length !== array.length) {
+            alert(errorMessage[collectionName][3]);
+            return false;
+        }
+        return true;
     }
 
     function transAssembleListToRender(assembleCollectionName, assembleList) {
         let newListtoRender;
         if (assembleCollectionName === "bom") {
-            newListtoRender = assembleList.map(e => ({
-                id0: e.id[0],
-                id1: e.id[1],
-                id2: e.id[2],
-                qty: e.qty,
-                unit: e.unit,
-            }));
+            newListtoRender = assembleList.map(e =>
+                e.id === undefined
+                    ? e
+                    : {
+                          id0: e.id[0],
+                          id1: e.id[1],
+                          id2: e.id[2],
+                          qty: e.qty,
+                          unit: e.unit,
+                      },
+            );
             return newListtoRender;
         }
         if (

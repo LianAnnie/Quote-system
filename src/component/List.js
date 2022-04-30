@@ -13,7 +13,6 @@ function List({ collectionName, list, setList }) {
 
     useEffect(() => {
         setFilterList(list);
-        console.log(filterCondition);
         if (Object.keys(list).length > 0) {
             handleConditionChange(1);
         }
@@ -159,7 +158,19 @@ function List({ collectionName, list, setList }) {
 
     function deleteData(itemIndex) {
         const deleteData = filterList[itemIndex];
-        const newList = list.filter(e => e.id !== deleteData.id);
+        console.log(deleteData);
+        let newList;
+        if (collectionName === "bom") {
+            newList = list.filter(
+                e =>
+                    e.id0 !== deleteData.id0 ||
+                    e.id1 !== deleteData.id1 ||
+                    e.id2 !== deleteData.id2,
+            );
+        } else {
+            newList = list.filter(e => e.id !== deleteData.id);
+        }
+
         const newFilterList = filterList.filter(
             (_, index) => index !== itemIndex,
         );
