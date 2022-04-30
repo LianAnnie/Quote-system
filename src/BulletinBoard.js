@@ -55,7 +55,7 @@ const Flex = styled.div`
     display: flex;
 `;
 
-function BulletinBoard() {
+function BulletinBoard({ signOut }) {
     const cardDataRule = {
         id: 0,
         date: "",
@@ -169,7 +169,7 @@ function BulletinBoard() {
 
     return (
         <Container>
-            <SideBar />
+            <SideBar signOut={signOut} />
             <Main>
                 <Title>待辦通知</Title>
                 <Form>

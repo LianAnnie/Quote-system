@@ -4,7 +4,7 @@ import api from "./utils/firebaseApi";
 import { useState, useEffect } from "react";
 import { Container, Main } from "./component/StyleComponent";
 
-function Analysis() {
+function Analysis({ signOut }) {
     const [productList, setProductList] = useState([]);
     const [partList, setPartList] = useState([]);
     const [bomList, setBomList] = useState([]);
@@ -27,7 +27,7 @@ function Analysis() {
 
     return (
         <Container>
-            <SideBar />
+            <SideBar signOut={signOut} />
             <Main>
                 <Structure2
                     parentCollectionName={parentCollectionName}

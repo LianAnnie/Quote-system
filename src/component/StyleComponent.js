@@ -30,7 +30,9 @@ const Table = styled.table`
 `;
 const Border = styled.div`
     border: solid 1px #000000;
+    border-radius: 10px;
     padding: 20px;
+    background-color: #fff;
 `;
 const Question = styled.div`
     display: flex;

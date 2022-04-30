@@ -56,6 +56,7 @@ function ListWithRadio2({ collectionName, list, setProcessingData }) {
         }
         const name = e.target.name;
         const value = e.target.value;
+        console.log(name, value);
         const newFilterCondition = JSON.parse(JSON.stringify(filterCondition));
         newFilterCondition[name] = value;
         const newFilterList = handleListChange(newFilterCondition, filterList);
@@ -64,7 +65,7 @@ function ListWithRadio2({ collectionName, list, setProcessingData }) {
                 `沒有符合篩選結果,清除原本篩選條件,按最後一次需求篩選資料`,
             );
             setFilterCondition({ [name]: value });
-            const resetList = handleListChange({ [name]: value }, list);
+            const resetList = handleListChange({ [name]: value }, filterList);
             setFilterList(resetList);
             return;
         }
@@ -73,6 +74,7 @@ function ListWithRadio2({ collectionName, list, setProcessingData }) {
     }
 
     function handleListChange(condition, data) {
+        console.log(data);
         const newFilterList = form.handleListChange(condition, data);
         return newFilterList;
     }

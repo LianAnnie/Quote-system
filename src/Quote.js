@@ -5,7 +5,7 @@ import { Container, Main, Flex, Button } from "./component/StyleComponent";
 import Structure from "./component/Structure";
 import api from "./utils/firebaseApi";
 
-function Quote() {
+function Quote({ signOut }) {
     const [page, setPage] = useState(0);
     const [parentList, setParentList] = useState([]);
     const [childList, setChildList] = useState([]);
@@ -41,7 +41,7 @@ function Quote() {
 
     return (
         <Container>
-            <SideBar />
+            <SideBar signOut={signOut} />
             <Main>
                 <Flex>
                     <Button onClick={() => setPage(0)}>零件報價</Button>

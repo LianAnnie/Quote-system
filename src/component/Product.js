@@ -20,17 +20,6 @@ function Product({ collectionName, list, setList }) {
     };
     const [exportData, setExportData] = useState(ruleData);
 
-    const keylimitQty = {
-        products2: {
-            class: 1,
-            group: 1,
-            material: 1,
-            color: 4,
-            type: 1,
-            special: 2,
-        },
-    };
-
     const keylimitQtyArray = {
         products2: [1, 1, 1, 4, 1, 2],
     };
@@ -61,25 +50,7 @@ function Product({ collectionName, list, setList }) {
     }
 
     function checkChangeData(collectionName, key, value) {
-        console.log(key, value);
-        const option = [];
-
-        const limitQty = keylimitQty[collectionName][key];
-        if (value.length < 2) {
-            option[0] = value.toString().slice(0, limitQty).toUpperCase();
-            option[1] = value.toString().slice(limitQty);
-        } else if (value.length === 2) {
-            option[0] = value[0].slice(0, limitQty).toUpperCase();
-            option[1] = value[1];
-        } else if (value.length > 2) {
-            option[0] = value[0].slice(0, limitQty).toUpperCase();
-            value.shift();
-            option[1] = value.join("");
-        }
-        console.log(option);
-        console.log(`型號輸入為${option[0]}`);
-        console.log(`輸入內容為${option[1]}`);
-        return option;
+        return form.checkChangeData(collectionName, key, value);
     }
 
     async function submit() {
@@ -97,17 +68,6 @@ function Product({ collectionName, list, setList }) {
     }
 
     function checkExportData(data) {
-        // const idRule = data.id.map((e, index) =>
-        //     e.toString().length !== keylimitQtyArray[collectionName][index]
-        //         ? false
-        //         : true,
-        // );
-        // console.log(idRule);
-        // console.log(idRule.some(e => e === false));
-        // if (idRule.some(e => e === false)) {
-        //     alert(`型號規格錯誤`);
-        //     return false;
-        // }
         const result = Object.values(data).some(e => typeof e === "number");
         if (result) {
             alert(`請將規格選齊`);

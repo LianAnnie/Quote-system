@@ -7,7 +7,7 @@ import Structure from "./component/Structure";
 import api from "./utils/firebaseApi";
 import { Container, Main, Button, Flex } from "./component/StyleComponent";
 
-function Bom() {
+function Bom({ signOut }) {
     const [page, setPage] = useState(0);
     const [productList, setProductList] = useState([]);
     const [partList, setPartList] = useState([]);
@@ -31,7 +31,7 @@ function Bom() {
 
     return (
         <Container>
-            <SideBar />
+            <SideBar signOut={signOut} />
             <Main>
                 <Flex>
                     <Button onClick={() => setPage(0)}>產品</Button>

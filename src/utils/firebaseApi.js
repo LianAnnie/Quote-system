@@ -107,7 +107,7 @@ const api = {
                     data.parentData.id.join(""),
                     e.id.join(""),
                     data.parentData.date,
-                    data.parentData.valid,
+                    data.parentData.requestedDate,
                 ];
             });
             const dataArray = data.childData.map((e, index) => ({

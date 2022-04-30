@@ -1,3 +1,5 @@
+import data from "./data";
+
 const form = {
     transformId(id, number) {
         if (id.length === number) return id;
@@ -75,6 +77,27 @@ const form = {
             .filter(sn => sn !== undefined);
         const maxsn = form.getMaxsn(snArray);
         return form.transformId(maxsn, 2);
+    },
+    checkChangeData(collectionName, key, value) {
+        console.log(key, value);
+        const option = [];
+
+        const limitQty = data.keylimitQty[collectionName][key];
+        if (value.length < 2) {
+            option[0] = value.toString().slice(0, limitQty).toUpperCase();
+            option[1] = value.toString().slice(limitQty);
+        } else if (value.length === 2) {
+            option[0] = value[0].slice(0, limitQty).toUpperCase();
+            option[1] = value[1];
+        } else if (value.length > 2) {
+            option[0] = value[0].slice(0, limitQty).toUpperCase();
+            value.shift();
+            option[1] = value.join("");
+        }
+        console.log(option);
+        console.log(`型號輸入為${option[0]}`);
+        console.log(`輸入內容為${option[1]}`);
+        return option;
     },
 };
 

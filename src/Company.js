@@ -14,7 +14,7 @@ const Main = styled.div`
     padding: 50px 10%;
 `;
 
-function Company() {
+function Company({ signOut }) {
     const [customerList, setCustomerList] = useState([]);
     const [supplierList, setSupplierList] = useState([]);
 
@@ -37,7 +37,7 @@ function Company() {
 
     return (
         <Container>
-            <SideBar />
+            <SideBar signOut={signOut} />
             <Main>
                 <Companies
                     customerList={customerList}

@@ -70,7 +70,7 @@ const Black = styled.div`
     color: #000;
 `;
 
-function SideBar() {
+function SideBar({ signOut }) {
     const [showNavBar, setShowNavBar] = useState(false);
 
     return (
@@ -114,17 +114,6 @@ function SideBar() {
                             <Black>報價表單</Black>
                         </NavLink>
                     </Navbar>
-                    {/* <Navbar>
-                        <NavLink to="/bom">
-                            <White>客戶產品</White>
-                        </NavLink>
-                    </Navbar>
-                    <Navbar>
-                        <NavLink to="/parts">
-                            <White>廠商訊息</White>
-                        </NavLink>
-                    </Navbar> */}
-
                     <Navbar>
                         <NavLink style={{ textDecoration: "none" }} to="/order">
                             <Black>訂單資料</Black>
@@ -139,9 +128,7 @@ function SideBar() {
                         </NavLink>
                     </Navbar>
                     <Navbar>
-                        <NavLink style={{ textDecoration: "none" }} to="/login">
-                            <Black>登出</Black>
-                        </NavLink>
+                        <Black onClick={() => signOut()}>登出</Black>
                     </Navbar>
                 </HideMobile>
             </Header>

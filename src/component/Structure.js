@@ -82,6 +82,7 @@ function Structure({
 
     async function submit() {
         // checkProcessingData(processingData)
+        console.log(processingData);
         const newDataArray = await api.setDocWithId(
             assembleCollectionName,
             0,

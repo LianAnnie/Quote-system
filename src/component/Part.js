@@ -29,8 +29,7 @@ function Part({ collectionName, list, setList }) {
     function handleExportDataChange(e) {
         const value = e.target.value;
         const name = e.target.name;
-        const option = value.split(",");
-        checkChangeData(name, option);
+        const option = checkChangeData(collectionName, name, value.split(","));
         let newExportData = JSON.parse(JSON.stringify(exportData));
         if (name !== "mark") {
             if (name === "group") {
@@ -48,18 +47,33 @@ function Part({ collectionName, list, setList }) {
         setExportData(newExportData);
     }
 
-    function checkChangeData(key, value) {
-        console.log(key, value);
+    function checkChangeData(collectionName, key, value) {
+        return form.checkChangeData(collectionName, key, value);
     }
 
     async function submit() {
         const result = Object.values(exportData).some(
             e => typeof e === "number",
         );
-        if (result) {
-            console.log(`請將規格選齊`);
+        console.log(exportData.id[2]);
+        if (
+            !exportData.id[2].includes("A") ||
+            !exportData.id[2].includes("B") ||
+            !exportData.id[2].includes("C")
+        ) {
+            alert(`請選擇系列分類(3擇1)`);
             return;
         }
+        if (exportData.id.slice(3, 6).join("").length < 6) {
+            alert(
+                `細部規格資料請至少各輸入2個字元(英文/數字）做為產品編碼資料`,
+            );
+            return;
+        }
+        // if (result) {
+        //     alert(`規格資料全部都`);
+        //     return;
+        // }
         const newExportData = await api.setDocWithId(
             collectionName,
             exportData.id.join(""),

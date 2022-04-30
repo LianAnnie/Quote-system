@@ -1,13 +1,9 @@
-import styled from "styled-components";
+import { Flex, Border, Section } from "./StyleComponent";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import more from "highcharts/highcharts-more";
 more(Highcharts);
 require("highcharts/modules/solid-gauge")(Highcharts);
-
-const Flex = styled.div`
-    display: flex;
-`;
 
 function Drawing({ profitMargin, pieData }) {
     console.log(profitMargin, pieData);
@@ -114,15 +110,22 @@ function Drawing({ profitMargin, pieData }) {
     };
 
     return (
-        <Flex>
-            <HighchartsReact
-                highcharts={Highcharts}
-                options={gaugeOptions}
-                containerProps={{ className: "chart-container" }}
-            />
+        <Section>
+            <Border>
+                <Flex>
+                    <HighchartsReact
+                        highcharts={Highcharts}
+                        options={gaugeOptions}
+                        containerProps={{ className: "chart-container" }}
+                    />
 
-            <HighchartsReact highcharts={Highcharts} options={options} />
-        </Flex>
+                    <HighchartsReact
+                        highcharts={Highcharts}
+                        options={options}
+                    />
+                </Flex>
+            </Border>
+        </Section>
     );
 }
 

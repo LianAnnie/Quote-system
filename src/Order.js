@@ -4,7 +4,7 @@ import Structure from "./component/Structure";
 import { useState, useEffect } from "react";
 import api from "./utils/firebaseApi";
 
-function Order() {
+function Order({ signOut }) {
     const [parentList, setParentList] = useState([]);
     const [childList, setChildList] = useState([]);
     const [assembleList, setAssembleList] = useState([]);
@@ -27,7 +27,7 @@ function Order() {
 
     return (
         <Container>
-            <SideBar />
+            <SideBar signOut={signOut} />
             <Main>
                 <Structure
                     parentCollectionName={parentCollectionName}
