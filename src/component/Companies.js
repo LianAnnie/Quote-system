@@ -1,12 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-    AddButton,
-    Title,
-    Section,
-    Form,
-    Question,
-    Button,
-} from "./StyleComponent";
+import { AddButton, Title, Section, Form, Question } from "./StyleComponent";
 import api from "../utils/firebaseApi";
 import form from "../utils/formChange";
 import data from "../utils/data";

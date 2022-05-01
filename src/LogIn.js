@@ -129,6 +129,9 @@ function LogIn({
                     )}
                 </Field>
             ))}
+            <div>Test account</div>
+            <div>123@456.com</div>
+            <div>123456</div>
             <div className="buttons">
                 <button
                     type="submit"

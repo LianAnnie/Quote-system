@@ -6,7 +6,6 @@ import {
     Question,
     AddButton,
 } from "./component/StyleComponent";
-import Select from "./component/Select";
 import { useState, useEffect } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import SideBar from "./component/SideBar";
@@ -15,12 +14,12 @@ import { collection, query, onSnapshot } from "firebase/firestore";
 import form from "./utils/formChange";
 import api from "./utils/firebaseApi";
 import styled from "styled-components";
-import data from "./utils/data";
 
 const Boards = styled.div`
     display: flex;
     justify-content: center;
     height: 100%;
+    flex-wrap: wrap;
 `;
 
 const BoardContainer = styled.div`

@@ -97,9 +97,7 @@ function ListWithRadio2({ collectionName, list, setProcessingData }) {
     return (
         <Section>
             <Flex>
-                <Title>
-                    {data.listWithCheckBoxCollections[collectionName][0]}列表
-                </Title>
+                <Title>{data.listCollections[collectionName][0]}列表</Title>
                 <CancelSelectedButton
                     onClick={() => {
                         handleConditionChange(0);
@@ -109,67 +107,66 @@ function ListWithRadio2({ collectionName, list, setProcessingData }) {
             <Table>
                 <thead>
                     <tr>
-                        {data.listWithCheckBoxCollections[
-                            collectionName
-                        ][1].map((e, index) => (
-                            <ThTitle key={index} index={index}>
-                                {e}
-                            </ThTitle>
-                        ))}
-                        {data.listWithCheckBoxCollections.all.map(
+                        {console.log(collectionName)}
+                        {data.listCollections[collectionName][3].map(
                             (e, index) => (
-                                <Th key={index}>{e}</Th>
+                                <ThTitle key={index} index={index}>
+                                    {e}
+                                </ThTitle>
                             ),
                         )}
+                        {data.listCollections.select.map((e, index) => (
+                            <Th key={index}>{e}</Th>
+                        ))}
                     </tr>
                     <tr>
-                        {data.listWithCheckBoxCollections[
-                            collectionName
-                        ][2].map((keyName, indexForStyled) => (
-                            <ThTitle key={keyName} index={indexForStyled}>
-                                <input
-                                    type="text"
-                                    name={keyName}
-                                    onChange={e => handleConditionChange(e)}
-                                    value={list[keyName]}
-                                />
-                                <select
-                                    name={keyName}
-                                    onChange={e => handleConditionChange(e)}
-                                    value={renderList[keyName]}
-                                >
-                                    {renderList
-                                        .filter(
-                                            (m, index, array) =>
-                                                array
-                                                    .map(n => n[keyName])
-                                                    .indexOf(m[keyName]) ===
-                                                index,
-                                        )
-                                        .map((o, index) => (
-                                            <option key={index}>
-                                                {o[keyName]}
-                                            </option>
-                                        ))}
-                                </select>
-                            </ThTitle>
-                        ))}
+                        {data.listCollections[collectionName][4].map(
+                            (keyName, indexForStyled) => (
+                                <ThTitle key={keyName} index={indexForStyled}>
+                                    <input
+                                        type="text"
+                                        name={keyName}
+                                        onChange={e => handleConditionChange(e)}
+                                        value={list[keyName]}
+                                    />
+                                    <select
+                                        name={keyName}
+                                        onChange={e => handleConditionChange(e)}
+                                        value={renderList[keyName]}
+                                    >
+                                        {renderList
+                                            .filter(
+                                                (m, index, array) =>
+                                                    array
+                                                        .map(n => n[keyName])
+                                                        .indexOf(m[keyName]) ===
+                                                    index,
+                                            )
+                                            .map((o, index) => (
+                                                <option key={index}>
+                                                    {o[keyName]}
+                                                </option>
+                                            ))}
+                                    </select>
+                                </ThTitle>
+                            ),
+                        )}
                     </tr>
                 </thead>
                 <tbody>
                     {filterList &&
                         filterList.map(e => (
                             <tr key={e.id}>
-                                {data.listWithCheckBoxCollections[
-                                    collectionName
-                                ][2].map((keyName, indexForStyled) => (
-                                    <TdContext
-                                        key={keyName}
-                                        index={indexForStyled}
-                                    >
-                                        {e[keyName]}
-                                    </TdContext>
-                                ))}
+                                {data.listCollections[collectionName][4].map(
+                                    (keyName, indexForStyled) => (
+                                        <TdContext
+                                            key={keyName}
+                                            index={indexForStyled}
+                                        >
+                                            {e[keyName]}
+                                        </TdContext>
+                                    ),
+                                )}
                                 <Td>
                                     <input
                                         type="radio"

@@ -31,6 +31,7 @@ const data = {
     inquiryQty: [10, 250, 1000, 5000],
     listCollections: {
         all: ["更新", "刪除"],
+        select: ["選擇"],
         customers2: [
             "客戶",
             ["客戶編號", "公司名稱", "聯繫", "地區"],
@@ -73,6 +74,17 @@ const data = {
             "結構",
             ["產品編號", "零件編號", "SN", "用量", "單位"],
             ["id0", "id1", "id2", "qty", "unit"],
+            [
+                "產品編號",
+                "類別",
+                "系列",
+                "材質",
+                "色碼",
+                "款式",
+                "特殊",
+                "備註",
+            ],
+            ["id", "class", "group", "material", "color", "type", "special"],
         ],
         partQuotations2: [
             "零件報價",
@@ -89,6 +101,24 @@ const data = {
             [
                 "id0",
                 "id1",
+                "inquiryQty",
+                "price",
+                "currency",
+                "leadTime",
+                "date",
+                "valid",
+            ],
+            [
+                "零件廠商",
+                "數量",
+                "單價",
+                "幣別",
+                "交期",
+                "報價日期",
+                "報價效期",
+            ],
+            [
+                "id",
                 "inquiryQty",
                 "price",
                 "currency",
@@ -146,82 +176,6 @@ const data = {
                 "requestedDate",
                 "remark",
             ],
-        ],
-    },
-    listWithCheckBoxCollections: {
-        all: ["選取"],
-        customers2: [
-            "客戶",
-            ["客戶編號", "公司名稱", "聯繫人", "地區"],
-            ["id", "company", "contacts", "country"],
-        ],
-        suppliers2: [
-            "廠商",
-            ["廠商編號", "公司名稱", "聯繫人", "地區"],
-            ["id", "company", "contacts", "country"],
-        ],
-        products2: [
-            "產品",
-            [
-                "產品編號",
-                "類別",
-                "系列",
-                "材質",
-                "色碼",
-                "款式",
-                "特殊",
-                "備註",
-            ],
-            [
-                "id",
-                "class",
-                "group",
-                "material",
-                "color",
-                "type",
-                "special",
-                "mark",
-            ],
-        ],
-        parts2: [
-            "零件",
-            ["零件編號", "型號", "項目", "系列", "規格1", "規格2", "規格3"],
-            ["id", "mark", "class", "group", "spec1", "spec2", "spec3"],
-        ],
-        partQuotations2: [
-            "零件報價",
-            [
-                "零件廠商編號",
-                "報價日期",
-                "有效日期",
-                "幣別",
-                "數量",
-                "單價",
-                "交期",
-            ],
-            [
-                "id",
-                "date",
-                "valid",
-                "currency",
-                "inquiryQty",
-                "price",
-                "leadTime",
-            ],
-        ],
-        bom: [
-            "產品結構",
-            [
-                "產品編號",
-                "類別",
-                "系列",
-                "材質",
-                "色碼",
-                "款式",
-                "特殊",
-                "備註",
-            ],
-            ["id", "class", "group", "material", "color", "type", "special"],
         ],
     },
     assembleDataCollections: {
@@ -579,6 +533,24 @@ const data = {
             },
         ],
     },
+
+    keylimitQty: {
+        products2: {
+            class: 1,
+            group: 1,
+            material: 1,
+            color: 4,
+            type: 1,
+            special: 2,
+        },
+        parts2: {
+            class: 1,
+            group: 2,
+            spec1: 2,
+            spec2: 2,
+            spec3: 2,
+        },
+    },
     mapData: [
         ["gl", 10],
         ["sh", 11],
@@ -796,23 +768,6 @@ const data = {
         ["sr", 223],
         ["kg", 224],
     ],
-    keylimitQty: {
-        products2: {
-            class: 1,
-            group: 1,
-            material: 1,
-            color: 4,
-            type: 1,
-            special: 2,
-        },
-        parts2: {
-            class: 1,
-            group: 2,
-            spec1: 2,
-            spec2: 2,
-            spec3: 2,
-        },
-    },
 };
 
 export default data;
