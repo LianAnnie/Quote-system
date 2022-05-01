@@ -106,11 +106,39 @@ function Structure({
             "使用量需要填寫數字,非數字字元：",
             "順序需要為數字且唯一",
         ],
+        partQuotations2: [
+            "請選擇報價廠商",
+            "請選擇需報價零件",
+            "數量需要填寫數字,非數字字元：",
+            "單價不能小於或為0",
+            "請選擇幣別",
+            "請選擇日期",
+        ],
+        productQuotations2: [
+            "請選擇客戶資料",
+            "請選擇需報價產品",
+            "數量需要填寫數字,非數字字元：",
+            "單價不能小於或為0",
+            "請選擇幣別",
+            "請選擇日期",
+        ],
+        order: [
+            "請選擇客戶資料",
+            "請選擇下單產品",
+            "數量需要填寫數字,非數字字元：",
+            "單價不能小於或為0",
+            "請選擇幣別",
+            "請選擇日期",
+        ],
     };
 
     function checkProcessingData(data, collectionName) {
-        console.log(data);
-        if (Object.keys(data.parentData).length === 0) {
+        console.log(collectionName, data);
+        console.log(Object.values(data.parentData));
+        if (
+            Object.keys(data.parentData).length === 0 ||
+            data.parentData.id === undefined
+        ) {
             alert(errorMessage[collectionName][0]);
             return false;
         }
@@ -118,20 +146,81 @@ function Structure({
             alert(errorMessage[collectionName][1]);
             return false;
         }
-        const qtyArry = data.childData
-            .map(e => e.qty)
-            .filter(e => isNaN(Number(e)));
-        if (qtyArry.length > 0) {
-            console.log(qtyArry);
-            alert(errorMessage[collectionName][2]);
-            return false;
+        if (collectionName === "bom") {
+            const qtyArry = data.childData
+                .map(e => e.qty)
+                .filter(e => isNaN(Number(e)));
+            if (qtyArry.length > 0) {
+                console.log(qtyArry);
+                alert(errorMessage[collectionName][2]);
+                return false;
+            }
+            const indexArray = data.childData.map(e => Number(e.index));
+            const array = [...new Set(indexArray)];
+            if (indexArray.length !== array.length) {
+                alert(errorMessage[collectionName][3]);
+                return false;
+            }
         }
+        if (
+            collectionName === "partQuotations2" ||
+            collectionName === "productQuotations2" ||
+            collectionName === "order"
+        ) {
+            console.log(data.parentData);
+            if (data.parentData.date === undefined) {
+                alert(errorMessage[collectionName][5]);
+                return false;
+            }
 
-        const indexArray = data.childData.map(e => Number(e.index));
-        const array = [...new Set(indexArray)];
-        if (indexArray.length !== array.length) {
-            alert(errorMessage[collectionName][3]);
-            return false;
+            if (
+                collectionName === "partQuotations2" ||
+                collectionName === "productQuotations2"
+            ) {
+                if (data.parentData.valid === undefined) {
+                    alert(errorMessage[collectionName][5]);
+                    return false;
+                }
+                const qtyArry = data.childData
+                    .map(e => e.inquiryQty)
+                    .filter(e => isNaN(Number(e)));
+                if (qtyArry.length > 0) {
+                    console.log(qtyArry);
+                    alert(errorMessage[collectionName][2]);
+                    return false;
+                }
+            }
+
+            if (collectionName === "order") {
+                if (data.parentData.requestedDate === undefined) {
+                    alert(errorMessage[collectionName][5]);
+                    return false;
+                }
+                const qtyArry = data.childData
+                    .map(e => e.qty)
+                    .filter(e => isNaN(Number(e)));
+                if (qtyArry.length > 0) {
+                    console.log(qtyArry);
+                    alert(errorMessage[collectionName][2]);
+                    return false;
+                }
+            }
+
+            if (data.parentData.currency === undefined) {
+                alert(errorMessage[collectionName][4]);
+                return false;
+            }
+
+            const priceArry = data.childData
+                .map(e => e.price)
+                .filter(e => Number(e) <= 0);
+            console.log(priceArry);
+            if (priceArry.length > 0) {
+                alert(errorMessage[collectionName][3]);
+                return false;
+            }
+        }
+        if (collectionName === "productQuotations2") {
         }
         return true;
     }
@@ -156,34 +245,42 @@ function Structure({
             assembleCollectionName === "partQuotations2" ||
             assembleCollectionName === "productQuotations2"
         ) {
-            newListtoRender = assembleList.map(e => ({
-                id0: e.id[0],
-                id1: e.id[1],
-                id2: e.id[2],
-                id3: e.id[3],
-                inquiryQty: e.inquiryQty,
-                price: e.price,
-                currency: e.currency,
-                leadTime: e.leadTime,
-                date: e.date,
-                valid: e.valid,
-            }));
+            newListtoRender = assembleList.map(e =>
+                e.id === undefined
+                    ? e
+                    : {
+                          id0: e.id[0],
+                          id1: e.id[1],
+                          id2: e.id[2],
+                          id3: e.id[3],
+                          inquiryQty: e.inquiryQty,
+                          price: e.price,
+                          currency: e.currency,
+                          leadTime: e.leadTime,
+                          date: e.date,
+                          valid: e.valid,
+                      },
+            );
         }
         if (assembleCollectionName === "order") {
-            newListtoRender = assembleList.map(e => ({
-                id0: e.id[0],
-                id1: e.id[1],
-                id2: e.id[2],
-                id3: e.id[3],
-                orderId: e.orderId,
-                sum: e.sum,
-                currency: e.currency,
-                qty: e.qty,
-                price: e.price,
-                date: e.date,
-                requestedDate: e.requestedDate,
-                remark: e.remark,
-            }));
+            newListtoRender = assembleList.map(e =>
+                e.id === undefined
+                    ? e
+                    : {
+                          id0: e.id[0],
+                          id1: e.id[1],
+                          id2: e.id[2],
+                          id3: e.id[3],
+                          orderId: e.orderId,
+                          sum: e.sum,
+                          currency: e.currency,
+                          qty: e.qty,
+                          price: e.price,
+                          date: e.date,
+                          requestedDate: e.requestedDate,
+                          remark: e.remark,
+                      },
+            );
         }
         return newListtoRender;
     }

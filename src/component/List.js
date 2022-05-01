@@ -167,6 +167,18 @@ function List({ collectionName, list, setList }) {
                     e.id1 !== deleteData.id1 ||
                     e.id2 !== deleteData.id2,
             );
+        } else if (
+            collectionName === "partQuotations2" ||
+            collectionName === "productQuotations2" ||
+            collectionName === "order"
+        ) {
+            newList = list.filter(
+                e =>
+                    e.id0 !== deleteData.id0 ||
+                    e.id1 !== deleteData.id1 ||
+                    e.id2 !== deleteData.id2 ||
+                    e.id3 !== deleteData.id3,
+            );
         } else {
             newList = list.filter(e => e.id !== deleteData.id);
         }
@@ -182,6 +194,7 @@ function List({ collectionName, list, setList }) {
             api.deleteDoc(collectionName, deleteIdArray);
         } else if (
             collectionName === "partQuotations2" ||
+            collectionName === "productQuotations2" ||
             collectionName === "order"
         ) {
             console.log(deleteData);

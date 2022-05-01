@@ -549,11 +549,6 @@ const data = {
                 type: "date",
                 name: "requestedDate",
             },
-            {
-                title: "訂單總金額",
-                type: "number",
-                name: "sum",
-            },
         ],
     },
     product: {

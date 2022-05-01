@@ -104,55 +104,53 @@ function Companies({
     }
 
     return (
-        <Container>
-            <Section>
-                <Title>公司資料表</Title>
-                <Form>
-                    <Question>
-                        <div>供應類別</div>
-                        <select
-                            name="id0"
-                            value={exportData.id[0]}
-                            onChange={e => handleExportDataIdChange(e)}
-                        >
-                            <option value="F">供應商</option>
-                            <option value="C">客戶</option>
-                        </select>
-                    </Question>
-                    <Question>
-                        <div>公司編號</div>
-                        <div>{exportData.id}</div>
-                    </Question>
-                    {data.companies.inputComponentArray.map(e => (
-                        <Input
-                            key={e.name}
-                            title={e.title}
-                            type="text"
-                            handleDataChange={handleExportDataInputChange}
-                            name={e.name}
-                            data={exportData}
-                        />
-                    ))}
-                    <Question>
-                        <div>地區</div>
-                        <select
-                            name="country"
-                            value={exportData.country}
-                            onChange={e => {
-                                handleExportDataIdChange(e);
-                            }}
-                        >
-                            {data.countryList.map(country => (
-                                <option key={country[0]} value={country[1]}>
-                                    {country[1]}
-                                </option>
-                            ))}
-                        </select>
-                    </Question>
-                </Form>
-                <Button onClick={() => submit()}>Submit</Button>
-            </Section>
-        </Container>
+        <Section>
+            <Title>公司資料表</Title>
+            <Form>
+                <Question>
+                    <div>供應類別</div>
+                    <select
+                        name="id0"
+                        value={exportData.id[0]}
+                        onChange={e => handleExportDataIdChange(e)}
+                    >
+                        <option value="F">供應商</option>
+                        <option value="C">客戶</option>
+                    </select>
+                </Question>
+                <Question>
+                    <div>公司編號</div>
+                    <div>{exportData.id}</div>
+                </Question>
+                {data.companies.inputComponentArray.map(e => (
+                    <Input
+                        key={e.name}
+                        title={e.title}
+                        type="text"
+                        handleDataChange={handleExportDataInputChange}
+                        name={e.name}
+                        data={exportData}
+                    />
+                ))}
+                <Question>
+                    <div>地區</div>
+                    <select
+                        name="country"
+                        value={exportData.country}
+                        onChange={e => {
+                            handleExportDataIdChange(e);
+                        }}
+                    >
+                        {data.countryList.map(country => (
+                            <option key={country[0]} value={country[1]}>
+                                {country[1]}
+                            </option>
+                        ))}
+                    </select>
+                </Question>
+            </Form>
+            <Button onClick={() => submit()}>Submit</Button>
+        </Section>
     );
 }
 
