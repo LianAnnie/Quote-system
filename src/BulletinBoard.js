@@ -1,4 +1,12 @@
-import styled from "styled-components";
+import {
+    Container,
+    Main,
+    Title,
+    Form,
+    Question,
+    AddButton,
+} from "./component/StyleComponent";
+import Select from "./component/Select";
 import { useState, useEffect } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import SideBar from "./component/SideBar";
@@ -6,29 +14,9 @@ import { db } from "./utils/firebase";
 import { collection, query, onSnapshot } from "firebase/firestore";
 import form from "./utils/formChange";
 import api from "./utils/firebaseApi";
+import styled from "styled-components";
+import data from "./utils/data";
 
-const Container = styled.div`
-    text-align: left;
-    background-color: #fffae3;
-    height: 100vh;
-`;
-const Main = styled.div`
-    margin-left: 300px;
-    padding: 50px 10%;
-`;
-const Title = styled.div`
-    margin-bottom: 50px;
-`;
-const Form = styled.div`
-    border: solid 1px #000000;
-    border-radius: 10px;
-    padding: 20px;
-    background-color: #fff;
-`;
-const Question = styled.div`
-    display: flex;
-    margin: 5px;
-`;
 const Boards = styled.div`
     display: flex;
     justify-content: center;
@@ -43,16 +31,6 @@ const BoardContainer = styled.div`
 
 const CardsContainer = styled.div`
     margin: 8px;
-`;
-const Button = styled.div`
-    border: solid 1px #000000;
-    width: 100px;
-    margin: 5px;
-    text-align: center;
-    cursor: pointer;
-`;
-const Flex = styled.div`
-    display: flex;
 `;
 
 function BulletinBoard({ signOut }) {
@@ -98,12 +76,6 @@ function BulletinBoard({ signOut }) {
             const destItems = [...destColumn.items];
             const [removed] = sourceItems.splice(source.index, 1);
             destItems.splice(destination.index, 0, removed);
-            console.log(source.droppableId); //原本位置
-            console.log(destination.droppableId); //新的位置-status要改的數字
-            // console.log(sourceColumn);
-            console.log(sourceItems);
-            // console.log(destColumn);
-            console.log(destItems);
             setColumns({
                 ...columns,
                 [source.droppableId]: {
@@ -124,8 +96,6 @@ function BulletinBoard({ signOut }) {
             const copiedItems = [...column.items];
             const [removed] = copiedItems.splice(source.index, 1);
             copiedItems.splice(destination.index, 0, removed);
-            // console.log(column);
-            // console.log(copiedItems)
             setColumns({
                 ...columns,
                 [source.droppableId]: {
@@ -213,32 +183,11 @@ function BulletinBoard({ signOut }) {
                             value={card.comment}
                         />
                     </Question>
-                    {card.id === 0 ? (
-                        <Button
-                            onClick={() => {
-                                addCard();
-                            }}
-                        >
-                            新增
-                        </Button>
-                    ) : (
-                        <Flex>
-                            <Button
-                                onClick={() => {
-                                    setCard(cardDataRule);
-                                }}
-                            >
-                                取消修改
-                            </Button>
-                            <Button
-                                onClick={() => {
-                                    updateCard();
-                                }}
-                            >
-                                上傳修改
-                            </Button>
-                        </Flex>
-                    )}
+                    <AddButton
+                        onClick={() => {
+                            addCard();
+                        }}
+                    />
                 </Form>
                 <Boards>
                     <DragDropContext

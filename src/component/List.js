@@ -1,7 +1,21 @@
 import { useEffect, useState } from "react";
 import api from "../utils/firebaseApi";
 import form from "../utils/formChange";
-import { Section, Title, Table, Th, Td, Button } from "./StyleComponent";
+import {
+    Section,
+    Title,
+    Table,
+    Th,
+    Td,
+    Flex,
+    UpdatedButton,
+    DeleteButton,
+    SaveButton,
+    CancelEditButton,
+    CancelSelectedButton,
+    ThTitle,
+    TdContext,
+} from "./StyleComponent";
 import data from "../utils/data";
 
 function List({ collectionName, list, setList }) {
@@ -214,27 +228,32 @@ function List({ collectionName, list, setList }) {
 
     return (
         <Section>
-            <Title>{data.listCollections[collectionName][0]}列表</Title>
-            <Button
-                onClick={() => {
-                    handleConditionChange(0);
-                }}
-            >
-                取消篩選
-            </Button>
+            <Flex>
+                <Title>{data.listCollections[collectionName][0]}列表</Title>
+                <CancelSelectedButton
+                    onClick={() => {
+                        handleConditionChange(0);
+                    }}
+                />
+            </Flex>
             <Table>
                 <thead>
                     <tr>
                         {data.listCollections[collectionName][1].map(
                             (e, index) => (
-                                <Th key={index}>{e}</Th>
+                                <ThTitle key={index} index={index}>
+                                    {e}
+                                </ThTitle>
                             ),
                         )}
+                        {data.listCollections.all.map((e, index) => (
+                            <Th key={index}>{e}</Th>
+                        ))}
                     </tr>
                     <tr>
                         {data.listCollections[collectionName][2].map(
-                            keyName => (
-                                <Th key={keyName}>
+                            (keyName, indexForStyled) => (
+                                <ThTitle key={keyName} index={indexForStyled}>
                                     <input
                                         type="text"
                                         name={keyName}
@@ -261,7 +280,7 @@ function List({ collectionName, list, setList }) {
                                                 </option>
                                             ))}
                                     </select>
-                                </Th>
+                                </ThTitle>
                             ),
                         )}
                     </tr>
@@ -273,30 +292,31 @@ function List({ collectionName, list, setList }) {
                                 <tr key={index}>
                                     {data.listCollections[
                                         collectionName
-                                    ][2].map(keyName => (
-                                        <Td key={keyName}>{e[keyName]}</Td>
+                                    ][2].map((keyName, indexForStyled) => (
+                                        <TdContext
+                                            key={keyName}
+                                            index={indexForStyled}
+                                        >
+                                            {e[keyName]}
+                                        </TdContext>
                                     ))}
                                     <Td>
-                                        <Button
+                                        <UpdatedButton
                                             onClick={() =>
                                                 handleRevisedStatus(index)
                                             }
-                                        >
-                                            更新
-                                        </Button>
+                                        />
                                     </Td>
                                     <Td>
                                         {e.dependency &&
                                         e.dependency.length !== 0 ? (
                                             ""
                                         ) : (
-                                            <Button
+                                            <DeleteButton
                                                 onClick={() =>
                                                     deleteData(index)
                                                 }
-                                            >
-                                                刪除
-                                            </Button>
+                                            />
                                         )}
                                     </Td>
                                 </tr>
@@ -330,25 +350,21 @@ function List({ collectionName, list, setList }) {
                                         ),
                                     )}
                                     <Td>
-                                        <Button
+                                        <SaveButton
                                             onClick={() =>
                                                 handleRevisedStatus(index, true)
                                             }
-                                        >
-                                            儲存
-                                        </Button>
+                                        />
                                     </Td>
                                     <Td>
-                                        <Button
+                                        <CancelEditButton
                                             onClick={() =>
                                                 handleRevisedStatus(
                                                     index,
                                                     false,
                                                 )
                                             }
-                                        >
-                                            取消
-                                        </Button>
+                                        />
                                     </Td>
                                 </tr>
                             ),

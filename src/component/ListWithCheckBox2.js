@@ -1,5 +1,15 @@
 import { useEffect, useState } from "react";
-import { Section, Title, Table, Th, Td, Button } from "./StyleComponent";
+import {
+    Section,
+    Title,
+    Table,
+    Th,
+    Td,
+    CancelSelectedButton,
+    Flex,
+    ThTitle,
+    TdContext,
+} from "./StyleComponent";
 import data from "../utils/data";
 import form from "../utils/formChange";
 
@@ -63,31 +73,38 @@ function ListWithRadio({
     // console.log(list);
     return (
         <Section>
-            <Title>
-                {data.listWithCheckBoxCollections[collectionName][0]}列表
-            </Title>
-            <Button
-                onClick={() => {
-                    handleConditionChange(0);
-                }}
-            >
-                取消篩選
-            </Button>
+            <Flex>
+                <Title>
+                    {data.listWithCheckBoxCollections[collectionName][0]}列表
+                </Title>
+                <CancelSelectedButton
+                    onClick={() => {
+                        handleConditionChange(0);
+                    }}
+                />
+            </Flex>
             <Table>
                 <thead>
                     <tr>
                         {data.listWithCheckBoxCollections[
                             collectionName
                         ][1].map((e, index) => (
-                            <Th key={index}>{e}</Th>
+                            <ThTitle key={index} index={index}>
+                                {e}
+                            </ThTitle>
                         ))}
+                        {data.listWithCheckBoxCollections.all.map(
+                            (e, index) => (
+                                <Th key={index}>{e}</Th>
+                            ),
+                        )}
                     </tr>
                     <tr>
                         {list &&
                             data.listWithCheckBoxCollections[
                                 collectionName
-                            ][2].map((keyName, index) => (
-                                <Th key={index}>
+                            ][2].map((keyName, indexForStyled) => (
+                                <ThTitle key={keyName} index={indexForStyled}>
                                     <input
                                         type="text"
                                         name={keyName}
@@ -113,7 +130,7 @@ function ListWithRadio({
                                                 </option>
                                             ))}
                                     </select>
-                                </Th>
+                                </ThTitle>
                             ))}
                     </tr>
                 </thead>
@@ -123,8 +140,13 @@ function ListWithRadio({
                             <tr key={e.id}>
                                 {data.listWithCheckBoxCollections[
                                     collectionName
-                                ][2].map(keyName => (
-                                    <Td key={keyName}>{e[keyName]}</Td>
+                                ][2].map((keyName, indexForStyled) => (
+                                    <TdContext
+                                        key={keyName}
+                                        index={indexForStyled}
+                                    >
+                                        {e[keyName]}
+                                    </TdContext>
                                 ))}
                                 <Td>
                                     <input

@@ -3,7 +3,7 @@ import ListWithCheckBox from "./ListWithCheckBox";
 import AssembleData from "./AssembleData";
 import List from "./List";
 import { useState, useEffect } from "react";
-import { Button, Form } from "./StyleComponent";
+import { AddButton } from "./StyleComponent";
 import api from "../utils/firebaseApi";
 import Quotes from "./Quotes";
 import Orders from "./Orders";
@@ -28,7 +28,6 @@ function Structure({
     const [childData, setChildData] = useState([]);
     const [renderAssembledList, setRenderAssembledList] = useState([]);
 
-    // console.log(parentList);
     useEffect(() => {
         handleProcessingDataChange(parentData);
     }, [parentData]);
@@ -99,66 +98,35 @@ function Structure({
         }
     }
 
-    const errorMessage = {
-        bom: [
-            "請選擇一個產品",
-            "請選擇產品對應零件",
-            "使用量需要填寫數字,非數字字元：",
-            "順序需要為數字且唯一",
-        ],
-        partQuotations2: [
-            "請選擇報價廠商",
-            "請選擇需報價零件",
-            "數量需要填寫數字,非數字字元：",
-            "單價不能小於或為0",
-            "請選擇幣別",
-            "請選擇日期",
-        ],
-        productQuotations2: [
-            "請選擇客戶資料",
-            "請選擇需報價產品",
-            "數量需要填寫數字,非數字字元：",
-            "單價不能小於或為0",
-            "請選擇幣別",
-            "請選擇日期",
-        ],
-        order: [
-            "請選擇客戶資料",
-            "請選擇下單產品",
-            "數量需要填寫數字,非數字字元：",
-            "單價不能小於或為0",
-            "請選擇幣別",
-            "請選擇日期",
-        ],
-    };
-
-    function checkProcessingData(data, collectionName) {
-        console.log(collectionName, data);
-        console.log(Object.values(data.parentData));
+    function checkProcessingData(parameterData, collectionName) {
+        console.log(collectionName, parameterData);
+        console.log(Object.values(parameterData.parentData));
         if (
-            Object.keys(data.parentData).length === 0 ||
-            data.parentData.id === undefined
+            Object.keys(parameterData.parentData).length === 0 ||
+            parameterData.parentData.id === undefined
         ) {
-            alert(errorMessage[collectionName][0]);
+            alert(data.errorMessage[collectionName][0]);
             return false;
         }
-        if (data.childData.length === 0) {
-            alert(errorMessage[collectionName][1]);
+        if (parameterData.childData.length === 0) {
+            alert(data.errorMessage[collectionName][1]);
             return false;
         }
         if (collectionName === "bom") {
-            const qtyArry = data.childData
+            const qtyArry = parameterData.childData
                 .map(e => e.qty)
                 .filter(e => isNaN(Number(e)));
             if (qtyArry.length > 0) {
                 console.log(qtyArry);
-                alert(errorMessage[collectionName][2]);
+                alert(data.errorMessage[collectionName][2]);
                 return false;
             }
-            const indexArray = data.childData.map(e => Number(e.index));
+            const indexArray = parameterData.childData.map(e =>
+                Number(e.index),
+            );
             const array = [...new Set(indexArray)];
             if (indexArray.length !== array.length) {
-                alert(errorMessage[collectionName][3]);
+                alert(data.errorMessage[collectionName][3]);
                 return false;
             }
         }
@@ -167,9 +135,9 @@ function Structure({
             collectionName === "productQuotations2" ||
             collectionName === "order"
         ) {
-            console.log(data.parentData);
-            if (data.parentData.date === undefined) {
-                alert(errorMessage[collectionName][5]);
+            console.log(parameterData.parentData);
+            if (parameterData.parentData.date === undefined) {
+                alert(data.errorMessage[collectionName][5]);
                 return false;
             }
 
@@ -177,46 +145,46 @@ function Structure({
                 collectionName === "partQuotations2" ||
                 collectionName === "productQuotations2"
             ) {
-                if (data.parentData.valid === undefined) {
-                    alert(errorMessage[collectionName][5]);
+                if (parameterData.parentData.valid === undefined) {
+                    alert(data.errorMessage[collectionName][5]);
                     return false;
                 }
-                const qtyArry = data.childData
+                const qtyArry = parameterData.childData
                     .map(e => e.inquiryQty)
                     .filter(e => isNaN(Number(e)));
                 if (qtyArry.length > 0) {
                     console.log(qtyArry);
-                    alert(errorMessage[collectionName][2]);
+                    alert(data.errorMessage[collectionName][2]);
                     return false;
                 }
             }
 
             if (collectionName === "order") {
-                if (data.parentData.requestedDate === undefined) {
-                    alert(errorMessage[collectionName][5]);
+                if (parameterData.parentData.requestedDate === undefined) {
+                    alert(data.errorMessage[collectionName][5]);
                     return false;
                 }
-                const qtyArry = data.childData
+                const qtyArry = parameterData.childData
                     .map(e => e.qty)
                     .filter(e => isNaN(Number(e)));
                 if (qtyArry.length > 0) {
                     console.log(qtyArry);
-                    alert(errorMessage[collectionName][2]);
+                    alert(data.errorMessage[collectionName][2]);
                     return false;
                 }
             }
 
-            if (data.parentData.currency === undefined) {
-                alert(errorMessage[collectionName][4]);
+            if (parameterData.parentData.currency === undefined) {
+                alert(data.errorMessage[collectionName][4]);
                 return false;
             }
 
-            const priceArry = data.childData
+            const priceArry = parameterData.childData
                 .map(e => e.price)
                 .filter(e => Number(e) <= 0);
             console.log(priceArry);
             if (priceArry.length > 0) {
-                alert(errorMessage[collectionName][3]);
+                alert(data.errorMessage[collectionName][3]);
                 return false;
             }
         }
@@ -318,8 +286,7 @@ function Structure({
                 processingData={processingData}
                 setProcessingData={setProcessingData}
             />
-
-            <Button onClick={() => submit()}>Submit</Button>
+            <AddButton onClick={() => submit()} />
             <List
                 collectionName={assembleCollectionName}
                 list={renderAssembledList}

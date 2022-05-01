@@ -35,7 +35,7 @@ function Select({ title, handleDataChange, data, name, optionArray }) {
                         <datalist id={name}>
                             {optionArray.map((e, index) => (
                                 <option key={index} value={e}>
-                                    {e[1]}
+                                    {e[1] ? e[1] : e}
                                 </option>
                             ))}
                         </datalist>

@@ -1,4 +1,4 @@
-import { Section, Title, Table, Th, Td, Button } from "./StyleComponent";
+import { Section, Title, Table, Th, Td } from "./StyleComponent";
 import form from "../utils/formChange";
 import data from "../utils/data";
 

@@ -1,4 +1,4 @@
-import { Section, Title, Table, Th, Td, Button } from "./StyleComponent";
+import { Section, Title, Table, Th, Td, DeleteButton } from "./StyleComponent";
 import form from "../utils/formChange";
 import data from "../utils/data";
 
@@ -84,13 +84,11 @@ function AssembleData({ collectionName, processingData, setProcessingData }) {
                                     </Td>
                                 ))}
                                 <Td>
-                                    <Button
+                                    <DeleteButton
                                         onClick={() =>
                                             handleAddDataChange(index, e)
                                         }
-                                    >
-                                        刪除
-                                    </Button>
+                                    />
                                 </Td>
                             </tr>
                         ))}

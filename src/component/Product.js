@@ -3,7 +3,7 @@ import Select from "./Select";
 import { useState, useEffect } from "react";
 import api from "../utils/firebaseApi";
 import form from "../utils/formChange";
-import { Section, Title, Form, Question, Button } from "./StyleComponent";
+import { Section, Title, Form, Question, AddButton } from "./StyleComponent";
 import data from "../utils/data";
 
 function Product({ collectionName, list, setList }) {
@@ -19,11 +19,6 @@ function Product({ collectionName, list, setList }) {
         dependency: [],
     };
     const [exportData, setExportData] = useState(ruleData);
-
-    const keylimitQtyArray = {
-        products2: [1, 1, 1, 4, 1, 2],
-    };
-
     useEffect(() => {
         const newExportData = JSON.parse(JSON.stringify(exportData));
         const snId = handleSNNumberChange(exportData, list);
@@ -106,8 +101,8 @@ function Product({ collectionName, list, setList }) {
                     name="mark"
                     value={exportData.mark}
                 />
+                <AddButton onClick={() => submit()} />
             </Form>
-            <Button onClick={() => submit()}>Submit</Button>
         </Section>
     );
 }

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import {
-    Container,
+    AddButton,
     Title,
     Section,
     Form,
@@ -148,8 +148,8 @@ function Companies({
                         ))}
                     </select>
                 </Question>
+                <AddButton onClick={() => submit()} />
             </Form>
-            <Button onClick={() => submit()}>Submit</Button>
         </Section>
     );
 }

@@ -17,17 +17,27 @@ const Orange = styled.div`
     width: ${props => (props.showNavBar ? "300px" : "100vw")};
     height: ${props => (props.showNavBar ? "100vh" : "68px")};
     display: ${props => (props.showNavBar ? "flex" : "block")};
-    padding: ${props => (props.showNavBar ? "60px 0px 0px 30px" : "16px 0px")};
+    padding: ${props => (props.showNavBar ? "100px 40px" : "16px 0px")};
     justify-content: space-between;
     text-align: left;
     color: #000;
     background-color: #c4d6b0;
     position: fixed;
-
-    @media ${device.laptopL} {
+    z-index: 99;
+    @media ${device.mobileS} {
+        padding: ${props => (props.showNavBar ? "20px 40px" : "16px 0px")};
+    }
+    @media ${device.mobileL} {
+        padding: ${props => (props.showNavBar ? "30px 40px" : "16px 0px")};
+    }
+    @media ${device.tablet} {
+        padding: ${props => (props.showNavBar ? "50px 40px" : "16px 0px")};
+    }
+    @media ${device.desktop} {
+        padding: ${props => (props.showNavBar ? "100px 40px" : "16px 0px")};
         width: 300px;
         height: 100vh;
-        padding: 94px 48px;
+        padding: 100px 48px;
         .css-i4bv87-MuiSvgIcon-root {
             display: none;
         }
@@ -36,20 +46,23 @@ const Orange = styled.div`
 
 const Burger = styled(MenuIcon)`
     display: flex;
-    margin: 6px 20px;
+    margin: 6px 20px 6px 10px;
     width: 20px;
 
-    @media ${device.laptopL} {
+    @media ${device.desktop} {
         display: none;
     }
 `;
 
 const Header = styled.div`
-    display: block;
+    display: ${props => (props.showNavBar ? "block" : "flex")};
+    @media ${device.desktop} {
+        display: block;
+    }
 `;
 
 const Title = styled.div`
-    display: flex;
+    display: ${props => (props.showNavBar ? "block" : "flex")};
 `;
 
 const Design = styled.div`
@@ -60,8 +73,8 @@ const Design = styled.div`
 const HideMobile = styled.nav`
     display: ${props => (props.showNavBar ? "block" : "none")};
     padding: 20px;
-    @media ${device.laptopL} {
-        margin-top: 94px;
+    @media ${device.desktop} {
+        margin-top: 40px;
         font-weight 500;
         font-size: 18px;
         line-height 27px;
@@ -69,8 +82,11 @@ const HideMobile = styled.nav`
     }
 `;
 const Logo = styled.img`
-    width: 100px;
-    height: 100px;
+    width: ${props => (props.showNavBar ? "60%" : "80px")};
+    padding: ${props => (props.showNavBar ? "20px" : "0px 20px")};
+    @media ${device.desktop} {
+        width: 80%;
+    }
 `;
 
 const NavbarStyled = styled.div`
@@ -86,14 +102,14 @@ const Close = styled(CloseIcon)`
     position: absolute;
     top: 27px;
     left: 254px;
-    @media ${device.laptopL} {
+    @media ${device.desktop} {
         display: none;
     }
 `;
 const Black = styled.div`
     color: #000;
     margin: 0px 5px;
-    @media ${device.laptopL} {
+    @media ${device.desktop} {
         .css-i4bv87-MuiSvgIcon-root {
             display: flex;
         }
@@ -109,14 +125,18 @@ function SideBar({ signOut }) {
 
     return (
         <Orange showNavBar={showNavBar}>
-            <Header>
+            <Header showNavBar={showNavBar}>
+                <Logo
+                    showNavBar={showNavBar}
+                    src={require("../images/log.png")}
+                />
                 <Title>
                     {!showNavBar && (
                         <Burger onClick={() => setShowNavBar(true)} />
                     )}
                     <Design>Quote System</Design>
                 </Title>
-                <Logo src={"./src/images/logo.png"} />
+
                 <HideMobile showNavBar={showNavBar}>
                     <NavbarStyled>
                         <NavLinkStyled
