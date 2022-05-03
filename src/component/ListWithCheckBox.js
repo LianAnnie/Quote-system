@@ -9,6 +9,7 @@ import {
     Flex,
     ThTitle,
     TdContext,
+    SelectInput,
 } from "./StyleComponent";
 import data from "../utils/data";
 import form from "../utils/formChange";
@@ -62,8 +63,10 @@ function ListWithRadio({
     }
 
     function handleImportProduct(e) {
+        console.log(e);
         const dataId = e.id;
         const filterData = processingData.filter(data => data.id !== dataId);
+        console.log(processingData);
         filterData.length === processingData.length
             ? setProcessingData(prev => [...prev, e])
             : setProcessingData(filterData);
@@ -94,11 +97,10 @@ function ListWithRadio({
                         ))}
                     </tr>
                     <tr>
-                        {console.log(data.listCollections[collectionName])}
                         {data.listCollections[collectionName][2].map(
                             (keyName, indexForStyled) => (
                                 <ThTitle key={keyName} index={indexForStyled}>
-                                    <input
+                                    <SelectInput
                                         type="text"
                                         name={keyName}
                                         onChange={e => handleConditionChange(e)}

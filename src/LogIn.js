@@ -1,4 +1,10 @@
 import styled from "styled-components";
+import {
+    LoginButton,
+    RegisterButton,
+    LogoutButton,
+    ResetButton,
+} from "./component/StyleComponent";
 import { Form, Field } from "react-final-form";
 import { useEffect } from "react";
 import {
@@ -8,7 +14,42 @@ import {
 } from "firebase/auth";
 
 const Container = styled.div`
-    text-align: left;
+    background-color: #fffae3;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
+const Message = styled.div`
+    font-size: 5px;
+    text-align: right;
+    margin: 10px;
+    margin-right: 100px;
+`;
+
+const FormStyled = styled.form`
+    background-color: #f1d9a7;
+    border-radius: 20px;
+    width: 500px;
+    height: 300px;
+    padding: 40px;
+    padding-left: 70px;
+    font-size: 24px;
+`;
+
+const LabelStyled = styled.label`
+    margin: 15px;
+`;
+
+const InputStyled = styled.input`
+    height: 30px;
+`;
+
+const Status = styled.div`
+    font-size: 24px;
+    text-align: right;
 `;
 
 const loginData = [
@@ -17,12 +58,14 @@ const loginData = [
         labelTitle: "UserName",
         type: "text",
         placeholder: "Username",
+        accountInformation: "123@456.com",
     },
     {
         name: "password",
         labelTitle: "Password",
         type: "password",
         placeholder: "Password",
+        accountInformation: "123456",
     },
 ];
 
@@ -111,59 +154,51 @@ function LogIn({
         pristine,
         values,
     }) => (
-        <form onSubmit={handleSubmit}>
+        <FormStyled onSubmit={handleSubmit}>
             {loginData.map(e => (
                 <Field name={e.name} key={e.name}>
                     {({ input, meta }) => (
-                        <div>
-                            <label>{e.labelTitle}</label>
-                            <input
-                                {...input}
-                                type={e.type}
-                                placeholder={e.placeholder}
-                            />
-                            {meta.error && meta.touched && (
-                                <span>{meta.error}</span>
-                            )}
-                        </div>
+                        <>
+                            <div>
+                                <LabelStyled>{e.labelTitle}</LabelStyled>
+                                <InputStyled
+                                    {...input}
+                                    type={e.type}
+                                    placeholder={e.placeholder}
+                                />
+                                {meta.error && meta.touched && (
+                                    <span>{meta.error}</span>
+                                )}
+                            </div>
+                            <Message>{e.accountInformation}</Message>
+                        </>
                     )}
                 </Field>
             ))}
-            <div>Test account</div>
-            <div>123@456.com</div>
-            <div>123456</div>
             <div className="buttons">
-                <button
+                <LoginButton
                     type="submit"
                     disabled={submitting}
                     onClick={() => runFirebaseLogin(values)}
-                >
-                    SignIn
-                </button>
-                <button
+                />
+                <RegisterButton
                     type="submit"
                     disabled={submitting}
                     onClick={() => runFirebaseRegister(values)}
-                >
-                    Register
-                </button>
-                <button
+                />
+                <LogoutButton
                     type="button"
                     disabled={submitting}
                     onClick={() => signOut()}
-                >
-                    Logout
-                </button>
-                <button
+                />
+                <ResetButton
                     type="button"
                     onClick={form.reset}
                     disabled={submitting || pristine}
-                >
-                    Reset
-                </button>
+                />
             </div>
-            <pre>{message}</pre>
-        </form>
+            <Status>{message}</Status>
+        </FormStyled>
     );
 
     return (

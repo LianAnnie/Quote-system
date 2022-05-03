@@ -1,5 +1,14 @@
 import { useState, useEffect } from "react";
-import { AddButton, Title, Section, Form, Question } from "./StyleComponent";
+import {
+    AddButton,
+    Title,
+    Section,
+    Form,
+    Question,
+    LabelStyled,
+    SelectStyled,
+    DivStyled,
+} from "./StyleComponent";
 import api from "../utils/firebaseApi";
 import form from "../utils/formChange";
 import data from "../utils/data";
@@ -101,19 +110,19 @@ function Companies({
             <Title>公司資料表</Title>
             <Form>
                 <Question>
-                    <div>供應類別</div>
-                    <select
+                    <LabelStyled>供應類別</LabelStyled>
+                    <SelectStyled
                         name="id0"
                         value={exportData.id[0]}
                         onChange={e => handleExportDataIdChange(e)}
                     >
                         <option value="F">供應商</option>
                         <option value="C">客戶</option>
-                    </select>
+                    </SelectStyled>
                 </Question>
                 <Question>
-                    <div>公司編號</div>
-                    <div>{exportData.id}</div>
+                    <LabelStyled>公司編號</LabelStyled>
+                    <DivStyled>{exportData.id}</DivStyled>
                 </Question>
                 {data.companies.inputComponentArray.map(e => (
                     <Input
@@ -126,8 +135,8 @@ function Companies({
                     />
                 ))}
                 <Question>
-                    <div>地區</div>
-                    <select
+                    <LabelStyled>地區</LabelStyled>
+                    <SelectStyled
                         name="country"
                         value={exportData.country}
                         onChange={e => {
@@ -139,7 +148,7 @@ function Companies({
                                 {country[1]}
                             </option>
                         ))}
-                    </select>
+                    </SelectStyled>
                 </Question>
                 <AddButton onClick={() => submit()} />
             </Form>

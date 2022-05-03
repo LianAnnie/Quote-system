@@ -3,7 +3,14 @@ import Select from "./Select";
 import { useState, useEffect } from "react";
 import api from "../utils/firebaseApi";
 import form from "../utils/formChange";
-import { Section, Title, Form, Question, Button } from "./StyleComponent";
+import {
+    Section,
+    Title,
+    Form,
+    Question,
+    Button,
+    AddButton,
+} from "./StyleComponent";
 import data from "../utils/data";
 
 function Part({ collectionName, list, setList }) {
@@ -142,8 +149,8 @@ function Part({ collectionName, list, setList }) {
                     name="mark"
                     value={exportData.mark}
                 />
+                <AddButton onClick={() => submit()} />
             </Form>
-            <Button onClick={() => submit()}>Submit</Button>
         </Section>
     );
 }

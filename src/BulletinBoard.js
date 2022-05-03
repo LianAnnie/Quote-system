@@ -15,6 +15,10 @@ import form from "./utils/formChange";
 import api from "./utils/firebaseApi";
 import styled from "styled-components";
 
+const Card = styled.div`
+    padding: 20px 15%;
+`;
+
 const Boards = styled.div`
     display: flex;
     justify-content: center;
@@ -140,54 +144,56 @@ function BulletinBoard({ signOut }) {
         <Container>
             <SideBar signOut={signOut} />
             <Main>
-                <Title>待辦通知</Title>
-                <Form>
-                    <Question>
-                        <div>工作類型</div>
-                        <select
-                            name="type"
-                            onChange={e => {
-                                handleCardChange(e);
+                <Card>
+                    <Title>待辦通知</Title>
+                    <Form>
+                        <Question>
+                            <div>工作類型</div>
+                            <select
+                                name="type"
+                                onChange={e => {
+                                    handleCardChange(e);
+                                }}
+                                value={card.type}
+                            >
+                                <option value="Inquiry">Inquiry</option>
+                                <option value="Order">Order</option>
+                            </select>
+                        </Question>
+                        <Question>
+                            <div>分配部門</div>
+                            <select
+                                name="status"
+                                onChange={e => {
+                                    handleCardChange(e);
+                                }}
+                                value={card.status}
+                            >
+                                <option value={0}>暫停</option>
+                                <option value={1}>工程</option>
+                                <option value={2}>採購</option>
+                                <option value={3}>生產</option>
+                                <option value={4}>船務</option>
+                            </select>
+                        </Question>
+                        <Question>
+                            <div>提醒事項</div>
+                            <textarea
+                                type="text"
+                                name="comment"
+                                onChange={e => handleCardChange(e)}
+                                rows="3"
+                                cols="20"
+                                value={card.comment}
+                            />
+                        </Question>
+                        <AddButton
+                            onClick={() => {
+                                addCard();
                             }}
-                            value={card.type}
-                        >
-                            <option value="Inquiry">Inquiry</option>
-                            <option value="Order">Order</option>
-                        </select>
-                    </Question>
-                    <Question>
-                        <div>分配部門</div>
-                        <select
-                            name="status"
-                            onChange={e => {
-                                handleCardChange(e);
-                            }}
-                            value={card.status}
-                        >
-                            <option value={0}>暫停</option>
-                            <option value={1}>工程</option>
-                            <option value={2}>採購</option>
-                            <option value={3}>生產</option>
-                            <option value={4}>船務</option>
-                        </select>
-                    </Question>
-                    <Question>
-                        <div>提醒事項</div>
-                        <textarea
-                            type="text"
-                            name="comment"
-                            onChange={e => handleCardChange(e)}
-                            rows="3"
-                            cols="20"
-                            value={card.comment}
                         />
-                    </Question>
-                    <AddButton
-                        onClick={() => {
-                            addCard();
-                        }}
-                    />
-                </Form>
+                    </Form>
+                </Card>
                 <Boards>
                     <DragDropContext
                         onDragEnd={result =>

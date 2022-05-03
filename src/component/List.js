@@ -7,14 +7,18 @@ import {
     Table,
     Th,
     Td,
+    UpdatedTr,
     Flex,
     UpdatedButton,
     DeleteButton,
     SaveButton,
+    SelectInput,
     CancelEditButton,
     CancelSelectedButton,
     ThTitle,
     TdContext,
+    SelectStyled,
+    UpdateInput,
 } from "./StyleComponent";
 import data from "../utils/data";
 
@@ -254,13 +258,13 @@ function List({ collectionName, list, setList }) {
                         {data.listCollections[collectionName][2].map(
                             (keyName, indexForStyled) => (
                                 <ThTitle key={keyName} index={indexForStyled}>
-                                    <input
+                                    <SelectInput
                                         type="text"
                                         name={keyName}
                                         onChange={e => handleConditionChange(e)}
                                         value={filterCondition[keyName]}
                                     />
-                                    <select
+                                    <SelectStyled
                                         id={keyName}
                                         name={keyName}
                                         onChange={e => handleConditionChange(e)}
@@ -279,7 +283,7 @@ function List({ collectionName, list, setList }) {
                                                     {o[keyName]}
                                                 </option>
                                             ))}
-                                    </select>
+                                    </SelectStyled>
                                 </ThTitle>
                             ),
                         )}
@@ -321,7 +325,7 @@ function List({ collectionName, list, setList }) {
                                     </Td>
                                 </tr>
                             ) : (
-                                <tr key={e.id}>
+                                <UpdatedTr key={e.id}>
                                     {data.listCollections[
                                         collectionName
                                     ][2].map((keyName, keyIndex) =>
@@ -331,7 +335,7 @@ function List({ collectionName, list, setList }) {
                                             </Td>
                                         ) : (
                                             <Td>
-                                                <input
+                                                <UpdateInput
                                                     key={[keyName, keyIndex]}
                                                     name={keyName}
                                                     value={
@@ -345,7 +349,7 @@ function List({ collectionName, list, setList }) {
                                                             e,
                                                         )
                                                     }
-                                                ></input>
+                                                ></UpdateInput>
                                             </Td>
                                         ),
                                     )}
@@ -366,7 +370,7 @@ function List({ collectionName, list, setList }) {
                                             }
                                         />
                                     </Td>
-                                </tr>
+                                </UpdatedTr>
                             ),
                         )}
                 </tbody>

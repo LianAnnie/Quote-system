@@ -1,4 +1,5 @@
 import List from "./List";
+import { Flex } from "./StyleComponent";
 
 function CompaniesList({
     customerList,
@@ -7,7 +8,7 @@ function CompaniesList({
     setSupplierList,
 }) {
     return (
-        <>
+        <Flex>
             <List
                 collectionName={"customers2"}
                 list={customerList}
@@ -18,7 +19,7 @@ function CompaniesList({
                 list={supplierList}
                 setList={setSupplierList}
             />
-        </>
+        </Flex>
     );
 }
 

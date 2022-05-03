@@ -109,6 +109,9 @@ const Close = styled(CloseIcon)`
 const Black = styled.div`
     color: #000;
     margin: 0px 5px;
+    @media ${device.laptopL} {
+        display: flex;
+    }
     @media ${device.desktop} {
         .css-i4bv87-MuiSvgIcon-root {
             display: flex;

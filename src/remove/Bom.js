@@ -4,12 +4,7 @@ import SideBar from "./component/SideBar";
 import api from "./utils/firebaseApi";
 import form from "./utils/formChange";
 import { storage } from "./utils/firebase";
-import {
-    ref,
-    uploadBytes,
-    uploadBytesResumable,
-    getDownloadURL,
-} from "firebase/storage";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const Container = styled.div`
     text-align: left;

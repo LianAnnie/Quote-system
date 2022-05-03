@@ -2,12 +2,10 @@ import ListWithCheckBox2 from "./ListWithCheckBox2";
 import AssembleData2 from "./AssembleData2";
 import ListWithRadio2 from "./ListWithRadio2";
 import AnalysisForm from "./AnalysisForm";
-import List from "./List";
 import Drawing from "./Drawing";
 import { useState, useEffect } from "react";
-import { Button, Form } from "./StyleComponent";
-import api from "../utils/firebaseApi";
 import data from "../utils/data";
+import ExportExcel from "./ExportExcel";
 
 function Structure2({
     parentCollectionName,
@@ -15,8 +13,6 @@ function Structure2({
     childCollectionName,
     childList,
     assembleCollectionName,
-    assembleList,
-    setAssembleList,
 }) {
     const processingDataRule = {
         id: "",
@@ -27,7 +23,6 @@ function Structure2({
     const [parentData, setParentData] = useState({});
     const [childData, setChildData] = useState([]);
     const [filterChildList, setFilterChildList] = useState([]);
-    const [renderAssembledList, setRenderAssembledList] = useState([]);
     const [pieData, setPieData] = useState([]);
     const [margin, setMargin] = useState(0);
 
@@ -39,14 +34,6 @@ function Structure2({
     useEffect(() => {
         handleProcessingDataChange(childData, parentList, childList);
     }, [childData]);
-
-    useEffect(() => {
-        const renderList = transAssembleListToRender(
-            assembleCollectionName,
-            assembleList,
-        );
-        setRenderAssembledList(renderList);
-    }, [assembleList]);
 
     function getPieData(data, totalPrice) {
         console.log(data);
@@ -123,64 +110,6 @@ function Structure2({
             );
             return filterChildlist.flat(1);
         }
-    }
-
-    async function submit() {
-        // checkProcessingData(processingData)
-        const newDataArray = await api.setDocWithId(
-            assembleCollectionName,
-            0,
-            processingData,
-        );
-        setAssembleList(prev => prev.concat(newDataArray));
-    }
-
-    function transAssembleListToRender(assembleCollectionName, assembleList) {
-        let newListtoRender;
-        if (assembleCollectionName === "bom") {
-            newListtoRender = assembleList.map(e => ({
-                id0: e.id[0],
-                id1: e.id[1],
-                id2: e.id[2],
-                qty: e.qty,
-                unit: e.unit,
-            }));
-            return newListtoRender;
-        }
-        if (
-            assembleCollectionName === "partQuotations2" ||
-            assembleCollectionName === "productQuotations2"
-        ) {
-            newListtoRender = assembleList.map(e => ({
-                id0: e.id[0],
-                id1: e.id[1],
-                id2: e.id[2],
-                id3: e.id[3],
-                inquiryQty: e.inquiryQty,
-                price: e.price,
-                currency: e.currency,
-                leadTime: e.leadTime,
-                date: e.date,
-                valid: e.valid,
-            }));
-        }
-        if (assembleCollectionName === "order") {
-            newListtoRender = assembleList.map(e => ({
-                id0: e.id[0],
-                id1: e.id[1],
-                id2: e.id[2],
-                id3: e.id[3],
-                orderId: e.orderId,
-                sum: e.sum,
-                currency: e.currency,
-                qty: e.qty,
-                price: e.price,
-                date: e.date,
-                requestedDate: e.requestedDate,
-                remark: e.remark,
-            }));
-        }
-        return newListtoRender;
     }
 
     function transProcessingChildDataToRender(
@@ -318,6 +247,7 @@ function Structure2({
             <AnalysisForm
                 handleDataChange={handleProcessingDataChange}
                 processingData={processingData}
+                setProcessingData={setProcessingData}
             />
             <ListWithRadio2
                 collectionName={parentCollectionName}
@@ -338,12 +268,7 @@ function Structure2({
             />
             <Drawing profitMargin={margin} pieData={pieData} />
 
-            <Button onClick={() => submit()}>Submit</Button>
-            {/* <List
-                collectionName={assembleCollectionName}
-                list={renderAssembledList}
-                setList={setAssembleList}
-            /> */}
+            <ExportExcel data={processingData} />
         </>
     );
 }

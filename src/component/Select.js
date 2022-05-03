@@ -1,4 +1,4 @@
-import { Question } from "./StyleComponent";
+import { Question, LabelStyled, InputStyled } from "./StyleComponent";
 
 function Select({ title, handleDataChange, data, name, optionArray }) {
     return (
@@ -23,10 +23,10 @@ function Select({ title, handleDataChange, data, name, optionArray }) {
                 )}
             </Question> */}
             <Question>
-                <div>{title}</div>
+                <LabelStyled>{title}</LabelStyled>
                 {optionArray.length > 1 ? (
                     <>
-                        <input
+                        <InputStyled
                             type="text"
                             list={name}
                             name={name}

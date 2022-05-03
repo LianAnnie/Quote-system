@@ -18,9 +18,26 @@ function AssembleData({ collectionName, processingData, setProcessingData }) {
             );
         }
         newProcessingData.childData = newChildData;
+        if (collectionName === "order") {
+            const sum = sumForOrder(newChildData);
+            newProcessingData.parentData.sum = sum;
+        }
         setProcessingData(newProcessingData);
     }
 
+    function sumForOrder(data) {
+        console.log(data);
+        const qtyAvailable = data.filter(e => isNaN(Number(e.qty)));
+        const priceAvailable = data.filter(e => isNaN(Number(e.price)));
+        if ((qtyAvailable.length === 0) & (priceAvailable.length === 0)) {
+            const sum = data.reduce(
+                (sum, e) => sum + Number(e.qty) * Number(e.price),
+                0,
+            );
+            return sum;
+        }
+        return "數量單價尚不完整";
+    }
     return (
         <Section>
             <Title>{data.assembleDataCollections[collectionName][0]}</Title>
@@ -73,14 +90,31 @@ function AssembleData({ collectionName, processingData, setProcessingData }) {
                                     collectionName
                                 ][6].map(keyName => (
                                     <Td key={keyName}>
-                                        <input
-                                            name={keyName}
-                                            onChange={e =>
-                                                handleAddDataChange(index, e)
-                                            }
-                                            key={keyName}
-                                            value={e[keyName]}
-                                        />
+                                        {e[keyName] === undefined ? (
+                                            <input
+                                                name={keyName}
+                                                onChange={e =>
+                                                    handleAddDataChange(
+                                                        index,
+                                                        e,
+                                                    )
+                                                }
+                                                key={keyName}
+                                                value="請填寫資料"
+                                            />
+                                        ) : (
+                                            <input
+                                                name={keyName}
+                                                onChange={e =>
+                                                    handleAddDataChange(
+                                                        index,
+                                                        e,
+                                                    )
+                                                }
+                                                key={keyName}
+                                                value={e[keyName]}
+                                            />
+                                        )}
                                     </Td>
                                 ))}
                                 <Td>

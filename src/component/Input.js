@@ -1,10 +1,10 @@
-import { Question } from "./StyleComponent";
+import { Question, LabelStyled, InputStyled } from "./StyleComponent";
 
 function Input({ title, type, handleDataChange, data, name }) {
     return (
         <Question>
-            <div>{title}</div>
-            <input
+            <LabelStyled>{title}</LabelStyled>
+            <InputStyled
                 type={type}
                 name={name}
                 onChange={e => {

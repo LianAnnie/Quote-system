@@ -20,32 +20,39 @@ function Overview({ signOut }) {
         getListFromFirebase();
     }, []);
 
-    useEffect(() => {
-        sumOrderPrice(mapData);
-    }, [mapData]);
-
     async function getListFromFirebase() {
-        const data = await api.getCompleteCollection("order");
-        const mapData = data.map(e => [
-            e.id[0].slice(1, 3).toLowerCase(),
-            Number(e.qty) * Number(e.price),
-        ]);
-        sumOrderPrice(mapData);
-        setMapData(mapData);
+        const firebaseData = await api.getCompleteCollection("order");
+        const mapData = firebaseData.map(e => {
+            console.log(data.exchangeData[e.currency]);
+            return [
+                e.id[0].slice(1, 3).toLowerCase(),
+                Number(e.qty) * Number(e.price),
+                Number(data.exchangeData[e.currency.split(",")[0]]),
+            ];
+        });
+        console.log(mapData);
+        setMapData(sumOrderPrice(mapData));
     }
 
-    function sumOrderPrice(data) {
-        if (data.length > 0) {
-            const country = data.map(e => e[0]);
-            const countryWithUniqueness = [...new Set(country)];
-            const orderSum = countryWithUniqueness.map(e =>
-                data.filter(m => m[0] === e).reduce((sum, n) => sum + n[1], 0),
-            );
-            const mapData = countryWithUniqueness.map((e, index) => [
-                e,
-                orderSum[index],
-            ]);
-            console.log(mapData);
+    function sumOrderPrice(parameterData) {
+        if (parameterData !== undefined) {
+            if (parameterData.length > 0) {
+                const country = parameterData.map(e => e[0]);
+                const countryWithUniqueness = [...new Set(country)];
+                const orderSum = countryWithUniqueness.map(e =>
+                    Math.floor(
+                        parameterData
+                            .filter(m => m[0] === e)
+                            .reduce((sum, n) => sum + n[1] / n[2], 0),
+                    ),
+                );
+                const mapData = countryWithUniqueness.map((e, index) => [
+                    e,
+                    orderSum[index],
+                ]);
+                console.log(mapData);
+                return mapData;
+            }
         }
     }
 

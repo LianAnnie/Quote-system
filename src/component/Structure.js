@@ -42,7 +42,7 @@ function Structure({
             assembleList,
         );
         setRenderAssembledList(renderList);
-    }, [assembleList]);
+    }, [assembleCollectionName, assembleList]);
 
     function handleProcessingDataChange(parameterData) {
         const newProcessingData = JSON.parse(JSON.stringify(processingData));
@@ -93,8 +93,23 @@ function Structure({
                 0,
                 processingData,
             );
-            console.log(newDataArray);
+            if (assembleCollectionName === "order") {
+                orderDependency(newDataArray);
+            }
             setAssembleList(prev => prev.concat(newDataArray));
+        }
+        setProcessingData(processingDataRule);
+        setParentData({});
+        setChildData([]);
+    }
+
+    function orderDependency(data) {
+        console.log(data);
+        if (data.length > 0) {
+            const productsId = data.map(e => e.id[1]);
+            productsId.forEach((e, index) => {
+                api.updateDoc("products2", e, { dependency: [] });
+            });
         }
     }
 
@@ -112,6 +127,7 @@ function Structure({
             alert(data.errorMessage[collectionName][1]);
             return false;
         }
+
         if (collectionName === "bom") {
             const qtyArry = parameterData.childData
                 .map(e => e.qty)
@@ -164,6 +180,10 @@ function Structure({
                     alert(data.errorMessage[collectionName][5]);
                     return false;
                 }
+                if (parameterData.parentData.orderId === undefined) {
+                    alert(data.errorMessage[collectionName][6]);
+                    return false;
+                }
                 const qtyArry = parameterData.childData
                     .map(e => e.qty)
                     .filter(e => isNaN(Number(e)));
@@ -181,7 +201,7 @@ function Structure({
 
             const priceArry = parameterData.childData
                 .map(e => e.price)
-                .filter(e => Number(e) <= 0);
+                .filter(e => isNaN(Number(e)));
             console.log(priceArry);
             if (priceArry.length > 0) {
                 alert(data.errorMessage[collectionName][3]);
@@ -190,6 +210,15 @@ function Structure({
         }
         if (collectionName === "productQuotations2") {
         }
+        const childKeys = data.assembleDataCollections[collectionName][6];
+        const checkValeus = parameterData.childData.map(e =>
+            childKeys.filter(key => e[key] === undefined),
+        );
+        if (checkValeus.filter(e => e.length !== 0).length > 0) {
+            alert(data.errorMessage[collectionName][7]);
+            return false;
+        }
+
         return true;
     }
 
@@ -285,6 +314,7 @@ function Structure({
                 collectionName={assembleCollectionName}
                 processingData={processingData}
                 setProcessingData={setProcessingData}
+                childData={childData}
             />
             <AddButton onClick={() => submit()} />
             <List
