@@ -13,6 +13,7 @@ import {
     Routes,
     Route,
     Navigate,
+    useLocation,
 } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -22,8 +23,18 @@ const Container = styled.div`
     text-align: left;
 `;
 
+function RequireAuth({ children, loginStatus }) {
+    console.log(`loginStatus`, loginStatus);
+    let location = useLocation();
+    if (loginStatus === 0) {
+        return <Navigate to="/login" state={{ from: location }} replace />;
+    }
+
+    return children;
+}
+
 function App() {
-    const [loginStatus, setLoginStatus] = useState(0);
+    const [loginStatus, setLoginStatus] = useState(2);
     const [message, setMessage] = useState("");
     console.log(loginStatus);
     const [userId, setUserId] = useState("");
@@ -33,11 +44,11 @@ function App() {
         onAuthStateChanged(auth, user => {
             if (user) {
                 const uid = user.uid;
+                console.log(uid);
                 setUserId(uid);
                 setLoginStatus(1);
                 setMessage(`歡迎回來`);
             } else {
-                console.log(`here?`);
                 setLoginStatus(0);
             }
         });
@@ -83,89 +94,71 @@ function App() {
                     <Route
                         path="/login"
                         element={
-                            loginStatus === 0 ? (
-                                <LogIn
-                                    loginStatus={loginStatus}
-                                    setLoginStatus={setLoginStatus}
-                                    setUserId={setUserId}
-                                    signOut={runFirebaseSignOut}
-                                    setMessage={setMessage}
-                                    message={message}
-                                    checkErrorMessage={checkErrorMessage}
-                                />
-                            ) : (
-                                <Navigate replace to="/" />
-                            )
+                            <LogIn
+                                loginStatus={loginStatus}
+                                setLoginStatus={setLoginStatus}
+                                setUserId={setUserId}
+                                signOut={runFirebaseSignOut}
+                                setMessage={setMessage}
+                                message={message}
+                                checkErrorMessage={checkErrorMessage}
+                            />
                         }
                     />
                     <Route
                         path="/"
                         element={
-                            loginStatus === 0 ? (
-                                <Navigate replace to="/login" />
-                            ) : (
+                            <RequireAuth loginStatus={loginStatus}>
                                 <BulletinBoard signOut={runFirebaseSignOut} />
-                            )
+                            </RequireAuth>
                         }
                     />
                     <Route
                         path="/overview"
                         element={
-                            loginStatus === 0 ? (
-                                <Navigate replace to="/login" />
-                            ) : (
+                            <RequireAuth loginStatus={loginStatus}>
                                 <Overview signOut={runFirebaseSignOut} />
-                            )
+                            </RequireAuth>
                         }
                     />
                     <Route
                         path="/company"
                         element={
-                            loginStatus === 0 ? (
-                                <Navigate replace to="/login" />
-                            ) : (
+                            <RequireAuth loginStatus={loginStatus}>
                                 <Company signOut={runFirebaseSignOut} />
-                            )
+                            </RequireAuth>
                         }
                     />
                     <Route
                         path="/bom"
                         element={
-                            loginStatus === 0 ? (
-                                <Navigate replace to="/login" />
-                            ) : (
+                            <RequireAuth loginStatus={loginStatus}>
                                 <Bom signOut={runFirebaseSignOut} />
-                            )
+                            </RequireAuth>
                         }
                     />
                     <Route
                         path="/analysis"
                         element={
-                            loginStatus === 0 ? (
-                                <Navigate replace to="/login" />
-                            ) : (
+                            <RequireAuth loginStatus={loginStatus}>
                                 <Analysis signOut={runFirebaseSignOut} />
-                            )
+                            </RequireAuth>
                         }
                     />
                     <Route
                         path="/quote"
                         element={
-                            loginStatus === 0 ? (
-                                <Navigate replace to="/login" />
-                            ) : (
+                            <RequireAuth loginStatus={loginStatus}>
                                 <Quote signOut={runFirebaseSignOut} />
-                            )
+                            </RequireAuth>
                         }
                     />
                     <Route
                         path="/order"
                         element={
-                            loginStatus === 0 ? (
-                                <Navigate replace to="/login" />
-                            ) : (
+                            <RequireAuth loginStatus={loginStatus}>
                                 <Order signOut={runFirebaseSignOut} />
-                            )
+                            </RequireAuth>
                         }
                     />
                     <Route path="/*" element={<Navigate to="/" />} />

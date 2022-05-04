@@ -12,6 +12,7 @@ import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
 } from "firebase/auth";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Container = styled.div`
     background-color: #fffae3;
@@ -95,8 +96,15 @@ function LogIn({
     message,
 }) {
     const auth = getAuth();
+    let navigate = useNavigate();
+    let location = useLocation();
+
+    let from = location.state?.from?.pathname || "/";
 
     useEffect(() => {
+        if (loginStatus === 1) {
+            navigate(from, { replace: true });
+        }
         if (loginStatus !== 3) {
             return;
         }
@@ -121,8 +129,10 @@ function LogIn({
             .then(() => {
                 setLoginStatus(1);
             })
+            .then(() => {
+                navigate(from, { replace: true });
+            })
             .catch(error => {
-                console.log(`here?`);
                 setLoginStatus(0);
                 const errorCode = error.code;
                 checkErrorMessage(errorCode);
@@ -142,7 +152,6 @@ function LogIn({
             .catch(error => {
                 const errorCode = error.code;
                 checkErrorMessage(errorCode);
-                console.log(`here?`);
                 setLoginStatus(0);
             });
     }
@@ -155,6 +164,7 @@ function LogIn({
         values,
     }) => (
         <FormStyled onSubmit={handleSubmit}>
+            {from}
             {loginData.map(e => (
                 <Field name={e.name} key={e.name}>
                     {({ input, meta }) => (
