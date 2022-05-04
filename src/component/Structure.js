@@ -93,6 +93,9 @@ function Structure({
                 0,
                 processingData,
             );
+            if (assembleCollectionName === "bom") {
+                bomDependency(newDataArray);
+            }
             if (assembleCollectionName === "order") {
                 orderDependency(newDataArray);
             }
@@ -108,7 +111,17 @@ function Structure({
         if (data.length > 0) {
             const productsId = data.map(e => e.id[1]);
             productsId.forEach((e, index) => {
-                api.updateDoc("products2", e, { dependency: [] });
+                // api.updateDoc("products2", e, { dependency: [] });
+            });
+        }
+    }
+
+    function bomDependency(data) {
+        console.log(data);
+        if (data.length > 0) {
+            data.forEach(e => {
+                api.updateDoc("products2", e.id[0], e.id[1], 1);
+                api.updateDoc("parts2", e.id[1], e.id[0], 1);
             });
         }
     }

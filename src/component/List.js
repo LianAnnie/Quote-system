@@ -19,6 +19,7 @@ import {
     TdContext,
     SelectStyled,
     UpdateInput,
+    AddScrollbar,
 } from "./StyleComponent";
 import data from "../utils/data";
 
@@ -210,6 +211,9 @@ function List({ collectionName, list, setList }) {
                 deleteData.id2,
             );
             api.deleteDoc(collectionName, deleteIdArray);
+            console.log(deleteData.id1, deleteData.id2);
+            api.updateDoc("products2", deleteData.id0, deleteData.id1, 0);
+            api.updateDoc("parts2", deleteData.id1, deleteData.id0, 0);
         } else if (
             collectionName === "partQuotations2" ||
             collectionName === "productQuotations2" ||
@@ -240,141 +244,160 @@ function List({ collectionName, list, setList }) {
                     }}
                 />
             </Flex>
-            <Table>
-                <thead>
-                    <tr>
-                        {data.listCollections[collectionName][1].map(
-                            (e, index) => (
-                                <ThTitle key={index} index={index}>
-                                    {e}
-                                </ThTitle>
-                            ),
-                        )}
-                        {data.listCollections.all.map((e, index) => (
-                            <Th key={index}>{e}</Th>
-                        ))}
-                    </tr>
-                    <tr>
-                        {data.listCollections[collectionName][2].map(
-                            (keyName, indexForStyled) => (
-                                <ThTitle key={keyName} index={indexForStyled}>
-                                    <SelectInput
-                                        type="text"
-                                        name={keyName}
-                                        onChange={e => handleConditionChange(e)}
-                                        value={filterCondition[keyName]}
-                                    />
-                                    <SelectStyled
-                                        id={keyName}
-                                        name={keyName}
-                                        onChange={e => handleConditionChange(e)}
-                                        value={list[keyName]}
+            <AddScrollbar>
+                <Table>
+                    <thead>
+                        <tr>
+                            {data.listCollections[collectionName][1].map(
+                                (e, index) => (
+                                    <ThTitle key={index} index={index}>
+                                        {e}
+                                    </ThTitle>
+                                ),
+                            )}
+                            {data.listCollections.all.map((e, index) => (
+                                <Th key={index}>{e}</Th>
+                            ))}
+                        </tr>
+                        <tr>
+                            {data.listCollections[collectionName][2].map(
+                                (keyName, indexForStyled) => (
+                                    <ThTitle
+                                        key={keyName}
+                                        index={indexForStyled}
                                     >
-                                        {list
-                                            .filter(
-                                                (m, index, array) =>
-                                                    array
-                                                        .map(n => n[keyName])
-                                                        .indexOf(m[keyName]) ===
-                                                    index,
-                                            )
-                                            .map((o, index) => (
-                                                <option key={index}>
-                                                    {o[keyName]}
-                                                </option>
-                                            ))}
-                                    </SelectStyled>
-                                </ThTitle>
-                            ),
-                        )}
-                    </tr>
-                </thead>
-                <tbody>
-                    {filterList &&
-                        filterList.map((e, index) =>
-                            !revisedStatus[index] ? (
-                                <tr key={index}>
-                                    {data.listCollections[
-                                        collectionName
-                                    ][2].map((keyName, indexForStyled) => (
-                                        <TdContext
-                                            key={keyName}
-                                            index={indexForStyled}
-                                        >
-                                            {e[keyName]}
-                                        </TdContext>
-                                    ))}
-                                    <Td>
-                                        <UpdatedButton
-                                            onClick={() =>
-                                                handleRevisedStatus(index)
+                                        <SelectInput
+                                            type="text"
+                                            name={keyName}
+                                            onChange={e =>
+                                                handleConditionChange(e)
                                             }
+                                            value={filterCondition[keyName]}
                                         />
-                                    </Td>
-                                    <Td>
-                                        {e.dependency &&
-                                        e.dependency.length !== 0 ? (
-                                            ""
-                                        ) : (
-                                            <DeleteButton
+                                        <SelectStyled
+                                            id={keyName}
+                                            name={keyName}
+                                            onChange={e =>
+                                                handleConditionChange(e)
+                                            }
+                                            value={list[keyName]}
+                                        >
+                                            {list
+                                                .filter(
+                                                    (m, index, array) =>
+                                                        array
+                                                            .map(
+                                                                n => n[keyName],
+                                                            )
+                                                            .indexOf(
+                                                                m[keyName],
+                                                            ) === index,
+                                                )
+                                                .map((o, index) => (
+                                                    <option key={index}>
+                                                        {o[keyName]}
+                                                    </option>
+                                                ))}
+                                        </SelectStyled>
+                                    </ThTitle>
+                                ),
+                            )}
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {filterList &&
+                            filterList.map((e, index) =>
+                                !revisedStatus[index] ? (
+                                    <tr key={index}>
+                                        {data.listCollections[
+                                            collectionName
+                                        ][2].map((keyName, indexForStyled) => (
+                                            <TdContext
+                                                key={keyName}
+                                                index={indexForStyled}
+                                            >
+                                                {e[keyName]}
+                                            </TdContext>
+                                        ))}
+                                        <Td>
+                                            <UpdatedButton
                                                 onClick={() =>
-                                                    deleteData(index)
+                                                    handleRevisedStatus(index)
                                                 }
                                             />
+                                        </Td>
+                                        <Td>
+                                            {e.dependency &&
+                                            e.dependency.length !== 0 ? (
+                                                ""
+                                            ) : (
+                                                <DeleteButton
+                                                    onClick={() =>
+                                                        deleteData(index)
+                                                    }
+                                                />
+                                            )}
+                                        </Td>
+                                    </tr>
+                                ) : (
+                                    <UpdatedTr key={e.id}>
+                                        {data.listCollections[
+                                            collectionName
+                                        ][2].map((keyName, keyIndex) =>
+                                            keyName.includes("id") ? (
+                                                <Td key={[keyName, keyIndex]}>
+                                                    {e[keyName]}
+                                                </Td>
+                                            ) : (
+                                                <Td>
+                                                    <UpdateInput
+                                                        key={[
+                                                            keyName,
+                                                            keyIndex,
+                                                        ]}
+                                                        name={keyName}
+                                                        value={
+                                                            revisedData[index][
+                                                                keyName
+                                                            ]
+                                                        }
+                                                        onChange={e =>
+                                                            handleRevisedData(
+                                                                index,
+                                                                e,
+                                                            )
+                                                        }
+                                                    ></UpdateInput>
+                                                </Td>
+                                            ),
                                         )}
-                                    </Td>
-                                </tr>
-                            ) : (
-                                <UpdatedTr key={e.id}>
-                                    {data.listCollections[
-                                        collectionName
-                                    ][2].map((keyName, keyIndex) =>
-                                        keyName.includes("id") ? (
-                                            <Td key={[keyName, keyIndex]}>
-                                                {e[keyName]}
-                                            </Td>
-                                        ) : (
-                                            <Td>
-                                                <UpdateInput
-                                                    key={[keyName, keyIndex]}
-                                                    name={keyName}
-                                                    value={
-                                                        revisedData[index][
-                                                            keyName
-                                                        ]
-                                                    }
-                                                    onChange={e =>
-                                                        handleRevisedData(
-                                                            index,
-                                                            e,
-                                                        )
-                                                    }
-                                                ></UpdateInput>
-                                            </Td>
-                                        ),
-                                    )}
-                                    <Td>
-                                        <SaveButton
-                                            onClick={() =>
-                                                handleRevisedStatus(index, true)
-                                            }
-                                        />
-                                    </Td>
-                                    <Td>
-                                        <CancelEditButton
-                                            onClick={() =>
-                                                handleRevisedStatus(
-                                                    index,
-                                                    false,
-                                                )
-                                            }
-                                        />
-                                    </Td>
-                                </UpdatedTr>
-                            ),
-                        )}
-                </tbody>
-            </Table>
+                                        <Td>
+                                            <SaveButton
+                                                onClick={() =>
+                                                    handleRevisedStatus(
+                                                        index,
+                                                        true,
+                                                    )
+                                                }
+                                            />
+                                        </Td>
+                                        <Td>
+                                            <CancelEditButton
+                                                onClick={() =>
+                                                    handleRevisedStatus(
+                                                        index,
+                                                        false,
+                                                    )
+                                                }
+                                            />
+                                        </Td>
+                                    </UpdatedTr>
+                                ),
+                            )}
+                    </tbody>
+                </Table>
+            </AddScrollbar>
         </Section>
     );
 }

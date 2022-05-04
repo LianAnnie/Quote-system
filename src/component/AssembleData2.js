@@ -1,4 +1,4 @@
-import { Section, Title, Table, Th, Td } from "./StyleComponent";
+import { Section, Title, TableStyled, Th, Td } from "./StyleComponent";
 import form from "../utils/formChange";
 import data from "../utils/data";
 
@@ -24,7 +24,7 @@ function AssembleData2({ collectionName, processingData, setProcessingData }) {
     return (
         <Section>
             <Title>{data.assembleDataCollections[collectionName][0]}</Title>
-            <Table>
+            <TableStyled>
                 <thead>
                     <tr>
                         {data.assembleDataCollections[collectionName][1].map(
@@ -108,7 +108,7 @@ function AssembleData2({ collectionName, processingData, setProcessingData }) {
                             </tr>
                         ))}
                 </tbody>
-            </Table>
+            </TableStyled>
         </Section>
     );
 }

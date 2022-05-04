@@ -1,7 +1,12 @@
 import SideBar from "./component/SideBar";
 import { useState, useEffect } from "react";
-import { Container, Main, Flex, Button } from "./component/StyleComponent";
-// import Quotes from "./component/Quotes";
+import {
+    Container,
+    Main,
+    Flex,
+    Button,
+    LefttMargi5,
+} from "./component/StyleComponent";
 import Structure from "./component/Structure";
 import api from "./utils/firebaseApi";
 
@@ -43,10 +48,12 @@ function Quote({ signOut }) {
         <Container>
             <SideBar signOut={signOut} />
             <Main>
-                <Flex>
-                    <Button onClick={() => setPage(0)}>零件報價</Button>
-                    <Button onClick={() => setPage(1)}>產品報價</Button>
-                </Flex>
+                <LefttMargi5>
+                    <Flex>
+                        <Button onClick={() => setPage(0)}>零件報價</Button>
+                        <Button onClick={() => setPage(1)}>產品報價</Button>
+                    </Flex>
+                </LefttMargi5>
                 {page === 0 ? (
                     <Structure
                         parentCollectionName={parentCollectionName}

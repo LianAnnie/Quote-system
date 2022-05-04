@@ -5,7 +5,13 @@ import Part from "./component/Part";
 import List from "./component/List";
 import Structure from "./component/Structure";
 import api from "./utils/firebaseApi";
-import { Container, Main, Button, Flex } from "./component/StyleComponent";
+import {
+    Container,
+    Main,
+    Button,
+    Flex,
+    LefttMargi5,
+} from "./component/StyleComponent";
 
 function Bom({ signOut }) {
     const [page, setPage] = useState(0);
@@ -33,11 +39,13 @@ function Bom({ signOut }) {
         <Container>
             <SideBar signOut={signOut} />
             <Main>
-                <Flex>
-                    <Button onClick={() => setPage(0)}>產品</Button>
-                    <Button onClick={() => setPage(1)}>零件</Button>
-                    <Button onClick={() => setPage(2)}>結構</Button>
-                </Flex>
+                <LefttMargi5>
+                    <Flex>
+                        <Button onClick={() => setPage(0)}>產品</Button>
+                        <Button onClick={() => setPage(1)}>零件</Button>
+                        <Button onClick={() => setPage(2)}>結構</Button>
+                    </Flex>
+                </LefttMargi5>
 
                 {page === 0 ? (
                     <>

@@ -1,4 +1,7 @@
 import {
+    LabelStyled,
+    SelectStyled,
+    DivStyled,
     Container,
     Main,
     Title,
@@ -36,6 +39,34 @@ const CardsContainer = styled.div`
     margin: 8px;
 `;
 
+const Cards = styled.div`
+    border-radius: 10px;
+    background: ${snapshot =>
+        snapshot.isDraggingOver ? "#A39171" : "#F1D9A7"};
+    padding: 10px;
+    width: 200px;
+    min-height: 400px;
+`;
+
+const Cards2 = styled.div`
+    border-radius: 10px;
+    background-color: #bdbdbd6b;
+    padding: 10px;
+    width: 80px;
+    height: 80px;
+    border: dashed 1px #6b6868;
+`;
+
+const CardStyled = styled.div`
+    user-select: none;
+    padding: 16px;
+    margin: 0 0 8px 0;
+    border-radius: 10px;
+    min-height: 50px;
+    background-color: #513c2c;
+    color: white;
+`;
+
 function BulletinBoard({ signOut }) {
     const cardDataRule = {
         id: 0,
@@ -47,6 +78,10 @@ function BulletinBoard({ signOut }) {
     const [columns, setColumns] = useState([]);
     const [card, setCard] = useState(cardDataRule);
     const columnsFromBackend = {
+        0: {
+            name: "暫停",
+            items: [],
+        },
         1: {
             name: "工程",
             items: [],
@@ -63,8 +98,8 @@ function BulletinBoard({ signOut }) {
             name: "船務",
             items: [],
         },
-        0: {
-            name: "暫停",
+        5: {
+            name: "完成/取消",
             items: [],
         },
     };
@@ -148,8 +183,8 @@ function BulletinBoard({ signOut }) {
                     <Title>待辦通知</Title>
                     <Form>
                         <Question>
-                            <div>工作類型</div>
-                            <select
+                            <LabelStyled>工作類型</LabelStyled>
+                            <SelectStyled
                                 name="type"
                                 onChange={e => {
                                     handleCardChange(e);
@@ -158,11 +193,11 @@ function BulletinBoard({ signOut }) {
                             >
                                 <option value="Inquiry">Inquiry</option>
                                 <option value="Order">Order</option>
-                            </select>
+                            </SelectStyled>
                         </Question>
                         <Question>
-                            <div>分配部門</div>
-                            <select
+                            <LabelStyled>分配部門</LabelStyled>
+                            <SelectStyled
                                 name="status"
                                 onChange={e => {
                                     handleCardChange(e);
@@ -174,10 +209,10 @@ function BulletinBoard({ signOut }) {
                                 <option value={2}>採購</option>
                                 <option value={3}>生產</option>
                                 <option value={4}>船務</option>
-                            </select>
+                            </SelectStyled>
                         </Question>
                         <Question>
-                            <div>提醒事項</div>
+                            <DivStyled>提醒事項</DivStyled>
                             <textarea
                                 type="text"
                                 name="comment"
@@ -211,23 +246,13 @@ function BulletinBoard({ signOut }) {
                                                 key={columnId}
                                             >
                                                 {(provided, snapshot) => {
-                                                    return (
-                                                        <div
+                                                    return index !== 5 ? (
+                                                        <Cards
+                                                            snapshot={snapshot}
                                                             {...provided.droppableProps}
                                                             ref={
                                                                 provided.innerRef
                                                             }
-                                                            style={{
-                                                                borderRadius:
-                                                                    "10px",
-                                                                background:
-                                                                    snapshot.isDraggingOver
-                                                                        ? "#A39171"
-                                                                        : "#F1D9A7",
-                                                                padding: 10,
-                                                                width: 250,
-                                                                minHeight: 500,
-                                                            }}
                                                         >
                                                             {column.items.map(
                                                                 (
@@ -251,30 +276,15 @@ function BulletinBoard({ signOut }) {
                                                                                 snapshot,
                                                                             ) => {
                                                                                 return (
-                                                                                    <div
+                                                                                    <CardStyled
+                                                                                        snapshot={
+                                                                                            snapshot
+                                                                                        }
                                                                                         ref={
                                                                                             provided.innerRef
                                                                                         }
                                                                                         {...provided.draggableProps}
                                                                                         {...provided.dragHandleProps}
-                                                                                        style={{
-                                                                                            userSelect:
-                                                                                                "none",
-                                                                                            padding: 16,
-                                                                                            margin: "0 0 8px 0",
-                                                                                            borderRadius:
-                                                                                                "10px",
-                                                                                            minHeight:
-                                                                                                "50px",
-                                                                                            backgroundColor:
-                                                                                                snapshot.isDragging
-                                                                                                    ? "#513c2c"
-                                                                                                    : "#513c2c",
-                                                                                            color: "white",
-                                                                                            ...provided
-                                                                                                .draggableProps
-                                                                                                .style,
-                                                                                        }}
                                                                                     >
                                                                                         <div>
                                                                                             {
@@ -286,7 +296,7 @@ function BulletinBoard({ signOut }) {
                                                                                                 item.comment
                                                                                             }
                                                                                         </div>
-                                                                                    </div>
+                                                                                    </CardStyled>
                                                                                 );
                                                                             }}
                                                                         </Draggable>
@@ -296,7 +306,68 @@ function BulletinBoard({ signOut }) {
                                                             {
                                                                 provided.placeholder
                                                             }
-                                                        </div>
+                                                        </Cards>
+                                                    ) : (
+                                                        <Cards2
+                                                            snapshot={snapshot}
+                                                            {...provided.droppableProps}
+                                                            ref={
+                                                                provided.innerRef
+                                                            }
+                                                        >
+                                                            {column.items.map(
+                                                                (
+                                                                    item,
+                                                                    index,
+                                                                ) => {
+                                                                    return (
+                                                                        <Draggable
+                                                                            key={
+                                                                                item.id
+                                                                            }
+                                                                            draggableId={
+                                                                                item.id
+                                                                            }
+                                                                            index={
+                                                                                index
+                                                                            }
+                                                                        >
+                                                                            {(
+                                                                                provided,
+                                                                                snapshot,
+                                                                            ) => {
+                                                                                return (
+                                                                                    <CardStyled
+                                                                                        snapshot={
+                                                                                            snapshot
+                                                                                        }
+                                                                                        ref={
+                                                                                            provided.innerRef
+                                                                                        }
+                                                                                        {...provided.draggableProps}
+                                                                                        {...provided.dragHandleProps}
+                                                                                    >
+                                                                                        <div>
+                                                                                            {
+                                                                                                item.type
+                                                                                            }
+                                                                                        </div>
+                                                                                        <div>
+                                                                                            {
+                                                                                                item.comment
+                                                                                            }
+                                                                                        </div>
+                                                                                    </CardStyled>
+                                                                                );
+                                                                            }}
+                                                                        </Draggable>
+                                                                    );
+                                                                },
+                                                            )}
+                                                            {
+                                                                provided.placeholder
+                                                            }
+                                                        </Cards2>
                                                     );
                                                 }}
                                             </Droppable>

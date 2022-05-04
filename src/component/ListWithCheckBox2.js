@@ -9,6 +9,9 @@ import {
     Flex,
     ThTitle,
     TdContext,
+    SelectInput,
+    SelectStyled,
+    AddScrollbar,
 } from "./StyleComponent";
 import data from "../utils/data";
 import form from "../utils/formChange";
@@ -79,90 +82,104 @@ function ListWithRadio({
                     }}
                 />
             </Flex>
-            <Table>
-                <thead>
-                    <tr>
-                        {data.listCollections[collectionName][3].map(
-                            (e, index) => (
-                                <ThTitle key={index} index={index}>
-                                    {e}
-                                </ThTitle>
-                            ),
-                        )}
-                        {data.listCollections.select.map((e, index) => (
-                            <Th key={index}>{e}</Th>
-                        ))}
-                    </tr>
-                    <tr>
-                        {list &&
-                            data.listCollections[collectionName][4].map(
-                                (keyName, indexForStyled) => (
-                                    <ThTitle
-                                        key={keyName}
-                                        index={indexForStyled}
-                                    >
-                                        <input
-                                            type="text"
-                                            name={keyName}
-                                            onChange={e =>
-                                                handleConditionChange(e)
-                                            }
-                                            value={list[keyName]}
-                                        />
-                                        <select
-                                            name={keyName}
-                                            onChange={e =>
-                                                handleConditionChange(e)
-                                            }
-                                            value={list[keyName]}
-                                        >
-                                            {list
-                                                .filter(
-                                                    (m, index, array) =>
-                                                        array
-                                                            .map(
-                                                                n => n[keyName],
-                                                            )
-                                                            .indexOf(
-                                                                m[keyName],
-                                                            ) === index,
-                                                )
-                                                .map((o, index) => (
-                                                    <option key={index}>
-                                                        {o[keyName]}
-                                                    </option>
-                                                ))}
-                                        </select>
+            <AddScrollbar>
+                <Table>
+                    <thead>
+                        <tr>
+                            {data.listCollections[collectionName][3].map(
+                                (e, index) => (
+                                    <ThTitle key={index} index={index}>
+                                        {e}
                                     </ThTitle>
                                 ),
                             )}
-                    </tr>
-                </thead>
-                <tbody>
-                    {filterList &&
-                        filterList.map((e, index) => (
-                            <tr key={e.id}>
-                                {data.listCollections[collectionName][4].map(
+                            {data.listCollections.select.map((e, index) => (
+                                <Th key={index}>{e}</Th>
+                            ))}
+                        </tr>
+                        <tr>
+                            {list &&
+                                data.listCollections[collectionName][4].map(
                                     (keyName, indexForStyled) => (
+                                        <ThTitle
+                                            key={keyName}
+                                            index={indexForStyled}
+                                        >
+                                            <SelectInput
+                                                type="text"
+                                                name={keyName}
+                                                onChange={e =>
+                                                    handleConditionChange(e)
+                                                }
+                                                value={list[keyName]}
+                                            />
+                                            <SelectStyled
+                                                name={keyName}
+                                                onChange={e =>
+                                                    handleConditionChange(e)
+                                                }
+                                                value={list[keyName]}
+                                            >
+                                                {list
+                                                    .filter(
+                                                        (m, index, array) =>
+                                                            array
+                                                                .map(
+                                                                    n =>
+                                                                        n[
+                                                                            keyName
+                                                                        ],
+                                                                )
+                                                                .indexOf(
+                                                                    m[keyName],
+                                                                ) === index,
+                                                    )
+                                                    .map((o, index) => (
+                                                        <option key={index}>
+                                                            {o[keyName]}
+                                                        </option>
+                                                    ))}
+                                            </SelectStyled>
+                                        </ThTitle>
+                                    ),
+                                )}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {filterList &&
+                            filterList.map((e, index) => (
+                                <tr key={e.id}>
+                                    {data.listCollections[
+                                        collectionName
+                                    ][4].map((keyName, indexForStyled) => (
                                         <TdContext
                                             key={keyName}
                                             index={indexForStyled}
                                         >
                                             {e[keyName]}
                                         </TdContext>
-                                    ),
-                                )}
-                                <Td>
-                                    <input
-                                        type="checkbox"
-                                        name="child"
-                                        onClick={() => handleImportProduct(e)}
-                                    />
-                                </Td>
-                            </tr>
-                        ))}
-                </tbody>
-            </Table>
+                                    ))}
+                                    <Td>
+                                        <input
+                                            type="checkbox"
+                                            name="child"
+                                            defaultChecked={
+                                                processingData.some(
+                                                    data => data === e,
+                                                )
+                                                    ? "checked"
+                                                    : ""
+                                            }
+                                            onClick={() =>
+                                                handleImportProduct(e)
+                                            }
+                                        />
+                                    </Td>
+                                </tr>
+                            ))}
+                    </tbody>
+                </Table>
+            </AddScrollbar>
         </Section>
     );
 }

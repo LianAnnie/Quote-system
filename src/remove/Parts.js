@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import SideBar from "./component/SideBar";
+import SideBar from "../component/SideBar";
 import { Timestamp } from "firebase/firestore";
-import api from "./utils/firebaseApi";
-import form from "./utils/formChange";
+import api from "../utils/firebaseApi";
+import form from "../utils/formChange";
 
 const Container = styled.div`
     text-align: left;
@@ -49,12 +49,6 @@ const Button = styled.div`
     cursor: pointer;
 `;
 const Th = styled.th`
-    padding-right: 20px;
-`;
-
-const ThTwoColSpan = styled.th.attrs({
-    colSpan: 2,
-})`
     padding-right: 20px;
 `;
 const Td = styled.td`

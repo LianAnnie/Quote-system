@@ -50,7 +50,9 @@ const Burger = styled(MenuIcon)`
     width: 20px;
 
     @media ${device.desktop} {
-        display: none;
+        .css-i4bv87-MuiSvgIcon-root {
+            display: none;
+        }
     }
 `;
 

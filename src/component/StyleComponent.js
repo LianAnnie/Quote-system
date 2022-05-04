@@ -46,55 +46,48 @@ const Main = styled.div`
     }
 `;
 const Section = styled.div`
-    @media ${device.mobileS} {
-        padding: 20px 10%;
-    }
-    @media ${device.mobileL} {
-        padding: 20px 10%;
-    }
-
-    @media ${device.laptop} {
-        padding: 20px 1%;
-    }
-    @media ${device.laptopL} {
-        padding: 20px 2%;
-    }
-    @media ${device.desktop} {
-        padding: 20px 5%;
-    }
+    padding: 20px 5%;
 `;
 const Title = styled.div`
     margin-bottom: 20px;
     font-size: 20px;
 `;
-const Form = styled.div`
+
+const AddScrollbar = styled.div`
     border: solid 1px #000000;
     border-radius: 10px;
+    background-color: #fff;
+    white-space: pre-wrap;
+    height: 250px;
+    overflow-x: scroll;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    ::-webkit-scrollbar {
+        display: none;
+    }
+`;
+
+const Form = styled.div`
+    border: solid 1px #000000;
+    padding: 2%;
+    border-radius: 10px;
     width: 100%;
+    background-color: #fff;
+`;
+
+const TableStyled = styled.table`
+    border: solid 1px #000000;
+    padding: 2%;
+    border-radius: 10px;
+    width: 100%;
+    background-color: #fff;
+`;
+
+const Table = styled.table`
     background-color: #fff;
     padding: 20px 5%;
 `;
-const Table = styled.table`
-    border: solid 1px #000000;
-    border-radius: 10px;
-    width: 100%;
-    background-color: #fff;
-    @media ${device.mobileS} {
-        padding: 20px 10%;
-    }
-    @media ${device.mobileL} {
-        padding: 20px 10%;
-    }
-    @media ${device.laptop} {
-        padding: 20px 1%;
-    }
-    @media ${device.laptopL} {
-        padding: 20px 2%;
-    }
-    @media ${device.desktop} {
-        padding: 20px 5%;
-    }
-`;
+
 const Border = styled.div`
     border: solid 1px #000000;
     border-radius: 10px;
@@ -106,19 +99,7 @@ const Question = styled.div`
     margin: 5px;
 `;
 const ThTitle = styled.th`
-    @media ${device.mobileS} {
-        display: ${props => (props.index === 0 ? "table-cell" : "none")};
-    }
-    @media ${device.mobileL} {
-        display: ${props => (props.index === 0 ? "table-cell" : "none")};
-    }
-    @media ${device.tablet} {
-        display: ${props =>
-            props.index === 0 || props.index === 1 ? "table-cell" : "none"};
-    }
-    @media ${device.laptop} {
-        display: table-cell;
-    }
+    display: table-cell;
 `;
 const Th = styled.th`
     width: 40px;
@@ -137,19 +118,7 @@ const UpdatedTr = styled.tr`
 `;
 
 const TdContext = styled.td`
-    @media ${device.mobileS} {
-        display: ${props => (props.index === 0 ? "table-cell" : "none")};
-    }
-    @media ${device.mobileL} {
-        display: ${props => (props.index === 0 ? "table-cell" : "none")};
-    }
-    @media ${device.tablet} {
-        display: ${props =>
-            props.index === 0 || props.index === 1 ? "table-cell" : "none"};
-    }
-    @media ${device.laptop} {
-        display: table-cell;
-    }
+    display: table-cell;
 `;
 
 const Button = styled.div`
@@ -162,43 +131,51 @@ const Button = styled.div`
     color: #fff;
     background-color: #513c2c;
     border-radius: 5px;
+    cursor: pointer;
 `;
 const AddButton = styled(AddCircleIcon)`
     text-align: right;
     color: #513c2c;
     margin-left: 90%;
+    cursor: pointer;
 `;
 const UpdatedButton = styled(DriveFileRenameOutlineIcon)`
     color: #fff;
     background-color: #513c2c;
     border-radius: 5px;
+    cursor: pointer;
 `;
 const DeleteButton = styled(ClearIcon)`
     color: #fff;
     background-color: #513c2c;
     border-radius: 5px;
+    cursor: pointer;
 `;
 const CancelSelectedButton = styled(DeselectIcon)`
     color: #fff;
     background-color: #513c2c;
     border-radius: 5px;
     margin: 0px 20px;
+    cursor: pointer;
 `;
 const SaveButton = styled(UpgradeIcon)`
     color: #fff;
     background-color: #513c2c;
     border-radius: 5px;
+    cursor: pointer;
 `;
 const CancelEditButton = styled(EditOffIcon)`
     color: #fff;
     background-color: #513c2c;
     border-radius: 5px;
+    cursor: pointer;
 `;
 
 const ExportButton = styled(FileDownloadIcon)`
     color: #fff;
     background-color: #513c2c;
     border-radius: 5px;
+    cursor: pointer;
     @media ${device.mobileS} {
         margin-left: 10%;
     }
@@ -221,6 +198,7 @@ const RegisterButton = styled(PersonAddIcon)`
     background-color: #513c2c;
     border-radius: 5px;
     margin: 20px;
+    cursor: pointer;
 `;
 
 const ResetButton = styled(BorderClearIcon)`
@@ -228,6 +206,7 @@ const ResetButton = styled(BorderClearIcon)`
     background-color: #513c2c;
     border-radius: 5px;
     margin: 20px;
+    cursor: pointer;
 `;
 
 const LoginButton = styled(LoginIcon)`
@@ -235,6 +214,7 @@ const LoginButton = styled(LoginIcon)`
     background-color: #513c2c;
     border-radius: 5px;
     margin: 20px;
+    cursor: pointer;
 `;
 
 const LogoutButton = styled(LogoutIcon)`
@@ -242,14 +222,11 @@ const LogoutButton = styled(LogoutIcon)`
     background-color: #513c2c;
     border-radius: 5px;
     margin: 20px;
-`;
-
-const Flex = styled.div`
-    display: flex;
+    cursor: pointer;
 `;
 
 const LabelStyled = styled.label`
-    width: 100px;
+    width: 150px;
 `;
 
 const DivStyled = styled.div`
@@ -258,18 +235,33 @@ const DivStyled = styled.div`
 
 const SelectInput = styled.input`
     width: 100px;
+    margin: 5px 1px;
+    border-radius: 5px;
 `;
 
 const InputStyled = styled.input`
+    width: 100px;
     margin: 5px;
+    border-radius: 5px;
 `;
 
 const SelectStyled = styled.select`
-    margin: 5px;
+    width: 100px;
+    margin: 10px 0px;
+    border-radius: 5px;
 `;
 
 const UpdateInput = styled.input`
     width: 100px;
+    border-radius: 5px;
+`;
+
+const Flex = styled.div`
+    display: flex;
+`;
+
+const LefttMargi5 = styled.div`
+    margin-left: 5%;
 `;
 
 export {
@@ -279,6 +271,7 @@ export {
     Title,
     Form,
     Table,
+    TableStyled,
     Border,
     Question,
     LabelStyled,
@@ -290,6 +283,7 @@ export {
     UpdatedTr,
     Button,
     Flex,
+    LefttMargi5,
     AddButton,
     UpdatedButton,
     DeleteButton,
@@ -305,4 +299,5 @@ export {
     TdContext,
     SelectInput,
     UpdateInput,
+    AddScrollbar,
 };

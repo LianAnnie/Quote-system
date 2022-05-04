@@ -1,5 +1,13 @@
 import List from "./List";
-import { Flex } from "./StyleComponent";
+import { device } from "./StyleComponent";
+import styled from "styled-components";
+
+const Flex = styled.div`
+    @media ${device.laptop} {
+        display: flex;
+        justify-content: space-around;
+    }
+`;
 
 function CompaniesList({
     customerList,

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {
     Section,
     Title,
+    AddScrollbar,
     Table,
     Th,
     Td,
@@ -9,13 +10,20 @@ import {
     Flex,
     ThTitle,
     TdContext,
+    SelectInput,
+    SelectStyled,
 } from "./StyleComponent";
 import data from "../utils/data";
 import form from "../utils/formChange";
 import { db } from "../utils/firebase";
 import { doc, getDoc } from "firebase/firestore";
 
-function ListWithRadio2({ collectionName, list, setProcessingData }) {
+function ListWithRadio2({
+    collectionName,
+    list,
+    setProcessingData,
+    processingData,
+}) {
     const [renderList, setRenderList] = useState([]);
     const [filterList, setFilterList] = useState([]);
     const [filterCondition, setFilterCondition] = useState({});
@@ -104,80 +112,99 @@ function ListWithRadio2({ collectionName, list, setProcessingData }) {
                     }}
                 />
             </Flex>
-            <Table>
-                <thead>
-                    <tr>
-                        {console.log(collectionName)}
-                        {data.listCollections[collectionName][3].map(
-                            (e, index) => (
-                                <ThTitle key={index} index={index}>
-                                    {e}
-                                </ThTitle>
-                            ),
-                        )}
-                        {data.listCollections.select.map((e, index) => (
-                            <Th key={index}>{e}</Th>
-                        ))}
-                    </tr>
-                    <tr>
-                        {data.listCollections[collectionName][4].map(
-                            (keyName, indexForStyled) => (
-                                <ThTitle key={keyName} index={indexForStyled}>
-                                    <input
-                                        type="text"
-                                        name={keyName}
-                                        onChange={e => handleConditionChange(e)}
-                                        value={list[keyName]}
-                                    />
-                                    <select
-                                        name={keyName}
-                                        onChange={e => handleConditionChange(e)}
-                                        value={renderList[keyName]}
+            <AddScrollbar>
+                <Table>
+                    <thead>
+                        <tr>
+                            {console.log(collectionName)}
+                            {data.listCollections[collectionName][3].map(
+                                (e, index) => (
+                                    <ThTitle key={index} index={index}>
+                                        {e}
+                                    </ThTitle>
+                                ),
+                            )}
+                            {data.listCollections.select.map((e, index) => (
+                                <Th key={index}>{e}</Th>
+                            ))}
+                        </tr>
+                        <tr>
+                            {data.listCollections[collectionName][4].map(
+                                (keyName, indexForStyled) => (
+                                    <ThTitle
+                                        key={keyName}
+                                        index={indexForStyled}
                                     >
-                                        {renderList
-                                            .filter(
-                                                (m, index, array) =>
-                                                    array
-                                                        .map(n => n[keyName])
-                                                        .indexOf(m[keyName]) ===
-                                                    index,
-                                            )
-                                            .map((o, index) => (
-                                                <option key={index}>
-                                                    {o[keyName]}
-                                                </option>
-                                            ))}
-                                    </select>
-                                </ThTitle>
-                            ),
-                        )}
-                    </tr>
-                </thead>
-                <tbody>
-                    {filterList &&
-                        filterList.map(e => (
-                            <tr key={e.id}>
-                                {data.listCollections[collectionName][4].map(
-                                    (keyName, indexForStyled) => (
+                                        <SelectInput
+                                            type="text"
+                                            name={keyName}
+                                            onChange={e =>
+                                                handleConditionChange(e)
+                                            }
+                                            value={list[keyName]}
+                                        />
+                                        <SelectStyled
+                                            name={keyName}
+                                            onChange={e =>
+                                                handleConditionChange(e)
+                                            }
+                                            value={renderList[keyName]}
+                                        >
+                                            {renderList
+                                                .filter(
+                                                    (m, index, array) =>
+                                                        array
+                                                            .map(
+                                                                n => n[keyName],
+                                                            )
+                                                            .indexOf(
+                                                                m[keyName],
+                                                            ) === index,
+                                                )
+                                                .map((o, index) => (
+                                                    <option key={index}>
+                                                        {o[keyName]}
+                                                    </option>
+                                                ))}
+                                        </SelectStyled>
+                                    </ThTitle>
+                                ),
+                            )}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {filterList &&
+                            filterList.map(e => (
+                                <tr key={e.id}>
+                                    {data.listCollections[
+                                        collectionName
+                                    ][4].map((keyName, indexForStyled) => (
                                         <TdContext
                                             key={keyName}
                                             index={indexForStyled}
                                         >
                                             {e[keyName]}
                                         </TdContext>
-                                    ),
-                                )}
-                                <Td>
-                                    <input
-                                        type="radio"
-                                        name="main"
-                                        onClick={() => handleImportProduct(e)}
-                                    />
-                                </Td>
-                            </tr>
-                        ))}
-                </tbody>
-            </Table>
+                                    ))}
+                                    <Td>
+                                        <input
+                                            type="radio"
+                                            name="main"
+                                            defaultChecked={
+                                                processingData === e
+                                                    ? "checked"
+                                                    : ""
+                                            }
+                                            onClick={() =>
+                                                handleImportProduct(e)
+                                            }
+                                        />
+                                    </Td>
+                                </tr>
+                            ))}
+                    </tbody>
+                </Table>
+            </AddScrollbar>
         </Section>
     );
 }

@@ -10,6 +10,8 @@ import {
     deleteDoc,
     updateDoc,
     where,
+    arrayUnion,
+    arrayRemove,
 } from "firebase/firestore";
 import form from "../utils/formChange";
 
@@ -136,13 +138,23 @@ const api = {
         console.log(`delete firebase`);
         deleteDoc(doc(db, collectionName, docId));
     },
-    async updateDoc(collectionName, docId, data) {
+    async updateDoc(collectionName, docId, data, state) {
         console.log(`update firebase`);
-        if (collectionName === "boards") {
-            data.status = Number(data.status);
+        let newData;
+        if (collectionName === "products2" || collectionName === "parts2") {
+            if (state === 0) {
+                newData = {
+                    dependency: arrayRemove(data),
+                };
+            }
+            if (state === 1) {
+                newData = {
+                    dependency: arrayUnion(data),
+                };
+            }
         }
         const docRef = doc(db, collectionName, docId);
-        updateDoc(docRef, data);
+        updateDoc(docRef, newData);
     },
 };
 
