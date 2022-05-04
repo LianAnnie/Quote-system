@@ -89,7 +89,6 @@ function errorMassage(values) {
 function LogIn({
     setLoginStatus,
     loginStatus,
-    setUserId,
     signOut,
     setMessage,
     checkErrorMessage,
@@ -120,11 +119,8 @@ function LogIn({
         setLoginStatus(2);
         setMessage(`登入驗證中....`);
         signInWithEmailAndPassword(auth, values.username, values.password)
-            .then(userCredential => {
+            .then(() => {
                 setMessage(`歡迎回來`);
-                const user = userCredential.user;
-                const uid = user.uid;
-                setUserId(uid);
             })
             .then(() => {
                 setLoginStatus(1);
@@ -141,12 +137,8 @@ function LogIn({
 
     function runFirebaseRegister(values) {
         createUserWithEmailAndPassword(auth, values.username, values.password)
-            .then(userCredential => {
+            .then(() => {
                 setMessage(`歡迎加入`);
-                const user = userCredential.user;
-                console.log(user);
-                const uid = user.uid;
-                setUserId(uid);
                 setLoginStatus(1);
             })
             .catch(error => {
@@ -164,7 +156,6 @@ function LogIn({
         values,
     }) => (
         <FormStyled onSubmit={handleSubmit}>
-            {from}
             {loginData.map(e => (
                 <Field name={e.name} key={e.name}>
                     {({ input, meta }) => (

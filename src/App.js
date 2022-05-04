@@ -37,16 +37,20 @@ function RequireAuth({ children, loginStatus }) {
 function App() {
     const [loginStatus, setLoginStatus] = useState(2);
     const [message, setMessage] = useState("");
-    console.log(loginStatus);
-    const [userId, setUserId] = useState("");
     const auth = getAuth();
+    const RouteArray = [
+        ["/", <BulletinBoard />],
+        ["/overview", <Overview />],
+        ["/company", <Company />],
+        ["/bom", <Bom />],
+        ["/analysis", <Analysis />],
+        ["/quote", <Quote />],
+        ["/order", <Order />],
+    ];
 
     useEffect(() => {
         onAuthStateChanged(auth, user => {
             if (user) {
-                const uid = user.uid;
-                console.log(uid);
-                setUserId(uid);
                 setLoginStatus(1);
                 setMessage(`歡迎回來`);
             } else {
@@ -59,8 +63,6 @@ function App() {
         signOut(auth)
             .then(() => {
                 setMessage(`您已登出`);
-                setUserId("");
-                console.log(`here?`);
                 setLoginStatus(0);
             })
             .catch(error => {
@@ -98,7 +100,6 @@ function App() {
                             <LogIn
                                 loginStatus={loginStatus}
                                 setLoginStatus={setLoginStatus}
-                                setUserId={setUserId}
                                 signOut={runFirebaseSignOut}
                                 setMessage={setMessage}
                                 message={message}
@@ -107,62 +108,16 @@ function App() {
                         }
                     />
                     <Route element={<SideBar signOut={runFirebaseSignOut} />}>
-                        <Route
-                            path="/"
-                            element={
-                                <RequireAuth loginStatus={loginStatus}>
-                                    <BulletinBoard />
-                                </RequireAuth>
-                            }
-                        />
-                        <Route
-                            path="/overview"
-                            element={
-                                <RequireAuth loginStatus={loginStatus}>
-                                    <Overview />
-                                </RequireAuth>
-                            }
-                        />
-                        <Route
-                            path="/company"
-                            element={
-                                <RequireAuth loginStatus={loginStatus}>
-                                    <Company signOut={runFirebaseSignOut} />
-                                </RequireAuth>
-                            }
-                        />
-                        <Route
-                            path="/bom"
-                            element={
-                                <RequireAuth loginStatus={loginStatus}>
-                                    <Bom signOut={runFirebaseSignOut} />
-                                </RequireAuth>
-                            }
-                        />
-                        <Route
-                            path="/analysis"
-                            element={
-                                <RequireAuth loginStatus={loginStatus}>
-                                    <Analysis signOut={runFirebaseSignOut} />
-                                </RequireAuth>
-                            }
-                        />
-                        <Route
-                            path="/quote"
-                            element={
-                                <RequireAuth loginStatus={loginStatus}>
-                                    <Quote signOut={runFirebaseSignOut} />
-                                </RequireAuth>
-                            }
-                        />
-                        <Route
-                            path="/order"
-                            element={
-                                <RequireAuth loginStatus={loginStatus}>
-                                    <Order signOut={runFirebaseSignOut} />
-                                </RequireAuth>
-                            }
-                        />
+                        {RouteArray.map(e => (
+                            <Route
+                                path={e[0]}
+                                element={
+                                    <RequireAuth loginStatus={loginStatus}>
+                                        {e[1]}
+                                    </RequireAuth>
+                                }
+                            />
+                        ))}
                         <Route path="/*" element={<Navigate to="/" />} />
                     </Route>
                 </Routes>

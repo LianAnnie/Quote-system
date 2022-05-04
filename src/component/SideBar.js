@@ -126,8 +126,26 @@ const Flex = styled.div`
     display: flex;
 `;
 
+const Cover = styled.div`
+    height: 100vh;
+    width: 100vw;
+    background-color: #0000006b;
+    position: fixed;
+    z-index: 98;
+`;
+
 function SideBar({ signOut }) {
     const [showNavBar, setShowNavBar] = useState(false);
+
+    const linkArray = [
+        ["/", <CallToActionIcon />, "待辦通知"],
+        ["/overview", <PublicIcon />, "銷售概覽"],
+        ["/company", <BusinessIcon />, "客戶廠商"],
+        ["/bom", <CategoryIcon />, "產品零件"],
+        ["/quote", <RequestQuoteIcon />, "報價表單"],
+        ["/order", <HandshakeIcon />, "訂單資料"],
+        ["/analysis", <InsertChartIcon />, "成本分析"],
+    ];
 
     return (
         <>
@@ -145,83 +163,17 @@ function SideBar({ signOut }) {
                     </Title>
 
                     <HideMobile showNavBar={showNavBar}>
-                        <NavbarStyled>
-                            <NavLinkStyled
-                                style={{ textDecoration: "none" }}
-                                to="/"
-                            >
-                                <Black>
-                                    <CallToActionIcon />
-                                </Black>
-                                <Black>待辦通知</Black>
-                            </NavLinkStyled>
-                        </NavbarStyled>
-                        <NavbarStyled>
-                            <NavLinkStyled
-                                style={{ textDecoration: "none" }}
-                                to="/overview"
-                            >
-                                <Black>
-                                    <PublicIcon />
-                                </Black>
-                                <Black>銷售概覽</Black>
-                            </NavLinkStyled>
-                        </NavbarStyled>
-                        <NavbarStyled>
-                            <NavLinkStyled
-                                style={{ textDecoration: "none" }}
-                                to="/company"
-                            >
-                                <Black>
-                                    <BusinessIcon />
-                                </Black>
-                                <Black>客戶廠商</Black>
-                            </NavLinkStyled>
-                        </NavbarStyled>
-                        <NavbarStyled>
-                            <NavLinkStyled
-                                style={{ textDecoration: "none" }}
-                                to="/bom"
-                            >
-                                <Black>
-                                    <CategoryIcon />
-                                </Black>
-                                <Black>產品零件</Black>
-                            </NavLinkStyled>
-                        </NavbarStyled>
-                        <NavbarStyled>
-                            <NavLinkStyled
-                                style={{ textDecoration: "none" }}
-                                to="/quote"
-                            >
-                                <Black>
-                                    <RequestQuoteIcon />
-                                </Black>
-                                <Black>報價表單</Black>
-                            </NavLinkStyled>
-                        </NavbarStyled>
-                        <NavbarStyled>
-                            <NavLinkStyled
-                                style={{ textDecoration: "none" }}
-                                to="/order"
-                            >
-                                <Black>
-                                    <HandshakeIcon />
-                                </Black>
-                                <Black>訂單資料</Black>
-                            </NavLinkStyled>
-                        </NavbarStyled>
-                        <NavbarStyled>
-                            <NavLinkStyled
-                                style={{ textDecoration: "none" }}
-                                to="/analysis"
-                            >
-                                <Black>
-                                    <InsertChartIcon />
-                                </Black>
-                                <Black>成本分析</Black>
-                            </NavLinkStyled>
-                        </NavbarStyled>
+                        {linkArray.map(e => (
+                            <NavbarStyled>
+                                <NavLinkStyled
+                                    style={{ textDecoration: "none" }}
+                                    to={e[0]}
+                                >
+                                    <Black>{e[1]}</Black>
+                                    <Black>{e[2]}</Black>
+                                </NavLinkStyled>
+                            </NavbarStyled>
+                        ))}
                         <NavbarStyled>
                             <Flex>
                                 <Black>
@@ -234,6 +186,12 @@ function SideBar({ signOut }) {
                 </Header>
                 {showNavBar && <Close onClick={() => setShowNavBar(false)} />}
             </Orange>
+            {showNavBar ? (
+                <Cover
+                    showNavBar={showNavBar}
+                    onClick={() => setShowNavBar(false)}
+                />
+            ) : null}
             <Outlet />
         </>
     );
