@@ -1,4 +1,3 @@
-import SideBar from "./component/SideBar";
 import { Container, Main } from "./component/StyleComponent";
 import Structure from "./component/Structure";
 import { useState, useEffect } from "react";
@@ -27,7 +26,6 @@ function Order({ signOut }) {
 
     return (
         <Container>
-            <SideBar signOut={signOut} />
             <Main>
                 <Structure
                     parentCollectionName={parentCollectionName}

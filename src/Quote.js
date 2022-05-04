@@ -1,4 +1,3 @@
-import SideBar from "./component/SideBar";
 import { useState, useEffect } from "react";
 import {
     Container,
@@ -46,7 +45,6 @@ function Quote({ signOut }) {
 
     return (
         <Container>
-            <SideBar signOut={signOut} />
             <Main>
                 <LefttMargi5>
                     <Flex>

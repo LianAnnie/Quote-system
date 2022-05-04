@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import SideBar from "./component/SideBar";
 import Companies from "./component/Companies";
 import CompaniesList from "./component/CompaniesList";
 import api from "./utils/firebaseApi";
@@ -28,7 +27,6 @@ function Company({ signOut }) {
 
     return (
         <Container>
-            <SideBar signOut={signOut} />
             <Main>
                 <Companies
                     customerList={customerList}

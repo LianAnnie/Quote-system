@@ -11,7 +11,6 @@ import {
 } from "./component/StyleComponent";
 import { useState, useEffect } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import SideBar from "./component/SideBar";
 import { db } from "./utils/firebase";
 import { collection, query, onSnapshot } from "firebase/firestore";
 import form from "./utils/formChange";
@@ -177,7 +176,6 @@ function BulletinBoard({ signOut }) {
 
     return (
         <Container>
-            <SideBar signOut={signOut} />
             <Main>
                 <Card>
                     <Title>待辦通知</Title>

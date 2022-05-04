@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import SideBar from "./component/SideBar";
 import Product from "./component/Product";
 import Part from "./component/Part";
 import List from "./component/List";
@@ -37,7 +36,6 @@ function Bom({ signOut }) {
 
     return (
         <Container>
-            <SideBar signOut={signOut} />
             <Main>
                 <LefttMargi5>
                     <Flex>

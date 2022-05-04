@@ -8,6 +8,7 @@ import Bom from "./Bom";
 import Analysis from "./Analysis";
 import Quote from "./Quote";
 import Order from "./Order";
+import SideBar from "./component/SideBar";
 import {
     BrowserRouter as Router,
     Routes,
@@ -105,63 +106,65 @@ function App() {
                             />
                         }
                     />
-                    <Route
-                        path="/"
-                        element={
-                            <RequireAuth loginStatus={loginStatus}>
-                                <BulletinBoard signOut={runFirebaseSignOut} />
-                            </RequireAuth>
-                        }
-                    />
-                    <Route
-                        path="/overview"
-                        element={
-                            <RequireAuth loginStatus={loginStatus}>
-                                <Overview signOut={runFirebaseSignOut} />
-                            </RequireAuth>
-                        }
-                    />
-                    <Route
-                        path="/company"
-                        element={
-                            <RequireAuth loginStatus={loginStatus}>
-                                <Company signOut={runFirebaseSignOut} />
-                            </RequireAuth>
-                        }
-                    />
-                    <Route
-                        path="/bom"
-                        element={
-                            <RequireAuth loginStatus={loginStatus}>
-                                <Bom signOut={runFirebaseSignOut} />
-                            </RequireAuth>
-                        }
-                    />
-                    <Route
-                        path="/analysis"
-                        element={
-                            <RequireAuth loginStatus={loginStatus}>
-                                <Analysis signOut={runFirebaseSignOut} />
-                            </RequireAuth>
-                        }
-                    />
-                    <Route
-                        path="/quote"
-                        element={
-                            <RequireAuth loginStatus={loginStatus}>
-                                <Quote signOut={runFirebaseSignOut} />
-                            </RequireAuth>
-                        }
-                    />
-                    <Route
-                        path="/order"
-                        element={
-                            <RequireAuth loginStatus={loginStatus}>
-                                <Order signOut={runFirebaseSignOut} />
-                            </RequireAuth>
-                        }
-                    />
-                    <Route path="/*" element={<Navigate to="/" />} />
+                    <Route element={<SideBar signOut={runFirebaseSignOut} />}>
+                        <Route
+                            path="/"
+                            element={
+                                <RequireAuth loginStatus={loginStatus}>
+                                    <BulletinBoard />
+                                </RequireAuth>
+                            }
+                        />
+                        <Route
+                            path="/overview"
+                            element={
+                                <RequireAuth loginStatus={loginStatus}>
+                                    <Overview />
+                                </RequireAuth>
+                            }
+                        />
+                        <Route
+                            path="/company"
+                            element={
+                                <RequireAuth loginStatus={loginStatus}>
+                                    <Company signOut={runFirebaseSignOut} />
+                                </RequireAuth>
+                            }
+                        />
+                        <Route
+                            path="/bom"
+                            element={
+                                <RequireAuth loginStatus={loginStatus}>
+                                    <Bom signOut={runFirebaseSignOut} />
+                                </RequireAuth>
+                            }
+                        />
+                        <Route
+                            path="/analysis"
+                            element={
+                                <RequireAuth loginStatus={loginStatus}>
+                                    <Analysis signOut={runFirebaseSignOut} />
+                                </RequireAuth>
+                            }
+                        />
+                        <Route
+                            path="/quote"
+                            element={
+                                <RequireAuth loginStatus={loginStatus}>
+                                    <Quote signOut={runFirebaseSignOut} />
+                                </RequireAuth>
+                            }
+                        />
+                        <Route
+                            path="/order"
+                            element={
+                                <RequireAuth loginStatus={loginStatus}>
+                                    <Order signOut={runFirebaseSignOut} />
+                                </RequireAuth>
+                            }
+                        />
+                        <Route path="/*" element={<Navigate to="/" />} />
+                    </Route>
                 </Routes>
             </Router>
         </Container>

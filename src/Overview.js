@@ -6,7 +6,6 @@ import {
     Border,
 } from "./component/StyleComponent";
 import { useState, useEffect } from "react";
-import SideBar from "./component/SideBar";
 import data from "./utils/data";
 import api from "./utils/firebaseApi";
 import HighchartsReact from "highcharts-react-official";
@@ -91,7 +90,6 @@ function Overview({ signOut }) {
 
     return (
         <Container>
-            <SideBar signOut={signOut} />
             <Main>
                 <Section>
                     <Title>銷售概覽</Title>

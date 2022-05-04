@@ -1,4 +1,3 @@
-import SideBar from "./component/SideBar";
 import Structure2 from "./component/Structure2";
 import api from "./utils/firebaseApi";
 import { useState, useEffect } from "react";
@@ -27,7 +26,6 @@ function Analysis({ signOut }) {
 
     return (
         <Container>
-            <SideBar signOut={signOut} />
             <Main>
                 <Structure2
                     parentCollectionName={parentCollectionName}
