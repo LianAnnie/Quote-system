@@ -1,10 +1,5 @@
-import {
-    Container,
-    Main,
-    Section,
-    Title,
-    Border,
-} from "./component/StyleComponent";
+import { Container, Main, Section } from "./component/StyleComponent";
+import styled from "styled-components";
 import { useState, useEffect } from "react";
 import data from "./utils/data";
 import api from "./utils/firebaseApi";
@@ -12,7 +7,16 @@ import HighchartsReact from "highcharts-react-official";
 let Highcharts = require("highcharts/highmaps.js");
 let topojson = require("@highcharts/map-collection/custom/world.topo.json");
 
-function Overview({ signOut }) {
+const Border = styled.div`
+    margin: 12vh 0px;
+    border: solid 1px #000000;
+    border-radius: 10px;
+    background-color: #fff;
+    padding: 4vh 0px;
+    height: 50vh;
+`;
+
+function Overview() {
     const [mapData, setMapData] = useState([]);
 
     useEffect(() => {
@@ -92,7 +96,6 @@ function Overview({ signOut }) {
         <Container>
             <Main>
                 <Section>
-                    <Title>銷售概覽</Title>
                     <Border>
                         <HighchartsReact
                             highcharts={Highcharts}

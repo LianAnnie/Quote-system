@@ -3,7 +3,7 @@ import api from "./utils/firebaseApi";
 import { useState, useEffect } from "react";
 import { Container, Main } from "./component/StyleComponent";
 
-function Analysis({ signOut }) {
+function Analysis() {
     const [productList, setProductList] = useState([]);
     const [partList, setPartList] = useState([]);
     const [bomList, setBomList] = useState([]);

@@ -12,7 +12,7 @@ import {
     LefttMargi5,
 } from "./component/StyleComponent";
 
-function Bom({ signOut }) {
+function Bom() {
     const [page, setPage] = useState(0);
     const [productList, setProductList] = useState([]);
     const [partList, setPartList] = useState([]);

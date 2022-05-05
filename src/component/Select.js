@@ -1,28 +1,14 @@
-import { Question, LabelStyled, InputStyled } from "./StyleComponent";
+import {
+    SingleLine,
+    LabelStyled,
+    InputStyled,
+    SelectStyled,
+} from "./StyleComponent";
 
-function Select({ title, handleDataChange, data, name, optionArray }) {
+function Select({ title, handleDataChange, name, optionArray }) {
     return (
         <>
-            {/* <Question>
-                <div>{title}</div>
-                {optionArray.length > 1 ? (
-                    <select
-                        name={name}
-                        value={data[name]}
-                        onChange={e => handleDataChange(e)}
-                    >
-                        {data[name] === 0 && <option value={0}>請選擇</option>}
-                        {optionArray.map((e, index) => (
-                            <option key={index} value={e}>
-                                {e[1]}
-                            </option>
-                        ))}
-                    </select>
-                ) : (
-                    <div>{optionArray[0][1]}</div>
-                )}
-            </Question> */}
-            <Question>
+            <SingleLine>
                 <LabelStyled>{title}</LabelStyled>
                 {optionArray.length > 1 ? (
                     <>
@@ -32,18 +18,18 @@ function Select({ title, handleDataChange, data, name, optionArray }) {
                             name={name}
                             onChange={e => handleDataChange(e)}
                         />
-                        <datalist id={name}>
+                        <SelectStyled id={name}>
                             {optionArray.map((e, index) => (
                                 <option key={index} value={e}>
                                     {e[1] ? e[1] : e}
                                 </option>
                             ))}
-                        </datalist>
+                        </SelectStyled>
                     </>
                 ) : (
                     <div>{optionArray[0][1]}</div>
                 )}
-            </Question>
+            </SingleLine>
         </>
     );
 }

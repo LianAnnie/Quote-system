@@ -15,7 +15,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { Outlet } from "react-router-dom";
 
 const Orange = styled.div`
-    width: ${props => (props.showNavBar ? "300px" : "100vw")};
+    width: ${props => (props.showNavBar ? "250px" : "100vw")};
     height: ${props => (props.showNavBar ? "100vh" : "68px")};
     display: ${props => (props.showNavBar ? "flex" : "block")};
     padding: ${props => (props.showNavBar ? "100px 40px" : "16px 0px")};
@@ -85,8 +85,9 @@ const HideMobile = styled.nav`
     }
 `;
 const Logo = styled.img`
-    width: ${props => (props.showNavBar ? "60%" : "80px")};
+    width: ${props => (props.showNavBar ? "80%" : "80px")};
     padding: ${props => (props.showNavBar ? "20px" : "0px 20px")};
+    margin: ${props => (props.showNavBar ? "10px" : "0px 0px 0px 10px ")};
     @media ${device.desktop} {
         width: 80%;
     }
@@ -104,7 +105,7 @@ const Close = styled(CloseIcon)`
     display: flex;
     position: absolute;
     top: 27px;
-    left: 254px;
+    left: 200px;
     @media ${device.desktop} {
         display: none;
     }

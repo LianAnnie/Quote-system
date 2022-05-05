@@ -3,7 +3,7 @@ import Structure from "./component/Structure";
 import { useState, useEffect } from "react";
 import api from "./utils/firebaseApi";
 
-function Order({ signOut }) {
+function Order() {
     const [parentList, setParentList] = useState([]);
     const [childList, setChildList] = useState([]);
     const [assembleList, setAssembleList] = useState([]);

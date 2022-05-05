@@ -1,18 +1,27 @@
 import { useState, useEffect } from "react";
 import {
-    AddButton,
-    Title,
-    Section,
     Form,
-    Question,
+    SingleLine,
     LabelStyled,
     SelectStyled,
-    DivStyled,
+    DataStyled,
+    Submit,
+    AddButton,
 } from "./StyleComponent";
 import api from "../utils/firebaseApi";
 import form from "../utils/formChange";
 import data from "../utils/data";
 import Input from "./Input";
+import styled from "styled-components";
+
+const Section = styled.div`
+    padding: 20px 0px 20px 4%;
+`;
+
+const Title = styled.div`
+    margin-bottom: 20px;
+    font-size: 20px;
+`;
 
 function Companies({
     customerList,
@@ -31,7 +40,6 @@ function Companies({
         C: customerList,
         F: supplierList,
     };
-
     const [exportData, setExportData] = useState(comapnyRuleData);
 
     useEffect(() => {
@@ -109,7 +117,7 @@ function Companies({
         <Section>
             <Title>公司資料表</Title>
             <Form>
-                <Question>
+                <SingleLine>
                     <LabelStyled>供應類別</LabelStyled>
                     <SelectStyled
                         name="id0"
@@ -119,11 +127,11 @@ function Companies({
                         <option value="F">供應商</option>
                         <option value="C">客戶</option>
                     </SelectStyled>
-                </Question>
-                <Question>
+                </SingleLine>
+                <SingleLine>
                     <LabelStyled>公司編號</LabelStyled>
-                    <DivStyled>{exportData.id}</DivStyled>
-                </Question>
+                    <DataStyled>{exportData.id}</DataStyled>
+                </SingleLine>
                 {data.companies.inputComponentArray.map(e => (
                     <Input
                         key={e.name}
@@ -134,7 +142,7 @@ function Companies({
                         data={exportData}
                     />
                 ))}
-                <Question>
+                <SingleLine>
                     <LabelStyled>地區</LabelStyled>
                     <SelectStyled
                         name="country"
@@ -149,7 +157,7 @@ function Companies({
                             </option>
                         ))}
                     </SelectStyled>
-                </Question>
+                </SingleLine>
                 <AddButton onClick={() => submit()} />
             </Form>
         </Section>

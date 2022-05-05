@@ -1,8 +1,8 @@
-import { Question, LabelStyled, InputStyled } from "./StyleComponent";
+import { SingleLine, LabelStyled, InputStyled } from "./StyleComponent";
 
 function Input({ title, type, handleDataChange, data, name }) {
     return (
-        <Question>
+        <SingleLine>
             <LabelStyled>{title}</LabelStyled>
             <InputStyled
                 type={type}
@@ -12,7 +12,7 @@ function Input({ title, type, handleDataChange, data, name }) {
                 }}
                 value={data[name]}
             />
-        </Question>
+        </SingleLine>
     );
 }
 

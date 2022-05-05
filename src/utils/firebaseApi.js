@@ -152,7 +152,10 @@ const api = {
                     dependency: arrayUnion(data),
                 };
             }
+        } else {
+            newData = data;
         }
+        console.log(collectionName, docId, data);
         const docRef = doc(db, collectionName, docId);
         updateDoc(docRef, newData);
     },

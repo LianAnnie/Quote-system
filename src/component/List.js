@@ -5,14 +5,21 @@ import {
     Section,
     Title,
     Table,
-    Th,
+    Thead,
+    ThText,
+    ThButtonTitle,
+    SearchContainer,
+    TableSelectSearch,
+    TableInputSearch,
     Td,
+    TBody,
+    Tr,
     UpdatedTr,
     Flex,
     UpdatedButton,
     DeleteButton,
     SaveButton,
-    SelectInput,
+    InputStyled,
     CancelEditButton,
     CancelSelectedButton,
     ThTitle,
@@ -246,8 +253,8 @@ function List({ collectionName, list, setList }) {
             </Flex>
             <AddScrollbar>
                 <Table>
-                    <thead>
-                        <tr>
+                    <Thead>
+                        <Tr>
                             {data.listCollections[collectionName][1].map(
                                 (e, index) => (
                                     <ThTitle key={index} index={index}>
@@ -256,56 +263,63 @@ function List({ collectionName, list, setList }) {
                                 ),
                             )}
                             {data.listCollections.all.map((e, index) => (
-                                <Th key={index}>{e}</Th>
+                                <ThButtonTitle key={index}>{e}</ThButtonTitle>
                             ))}
-                        </tr>
-                        <tr>
+                        </Tr>
+                        <Tr>
                             {data.listCollections[collectionName][2].map(
                                 (keyName, indexForStyled) => (
-                                    <ThTitle
+                                    <ThText
                                         key={keyName}
                                         index={indexForStyled}
                                     >
-                                        <SelectInput
-                                            type="text"
-                                            name={keyName}
-                                            onChange={e =>
-                                                handleConditionChange(e)
-                                            }
-                                            value={filterCondition[keyName]}
-                                        />
-                                        <SelectStyled
-                                            id={keyName}
-                                            name={keyName}
-                                            onChange={e =>
-                                                handleConditionChange(e)
-                                            }
-                                            value={list[keyName]}
-                                        >
-                                            {list
-                                                .filter(
-                                                    (m, index, array) =>
-                                                        array
-                                                            .map(
-                                                                n => n[keyName],
-                                                            )
-                                                            .indexOf(
-                                                                m[keyName],
-                                                            ) === index,
-                                                )
-                                                .map((o, index) => (
-                                                    <option key={index}>
-                                                        {o[keyName]}
-                                                    </option>
-                                                ))}
-                                        </SelectStyled>
-                                    </ThTitle>
+                                        <SearchContainer>
+                                            <TableInputSearch
+                                                type="text"
+                                                name={keyName}
+                                                onChange={e =>
+                                                    handleConditionChange(e)
+                                                }
+                                                value={filterCondition[keyName]}
+                                            />
+                                            <TableSelectSearch
+                                                id={keyName}
+                                                name={keyName}
+                                                onChange={e =>
+                                                    handleConditionChange(e)
+                                                }
+                                                value={list[keyName]}
+                                            >
+                                                {list
+                                                    .filter(
+                                                        (m, index, array) =>
+                                                            array
+                                                                .map(
+                                                                    n =>
+                                                                        n[
+                                                                            keyName
+                                                                        ],
+                                                                )
+                                                                .indexOf(
+                                                                    m[keyName],
+                                                                ) === index,
+                                                    )
+                                                    .map((o, index) => (
+                                                        <option key={index}>
+                                                            {o[keyName]}
+                                                        </option>
+                                                    ))}
+                                            </TableSelectSearch>
+                                        </SearchContainer>
+                                    </ThText>
                                 ),
                             )}
-                        </tr>
-                    </thead>
+                            <th></th>
+                            <th></th>
+                        </Tr>
+                    </Thead>
 
-                    <tbody>
+                    <TBody>
                         {filterList &&
                             filterList.map((e, index) =>
                                 !revisedStatus[index] ? (
@@ -395,7 +409,7 @@ function List({ collectionName, list, setList }) {
                                     </UpdatedTr>
                                 ),
                             )}
-                    </tbody>
+                    </TBody>
                 </Table>
             </AddScrollbar>
         </Section>

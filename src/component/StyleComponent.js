@@ -29,98 +29,7 @@ export const device = {
     desktopL: `(min-width: ${size.desktopL})`,
 };
 
-const Container = styled.div`
-    text-align: left;
-    background-color: #fffae3;
-    min-height: 100vh;
-`;
-const Main = styled.div`
-    @media ${device.laptop} {
-        padding: 100px 0px;
-    }
-    @media ${device.desktopL} {
-        padding: 100px 10%;
-    }
-    @media ${device.desktop} {
-        margin-left: 300px;
-    }
-`;
-const Section = styled.div`
-    padding: 20px 5%;
-`;
-const Title = styled.div`
-    margin-bottom: 20px;
-    font-size: 20px;
-`;
-
-const AddScrollbar = styled.div`
-    border: solid 1px #000000;
-    border-radius: 10px;
-    background-color: #fff;
-    white-space: pre-wrap;
-    height: 250px;
-    overflow-x: scroll;
-    overflow-y: scroll;
-    scrollbar-width: none;
-    ::-webkit-scrollbar {
-        display: none;
-    }
-`;
-
-const Form = styled.div`
-    border: solid 1px #000000;
-    padding: 2%;
-    border-radius: 10px;
-    width: 100%;
-    background-color: #fff;
-`;
-
-const TableStyled = styled.table`
-    border: solid 1px #000000;
-    padding: 2%;
-    border-radius: 10px;
-    width: 100%;
-    background-color: #fff;
-`;
-
-const Table = styled.table`
-    background-color: #fff;
-    padding: 20px 5%;
-`;
-
-const Border = styled.div`
-    border: solid 1px #000000;
-    border-radius: 10px;
-    padding: 20px;
-    background-color: #fff;
-`;
-const Question = styled.div`
-    display: flex;
-    margin: 5px;
-`;
-const ThTitle = styled.th`
-    display: table-cell;
-`;
-const Th = styled.th`
-    width: 40px;
-`;
-const Td = styled.td`
-    width: 40px;
-    margin: 0px 10px;
-`;
-const UpdatedTr = styled.tr`
-    @media ${device.mobileS} {
-        flex-wrap: wrap;
-        display: flex;
-    }
-    width: 40px;
-    margin: 0px 10px;
-`;
-
-const TdContext = styled.td`
-    display: table-cell;
-`;
-
+/* -----------按鈕區-----------*/
 const Button = styled.div`
     border: solid 1px #000000;
     width: 100px;
@@ -131,12 +40,6 @@ const Button = styled.div`
     color: #fff;
     background-color: #513c2c;
     border-radius: 5px;
-    cursor: pointer;
-`;
-const AddButton = styled(AddCircleIcon)`
-    text-align: right;
-    color: #513c2c;
-    margin-left: 90%;
     cursor: pointer;
 `;
 const UpdatedButton = styled(DriveFileRenameOutlineIcon)`
@@ -170,7 +73,6 @@ const CancelEditButton = styled(EditOffIcon)`
     border-radius: 5px;
     cursor: pointer;
 `;
-
 const ExportButton = styled(FileDownloadIcon)`
     color: #fff;
     background-color: #513c2c;
@@ -192,7 +94,6 @@ const ExportButton = styled(FileDownloadIcon)`
         margin-left: 5%;
     }
 `;
-
 const RegisterButton = styled(PersonAddIcon)`
     color: #fff;
     background-color: #513c2c;
@@ -200,7 +101,6 @@ const RegisterButton = styled(PersonAddIcon)`
     margin: 20px;
     cursor: pointer;
 `;
-
 const ResetButton = styled(BorderClearIcon)`
     color: #fff;
     background-color: #513c2c;
@@ -208,7 +108,6 @@ const ResetButton = styled(BorderClearIcon)`
     margin: 20px;
     cursor: pointer;
 `;
-
 const LoginButton = styled(LoginIcon)`
     color: #fff;
     background-color: #513c2c;
@@ -216,7 +115,6 @@ const LoginButton = styled(LoginIcon)`
     margin: 20px;
     cursor: pointer;
 `;
-
 const LogoutButton = styled(LogoutIcon)`
     color: #fff;
     background-color: #513c2c;
@@ -224,30 +122,147 @@ const LogoutButton = styled(LogoutIcon)`
     margin: 20px;
     cursor: pointer;
 `;
-
-const LabelStyled = styled.label`
-    width: 150px;
+const AddButton = styled(AddCircleIcon)`
+    text-align: right;
+    color: #513c2c;
+    margin-left: 80%;
+    cursor: pointer;
+`; //companies
+/* -----------標題/Section共用區-----------*/
+const Section = styled.div`
+    padding: 20px 5%;
+`;
+const Title = styled.div`
+    margin-bottom: 20px;
+    font-size: 20px;
 `;
 
-const DivStyled = styled.div`
-    margin: 5px;
+/* -----------表單區-companies----------*/
+const Form = styled.div`
+    border: solid 1px #000000;
+    padding: 20px 5%;
+    border-radius: 10px;
+    width: 100%;
+    background-color: #fff;
+`;
+const SingleLine = styled.div`
+    display: flex;
+    margin: 15px 10px;
+    align-items: center;
+    justify-content: space-between;
+`;
+const LabelStyled = styled.div`
+    font-size: 16px;
+    width: 130px;
+`;
+const SelectStyled = styled.select`
+    font-size: 16px;
+    width: 120px;
+    border: 1px solid #bebebe;
+    border-radius: 5px;
+    height: 35px;
+    text-align: center;
+`;
+const InputStyled = styled.input`
+    font-size: 16px;
+    width: 120px;
+    border: 1px solid #bebebe;
+    border-radius: 5px;
+    height: 35px;
+    text-align: center;
+`;
+const DataStyled = styled.div`
+    margin-left: 50px;
+    width: 105px;
+`;
+const Submit = styled.div`
+    background-color: #513c2c;
+    width: 30px;
+    color: #fff;
+`;
+/* -----------列表區-----------*/
+const AddScrollbar = styled.div`
+    border: solid 1px #000000;
+    border-radius: 10px;
+    background-color: #fff;
+    white-space: pre-wrap;
+    height: 300px;
+    overflow-x: scroll;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    padding: 20px 5%;
+    ::-webkit-scrollbar {
+        display: none;
+    }
+`;
+
+const Table = styled.table`
+    table-layout: fixed;
+    border-collapse: collapse;
+`;
+
+const Thead = styled.thead`
+    background-color: #fff;
+    position: sticky;
+    z-index: 1;
+    top: 0;
+`;
+const Tr = styled.tr``;
+const ThTitle = styled.th`
+    padding-left: 10px;
+`;
+const ThButtonTitle = styled.th`
+    width: 50px;
+`;
+const SearchContainer = styled.div`
+    border: 1px solid #bebebe;
+    border-radius: 5px;
+    display: flex;
+`;
+const TableSelectSearch = styled.select`
+    font-size: 16px;
+    width: 120px;
+    border: none;
+    height: 35px;
+    text-align: left;
+`;
+const TableInputSearch = styled.input`
+    position: absolute;
+    font-size: 16px;
+    z-index: 2;
+    width: 100px;
+    border: 1px solid #bebebe;
+    border-radius: 5px;
+    height: 35px;
+    text-align: left;
+`;
+
+const TBody = styled.tbody``;
+const ThText = styled.th``;
+
+/* -----------總頁面-----------*/
+
+/* -----------外框區-----------*/
+
+/* -----------待整理-----------*/
+const Th = styled.th``;
+
+const Td = styled.td`
+    width: 40px;
+    margin: 0px 10px;
+`;
+const UpdatedTr = styled.tr`
+    @media ${device.mobileS} {
+        flex-wrap: wrap;
+        display: flex;
+    }
+    width: 40px;
+    margin: 0px 10px;
 `;
 
 const SelectInput = styled.input`
     width: 100px;
     margin: 5px 1px;
-    border-radius: 5px;
-`;
-
-const InputStyled = styled.input`
-    width: 100px;
-    margin: 5px;
-    border-radius: 5px;
-`;
-
-const SelectStyled = styled.select`
-    width: 100px;
-    margin: 10px 0px;
     border-radius: 5px;
 `;
 
@@ -264,22 +279,74 @@ const LefttMargi5 = styled.div`
     margin-left: 5%;
 `;
 
+const Container = styled.div`
+    text-align: left;
+    background-color: #fffae3;
+    min-height: 100vh;
+`;
+const Main = styled.div`
+    @media ${device.laptop} {
+        padding: 80px 0px 0px;
+    }
+    @media ${device.desktopL} {
+        padding: 80px 10% 0px;
+    }
+    @media ${device.desktop} {
+        margin-left: 300px;
+    }
+`;
+
+const TableStyled = styled.table`
+    border: solid 1px #000000;
+    padding: 2%;
+    border-radius: 10px;
+    width: 100%;
+    background-color: #fff;
+`;
+
+const Border = styled.div`
+    border: solid 1px #000000;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #fff;
+    height: calcu(100vh - 300px);
+`;
+const Question = styled.div`
+    display: flex;
+    margin: 5px;
+`;
+
+const TdContext = styled.td`
+    display: table-cell;
+`;
+
+const DivStyled = styled.div`
+    width: 160px;
+`;
+
 export {
+    SearchContainer,
+    TableSelectSearch,
+    TableInputSearch,
+    ThButtonTitle,
     Container,
     Main,
     Section,
     Title,
     Form,
     Table,
+    Thead,
     TableStyled,
     Border,
     Question,
     LabelStyled,
-    DivStyled,
     InputStyled,
     SelectStyled,
-    Th,
+    ThText,
+    Tr,
+    TBody,
     Td,
+    Th,
     UpdatedTr,
     Button,
     Flex,
@@ -300,4 +367,8 @@ export {
     SelectInput,
     UpdateInput,
     AddScrollbar,
+    SingleLine,
+    DataStyled,
+    DivStyled,
+    Submit,
 };

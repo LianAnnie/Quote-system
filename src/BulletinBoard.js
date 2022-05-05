@@ -66,7 +66,7 @@ const CardStyled = styled.div`
     color: white;
 `;
 
-function BulletinBoard({ signOut }) {
+function BulletinBoard() {
     const cardDataRule = {
         id: 0,
         date: "",
@@ -144,7 +144,7 @@ function BulletinBoard({ signOut }) {
     };
 
     function updateCard(card) {
-        api.updateDoc("boards", card.id, card);
+        api.updateDoc("boards", card.id, card, 0);
     }
 
     function handleCardChange(e) {

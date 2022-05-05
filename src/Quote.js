@@ -9,7 +9,7 @@ import {
 import Structure from "./component/Structure";
 import api from "./utils/firebaseApi";
 
-function Quote({ signOut }) {
+function Quote() {
     const [page, setPage] = useState(0);
     const [parentList, setParentList] = useState([]);
     const [childList, setChildList] = useState([]);
