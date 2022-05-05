@@ -4,12 +4,12 @@ import { useState, useEffect } from "react";
 import api from "../utils/firebaseApi";
 import form from "../utils/formChange";
 import {
-    Section,
+    Article,
     Title,
     Form,
-    Question,
+    SingleLine,
     LabelStyled,
-    DivStyled,
+    DataStyled,
     AddButton,
 } from "./StyleComponent";
 import data from "../utils/data";
@@ -84,13 +84,13 @@ function Product({ collectionName, list, setList }) {
     }
 
     return (
-        <Section>
+        <Article>
             <Title>產品資料表</Title>
             <Form>
-                <Question>
+                <SingleLine>
                     <LabelStyled>產品編號</LabelStyled>
-                    <DivStyled>{exportData.id}</DivStyled>
-                </Question>
+                    <DataStyled>{exportData.id}</DataStyled>
+                </SingleLine>
                 {data.product.selectComponentArray.map((e, index) => (
                     <Select
                         key={index}
@@ -111,7 +111,7 @@ function Product({ collectionName, list, setList }) {
                 />
                 <AddButton onClick={() => submit()} />
             </Form>
-        </Section>
+        </Article>
     );
 }
 

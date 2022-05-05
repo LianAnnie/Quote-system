@@ -164,8 +164,8 @@ function SideBar({ signOut }) {
                     </Title>
 
                     <HideMobile showNavBar={showNavBar}>
-                        {linkArray.map(e => (
-                            <NavbarStyled>
+                        {linkArray.map((e, index) => (
+                            <NavbarStyled key={index}>
                                 <NavLinkStyled
                                     style={{ textDecoration: "none" }}
                                     to={e[0]}

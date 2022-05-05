@@ -1,10 +1,5 @@
 import styled from "styled-components";
-import {
-    LoginButton,
-    RegisterButton,
-    LogoutButton,
-    ResetButton,
-} from "./component/StyleComponent";
+import { Button } from "./component/StyleComponent";
 import { Form, Field } from "react-final-form";
 import { useEffect } from "react";
 import {
@@ -23,29 +18,74 @@ const Container = styled.div`
     align-items: center;
 `;
 
-const Message = styled.div`
-    font-size: 5px;
-    text-align: right;
-    margin: 10px;
-    margin-right: 100px;
+const MainContainer = styled.div`
+    background-color: #fffae3;
+    justify-content: center;
+`;
+const MainHeader = styled.div`
+    background-color: #c4d6b0;
+    height: 72px;
+    width: 144px;
+    margin: auto;
+    border-top-right-radius: 71px;
+    border-top-left-radius: 71px;
+`;
+
+const LogoImg = styled.img`
+    height: 125px;
+    margin: 10px 9px;
+`;
+
+const MainBody = styled.div`
+    background-color: #c4d6b0;
+    width: 360px;
+    height: 600px;
+    padding-top: 120px;
+    border-radius: 40px;
 `;
 
 const FormStyled = styled.form`
-    background-color: #f1d9a7;
+    margin: auto;
+    background-color: #c4d6b0;
     border-radius: 20px;
-    width: 500px;
-    height: 300px;
-    padding: 40px;
-    padding-left: 70px;
+    width: 300px;
+    height: 220px;
     font-size: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    letter-spacing: 10px;
 `;
-
 const LabelStyled = styled.label`
+    height: 40px;
     margin: 15px;
 `;
 
 const InputStyled = styled.input`
-    height: 30px;
+    margin-top: 5px;
+    width: 100%;
+    height: 52px;
+    border-radius: 10px;
+    border: 1px solid #c4d6b0;
+    text-align: center;
+    letter-spacing: 1px;
+`;
+
+const LogInAndRegisterButton = styled(Button)`
+    margin: 10px;
+    width: 130px;
+    height: 55px;
+    margin: 30px;
+    padding: 8px;
+`;
+
+const Message = styled.div`
+    font-size: 5px;
+    text-align: right;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    letter-spacing: 0;
 `;
 
 const Status = styled.div`
@@ -56,14 +96,14 @@ const Status = styled.div`
 const loginData = [
     {
         name: "username",
-        labelTitle: "UserName",
+        labelTitle: "帳號",
         type: "text",
         placeholder: "Username",
         accountInformation: "123@456.com",
     },
     {
         name: "password",
-        labelTitle: "Password",
+        labelTitle: "密碼",
         type: "password",
         placeholder: "Password",
         accountInformation: "123456",
@@ -177,26 +217,20 @@ function LogIn({
                 </Field>
             ))}
             <div className="buttons">
-                <LoginButton
+                <LogInAndRegisterButton
                     type="submit"
                     disabled={submitting}
                     onClick={() => runFirebaseLogin(values)}
-                />
-                <RegisterButton
+                >
+                    登入
+                </LogInAndRegisterButton>
+                <LogInAndRegisterButton
                     type="submit"
                     disabled={submitting}
                     onClick={() => runFirebaseRegister(values)}
-                />
-                <LogoutButton
-                    type="button"
-                    disabled={submitting}
-                    onClick={() => signOut()}
-                />
-                <ResetButton
-                    type="button"
-                    onClick={form.reset}
-                    disabled={submitting || pristine}
-                />
+                >
+                    註冊
+                </LogInAndRegisterButton>
             </div>
             <Status>{message}</Status>
         </FormStyled>
@@ -204,11 +238,18 @@ function LogIn({
 
     return (
         <Container>
-            <Form
-                onSubmit={runFirebaseLogin}
-                validate={errorMassage}
-                render={FormRender}
-            />
+            <MainContainer>
+                <MainHeader>
+                    <LogoImg src={require("./images/log.png")} alt="logo" />
+                </MainHeader>
+                <MainBody>
+                    <Form
+                        onSubmit={runFirebaseLogin}
+                        validate={errorMassage}
+                        render={FormRender}
+                    />
+                </MainBody>
+            </MainContainer>
         </Container>
     );
 }

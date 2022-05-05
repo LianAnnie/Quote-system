@@ -2,12 +2,7 @@ import { useState, useEffect } from "react";
 import Companies from "./component/Companies";
 import CompaniesList from "./component/CompaniesList";
 import api from "./utils/firebaseApi";
-import { Container, Main } from "./component/StyleComponent";
-import styled from "styled-components";
-
-const Scetion = styled.div`
-    display: flex;
-`;
+import { Container, Main, Flex } from "./component/StyleComponent";
 
 function Company() {
     const [customerList, setCustomerList] = useState([]);
@@ -33,7 +28,7 @@ function Company() {
     return (
         <Container>
             <Main>
-                <Scetion>
+                <Flex>
                     <Companies
                         customerList={customerList}
                         setCustomerList={setCustomerList}
@@ -46,7 +41,7 @@ function Company() {
                         supplierList={supplierList}
                         setSupplierList={setSupplierList}
                     />
-                </Scetion>
+                </Flex>
             </Main>
         </Container>
     );

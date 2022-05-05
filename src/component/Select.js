@@ -2,7 +2,7 @@ import {
     SingleLine,
     LabelStyled,
     InputStyled,
-    SelectStyled,
+    DataListStyled,
 } from "./StyleComponent";
 
 function Select({ title, handleDataChange, name, optionArray }) {
@@ -18,13 +18,13 @@ function Select({ title, handleDataChange, name, optionArray }) {
                             name={name}
                             onChange={e => handleDataChange(e)}
                         />
-                        <SelectStyled id={name}>
+                        <DataListStyled id={name}>
                             {optionArray.map((e, index) => (
                                 <option key={index} value={e}>
                                     {e[1] ? e[1] : e}
                                 </option>
                             ))}
-                        </SelectStyled>
+                        </DataListStyled>
                     </>
                 ) : (
                     <div>{optionArray[0][1]}</div>

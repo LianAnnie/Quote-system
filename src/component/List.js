@@ -21,18 +21,16 @@ import {
     UpdatedButton,
     DeleteButton,
     SaveButton,
-    InputStyled,
     CancelEditButton,
     CancelSelectedButton,
     ThTitle,
-    TdContext,
-    SelectStyled,
     UpdateInput,
     AddScrollbar,
 } from "./StyleComponent";
 import data from "../utils/data";
 
-function List({ collectionName, list, setList }) {
+function List({ collectionName, list, setList, columnQty }) {
+    console.log(columnQty);
     const filterConditionRule = {};
     const [filterList, setFilterList] = useState([]);
     const [filterCondition, setFilterCondition] = useState(filterConditionRule);
@@ -253,7 +251,7 @@ function List({ collectionName, list, setList }) {
                     }}
                 />
             </Flex>
-            <AddScrollbar>
+            <AddScrollbar columnQty={columnQty}>
                 <Table>
                     <Thead>
                         <Tr>
@@ -276,6 +274,8 @@ function List({ collectionName, list, setList }) {
                                         index={indexForStyled}
                                     >
                                         <TableInputSearch
+                                            index={indexForStyled}
+                                            columnQty={columnQty}
                                             type="text"
                                             name={keyName}
                                             onChange={e =>
@@ -284,6 +284,8 @@ function List({ collectionName, list, setList }) {
                                             value={filterCondition[keyName]}
                                         />
                                         <TableSelectSearch
+                                            index={indexForStyled}
+                                            columnQty={columnQty}
                                             id={keyName}
                                             name={keyName}
                                             onChange={e =>

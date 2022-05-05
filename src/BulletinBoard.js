@@ -152,8 +152,9 @@ function BulletinBoard() {
         setCard(data);
     }
     async function addCard() {
-        api.setDocWithId("boards", undefined, card);
-        setCard(cardDataRule);
+        api.setDocWithId("boards", undefined, card).then(() => {
+            setCard(cardDataRule);
+        });
     }
 
     useEffect(() => {

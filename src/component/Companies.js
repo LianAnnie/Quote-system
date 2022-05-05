@@ -5,23 +5,14 @@ import {
     LabelStyled,
     SelectStyled,
     DataStyled,
-    Submit,
     AddButton,
+    Title,
+    Article,
 } from "./StyleComponent";
 import api from "../utils/firebaseApi";
 import form from "../utils/formChange";
 import data from "../utils/data";
 import Input from "./Input";
-import styled from "styled-components";
-
-const Section = styled.div`
-    padding: 20px 0px 20px 4%;
-`;
-
-const Title = styled.div`
-    margin-bottom: 20px;
-    font-size: 20px;
-`;
 
 function Companies({
     customerList,
@@ -114,7 +105,7 @@ function Companies({
     }
 
     return (
-        <Section>
+        <Article>
             <Title>公司資料表</Title>
             <Form>
                 <SingleLine>
@@ -160,7 +151,7 @@ function Companies({
                 </SingleLine>
                 <AddButton onClick={() => submit()} />
             </Form>
-        </Section>
+        </Article>
     );
 }
 

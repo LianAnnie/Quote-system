@@ -4,16 +4,17 @@ import { useState, useEffect } from "react";
 import api from "../utils/firebaseApi";
 import form from "../utils/formChange";
 import {
-    Section,
-    Title,
     Form,
-    Question,
-    Button,
+    SingleLine,
+    LabelStyled,
+    DataStyled,
     AddButton,
+    Title,
+    Article,
 } from "./StyleComponent";
 import data from "../utils/data";
 
-function Part({ collectionName, list, setList }) {
+function Part({ collectionName, list, setList, columnQty }) {
     const ruleData = {
         id: ["S", "A", 0, 0, 0, 0, 0],
         class: ["A", "半成品"],
@@ -91,23 +92,30 @@ function Part({ collectionName, list, setList }) {
     }
 
     return (
-        <Section>
+        <Article>
             <Title>零件資料表</Title>
-            <Form>
-                <Question>
-                    <div>零件編號</div>
-                    <div>{exportData.id}</div>
-                </Question>
-                {data.part.selectComponentArray.map((e, index) => (
-                    <Select
-                        key={index}
-                        title={e.title}
-                        handleDataChange={handleExportDataChange}
-                        data={exportData}
-                        name={e.name}
-                        optionArray={e.optionArray}
-                    />
-                ))}
+            <Form columnQty={columnQty}>
+                <SingleLine>
+                    <LabelStyled>零件編號</LabelStyled>
+                    <DataStyled>{exportData.id}</DataStyled>
+                </SingleLine>
+                <SingleLine>
+                    <LabelStyled>項目</LabelStyled>
+                    <DataStyled>半成品</DataStyled>
+                </SingleLine>
+                {data.part.selectComponentArray.map(
+                    (e, index) =>
+                        index !== 0 && (
+                            <Select
+                                key={index}
+                                title={e.title}
+                                handleDataChange={handleExportDataChange}
+                                data={exportData}
+                                name={e.name}
+                                optionArray={e.optionArray}
+                            />
+                        ),
+                )}
                 {exportData.id && exportData.id[2] === "A"
                     ? data.part.A.map((e, index) => (
                           <Select
@@ -151,7 +159,7 @@ function Part({ collectionName, list, setList }) {
                 />
                 <AddButton onClick={() => submit()} />
             </Form>
-        </Section>
+        </Article>
     );
 }
 

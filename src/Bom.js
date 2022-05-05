@@ -46,32 +46,35 @@ function Bom() {
                 </LefttMargi5>
 
                 {page === 0 ? (
-                    <>
+                    <Flex>
                         <Product
                             collectionName={parentCollectionName}
                             list={productList}
                             setList={setProductList}
                         />
                         <List
+                            columnQty={8}
                             collectionName={parentCollectionName}
                             list={productList}
                             setList={setProductList}
                         />
-                    </>
+                    </Flex>
                 ) : page === 1 ? (
-                    <>
+                    <Flex>
                         <Part
+                            columnQty={7}
                             collectionName={childCollectionName}
                             list={partList}
                             setList={setPartList}
                         />
 
                         <List
+                            columnQty={7}
                             collectionName={childCollectionName}
                             list={partList}
                             setList={setPartList}
                         />
-                    </>
+                    </Flex>
                 ) : (
                     <Structure
                         parentCollectionName={parentCollectionName}

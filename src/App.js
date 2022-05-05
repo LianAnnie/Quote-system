@@ -108,8 +108,9 @@ function App() {
                         }
                     />
                     <Route element={<SideBar signOut={runFirebaseSignOut} />}>
-                        {RouteArray.map(e => (
+                        {RouteArray.map((e, index) => (
                             <Route
+                                key={index}
                                 path={e[0]}
                                 element={
                                     <RequireAuth loginStatus={loginStatus}>
