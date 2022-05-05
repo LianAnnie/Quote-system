@@ -2,13 +2,15 @@ import { useEffect, useState } from "react";
 import api from "../utils/firebaseApi";
 import form from "../utils/formChange";
 import {
+    TBodyTdContext,
+    TBodyTdButton,
+    TBodyTr,
     Section,
     Title,
     Table,
     Thead,
     ThText,
     ThButtonTitle,
-    SearchContainer,
     TableSelectSearch,
     TableInputSearch,
     Td,
@@ -273,44 +275,39 @@ function List({ collectionName, list, setList }) {
                                         key={keyName}
                                         index={indexForStyled}
                                     >
-                                        <SearchContainer>
-                                            <TableInputSearch
-                                                type="text"
-                                                name={keyName}
-                                                onChange={e =>
-                                                    handleConditionChange(e)
-                                                }
-                                                value={filterCondition[keyName]}
-                                            />
-                                            <TableSelectSearch
-                                                id={keyName}
-                                                name={keyName}
-                                                onChange={e =>
-                                                    handleConditionChange(e)
-                                                }
-                                                value={list[keyName]}
-                                            >
-                                                {list
-                                                    .filter(
-                                                        (m, index, array) =>
-                                                            array
-                                                                .map(
-                                                                    n =>
-                                                                        n[
-                                                                            keyName
-                                                                        ],
-                                                                )
-                                                                .indexOf(
-                                                                    m[keyName],
-                                                                ) === index,
-                                                    )
-                                                    .map((o, index) => (
-                                                        <option key={index}>
-                                                            {o[keyName]}
-                                                        </option>
-                                                    ))}
-                                            </TableSelectSearch>
-                                        </SearchContainer>
+                                        <TableInputSearch
+                                            type="text"
+                                            name={keyName}
+                                            onChange={e =>
+                                                handleConditionChange(e)
+                                            }
+                                            value={filterCondition[keyName]}
+                                        />
+                                        <TableSelectSearch
+                                            id={keyName}
+                                            name={keyName}
+                                            onChange={e =>
+                                                handleConditionChange(e)
+                                            }
+                                            value={list[keyName]}
+                                        >
+                                            {list
+                                                .filter(
+                                                    (m, index, array) =>
+                                                        array
+                                                            .map(
+                                                                n => n[keyName],
+                                                            )
+                                                            .indexOf(
+                                                                m[keyName],
+                                                            ) === index,
+                                                )
+                                                .map((o, index) => (
+                                                    <option key={index}>
+                                                        {o[keyName]}
+                                                    </option>
+                                                ))}
+                                        </TableSelectSearch>
                                     </ThText>
                                 ),
                             )}
@@ -323,25 +320,25 @@ function List({ collectionName, list, setList }) {
                         {filterList &&
                             filterList.map((e, index) =>
                                 !revisedStatus[index] ? (
-                                    <tr key={index}>
+                                    <TBodyTr key={index}>
                                         {data.listCollections[
                                             collectionName
                                         ][2].map((keyName, indexForStyled) => (
-                                            <TdContext
+                                            <TBodyTdContext
                                                 key={keyName}
                                                 index={indexForStyled}
                                             >
                                                 {e[keyName]}
-                                            </TdContext>
+                                            </TBodyTdContext>
                                         ))}
-                                        <Td>
+                                        <TBodyTdButton>
                                             <UpdatedButton
                                                 onClick={() =>
                                                     handleRevisedStatus(index)
                                                 }
                                             />
-                                        </Td>
-                                        <Td>
+                                        </TBodyTdButton>
+                                        <TBodyTdButton>
                                             {e.dependency &&
                                             e.dependency.length !== 0 ? (
                                                 ""
@@ -352,8 +349,8 @@ function List({ collectionName, list, setList }) {
                                                     }
                                                 />
                                             )}
-                                        </Td>
-                                    </tr>
+                                        </TBodyTdButton>
+                                    </TBodyTr>
                                 ) : (
                                     <UpdatedTr key={e.id}>
                                         {data.listCollections[

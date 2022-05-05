@@ -44,15 +44,21 @@ const Button = styled.div`
 `;
 const UpdatedButton = styled(DriveFileRenameOutlineIcon)`
     color: #fff;
-    background-color: #513c2c;
     border-radius: 5px;
     cursor: pointer;
+    background-color: #c4d6b0;
+    :hover {
+        background-color: #513c2c;
+    }
 `;
 const DeleteButton = styled(ClearIcon)`
     color: #fff;
-    background-color: #513c2c;
     border-radius: 5px;
     cursor: pointer;
+    background-color: #c4d6b0;
+    :hover {
+        background-color: #513c2c;
+    }
 `;
 const CancelSelectedButton = styled(DeselectIcon)`
     color: #fff;
@@ -124,9 +130,12 @@ const LogoutButton = styled(LogoutIcon)`
 `;
 const AddButton = styled(AddCircleIcon)`
     text-align: right;
-    color: #513c2c;
     margin-left: 80%;
     cursor: pointer;
+    color: #c4d6b0;
+    :hover {
+        color: #513c2c;
+    }
 `; //companies
 /* -----------標題/Section共用區-----------*/
 const Section = styled.div`
@@ -160,7 +169,7 @@ const SelectStyled = styled.select`
     width: 120px;
     border: 1px solid #bebebe;
     border-radius: 5px;
-    height: 35px;
+    height: 40px;
     text-align: center;
 `;
 const InputStyled = styled.input`
@@ -168,12 +177,13 @@ const InputStyled = styled.input`
     width: 120px;
     border: 1px solid #bebebe;
     border-radius: 5px;
-    height: 35px;
+    height: 40px;
     text-align: center;
 `;
 const DataStyled = styled.div`
-    margin-left: 50px;
-    width: 105px;
+    width: 120px;
+    text-align: center;
+    margin: 12px;
 `;
 const Submit = styled.div`
     background-color: #513c2c;
@@ -186,7 +196,7 @@ const AddScrollbar = styled.div`
     border-radius: 10px;
     background-color: #fff;
     white-space: pre-wrap;
-    height: 300px;
+    height: 361px;
     overflow-x: scroll;
     overflow-y: scroll;
     scrollbar-width: none;
@@ -197,7 +207,6 @@ const AddScrollbar = styled.div`
 `;
 
 const Table = styled.table`
-    table-layout: fixed;
     border-collapse: collapse;
 `;
 
@@ -207,21 +216,20 @@ const Thead = styled.thead`
     z-index: 1;
     top: 0;
 `;
-const Tr = styled.tr``;
+const Tr = styled.tr`
+    height: 50px;
+`;
 const ThTitle = styled.th`
     padding-left: 10px;
+    height: 50px;
 `;
 const ThButtonTitle = styled.th`
     width: 50px;
 `;
-const SearchContainer = styled.div`
-    border: 1px solid #bebebe;
-    border-radius: 5px;
-    display: flex;
-`;
 const TableSelectSearch = styled.select`
     font-size: 16px;
-    width: 120px;
+    width: 160px;
+    margin-right: 10px;
     border: none;
     height: 35px;
     text-align: left;
@@ -230,14 +238,28 @@ const TableInputSearch = styled.input`
     position: absolute;
     font-size: 16px;
     z-index: 2;
-    width: 100px;
+    width: 140px;
     border: 1px solid #bebebe;
     border-radius: 5px;
     height: 35px;
     text-align: left;
+    padding-left: 10px;
 `;
 
 const TBody = styled.tbody``;
+const TBodyTr = styled.tr`
+    border-bottom: 1px solid #bebebe;
+    :hover {
+        background-color: #f1d9a754;
+    }
+`;
+const TBodyTdContext = styled.td`
+    padding: 20px 0px 5px 10px;
+`;
+const TBodyTdButton = styled.td`
+    width: 40px;
+`;
+
 const ThText = styled.th``;
 
 /* -----------總頁面-----------*/
@@ -245,12 +267,16 @@ const ThText = styled.th``;
 /* -----------外框區-----------*/
 
 /* -----------待整理-----------*/
+const TdContext = styled.td`
+    padding-left: 10px;
+`;
 const Th = styled.th``;
-
 const Td = styled.td`
     width: 40px;
     margin: 0px 10px;
+    padding: 5px 0px;
 `;
+
 const UpdatedTr = styled.tr`
     @media ${device.mobileS} {
         flex-wrap: wrap;
@@ -316,16 +342,14 @@ const Question = styled.div`
     margin: 5px;
 `;
 
-const TdContext = styled.td`
-    display: table-cell;
-`;
-
 const DivStyled = styled.div`
     width: 160px;
 `;
 
 export {
-    SearchContainer,
+    TBodyTdContext,
+    TBodyTdButton,
+    TBodyTr,
     TableSelectSearch,
     TableInputSearch,
     ThButtonTitle,
