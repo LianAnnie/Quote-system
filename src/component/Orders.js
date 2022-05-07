@@ -1,14 +1,15 @@
 import Input from "./Input";
 import Select from "./Select";
-import { Section, Form } from "./StyleComponent";
+import { Article, Form } from "./StyleComponent";
 import data from "../utils/data";
 
-function Orders({ handleDataChange, processingData }) {
+function Orders({ handleDataChange, processingData, mode }) {
     return (
-        <Section>
-            <Form>
+        <Article>
+            <Form mode={mode}>
                 {data.order.inputComponentArray.map(e => (
                     <Input
+                        width={170}
                         key={e.title}
                         title={e.title}
                         type={e.type}
@@ -24,7 +25,7 @@ function Orders({ handleDataChange, processingData }) {
                     optionArray={data.currencyList}
                 />
             </Form>
-        </Section>
+        </Article>
     );
 }
 

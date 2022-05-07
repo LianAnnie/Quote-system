@@ -3,6 +3,14 @@ import AssembleData2 from "./AssembleData2";
 import ListWithRadio2 from "./ListWithRadio2";
 import AnalysisForm from "./AnalysisForm";
 import Drawing from "./Drawing";
+import {
+    AnalysisDataContainer,
+    AnalysisDataForm,
+    NextButton,
+    BackButton,
+    AnalysisDrawingContainer,
+    Flex,
+} from "./StyleComponent";
 import { useState, useEffect } from "react";
 import data from "../utils/data";
 import ExportExcel from "./ExportExcel";
@@ -25,6 +33,19 @@ function Structure2({
     const [filterChildList, setFilterChildList] = useState([]);
     const [pieData, setPieData] = useState([]);
     const [margin, setMargin] = useState(0);
+    const [page, setPage] = useState(4);
+
+    function pageChange(value) {
+        console.log(value);
+        if (value === 0) {
+            setPage(0);
+            return;
+        }
+        if (page + value < 6 && page + value > 3) {
+            setPage(prev => prev + value);
+            return;
+        }
+    }
 
     // console.log(parentList);
     useEffect(() => {
@@ -240,35 +261,50 @@ function Structure2({
         }
     }
 
-    console.log(processingData.parentData);
-
     return (
         <>
-            <AnalysisForm
-                handleDataChange={handleProcessingDataChange}
-                processingData={processingData}
-                setProcessingData={setProcessingData}
-            />
-            <ListWithRadio2
-                collectionName={parentCollectionName}
-                list={parentList}
-                setProcessingData={setParentData}
-                processingData={parentData}
-            />
-            <ListWithCheckBox2
-                collectionName={childCollectionName}
-                list={filterChildList}
-                setProcessingData={setChildData}
-                processingData={childData}
-            />
-            <AssembleData2
-                collectionName={assembleCollectionName}
-                processingData={processingData}
-                setProcessingData={setProcessingData}
-            />
-            <Drawing profitMargin={margin} pieData={pieData} />
+            <AnalysisDataContainer>
+                <AnalysisDataForm>
+                    <Flex>
+                        <AnalysisForm
+                            handleDataChange={handleProcessingDataChange}
+                            processingData={processingData}
+                            setProcessingData={setProcessingData}
+                        />
+                        {page === 4 ? (
+                            <ListWithRadio2
+                                collectionName={parentCollectionName}
+                                list={parentList}
+                                setProcessingData={setParentData}
+                                processingData={parentData}
+                            />
+                        ) : null}
+                        {page === 5 ? (
+                            <ListWithCheckBox2
+                                collectionName={childCollectionName}
+                                list={filterChildList}
+                                setProcessingData={setChildData}
+                                processingData={childData}
+                            />
+                        ) : null}
+                        <NextButton page={page} onClick={() => pageChange(1)} />
+                        <BackButton
+                            page={page}
+                            onClick={() => pageChange(-1)}
+                        />
+                    </Flex>
+                </AnalysisDataForm>
+                <AnalysisDrawingContainer>
+                    <AssembleData2
+                        collectionName={assembleCollectionName}
+                        processingData={processingData}
+                        setProcessingData={setProcessingData}
+                    />
+                    <Drawing profitMargin={margin} pieData={pieData} />
 
-            <ExportExcel data={processingData} />
+                    <ExportExcel data={processingData} />
+                </AnalysisDrawingContainer>
+            </AnalysisDataContainer>
         </>
     );
 }

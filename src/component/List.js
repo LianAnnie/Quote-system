@@ -29,8 +29,7 @@ import {
 } from "./StyleComponent";
 import data from "../utils/data";
 
-function List({ collectionName, list, setList, columnQty }) {
-    console.log(columnQty);
+function List({ collectionName, list, setList }) {
     const filterConditionRule = {};
     const [filterList, setFilterList] = useState([]);
     const [filterCondition, setFilterCondition] = useState(filterConditionRule);
@@ -251,7 +250,9 @@ function List({ collectionName, list, setList, columnQty }) {
                     }}
                 />
             </Flex>
-            <AddScrollbar columnQty={columnQty}>
+            <AddScrollbar
+                columnQty={data.listCollections[collectionName][1].length}
+            >
                 <Table>
                     <Thead>
                         <Tr>
@@ -275,7 +276,11 @@ function List({ collectionName, list, setList, columnQty }) {
                                     >
                                         <TableInputSearch
                                             index={indexForStyled}
-                                            columnQty={columnQty}
+                                            columnQty={
+                                                data.listCollections[
+                                                    collectionName
+                                                ][1].length
+                                            }
                                             type="text"
                                             name={keyName}
                                             onChange={e =>
@@ -285,7 +290,11 @@ function List({ collectionName, list, setList, columnQty }) {
                                         />
                                         <TableSelectSearch
                                             index={indexForStyled}
-                                            columnQty={columnQty}
+                                            columnQty={
+                                                data.listCollections[
+                                                    collectionName
+                                                ][1].length
+                                            }
                                             id={keyName}
                                             name={keyName}
                                             onChange={e =>

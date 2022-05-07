@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
+import AddIcon from "@mui/icons-material/Add";
 import UpgradeIcon from "@mui/icons-material/Upgrade";
 import ClearIcon from "@mui/icons-material/Clear";
 import DeselectIcon from "@mui/icons-material/Deselect";
@@ -10,6 +10,10 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import BorderClearIcon from "@mui/icons-material/BorderClear";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import CloseIcon from "@mui/icons-material/Close";
+import FiberNewIcon from "@mui/icons-material/FiberNew";
 
 const size = {
     mobile: "320px",
@@ -135,29 +139,132 @@ const LogoutButton = styled(LogoutIcon)`
     margin: 20px;
     cursor: pointer;
 `;
-const AddButton = styled(AddCircleIcon)`
+const AddButton = styled(AddIcon)`
     text-align: right;
     margin-left: 80%;
     cursor: pointer;
+    color: #fff;
     margin-top: auto;
-    color: #c4d6b0;
+    border-radius: 5px;
+    position: ${props => (props.fix === "fix" ? "fixed" : "static")};
+    top: 380px;
+    right: 17.2%;
+    background-color: #c4d6b0;
+    z-index: 11;
+    :hover {
+        background-color: #513c2c;
+    }
+    .css-i4bv87-MuiSvgIcon-root {
+        width: 24px;
+        height: 24px;
+    }
+`; //companies
+const NextButton = styled(ArrowForwardIosIcon)`
+    color: #fffae3;
+    height: 10px;
+    border-radius: 5px;
+    margin: 0px 20px;
+    cursor: pointer;
+    position: fixed;
+    background-color: #c4d6b0;
+    z-index: 11;
+    top: 380px;
+    right: ${props => (props.page === 2 ? "42%" : "20%")};
+    :hover {
+        background-color: #513c2c;
+    }
+`;
+const BackButton = styled(ArrowBackIosNewIcon)`
+    color: #fffae3;
+    border-radius: 5px;
+    margin: 0px 20px;
+    cursor: pointer;
+    position: fixed;
+    z-index: 11;
+    top: 380px;
+    right: ${props => (props.page === 2 ? "45%" : "23%")};
+    background-color: #c4d6b0;
+    :hover {
+        background-color: #513c2c;
+    }
+`;
+const CloseButton = styled(CloseIcon)`
+    color: #fffae3;
+    border-radius: 5px;
+    margin: 0px 20px;
+    cursor: pointer;
+    position: fixed;
+    z-index: 11;
+    top: 380px;
+    right: ${props => (props.page === 2 ? "38%" : "10.5%")};
+    background-color: #c4d6b0;
+    :hover {
+        background-color: #513c2c;
+    }
+`;
+
+const CreatNewData = styled(FiberNewIcon)`
+    border-radius: 5px;
+    margin: 0px 20px;
+    cursor: pointer;
+    position: fixed;
+    top: 100px;
+    right: 10%;
+    color: ${props => (props.page !== 0 ? "#513c2c" : "#c4d6b0")};
     :hover {
         color: #513c2c;
     }
-`; //companies
-/* -----------表單/列表共用區-----------*/
+`;
 
+/* -----------表單/列表共用區-----------*/
 const Title = styled.div`
-    margin-bottom: 20px;
+    margin-bottom: ${props => (props.mode === "bom" ? "0px" : "20px;")};
     margin-left: 10px;
     font-size: 20px;
 `;
-
 const Article = styled.div`
     padding: 20px 0px 20px 4%;
     width: 23vw;
 `;
-
+const NewDataContainer = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: center;
+`;
+const NewDataForm = styled.div`
+    position: fixed;
+    width: ${props => (props.page === 2 ? "25vw" : "80%")};
+    height: 500px;
+    border-radius: 30px;
+    padding: 10px;
+    background-color: #fff;
+    margin: auto;
+    box-shadow: 14px 12px 14px #dddaca;
+    top: 360px;
+    z-index: ${props => (props.page === 0 ? "0" : "10")};
+    display: ${props => (props.page === 0 ? "none" : "block")};
+`;
+const AnalysisDataContainer = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+`;
+const AnalysisDataForm = styled.div`
+    width: 90%;
+    height: 30vh;
+    border-radius: 30px;
+    padding: 10px;
+    background-color: #fff;
+    margin: 2% 5%;
+    box-shadow: 14px 12px 14px #dddaca;
+    top: 360px;
+    z-index: 10;
+    display: block;
+`;
+const AnalysisDrawingContainer = styled.div`
+    display: flex;
+`;
 /* -----------表單區-companies----------*/
 const Form = styled.div`
     border: solid 1px #000000;
@@ -168,6 +275,7 @@ const Form = styled.div`
     display: flex;
     flex-direction: column;
     height: ${props => (props.columnQty === 7 ? "482px" : "auto")};
+    margin-top: ${props => (props.mode === "bom" ? "40px" : "auto")};
 `;
 const SingleLine = styled.div`
     display: flex;
@@ -205,7 +313,7 @@ const DataListStyled = styled.datalist`
 `;
 const InputStyled = styled.input`
     font-size: 16px;
-    width: 120px;
+    width: ${props => (props.inputWidth === 170 ? "170px" : "120px")};
     border: 1px solid #bebebe;
     border-radius: 5px;
     height: 40px;
@@ -219,6 +327,7 @@ const DataStyled = styled.div`
     text-align: center;
     margin: 12px;
 `;
+
 /* -----------列表區-----------*/
 const AddScrollbar = styled.div`
     border: solid 1px #000000;
@@ -226,7 +335,9 @@ const AddScrollbar = styled.div`
     background-color: #fff;
     white-space: pre-wrap;
     height: ${props =>
-        props.columnQty === 4
+        props.mode === "bom"
+            ? "180px"
+            : props.columnQty === 4
             ? "361px"
             : props.columnQty === 7
             ? "482px"
@@ -237,19 +348,35 @@ const AddScrollbar = styled.div`
     overflow-y: scroll;
     scrollbar-width: none;
     padding: ${props =>
-        props.columnQty === 4
+        props.mode === "bom"
+            ? "10px 5%"
+            : props.columnQty === 4
             ? "20px 15%"
             : props.columnQty === 8
             ? "30px 6%"
             : props.columnQty === 7
             ? "30px 6%"
-            : "20px 5%"};
+            : "20px 2%"};
+    ::-webkit-scrollbar {
+        display: none;
+    }
+`;
+const StructureScrollbar = styled.div`
+    background-color: #fff;
+    margin-left: ${props => (props.page === 5 ? "70px" : "20px")};
+    height: ${props => (props.page === 5 ? "310px" : "160px")};
+    white-space: pre-wrap;
+    overflow-y: scroll;
+    scrollbar-width: none;
     ::-webkit-scrollbar {
         display: none;
     }
 `;
 const Table = styled.table`
     border-collapse: collapse;
+    width: ${props => (props.mode === "bom" ? "100%" : "auto")};
+    margin-left: ${props => (props.mode === "bomassemble" ? "70px" : "0px")};
+    height: ${props => (props.mode === "bomassemble" ? "100px" : "auto")};
 `;
 const Thead = styled.thead`
     background-color: #fff;
@@ -260,26 +387,36 @@ const Thead = styled.thead`
 const Tr = styled.tr`
     height: 50px;
 `;
+const Td = styled.td`
+    width: ${props => (props.mode === "bom" ? "142px" : "40px")};
+    padding: ${props => (props.mode === "bom" ? "5px 10px" : "5px 0px")};
+`;
 const ThTitle = styled.th`
     padding-left: 10px;
     height: 50px;
     font-weight: 500;
+    width: ${props => (props.mode === "bom" ? "100px" : "auto")};
 `;
 const ThButtonTitle = styled.th`
     width: 50px;
     font-weight: 500;
+    text-align: center;
 `;
 const TableSelectSearch = styled.select`
     font-size: 16px;
     width: ${props =>
         props.index === 0
             ? "160px"
+            : props.index === 6 || props.index === 7 || props.index === 8
+            ? "105px"
             : props.columnQty === 4
             ? "160px"
             : props.columnQty === 7
-            ? "110px"
+            ? "105px"
             : props.columnQty === 8
             ? "90px"
+            : props.columnQty === 10
+            ? "68px"
             : "160px"};
     margin-right: 10px;
     border: none;
@@ -298,12 +435,16 @@ const TableInputSearch = styled.input`
     width: ${props =>
         props.index === 0
             ? "142px"
+            : props.index === 6 || props.index === 7 || props.index === 8
+            ? "87px"
             : props.columnQty === 4
             ? "140px"
             : props.columnQty === 7
-            ? "90px"
+            ? "85px"
             : props.columnQty === 8
             ? "70px"
+            : props.columnQty === 10
+            ? "51px"
             : "140px"};
     border-radius: 5px 0 0 5px;
     height: 35px;
@@ -315,6 +456,15 @@ const TableInputSearch = styled.input`
         outline: 1px solid #bebebe;
         border-radius: 5px;
     }
+`;
+const TableInput = styled.input`
+    font-size: 16px;
+    border-radius: 5px;
+    height: 35px;
+    text-align: left;
+    padding-left: 10px;
+    border: 1px solid #bebebe;
+    width: 70px;
 `;
 const TBody = styled.tbody`
     font-weight: 400;
@@ -330,6 +480,7 @@ const TBodyTdContext = styled.td`
 `;
 const TBodyTdButton = styled.td`
     width: 40px;
+    padding-left: 10px;
 `;
 const ThText = styled.th``;
 
@@ -353,12 +504,12 @@ const Main = styled.div`
     }
 `;
 const Section = styled.div`
-    padding: 20px 5%;
+    padding: ${props => (props.mode === "bom" ? "10px 5%" : "20px 5%")};
     width: 77vw;
+    margin: auto;
 `;
-
 const Flex = styled.div`
-    display: flex;
+    display: ${props => (props.page === 5 ? "block" : "flex")};
 `;
 
 /* -----------待整理-----------*/
@@ -366,11 +517,6 @@ const TdContext = styled.td`
     padding-left: 10px;
 `;
 const Th = styled.th``;
-const Td = styled.td`
-    width: 40px;
-    margin: 0px 10px;
-    padding: 5px 0px;
-`;
 
 const UpdatedTr = styled.tr`
     @media ${device.mobileS} {
@@ -380,22 +526,18 @@ const UpdatedTr = styled.tr`
     width: 40px;
     margin: 0px 10px;
 `;
-
 const SelectInput = styled.input`
     width: 100px;
     margin: 5px 1px;
     border-radius: 5px;
 `;
-
 const UpdateInput = styled.input`
     width: 100px;
     border-radius: 5px;
 `;
-
 const LefttMargi5 = styled.div`
     margin-left: 5%;
 `;
-
 const TableStyled = styled.table`
     border: solid 1px #000000;
     padding: 2%;
@@ -403,7 +545,6 @@ const TableStyled = styled.table`
     width: 100%;
     background-color: #fff;
 `;
-
 const Border = styled.div`
     border: solid 1px #000000;
     border-radius: 10px;
@@ -415,12 +556,22 @@ const Question = styled.div`
     display: flex;
     margin: 5px;
 `;
-
 const DivStyled = styled.div`
     width: 160px;
 `;
 
 export {
+    AnalysisDrawingContainer,
+    AnalysisDataContainer,
+    AnalysisDataForm,
+    StructureScrollbar,
+    TableInput,
+    NewDataContainer,
+    NewDataForm,
+    CreatNewData,
+    CloseButton,
+    BackButton,
+    NextButton,
     DataListStyled,
     Article,
     TBodyTdContext,

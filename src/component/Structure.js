@@ -3,7 +3,15 @@ import ListWithCheckBox from "./ListWithCheckBox";
 import AssembleData from "./AssembleData";
 import List from "./List";
 import { useState, useEffect } from "react";
-import { AddButton } from "./StyleComponent";
+import {
+    NewDataContainer,
+    NewDataForm,
+    AddButton,
+    NextButton,
+    BackButton,
+    CloseButton,
+    CreatNewData,
+} from "./StyleComponent";
 import api from "../utils/firebaseApi";
 import Quotes from "./Quotes";
 import Orders from "./Orders";
@@ -23,10 +31,17 @@ function Structure({
         parentData: {},
         childData: [],
     };
+    const startPage = {
+        bom: 3,
+        partQuotations2: 2,
+        productQuotations2: 2,
+        order: 2,
+    };
     const [processingData, setProcessingData] = useState(processingDataRule);
     const [parentData, setParentData] = useState({});
     const [childData, setChildData] = useState([]);
     const [renderAssembledList, setRenderAssembledList] = useState([]);
+    const [page, setPage] = useState(startPage[assembleCollectionName]);
 
     useEffect(() => {
         handleProcessingDataChange(parentData);
@@ -104,6 +119,7 @@ function Structure({
         setProcessingData(processingDataRule);
         setParentData({});
         setChildData([]);
+        setPage(0);
     }
 
     function orderDependency(data) {
@@ -295,41 +311,119 @@ function Structure({
         return newListtoRender;
     }
 
+    function pageChange(value) {
+        console.log(value);
+        if (value === startPage[assembleCollectionName]) {
+            setPage(startPage[assembleCollectionName]);
+            return;
+        }
+        if (value === 0) {
+            setPage(0);
+            return;
+        }
+        if (assembleCollectionName === "bom") {
+            if (page + value < 6 && page + value > 2) {
+                setPage(prev => prev + value);
+                return;
+            }
+        } else if (page + value < 6 && page + value > 1) {
+            console.log(page + value);
+            setPage(prev => prev + value);
+            return;
+        }
+    }
+
+    function close() {
+        pageChange(0);
+        setProcessingData(processingDataRule);
+    }
+
     return (
         <>
-            {(assembleCollectionName === "partQuotations2" ||
-                assembleCollectionName === "productQuotations2") && (
-                <Quotes
-                    handleDataChange={handleProcessingDataChange}
-                    processingData={processingData}
-                />
-            )}
-            {(assembleCollectionName === "order" ||
-                assembleCollectionName === "purchase") && (
-                <Orders
-                    handleDataChange={handleProcessingDataChange}
-                    processingData={processingData}
-                />
-            )}
-            <ListWithRadio
-                collectionName={parentCollectionName}
-                list={parentList}
-                setProcessingData={setParentData}
-                processingData={parentData}
+            <CreatNewData
+                page={page}
+                sx={{ fontSize: 70 }}
+                onClick={() => pageChange(startPage[assembleCollectionName])}
             />
-            <ListWithCheckBox
-                collectionName={childCollectionName}
-                list={childList}
-                setProcessingData={setChildData}
-                processingData={childData}
-            />
-            <AssembleData
-                collectionName={assembleCollectionName}
-                processingData={processingData}
-                setProcessingData={setProcessingData}
-                childData={childData}
-            />
-            <AddButton onClick={() => submit()} />
+            <NewDataContainer>
+                <NewDataForm page={page}>
+                    {page === 2
+                        ? (assembleCollectionName === "partQuotations2" ||
+                              assembleCollectionName ===
+                                  "productQuotations2") && (
+                              <Quotes
+                                  mode="bom"
+                                  handleDataChange={handleProcessingDataChange}
+                                  processingData={processingData}
+                              />
+                          )
+                        : null}
+                    {page === 2
+                        ? (assembleCollectionName === "order" ||
+                              assembleCollectionName === "purchase") && (
+                              <Orders
+                                  mode="bom"
+                                  handleDataChange={handleProcessingDataChange}
+                                  processingData={processingData}
+                              />
+                          )
+                        : null}
+                    {page === 3 ? (
+                        <ListWithRadio
+                            page={page}
+                            mode="bom"
+                            collectionName={parentCollectionName}
+                            list={parentList}
+                            setProcessingData={setParentData}
+                            processingData={parentData}
+                        />
+                    ) : null}
+                    {page === 4 ? (
+                        <ListWithCheckBox
+                            mode="bom"
+                            collectionName={childCollectionName}
+                            list={childList}
+                            setProcessingData={setChildData}
+                            processingData={childData}
+                        />
+                    ) : null}
+                    {page === 0 || page === 2 ? null : (
+                        <>
+                            <AssembleData
+                                mode="bom"
+                                page={page}
+                                collectionName={assembleCollectionName}
+                                processingData={processingData}
+                                setProcessingData={setProcessingData}
+                                childData={childData}
+                            />
+                        </>
+                    )}
+                    {page === 5 ? (
+                        <AddButton
+                            page={page}
+                            sx={{ fontSize: 26 }}
+                            fix="fix"
+                            onClick={() => submit()}
+                        />
+                    ) : null}
+                    <CloseButton page={page} onClick={() => close()} />
+                    {assembleCollectionName === "bom" &&
+                    page === 3 ? null : assembleCollectionName === "order" &&
+                      page === 2 ? null : assembleCollectionName ===
+                          "partQuotations2" &&
+                      page === 2 ? null : assembleCollectionName ===
+                          "productQuotations2" && page === 2 ? null : (
+                        <BackButton
+                            page={page}
+                            onClick={() => pageChange(-1)}
+                        />
+                    )}
+                    {page === 5 ? null : (
+                        <NextButton page={page} onClick={() => pageChange(1)} />
+                    )}
+                </NewDataForm>
+            </NewDataContainer>
             <List
                 collectionName={assembleCollectionName}
                 list={renderAssembledList}

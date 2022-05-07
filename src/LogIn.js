@@ -40,7 +40,7 @@ const MainBody = styled.div`
     background-color: #c4d6b0;
     width: 360px;
     height: 600px;
-    padding-top: 120px;
+    padding-top: 80px;
     border-radius: 40px;
 `;
 

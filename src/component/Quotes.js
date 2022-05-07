@@ -1,9 +1,9 @@
 import Input from "./Input";
 import Select from "./Select";
-import { Section, Form } from "./StyleComponent";
+import { Article, Form } from "./StyleComponent";
 import data from "../utils/data";
 
-function Quotes({ handleDataChange, processingData }) {
+function Quotes({ handleDataChange, processingData, mode }) {
     // console.log(processingData);
     const inputComponentArray = [
         {
@@ -17,10 +17,11 @@ function Quotes({ handleDataChange, processingData }) {
     ];
 
     return (
-        <Section>
-            <Form>
+        <Article>
+            <Form mode={mode}>
                 {inputComponentArray.map(e => (
                     <Input
+                        inputWidth={170}
                         key={e.title}
                         title={e.title}
                         type="date"
@@ -36,7 +37,7 @@ function Quotes({ handleDataChange, processingData }) {
                     optionArray={data.currencyList}
                 />
             </Form>
-        </Section>
+        </Article>
     );
 }
 
