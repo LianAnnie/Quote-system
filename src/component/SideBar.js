@@ -13,6 +13,8 @@ import HandshakeIcon from "@mui/icons-material/Handshake";
 import InsertChartIcon from "@mui/icons-material/InsertChart";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Outlet } from "react-router-dom";
+import VanillaTilt from "vanilla-tilt";
+import Logo from "./Logo";
 
 const Orange = styled.div`
     width: ${props => (props.showNavBar ? "250px" : "100vw")};
@@ -84,23 +86,20 @@ const HideMobile = styled.nav`
         display:block
     }
 `;
-const Logo = styled.img`
-    width: ${props => (props.showNavBar ? "80%" : "80px")};
-    padding: ${props => (props.showNavBar ? "20px" : "0px 20px")};
-    margin: ${props => (props.showNavBar ? "10px" : "0px 0px 0px 10px ")};
-    @media ${device.desktop} {
-        width: 80%;
-    }
-`;
-
 const NavbarStyled = styled.div`
     margin-top: 24px;
+    transition: 0.2s;
+    :hover {
+        transform: scale(1.1);
+    }
 `;
-
 const NavLinkStyled = styled(NavLink)`
     display: flex;
+    transition: 0.2s;
+    :hover {
+        transform: scale(1.1);
+    }
 `;
-
 const Close = styled(CloseIcon)`
     display: flex;
     position: absolute;
@@ -122,11 +121,9 @@ const Black = styled.div`
         }
     }
 `;
-
 const Flex = styled.div`
     display: flex;
 `;
-
 const Cover = styled.div`
     height: 100vh;
     width: 100vw;
@@ -135,11 +132,13 @@ const Cover = styled.div`
     z-index: 98;
 `;
 
+const NavInfoIcon = styled(CallToActionIcon)``;
+
 function SideBar({ signOut }) {
     const [showNavBar, setShowNavBar] = useState(false);
 
     const linkArray = [
-        ["/", <CallToActionIcon />, "待辦通知"],
+        ["/", <NavInfoIcon styled={{ transition: "2s" }} />, "待辦通知"],
         ["/overview", <PublicIcon />, "銷售概覽"],
         ["/company", <BusinessIcon />, "客戶廠商"],
         ["/bom", <CategoryIcon />, "產品零件"],
@@ -148,14 +147,17 @@ function SideBar({ signOut }) {
         ["/analysis", <InsertChartIcon />, "成本分析"],
     ];
 
+    const options = {
+        scale: 1.2,
+        speed: 1000,
+        max: 30,
+    };
+
     return (
         <>
             <Orange showNavBar={showNavBar}>
                 <Header showNavBar={showNavBar}>
-                    <Logo
-                        showNavBar={showNavBar}
-                        src={require("../images/log.png")}
-                    />
+                    <Logo showNavBar={showNavBar} options={options} />
                     <Title>
                         {!showNavBar && (
                             <Burger onClick={() => setShowNavBar(true)} />

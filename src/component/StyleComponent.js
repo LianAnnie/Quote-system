@@ -92,11 +92,14 @@ const CancelEditButton = styled(EditOffIcon)`
 `;
 const ExportButton = styled(FileDownloadIcon)`
     color: #fff;
-    background-color: #513c2c;
     border-radius: 5px;
     cursor: pointer;
     margin-top: 10px;
     margin-left: 90%;
+    background-color: #c4d6b0;
+    :hover {
+        background-color: #513c2c;
+    }
 `;
 const RegisterButton = styled(PersonAddIcon)`
     color: #fff;
@@ -334,6 +337,15 @@ const DataStyled = styled.div`
     text-align: center;
     margin: 12px;
 `;
+const TextareaStyled = styled.textarea`
+    font-size: 16px;
+    width: 120px;
+    border: 1px solid #bebebe;
+    border-radius: 5px;
+    :focus-visible {
+        outline: 1px solid #bebebe;
+    }
+`;
 
 /* -----------列表區-----------*/
 const AddScrollbar = styled.div`
@@ -567,6 +579,7 @@ const DivStyled = styled.div`
 `;
 
 export {
+    TextareaStyled,
     Pie,
     AnalysisAssembledContainer,
     AnalysisDrawingContainer,
