@@ -95,21 +95,8 @@ const ExportButton = styled(FileDownloadIcon)`
     background-color: #513c2c;
     border-radius: 5px;
     cursor: pointer;
-    @media ${device.mobileS} {
-        margin-left: 10%;
-    }
-    @media ${device.mobileL} {
-        margin-left: 10%;
-    }
-    @media ${device.laptop} {
-        margin-left: 1%;
-    }
-    @media ${device.laptopL} {
-        margin-left: 2%;
-    }
-    @media ${device.desktop} {
-        margin-left: 5%;
-    }
+    margin-top: 10px;
+    margin-left: 90%;
 `;
 const RegisterButton = styled(PersonAddIcon)`
     color: #fff;
@@ -168,7 +155,7 @@ const NextButton = styled(ArrowForwardIosIcon)`
     position: fixed;
     background-color: #c4d6b0;
     z-index: 11;
-    top: 380px;
+    top: ${props => (props.mode === "analysis" ? "145px" : "380px")};
     right: ${props => (props.page === 2 ? "42%" : "20%")};
     :hover {
         background-color: #513c2c;
@@ -181,7 +168,7 @@ const BackButton = styled(ArrowBackIosNewIcon)`
     cursor: pointer;
     position: fixed;
     z-index: 11;
-    top: 380px;
+    top: ${props => (props.mode === "analysis" ? "145px" : "380px")};
     right: ${props => (props.page === 2 ? "45%" : "23%")};
     background-color: #c4d6b0;
     :hover {
@@ -202,7 +189,6 @@ const CloseButton = styled(CloseIcon)`
         background-color: #513c2c;
     }
 `;
-
 const CreatNewData = styled(FiberNewIcon)`
     border-radius: 5px;
     margin: 0px 20px;
@@ -244,6 +230,7 @@ const NewDataForm = styled.div`
     z-index: ${props => (props.page === 0 ? "0" : "10")};
     display: ${props => (props.page === 0 ? "none" : "block")};
 `;
+/*--------Analysis --------*/
 const AnalysisDataContainer = styled.div`
     width: 100%;
     display: flex;
@@ -252,7 +239,7 @@ const AnalysisDataContainer = styled.div`
 `;
 const AnalysisDataForm = styled.div`
     width: 90%;
-    height: 30vh;
+    height: 45vh;
     border-radius: 30px;
     padding: 10px;
     background-color: #fff;
@@ -264,7 +251,27 @@ const AnalysisDataForm = styled.div`
 `;
 const AnalysisDrawingContainer = styled.div`
     display: flex;
+    height: 30vh;
+    margin: 1% 5% 0;
+    justify-content: space-between;
 `;
+const AnalysisAssembledContainer = styled.div`
+    border: solid 1px #000000;
+    border-radius: 10px;
+    background-color: #fff;
+    width: 45vw;
+    padding: 2%;
+`;
+const Border = styled.div`
+    width: 40vw;
+    display: flex;
+    border: solid 1px #000000;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #fff;
+    justify-content: space-between;
+`;
+const Pie = styled.div``;
 /* -----------表單區-companies----------*/
 const Form = styled.div`
     border: solid 1px #000000;
@@ -388,7 +395,12 @@ const Tr = styled.tr`
     height: 50px;
 `;
 const Td = styled.td`
-    width: ${props => (props.mode === "bom" ? "142px" : "40px")};
+    width: ${props =>
+        props.mode === "bom"
+            ? "142px"
+            : props.mode === "anlysis"
+            ? "160px"
+            : "90px"};
     padding: ${props => (props.mode === "bom" ? "5px 10px" : "5px 0px")};
 `;
 const ThTitle = styled.th`
@@ -434,13 +446,13 @@ const TableInputSearch = styled.input`
     z-index: 2;
     width: ${props =>
         props.index === 0
-            ? "142px"
+            ? "143px"
             : props.index === 6 || props.index === 7 || props.index === 8
             ? "87px"
             : props.columnQty === 4
             ? "140px"
             : props.columnQty === 7
-            ? "85px"
+            ? "87px"
             : props.columnQty === 8
             ? "70px"
             : props.columnQty === 10
@@ -505,7 +517,7 @@ const Main = styled.div`
 `;
 const Section = styled.div`
     padding: ${props => (props.mode === "bom" ? "10px 5%" : "20px 5%")};
-    width: 77vw;
+    width: ${props => (props.mode === "analysis" ? "68vw" : "77vw")};
     margin: auto;
 `;
 const Flex = styled.div`
@@ -545,13 +557,7 @@ const TableStyled = styled.table`
     width: 100%;
     background-color: #fff;
 `;
-const Border = styled.div`
-    border: solid 1px #000000;
-    border-radius: 10px;
-    padding: 20px;
-    background-color: #fff;
-    height: calcu(100vh - 300px);
-`;
+
 const Question = styled.div`
     display: flex;
     margin: 5px;
@@ -561,6 +567,8 @@ const DivStyled = styled.div`
 `;
 
 export {
+    Pie,
+    AnalysisAssembledContainer,
     AnalysisDrawingContainer,
     AnalysisDataContainer,
     AnalysisDataForm,

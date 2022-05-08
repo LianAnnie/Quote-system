@@ -1,16 +1,21 @@
 import { useEffect, useState } from "react";
 import {
+    TBodyTdContext,
+    TBodyTdButton,
     Section,
     Title,
     Table,
-    Th,
-    Td,
-    CancelSelectedButton,
+    Thead,
+    ThText,
+    ThButtonTitle,
+    TableSelectSearch,
+    TableInputSearch,
+    TBody,
+    Tr,
     Flex,
+    CancelSelectedButton,
     ThTitle,
-    TdContext,
-    SelectInput,
-    SelectStyled,
+    UpdateInput,
     AddScrollbar,
 } from "./StyleComponent";
 import data from "../utils/data";
@@ -21,6 +26,7 @@ function ListWithRadio({
     list,
     setProcessingData,
     processingData,
+    mode,
 }) {
     const filterConditionRule = {};
     const [filterList, setFilterList] = useState([]);
@@ -73,19 +79,21 @@ function ListWithRadio({
             : setProcessingData(filterData);
     }
     return (
-        <Section>
+        <Section mode={mode}>
             <Flex>
-                <Title>{data.listCollections[collectionName][0]}列表</Title>
+                <Title>
+                    請選擇需包含分析的{data.listCollections[collectionName][0]}
+                </Title>
                 <CancelSelectedButton
                     onClick={() => {
                         handleConditionChange(0);
                     }}
                 />
             </Flex>
-            <AddScrollbar>
+            <AddScrollbar mode={mode}>
                 <Table>
-                    <thead>
-                        <tr>
+                    <Thead>
+                        <Tr>
                             {data.listCollections[collectionName][3].map(
                                 (e, index) => (
                                     <ThTitle key={index} index={index}>
@@ -94,18 +102,20 @@ function ListWithRadio({
                                 ),
                             )}
                             {data.listCollections.select.map((e, index) => (
-                                <Th key={index}>{e}</Th>
+                                <ThButtonTitle key={index}>{e}</ThButtonTitle>
                             ))}
-                        </tr>
-                        <tr>
+                        </Tr>
+                        <Tr>
                             {list &&
                                 data.listCollections[collectionName][4].map(
                                     (keyName, indexForStyled) => (
-                                        <ThTitle
+                                        <ThText
                                             key={keyName}
                                             index={indexForStyled}
                                         >
-                                            <SelectInput
+                                            <TableInputSearch
+                                                index={indexForStyled}
+                                                columnQty={7}
                                                 type="text"
                                                 name={keyName}
                                                 onChange={e =>
@@ -113,7 +123,9 @@ function ListWithRadio({
                                                 }
                                                 value={list[keyName]}
                                             />
-                                            <SelectStyled
+                                            <TableSelectSearch
+                                                index={indexForStyled}
+                                                columnQty={7}
                                                 name={keyName}
                                                 onChange={e =>
                                                     handleConditionChange(e)
@@ -139,28 +151,37 @@ function ListWithRadio({
                                                             {o[keyName]}
                                                         </option>
                                                     ))}
-                                            </SelectStyled>
-                                        </ThTitle>
+                                            </TableSelectSearch>
+                                        </ThText>
                                     ),
                                 )}
-                        </tr>
-                    </thead>
-                    <tbody>
+                        </Tr>
+                    </Thead>
+                    <TBody>
                         {filterList &&
                             filterList.map((e, index) => (
-                                <tr key={e.id}>
+                                <Tr key={e.id}>
                                     {data.listCollections[
                                         collectionName
-                                    ][4].map((keyName, indexForStyled) => (
-                                        <TdContext
-                                            key={keyName}
-                                            index={indexForStyled}
-                                        >
-                                            {e[keyName]}
-                                        </TdContext>
-                                    ))}
-                                    <Td>
-                                        <input
+                                    ][4].map((keyName, indexForStyled) =>
+                                        indexForStyled === 0 ? (
+                                            <TBodyTdContext
+                                                key={keyName}
+                                                index={indexForStyled}
+                                            >
+                                                {[e[keyName][0], e[keyName][1]]}
+                                            </TBodyTdContext>
+                                        ) : (
+                                            <TBodyTdContext
+                                                key={keyName}
+                                                index={indexForStyled}
+                                            >
+                                                {e[keyName]}
+                                            </TBodyTdContext>
+                                        ),
+                                    )}
+                                    <TBodyTdButton>
+                                        <UpdateInput
                                             type="checkbox"
                                             name="child"
                                             defaultChecked={
@@ -174,10 +195,10 @@ function ListWithRadio({
                                                 handleImportProduct(e)
                                             }
                                         />
-                                    </Td>
-                                </tr>
+                                    </TBodyTdButton>
+                                </Tr>
                             ))}
-                    </tbody>
+                    </TBody>
                 </Table>
             </AddScrollbar>
         </Section>

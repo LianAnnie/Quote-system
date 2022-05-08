@@ -1,6 +1,6 @@
 import Input from "./Input";
 import Select from "./Select";
-import { Section, Form, Question, Flex } from "./StyleComponent";
+import { Article, Form } from "./StyleComponent";
 import data from "../utils/data";
 import { storage } from "../utils/firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
@@ -66,52 +66,50 @@ function AnalysisForm({ handleDataChange, processingData, setProcessingData }) {
     }
 
     return (
-        <Section>
+        <Article>
             <Form>
-                <Flex>
-                    <div>
-                        {inputComponentArray.map(e => (
-                            <Input
-                                key={e.title}
-                                title={e.title}
-                                type={e.type}
-                                handleDataChange={handleDataChange}
-                                data={processingData}
-                                name={e.name}
-                            />
-                        ))}
-                        {selectComponentArray.map(e => (
-                            <Select
-                                key={e.title}
-                                title={e.title}
-                                handleDataChange={handleDataChange}
-                                name={e.name}
-                                optionArray={e.optionArray}
-                            />
-                        ))}
-                        <Question>
-                            <div>上傳圖片</div>
-                            <input
-                                type="file"
-                                name="image"
-                                data={processingData}
-                                onChange={e => {
-                                    upLoad(e);
-                                    handleDataChange(e);
-                                }}
-                            />
-                        </Question>
-                    </div>
-                    {imageUrl.length > 0 && (
-                        <img
-                            src={imageUrl}
-                            alt="產品圖片"
-                            style={{ width: "15%" }}
+                {/* <div> */}
+                {inputComponentArray.map(e => (
+                    <Input
+                        key={e.title}
+                        title={e.title}
+                        type={e.type}
+                        handleDataChange={handleDataChange}
+                        data={processingData}
+                        name={e.name}
+                    />
+                ))}
+                {selectComponentArray.map(e => (
+                    <Select
+                        key={e.title}
+                        title={e.title}
+                        handleDataChange={handleDataChange}
+                        name={e.name}
+                        optionArray={e.optionArray}
+                    />
+                ))}
+                {/* <Question>
+                        <div>上傳圖片</div>
+                        <input
+                            type="file"
+                            name="image"
+                            data={processingData}
+                            onChange={e => {
+                                upLoad(e);
+                                handleDataChange(e);
+                            }}
                         />
-                    )}
-                </Flex>
+                    </Question>
+                </div>
+                {imageUrl.length > 0 && (
+                    <img
+                        src={imageUrl}
+                        alt="產品圖片"
+                        style={{ width: "15%" }}
+                    />
+                )} */}
             </Form>
-        </Section>
+        </Article>
     );
 }
 

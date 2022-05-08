@@ -10,6 +10,7 @@ function Drawing({ profitMargin, pieData }) {
     const gaugeOptions = {
         chart: {
             type: "solidgauge",
+            width: 300,
         },
         title: null,
         pane: {
@@ -69,11 +70,9 @@ function Drawing({ profitMargin, pieData }) {
                 text: "利潤率",
             },
         },
-
         credits: {
             enabled: false,
         },
-
         series: [
             {
                 name: "利潤率",
@@ -94,10 +93,10 @@ function Drawing({ profitMargin, pieData }) {
     const options = {
         chart: {
             type: "pie", //"pie","column"
-            marginBottom: 100,
+            width: 300,
         },
         title: {
-            text: "成本分析",
+            text: "",
         },
         series: [
             {
@@ -110,22 +109,15 @@ function Drawing({ profitMargin, pieData }) {
     };
 
     return (
-        <Section>
-            <Border>
-                <Flex>
-                    <HighchartsReact
-                        highcharts={Highcharts}
-                        options={gaugeOptions}
-                        containerProps={{ className: "chart-container" }}
-                    />
+        <Border>
+            <HighchartsReact
+                highcharts={Highcharts}
+                options={gaugeOptions}
+                containerProps={{ className: "chart-container" }}
+            />
 
-                    <HighchartsReact
-                        highcharts={Highcharts}
-                        options={options}
-                    />
-                </Flex>
-            </Border>
-        </Section>
+            <HighchartsReact highcharts={Highcharts} options={options} />
+        </Border>
     );
 }
 

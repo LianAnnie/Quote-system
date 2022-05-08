@@ -267,12 +267,14 @@ function Structure2({
                 <AnalysisDataForm>
                     <Flex>
                         <AnalysisForm
+                            mode={assembleCollectionName}
                             handleDataChange={handleProcessingDataChange}
                             processingData={processingData}
                             setProcessingData={setProcessingData}
                         />
                         {page === 4 ? (
                             <ListWithRadio2
+                                mode={assembleCollectionName}
                                 collectionName={parentCollectionName}
                                 list={parentList}
                                 setProcessingData={setParentData}
@@ -281,17 +283,27 @@ function Structure2({
                         ) : null}
                         {page === 5 ? (
                             <ListWithCheckBox2
+                                mode={assembleCollectionName}
                                 collectionName={childCollectionName}
                                 list={filterChildList}
                                 setProcessingData={setChildData}
                                 processingData={childData}
                             />
                         ) : null}
-                        <NextButton page={page} onClick={() => pageChange(1)} />
-                        <BackButton
-                            page={page}
-                            onClick={() => pageChange(-1)}
-                        />
+                        {page === 5 ? (
+                            <BackButton
+                                mode={assembleCollectionName}
+                                page={page}
+                                onClick={() => pageChange(-1)}
+                            />
+                        ) : null}
+                        {page === 4 ? (
+                            <NextButton
+                                mode={assembleCollectionName}
+                                page={page}
+                                onClick={() => pageChange(1)}
+                            />
+                        ) : null}
                     </Flex>
                 </AnalysisDataForm>
                 <AnalysisDrawingContainer>
@@ -301,9 +313,8 @@ function Structure2({
                         setProcessingData={setProcessingData}
                     />
                     <Drawing profitMargin={margin} pieData={pieData} />
-
-                    <ExportExcel data={processingData} />
                 </AnalysisDrawingContainer>
+                <ExportExcel data={processingData} />
             </AnalysisDataContainer>
         </>
     );
