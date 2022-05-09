@@ -47,7 +47,7 @@ const Cards = styled.div`
     }
 `;
 
-const Cards2 = styled.div`
+const Cards2 = styled(DeleteButton)`
     border-radius: 10px;
     background-color: #bdbdbd6b;
     padding: 10px;

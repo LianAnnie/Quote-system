@@ -90,13 +90,17 @@ function ListWithRadio({
                     }}
                 />
             </Flex>
-            <AddScrollbar mode={mode}>
+            <AddScrollbar>
                 <Table>
                     <Thead>
                         <Tr>
                             {data.listCollections[collectionName][3].map(
                                 (e, index) => (
-                                    <ThTitle key={index} index={index}>
+                                    <ThTitle
+                                        key={index}
+                                        index={index}
+                                        mode="bom"
+                                    >
                                         {e}
                                     </ThTitle>
                                 ),

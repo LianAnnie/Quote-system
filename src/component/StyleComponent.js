@@ -259,20 +259,20 @@ const AnalysisDrawingContainer = styled.div`
     justify-content: space-between;
 `;
 const AnalysisAssembledContainer = styled.div`
-    border: solid 1px #000000;
     border-radius: 10px;
     background-color: #fff;
+    box-shadow: 14px 12px 14px #dddaca;
     width: 45vw;
     padding: 2%;
 `;
 const Border = styled.div`
     width: 40vw;
     display: flex;
-    border: solid 1px #000000;
     border-radius: 10px;
     padding: 20px;
     background-color: #fff;
     justify-content: space-between;
+    box-shadow: 14px 12px 14px #dddaca;
 `;
 const Pie = styled.div``;
 /* -----------表單區-companies----------*/
@@ -354,10 +354,16 @@ const AddScrollbar = styled.div`
     background-color: #fff;
     white-space: pre-wrap;
     height: ${props =>
-        props.mode === "bom"
+        props.mode === "bom" && props.page === "3"
             ? "180px"
+            : props.mode === "bom" && props.page === "4"
+            ? "180px"
+            : props.mode === "bom"
+            ? "550px"
+            : props.mode === "order"
+            ? "550px"
             : props.columnQty === 4
-            ? "361px"
+            ? "340px"
             : props.columnQty === 7
             ? "482px"
             : props.columnQty === 8
@@ -368,14 +374,14 @@ const AddScrollbar = styled.div`
     scrollbar-width: none;
     padding: ${props =>
         props.mode === "bom"
-            ? "10px 5%"
+            ? "0px 5%"
             : props.columnQty === 4
-            ? "20px 15%"
+            ? "0px 15%"
             : props.columnQty === 8
-            ? "30px 6%"
+            ? "0px 6%"
             : props.columnQty === 7
-            ? "30px 6%"
-            : "20px 2%"};
+            ? "0px 6%"
+            : "0px 2%"};
     ::-webkit-scrollbar {
         display: none;
     }
@@ -383,7 +389,12 @@ const AddScrollbar = styled.div`
 const StructureScrollbar = styled.div`
     background-color: #fff;
     margin-left: ${props => (props.page === 5 ? "70px" : "20px")};
-    height: ${props => (props.page === 5 ? "310px" : "160px")};
+    height: ${props =>
+        props.page === 5
+            ? "310px"
+            : props.mode === "assemble"
+            ? "110px"
+            : "160px"};
     white-space: pre-wrap;
     overflow-y: scroll;
     scrollbar-width: none;
@@ -413,7 +424,8 @@ const Td = styled.td`
             : props.mode === "anlysis"
             ? "160px"
             : "90px"};
-    padding: ${props => (props.mode === "bom" ? "5px 10px" : "5px 0px")};
+    padding: ${props =>
+        props.mode === "bom" ? "5px 10px" : "20px 0px 5px 10px"};
 `;
 const ThTitle = styled.th`
     padding-left: 10px;
@@ -558,6 +570,10 @@ const SelectInput = styled.input`
 const UpdateInput = styled.input`
     width: 100px;
     border-radius: 5px;
+    margin: 2px 1px;
+    height: ${prop => (prop.mode === "list" ? "30px" : "auto")};
+    border: 1px solid #bebebe;
+    padding: 10px 0px 5px 10px;
 `;
 const LefttMargi5 = styled.div`
     margin-left: 5%;

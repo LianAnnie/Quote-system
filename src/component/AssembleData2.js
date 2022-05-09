@@ -1,6 +1,4 @@
 import {
-    Article,
-    Title,
     Table,
     Thead,
     AnalysisAssembledContainer,
@@ -8,8 +6,8 @@ import {
     TBody,
     Tr,
     ThTitle,
+    StructureScrollbar,
 } from "./StyleComponent";
-import form from "../utils/formChange";
 import data from "../utils/data";
 
 function AssembleData2({ collectionName, processingData, setProcessingData }) {
@@ -37,28 +35,34 @@ function AssembleData2({ collectionName, processingData, setProcessingData }) {
                             )}
                     </Tr>
                 </TBody>
-                <Thead>
-                    <Tr>
-                        {data &&
-                            data.assembleDataCollections[collectionName][3].map(
-                                (e, index) => (
-                                    <ThTitle key={index}>{e}</ThTitle>
-                                ),
-                            )}
-                    </Tr>
-                </Thead>
-                <TBody>
-                    {processingData &&
-                        processingData.childData.map((e, index) => (
-                            <Tr key={[e.id, index]}>
-                                {data.assembleDataCollections[
+            </Table>
+            <Table>
+                <StructureScrollbar mode="assemble">
+                    <Thead>
+                        <Tr>
+                            {data &&
+                                data.assembleDataCollections[
                                     collectionName
-                                ][4].map(keyName => (
-                                    <Td key={keyName}>{e[keyName]}</Td>
+                                ][3].map((e, index) => (
+                                    <ThTitle key={index}>{e}</ThTitle>
                                 ))}
-                            </Tr>
-                        ))}
-                </TBody>
+                        </Tr>
+                    </Thead>
+                    <TBody>
+                        {processingData &&
+                            processingData.childData.map((e, index) => (
+                                <Tr key={[e.id, index]}>
+                                    {data.assembleDataCollections[
+                                        collectionName
+                                    ][4].map(keyName => (
+                                        <Td key={keyName} mode="anlysis">
+                                            {e[keyName]}
+                                        </Td>
+                                    ))}
+                                </Tr>
+                            ))}
+                    </TBody>
+                </StructureScrollbar>
             </Table>
         </AnalysisAssembledContainer>
     );

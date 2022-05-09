@@ -80,7 +80,7 @@ function ListWithRadio({
                     }}
                 />
             </Flex>
-            <AddScrollbar mode={mode}>
+            <AddScrollbar mode={mode} page="3">
                 <Table>
                     <Thead>
                         <Tr>

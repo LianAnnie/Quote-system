@@ -9,11 +9,11 @@ let topojson = require("@highcharts/map-collection/custom/world.topo.json");
 
 const Border = styled.div`
     margin: 12vh 0px;
-    border: solid 1px #000000;
     border-radius: 10px;
     background-color: #fff;
     padding: 4vh 0px;
     height: 50vh;
+    box-shadow: 14px 12px 14px #dddaca;
 `;
 
 function Overview() {
@@ -26,7 +26,6 @@ function Overview() {
     async function getListFromFirebase() {
         const firebaseData = await api.getCompleteCollection("order");
         const mapData = firebaseData.map(e => {
-            console.log(data.exchangeData[e.currency]);
             return [
                 e.id[0].slice(1, 3).toLowerCase(),
                 Number(e.qty) * Number(e.price),

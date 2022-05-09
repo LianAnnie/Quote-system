@@ -29,7 +29,7 @@ import {
 } from "./StyleComponent";
 import data from "../utils/data";
 
-function List({ collectionName, list, setList }) {
+function List({ collectionName, list, setList, mode }) {
     const filterConditionRule = {};
     const [filterList, setFilterList] = useState([]);
     const [filterCondition, setFilterCondition] = useState(filterConditionRule);
@@ -251,6 +251,7 @@ function List({ collectionName, list, setList }) {
                 />
             </Flex>
             <AddScrollbar
+                mode={mode}
                 columnQty={data.listCollections[collectionName][1].length}
             >
                 <Table>
@@ -363,7 +364,7 @@ function List({ collectionName, list, setList }) {
                                         </TBodyTdButton>
                                     </TBodyTr>
                                 ) : (
-                                    <UpdatedTr key={e.id}>
+                                    <UpdatedTr key={index}>
                                         {data.listCollections[
                                             collectionName
                                         ][2].map((keyName, keyIndex) =>
@@ -374,6 +375,7 @@ function List({ collectionName, list, setList }) {
                                             ) : (
                                                 <Td>
                                                     <UpdateInput
+                                                        mode="list"
                                                         key={[
                                                             keyName,
                                                             keyIndex,

@@ -425,6 +425,7 @@ function Structure({
                 </NewDataForm>
             </NewDataContainer>
             <List
+                mode={assembleCollectionName}
                 collectionName={assembleCollectionName}
                 list={renderAssembledList}
                 setList={setAssembleList}

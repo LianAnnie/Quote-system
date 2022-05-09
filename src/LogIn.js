@@ -8,6 +8,7 @@ import {
     signInWithEmailAndPassword,
 } from "firebase/auth";
 import { useNavigate, useLocation } from "react-router-dom";
+import Model from "./component/Model";
 
 const Container = styled.div`
     background-color: #fffae3;
@@ -238,6 +239,7 @@ function LogIn({
 
     return (
         <Container>
+            <Model />
             <MainContainer>
                 <MainHeader>
                     <LogoImg src={require("./images/log.png")} alt="logo" />
