@@ -9,7 +9,7 @@ let topojson = require("@highcharts/map-collection/custom/world.topo.json");
 
 const Border = styled.div`
     margin: 12vh 0px;
-    border-radius: 10px;
+    border-radius: 30px;
     background-color: #fff;
     padding: 4vh 0px;
     height: 50vh;

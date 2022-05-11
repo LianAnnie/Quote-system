@@ -36,15 +36,17 @@ function AssembleData2({ collectionName, processingData, setProcessingData }) {
                     </Tr>
                 </TBody>
             </Table>
-            <Table>
-                <StructureScrollbar mode="assemble">
+            <StructureScrollbar mode="assemble">
+                <Table>
                     <Thead>
                         <Tr>
                             {data &&
                                 data.assembleDataCollections[
                                     collectionName
                                 ][3].map((e, index) => (
-                                    <ThTitle key={index}>{e}</ThTitle>
+                                    <ThTitle mode="bom" key={index}>
+                                        {e}
+                                    </ThTitle>
                                 ))}
                         </Tr>
                     </Thead>
@@ -62,8 +64,8 @@ function AssembleData2({ collectionName, processingData, setProcessingData }) {
                                 </Tr>
                             ))}
                     </TBody>
-                </StructureScrollbar>
-            </Table>
+                </Table>
+            </StructureScrollbar>
         </AnalysisAssembledContainer>
     );
 }

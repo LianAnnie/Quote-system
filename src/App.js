@@ -25,7 +25,6 @@ const Container = styled.div`
 `;
 
 function RequireAuth({ children, loginStatus }) {
-    console.log(`loginStatus`, loginStatus);
     let location = useLocation();
     if (loginStatus === 0) {
         return <Navigate to="/login" state={{ from: location }} replace />;

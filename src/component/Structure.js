@@ -16,6 +16,7 @@ import api from "../utils/firebaseApi";
 import Quotes from "./Quotes";
 import Orders from "./Orders";
 import data from "../utils/data";
+import ErrorBoundary from "../admin/ErrorBoundary";
 
 function Structure({
     parentCollectionName,
@@ -424,12 +425,14 @@ function Structure({
                     )}
                 </NewDataForm>
             </NewDataContainer>
-            <List
-                mode={assembleCollectionName}
-                collectionName={assembleCollectionName}
-                list={renderAssembledList}
-                setList={setAssembleList}
-            />
+            <ErrorBoundary>
+                <List
+                    mode={assembleCollectionName}
+                    collectionName={assembleCollectionName}
+                    list={renderAssembledList}
+                    setList={setAssembleList}
+                />
+            </ErrorBoundary>
         </>
     );
 }

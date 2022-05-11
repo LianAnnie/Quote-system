@@ -46,8 +46,6 @@ function Structure2({
             return;
         }
     }
-
-    // console.log(parentList);
     useEffect(() => {
         handleProcessingDataChange(parentData, parentList, childList);
     }, [parentData]);
@@ -74,14 +72,18 @@ function Structure2({
             const value = data.target.value;
             newProcessingData.parentData[name] = value;
         } else if (data.length === undefined) {
+            newProcessingData.childData = [];
             const keyArray = Object.keys(data);
             keyArray.forEach(
                 key => (newProcessingData.parentData[key] = data[key]),
             );
             const childIdArray = getChildDataId(data, parentList);
+            // console.log(childIdArray);
             const newFilterList = getFilterChildList(childIdArray, childList);
             setFilterChildList(newFilterList);
+            // console.log(newProcessingData);
         } else {
+            // console.log(data);
             newProcessingData.childData = transProcessingChildDataToRender(
                 assembleCollectionName,
                 data,
@@ -135,21 +137,37 @@ function Structure2({
 
     function transProcessingChildDataToRender(
         assembleCollectionName,
-        ChildDataArray,
+        childDataArray,
         parentList,
         processingData,
     ) {
         if (assembleCollectionName === "analysis") {
-            const renderChildDataArray = [...ChildDataArray];
+            console.log(parentList);
+            console.log(processingData.parentData);
+            console.log(childDataArray);
+
+            const renderChildDataArray = [...childDataArray];
             const newChildArray = renderChildDataArray.map(e => {
                 if (e.idP === undefined) {
-                    const getQty = parentList
-                        .filter(p => p.id.includes(e.id[0]))
-                        .filter(p =>
-                            p.id.includes(
-                                processingData.parentData.id.join(""),
+                    const getQty = parentList.filter(p =>
+                        p.id.includes(e.id[0]),
+                    );
+                    // .filter(p =>
+                    //     p.id.includes(
+                    //         processingData.parentData.id.join(""),
+                    //     ),
+                    // );
+                    console.log(parentList);
+                    console.log(parentList.filter(p => p.id.includes(e.id[0])));
+                    console.log(
+                        parentList
+                            .filter(p => p.id.includes(e.id[0]))
+                            .filter(p =>
+                                p.id.includes(
+                                    processingData.parentData.id.join(""),
+                                ),
                             ),
-                        );
+                    );
                     const childData = {
                         idP: e.id[0],
                         qty: getQty[0].qty,
@@ -260,6 +278,8 @@ function Structure2({
             return ["valid", minValid];
         }
     }
+
+    console.log(processingData);
 
     return (
         <>

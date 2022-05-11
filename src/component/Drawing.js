@@ -1,4 +1,4 @@
-import { Flex, Border, Section } from "./StyleComponent";
+import { Border } from "./StyleComponent";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import more from "highcharts/highcharts-more";
@@ -6,7 +6,6 @@ more(Highcharts);
 require("highcharts/modules/solid-gauge")(Highcharts);
 
 function Drawing({ profitMargin, pieData }) {
-    console.log(profitMargin, pieData);
     const gaugeOptions = {
         chart: {
             type: "solidgauge",

@@ -259,7 +259,7 @@ const AnalysisDrawingContainer = styled.div`
     justify-content: space-between;
 `;
 const AnalysisAssembledContainer = styled.div`
-    border-radius: 10px;
+    border-radius: 30px;
     background-color: #fff;
     box-shadow: 14px 12px 14px #dddaca;
     width: 45vw;
@@ -268,7 +268,7 @@ const AnalysisAssembledContainer = styled.div`
 const Border = styled.div`
     width: 40vw;
     display: flex;
-    border-radius: 10px;
+    border-radius: 30px;
     padding: 20px;
     background-color: #fff;
     justify-content: space-between;
@@ -446,11 +446,13 @@ const TableSelectSearch = styled.select`
             : props.index === 6 || props.index === 7 || props.index === 8
             ? "105px"
             : props.columnQty === 4
-            ? "160px"
+            ? "150px"
             : props.columnQty === 7
             ? "105px"
+            : props.columnQty === 8 && props.index === 4
+            ? "95px"
             : props.columnQty === 8
-            ? "90px"
+            ? "85px"
             : props.columnQty === 10
             ? "68px"
             : "160px"};
@@ -477,8 +479,10 @@ const TableInputSearch = styled.input`
             ? "140px"
             : props.columnQty === 7
             ? "87px"
+            : props.columnQty === 8 || props.index === 4
+            ? "80px"
             : props.columnQty === 8
-            ? "70px"
+            ? "73px"
             : props.columnQty === 10
             ? "51px"
             : "140px"};

@@ -2,6 +2,7 @@ import Structure2 from "./component/Structure2";
 import api from "./utils/firebaseApi";
 import { useState, useEffect } from "react";
 import { Container, Main } from "./component/StyleComponent";
+import ErrorBoundary from "./admin/ErrorBoundary";
 
 function Analysis() {
     const [productList, setProductList] = useState([]);
@@ -27,15 +28,17 @@ function Analysis() {
     return (
         <Container>
             <Main>
-                <Structure2
-                    parentCollectionName={parentCollectionName}
-                    parentList={productList}
-                    childCollectionName={childCollectionName}
-                    childList={partList}
-                    assembleCollectionName={assembleCollectionName}
-                    assembleList={bomList}
-                    setAssembleList={setBomList}
-                />
+                <ErrorBoundary>
+                    <Structure2
+                        parentCollectionName={parentCollectionName}
+                        parentList={productList}
+                        childCollectionName={childCollectionName}
+                        childList={partList}
+                        assembleCollectionName={assembleCollectionName}
+                        assembleList={bomList}
+                        setAssembleList={setBomList}
+                    />
+                </ErrorBoundary>
             </Main>
         </Container>
     );

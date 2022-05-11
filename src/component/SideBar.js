@@ -51,12 +51,6 @@ const Burger = styled(MenuIcon)`
     display: flex;
     margin: 6px 20px 6px 10px;
     width: 20px;
-
-    @media ${device.desktop} {
-        .css-i4bv87-MuiSvgIcon-root {
-            display: none;
-        }
-    }
 `;
 
 const Header = styled.div`
@@ -74,6 +68,9 @@ const Design = styled.div`
     font-weight: 700;
     font-size: 24px;
     line-height: 36px;
+    @media ${device.desktop} {
+        padding-left: 20px;
+    }
 `;
 const HideMobile = styled.nav`
     display: ${props => (props.showNavBar ? "block" : "none")};
@@ -124,12 +121,11 @@ const Black = styled.div`
 const Flex = styled.div`
     display: flex;
 `;
-const Cover = styled.div`
-    height: 100vh;
-    width: 100vw;
-    background-color: #0000006b;
-    position: fixed;
-    z-index: 98;
+const Hide = styled.div`
+    display: block;
+    @media ${device.desktop} {
+        display: none;
+    }
 `;
 
 const NavInfoIcon = styled(CallToActionIcon)``;
@@ -160,7 +156,9 @@ function SideBar({ signOut }) {
                     <Logo showNavBar={showNavBar} options={options} />
                     <Title>
                         {!showNavBar && (
-                            <Burger onClick={() => setShowNavBar(true)} />
+                            <Hide>
+                                <Burger onClick={() => setShowNavBar(true)} />
+                            </Hide>
                         )}
                         <Design>Quote System</Design>
                     </Title>
@@ -189,12 +187,6 @@ function SideBar({ signOut }) {
                 </Header>
                 {showNavBar && <Close onClick={() => setShowNavBar(false)} />}
             </Orange>
-            {showNavBar ? (
-                <Cover
-                    showNavBar={showNavBar}
-                    onClick={() => setShowNavBar(false)}
-                />
-            ) : null}
             <Outlet />
         </>
     );

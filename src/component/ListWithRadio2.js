@@ -111,9 +111,7 @@ function ListWithRadio2({
     return (
         <Section mode={mode}>
             <Flex>
-                <Title>
-                    請選擇一項{data.listCollections[collectionName][0]}
-                </Title>
+                <Title>請選擇一項產品</Title>
                 <CancelSelectedButton
                     onClick={() => {
                         handleConditionChange(0);
@@ -124,7 +122,6 @@ function ListWithRadio2({
                 <Table>
                     <Thead>
                         <Tr>
-                            {console.log(collectionName)}
                             {data.listCollections[collectionName][3].map(
                                 (e, index) => (
                                     <ThTitle key={index} index={index}>
