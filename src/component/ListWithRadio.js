@@ -17,6 +17,7 @@ import {
     ThTitle,
     UpdateInput,
     AddScrollbar,
+    TrBody,
 } from "./StyleComponent";
 import data from "../utils/data";
 import form from "../utils/formChange";
@@ -72,7 +73,7 @@ function ListWithRadio({
         <Section mode={mode}>
             <Flex>
                 <Title>
-                    請選擇一項{data.listCollections[collectionName][0]}
+                    請選擇一個{data.listCollections[collectionName][0]}
                 </Title>
                 <CancelSelectedButton
                     onClick={() => {
@@ -149,12 +150,14 @@ function ListWithRadio({
                                     </ThText>
                                 ),
                             )}
+                            <th></th>
+                            <th></th>
                         </Tr>
                     </Thead>
                     <TBody>
                         {filterList &&
                             filterList.map((e, index) => (
-                                <Tr key={e.id}>
+                                <TrBody key={e.id}>
                                     {data.listCollections[
                                         collectionName
                                     ][2].map((keyName, indexForStyled) => (
@@ -179,7 +182,7 @@ function ListWithRadio({
                                             }
                                         />
                                     </TBodyTdButton>
-                                </Tr>
+                                </TrBody>
                             ))}
                     </TBody>
                 </Table>

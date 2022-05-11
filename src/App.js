@@ -37,6 +37,7 @@ function App() {
     const [loginStatus, setLoginStatus] = useState(2);
     const [message, setMessage] = useState("");
     const auth = getAuth();
+    const [viewMode, setViewMode] = useState(1);
     const RouteArray = [
         ["/", <BulletinBoard />],
         ["/overview", <Overview />],
@@ -106,20 +107,32 @@ function App() {
                             />
                         }
                     />
-                    <Route element={<SideBar signOut={runFirebaseSignOut} />}>
-                        {RouteArray.map((e, index) => (
-                            <Route
-                                key={index}
-                                path={e[0]}
-                                element={
-                                    <RequireAuth loginStatus={loginStatus}>
-                                        {e[1]}
-                                    </RequireAuth>
-                                }
-                            />
-                        ))}
-                        <Route path="/*" element={<Navigate to="/" />} />
-                    </Route>
+                    {loginStatus === 1 ? (
+                        <Route
+                            element={
+                                <SideBar
+                                    signOut={runFirebaseSignOut}
+                                    viewMode={viewMode}
+                                    setViewMode={setViewMode}
+                                />
+                            }
+                        >
+                            {RouteArray.map((e, index) => (
+                                <Route
+                                    key={index}
+                                    path={e[0]}
+                                    element={
+                                        <RequireAuth loginStatus={loginStatus}>
+                                            {e[1]}
+                                        </RequireAuth>
+                                    }
+                                />
+                            ))}
+                            <Route path="/*" element={<Navigate to="/" />} />
+                        </Route>
+                    ) : (
+                        <Route path="/*" element={<Navigate to="/login" />} />
+                    )}
                 </Routes>
             </Router>
         </Container>

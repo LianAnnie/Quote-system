@@ -1,6 +1,6 @@
 import Input from "./Input";
 import Select from "./Select";
-import { Article, Form } from "./StyleComponent";
+import { Article, StructureForm, StructrueSingleLine } from "./StyleComponent";
 import data from "../utils/data";
 
 function Quotes({ handleDataChange, processingData, mode }) {
@@ -18,25 +18,29 @@ function Quotes({ handleDataChange, processingData, mode }) {
 
     return (
         <Article>
-            <Form mode={mode}>
+            <StructureForm mode={mode}>
                 {inputComponentArray.map(e => (
-                    <Input
-                        inputWidth={170}
-                        key={e.title}
-                        title={e.title}
-                        type="date"
-                        handleDataChange={handleDataChange}
-                        data={processingData}
-                        name={e.name}
-                    />
+                    <StructrueSingleLine>
+                        <Input
+                            inputWidth={170}
+                            key={e.title}
+                            title={e.title}
+                            type="date"
+                            handleDataChange={handleDataChange}
+                            data={processingData}
+                            name={e.name}
+                        />
+                    </StructrueSingleLine>
                 ))}
-                <Select
-                    title="幣別"
-                    handleDataChange={handleDataChange}
-                    name="currency"
-                    optionArray={data.currencyList}
-                />
-            </Form>
+                <StructrueSingleLine>
+                    <Select
+                        title="幣別"
+                        handleDataChange={handleDataChange}
+                        name="currency"
+                        optionArray={data.currencyList}
+                    />
+                </StructrueSingleLine>
+            </StructureForm>
         </Article>
     );
 }

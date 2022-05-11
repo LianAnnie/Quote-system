@@ -84,7 +84,7 @@ function Product({ collectionName, list, setList }) {
     }
 
     return (
-        <Article>
+        <Article mode="origin">
             <Title>產品資料表</Title>
             <Form>
                 <SingleLine>

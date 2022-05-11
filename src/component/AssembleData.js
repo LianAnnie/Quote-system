@@ -90,7 +90,7 @@ function AssembleData({
                     </TBody>
                 </Table>
                 <StructureScrollbar page={page}>
-                    <Table>
+                    <Table page={page} mode="assemble">
                         <Thead>
                             <Tr>
                                 {data.assembleDataCollections[

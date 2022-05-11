@@ -54,6 +54,7 @@ function Bom() {
                         />
                         <List
                             columnQty={8}
+                            mode="structure"
                             collectionName={parentCollectionName}
                             list={productList}
                             setList={setProductList}
@@ -70,6 +71,7 @@ function Bom() {
 
                         <List
                             columnQty={7}
+                            mode="structure"
                             collectionName={childCollectionName}
                             list={partList}
                             setList={setPartList}

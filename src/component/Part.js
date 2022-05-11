@@ -60,10 +60,6 @@ function Part({ collectionName, list, setList, columnQty }) {
     }
 
     async function submit() {
-        const result = Object.values(exportData).some(
-            e => typeof e === "number",
-        );
-
         if (
             exportData.id[2] !== "A" &&
             exportData.id[2] !== "B" &&
@@ -92,7 +88,7 @@ function Part({ collectionName, list, setList, columnQty }) {
     }
 
     return (
-        <Article>
+        <Article mode="origin">
             <Title>零件資料表</Title>
             <Form columnQty={columnQty}>
                 <SingleLine>

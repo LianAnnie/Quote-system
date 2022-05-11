@@ -131,6 +131,11 @@ function BulletinBoard() {
             const sourceItems = [...sourceColumn.items];
             const destItems = [...destColumn.items];
             const [removed] = sourceItems.splice(source.index, 1);
+            console.log(`sourceColumn`, sourceColumn);
+            console.log(`destColumn`, destColumn);
+            console.log(`sourceItems`, sourceItems);
+            console.log(`destItems`, destItems);
+            console.log(`removed`, removed);
             destItems.splice(destination.index, 0, removed);
             setColumns({
                 ...columns,

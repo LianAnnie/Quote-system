@@ -105,7 +105,7 @@ function Companies({
     }
 
     return (
-        <Article>
+        <Article mode="origin">
             <Title>公司資料表</Title>
             <Form>
                 <SingleLine>

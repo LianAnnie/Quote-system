@@ -159,7 +159,7 @@ const NextButton = styled(ArrowForwardIosIcon)`
     background-color: #c4d6b0;
     z-index: 11;
     top: ${props => (props.mode === "analysis" ? "145px" : "380px")};
-    right: ${props => (props.page === 2 ? "42%" : "20%")};
+    right: 20%;
     :hover {
         background-color: #513c2c;
     }
@@ -172,7 +172,7 @@ const BackButton = styled(ArrowBackIosNewIcon)`
     position: fixed;
     z-index: 11;
     top: ${props => (props.mode === "analysis" ? "145px" : "380px")};
-    right: ${props => (props.page === 2 ? "45%" : "23%")};
+    right: 23%;
     background-color: #c4d6b0;
     :hover {
         background-color: #513c2c;
@@ -186,7 +186,7 @@ const CloseButton = styled(CloseIcon)`
     position: fixed;
     z-index: 11;
     top: 380px;
-    right: ${props => (props.page === 2 ? "38%" : "10.5%")};
+    right: 10.5%;
     background-color: #c4d6b0;
     :hover {
         background-color: #513c2c;
@@ -207,13 +207,14 @@ const CreatNewData = styled(FiberNewIcon)`
 
 /* -----------表單/列表共用區-----------*/
 const Title = styled.div`
-    margin-bottom: ${props => (props.mode === "bom" ? "0px" : "20px;")};
+    margin-bottom: ${props => (props.mode === "structure" ? "0px" : "20px;")};
     margin-left: 10px;
     font-size: 20px;
 `;
 const Article = styled.div`
-    padding: 20px 0px 20px 4%;
-    width: 23vw;
+    padding: ${props =>
+        props.mode === "origin" ? "20px 0px 20px 4%" : "20px 0px 20px 8%"};
+    width: ${props => (props.mode === "origin" ? "23vw" : "80%")};
 `;
 const NewDataContainer = styled.div`
     width: 100%;
@@ -222,13 +223,13 @@ const NewDataContainer = styled.div`
 `;
 const NewDataForm = styled.div`
     position: fixed;
-    width: ${props => (props.page === 2 ? "25vw" : "80%")};
+    width: 80%;
     height: 500px;
     border-radius: 30px;
     padding: 10px;
     background-color: #fff;
     margin: auto;
-    box-shadow: 14px 12px 14px #dddaca;
+    box-shadow: 4px 3px 20px 8px #dddaca;
     top: 360px;
     z-index: ${props => (props.page === 0 ? "0" : "10")};
     display: ${props => (props.page === 0 ? "none" : "block")};
@@ -247,7 +248,7 @@ const AnalysisDataForm = styled.div`
     padding: 10px;
     background-color: #fff;
     margin: 2% 5%;
-    box-shadow: 14px 12px 14px #dddaca;
+    box-shadow: 4px 3px 20px 8px #dddaca;
     top: 360px;
     z-index: 10;
     display: block;
@@ -261,7 +262,7 @@ const AnalysisDrawingContainer = styled.div`
 const AnalysisAssembledContainer = styled.div`
     border-radius: 30px;
     background-color: #fff;
-    box-shadow: 14px 12px 14px #dddaca;
+    box-shadow: 4px 3px 20px 8px #dddaca;
     width: 45vw;
     padding: 2%;
 `;
@@ -272,12 +273,13 @@ const Border = styled.div`
     padding: 20px;
     background-color: #fff;
     justify-content: space-between;
-    box-shadow: 14px 12px 14px #dddaca;
+    box-shadow: 4px 3px 20px 8px #dddaca;x;
 `;
 const Pie = styled.div``;
 /* -----------表單區-companies----------*/
 const Form = styled.div`
-    border: solid 1px #000000;
+    border: solid 1px #e4e4e4;
+    box-shadow: 1px 1px 6px 0 #dfdfdf;
     padding: 20px 5%;
     border-radius: 10px;
     width: 100%;
@@ -285,12 +287,23 @@ const Form = styled.div`
     display: flex;
     flex-direction: column;
     height: ${props => (props.columnQty === 7 ? "482px" : "auto")};
-    margin-top: ${props => (props.mode === "bom" ? "40px" : "auto")};
+    margin-top: ${props => (props.mode === "structure" ? "40px" : "auto")};
+`;
+const StructureForm = styled.div`
+    display: flex;
+`;
+const StructrueSingleLine = styled.div`
+    margin-right: 50px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 6px 0 #dfdfdf;
+    border: solid 1px #e4e4e4;
+    :hover: {
+        background-color: #b9e1ea63;
+    }
 `;
 const SingleLine = styled.div`
     display: flex;
-    margin: 5px 5px;
-    padding: 5px 5px;
+    padding: 10px;
     align-items: center;
     justify-content: space-between;
     :hover {
@@ -323,8 +336,10 @@ const DataListStyled = styled.datalist`
 `;
 const InputStyled = styled.input`
     font-size: 16px;
-    width: ${props => (props.inputWidth === 170 ? "170px" : "120px")};
+    width: ${props =>
+        props.inputWidth !== undefined ? `${props.inputWidth}px` : "120px"};
     border: 1px solid #bebebe;
+    padding-right: 5px;
     border-radius: 5px;
     height: 40px;
     text-align: center;
@@ -349,31 +364,26 @@ const TextareaStyled = styled.textarea`
 
 /* -----------列表區-----------*/
 const AddScrollbar = styled.div`
-    border: solid 1px #000000;
     border-radius: 10px;
     background-color: #fff;
     white-space: pre-wrap;
     height: ${props =>
-        props.mode === "bom" && props.page === "3"
+        props.mode === "structure" && props.page === "3"
             ? "180px"
-            : props.mode === "bom" && props.page === "4"
+            : props.mode === "structure" && props.page === "4"
             ? "180px"
-            : props.mode === "bom"
-            ? "550px"
-            : props.mode === "order"
-            ? "550px"
-            : props.columnQty === 4
-            ? "340px"
-            : props.columnQty === 7
-            ? "482px"
-            : props.columnQty === 8
-            ? "549px"
-            : "300px"};
+            : props.mode === "structure"
+            ? "600px"
+            : props.mode === "origin"
+            ? "600px"
+            : "320px"};
     overflow-x: scroll;
     overflow-y: scroll;
     scrollbar-width: none;
     padding: ${props =>
-        props.mode === "bom"
+        props.mode === "structure" && props.page === "5"
+            ? "0px 15%"
+            : props.mode === "structure"
             ? "0px 5%"
             : props.columnQty === 4
             ? "0px 15%"
@@ -382,6 +392,8 @@ const AddScrollbar = styled.div`
             : props.columnQty === 7
             ? "0px 6%"
             : "0px 2%"};
+    border: solid 1px #e4e4e4;
+    box-shadow: 1px 1px 6px 0 #dfdfdf;
     ::-webkit-scrollbar {
         display: none;
     }
@@ -404,9 +416,17 @@ const StructureScrollbar = styled.div`
 `;
 const Table = styled.table`
     border-collapse: collapse;
-    width: ${props => (props.mode === "bom" ? "100%" : "auto")};
-    margin-left: ${props => (props.mode === "bomassemble" ? "70px" : "0px")};
-    height: ${props => (props.mode === "bomassemble" ? "100px" : "auto")};
+    width: ${props =>
+        props.mode === "structure"
+            ? "100%"
+            : props.mode === "assemble" && props.page === 5
+            ? "auto"
+            : props.mode === "assemble"
+            ? "340px"
+            : "auto"};
+    margin-left: ${props =>
+        props.mode === "structureassemble" ? "70px" : "0px"};
+    height: ${props => (props.mode === "structureassemble" ? "100px" : "auto")};
 `;
 const Thead = styled.thead`
     background-color: #fff;
@@ -414,24 +434,29 @@ const Thead = styled.thead`
     z-index: 1;
     top: 0;
 `;
-const Tr = styled.tr`
+const Tr = styled.tr``;
+const TrBody = styled.tr`
+    border-radius: 10px;
     height: 50px;
+    :hover {
+        background-color: #b9e1ea63;
+    }
 `;
 const Td = styled.td`
     width: ${props =>
-        props.mode === "bom"
+        props.mode === "structure"
             ? "142px"
             : props.mode === "anlysis"
             ? "160px"
             : "90px"};
     padding: ${props =>
-        props.mode === "bom" ? "5px 10px" : "20px 0px 5px 10px"};
+        props.mode === "structure" ? "5px 10px" : "20px 0px 5px 10px"};
 `;
 const ThTitle = styled.th`
     padding-left: 10px;
     height: 50px;
     font-weight: 500;
-    width: ${props => (props.mode === "bom" ? "100px" : "auto")};
+    width: ${props => (props.mode === "structure" ? "170px" : "auto")};
 `;
 const ThButtonTitle = styled.th`
     width: 50px;
@@ -544,7 +569,7 @@ const Main = styled.div`
     }
 `;
 const Section = styled.div`
-    padding: ${props => (props.mode === "bom" ? "10px 5%" : "20px 5%")};
+    padding: ${props => (props.mode === "structure" ? "10px 5%" : "20px 5%")};
     width: ${props => (props.mode === "analysis" ? "68vw" : "77vw")};
     margin: auto;
 `;
@@ -599,6 +624,9 @@ const DivStyled = styled.div`
 `;
 
 export {
+    TrBody,
+    StructrueSingleLine,
+    StructureForm,
     TextareaStyled,
     Pie,
     AnalysisAssembledContainer,

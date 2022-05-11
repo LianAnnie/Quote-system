@@ -42,7 +42,7 @@ function Structure({
     const [parentData, setParentData] = useState({});
     const [childData, setChildData] = useState([]);
     const [renderAssembledList, setRenderAssembledList] = useState([]);
-    const [page, setPage] = useState(startPage[assembleCollectionName]);
+    const [page, setPage] = useState(0);
 
     useEffect(() => {
         handleProcessingDataChange(parentData);
@@ -348,12 +348,25 @@ function Structure({
             />
             <NewDataContainer>
                 <NewDataForm page={page}>
+                    {page === 0 ? null : (
+                        <>
+                            <AssembleData
+                                mode="structure"
+                                page={page}
+                                collectionName={assembleCollectionName}
+                                processingData={processingData}
+                                setProcessingData={setProcessingData}
+                                childData={childData}
+                            />
+                        </>
+                    )}
                     {page === 2
                         ? (assembleCollectionName === "partQuotations2" ||
                               assembleCollectionName ===
                                   "productQuotations2") && (
                               <Quotes
-                                  mode="bom"
+                                  mode="strucutre"
+                                  page={page}
                                   handleDataChange={handleProcessingDataChange}
                                   processingData={processingData}
                               />
@@ -363,7 +376,8 @@ function Structure({
                         ? (assembleCollectionName === "order" ||
                               assembleCollectionName === "purchase") && (
                               <Orders
-                                  mode="bom"
+                                  mode="strucutre"
+                                  page={page}
                                   handleDataChange={handleProcessingDataChange}
                                   processingData={processingData}
                               />
@@ -371,8 +385,8 @@ function Structure({
                         : null}
                     {page === 3 ? (
                         <ListWithRadio
+                            mode="structure"
                             page={page}
-                            mode="bom"
                             collectionName={parentCollectionName}
                             list={parentList}
                             setProcessingData={setParentData}
@@ -381,27 +395,18 @@ function Structure({
                     ) : null}
                     {page === 4 ? (
                         <ListWithCheckBox
-                            mode="bom"
+                            mode="structure"
+                            page={page}
                             collectionName={childCollectionName}
                             list={childList}
                             setProcessingData={setChildData}
                             processingData={childData}
                         />
                     ) : null}
-                    {page === 0 || page === 2 ? null : (
-                        <>
-                            <AssembleData
-                                mode="bom"
-                                page={page}
-                                collectionName={assembleCollectionName}
-                                processingData={processingData}
-                                setProcessingData={setProcessingData}
-                                childData={childData}
-                            />
-                        </>
-                    )}
+
                     {page === 5 ? (
                         <AddButton
+                            mode="structure"
                             page={page}
                             sx={{ fontSize: 26 }}
                             fix="fix"
@@ -427,7 +432,7 @@ function Structure({
             </NewDataContainer>
             <ErrorBoundary>
                 <List
-                    mode={assembleCollectionName}
+                    mode="structure"
                     collectionName={assembleCollectionName}
                     list={renderAssembledList}
                     setList={setAssembleList}

@@ -240,6 +240,9 @@ function List({ collectionName, list, setList, mode }) {
         setFilterList(newFilterList);
     }
 
+    console.log(mode);
+    console.log(data.listCollections[collectionName][1].length);
+
     return (
         <Section>
             <Flex>

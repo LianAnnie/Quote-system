@@ -13,9 +13,7 @@ import HandshakeIcon from "@mui/icons-material/Handshake";
 import InsertChartIcon from "@mui/icons-material/InsertChart";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Outlet } from "react-router-dom";
-import VanillaTilt from "vanilla-tilt";
 import Logo from "./Logo";
-
 const Orange = styled.div`
     width: ${props => (props.showNavBar ? "250px" : "100vw")};
     height: ${props => (props.showNavBar ? "100vh" : "68px")};
@@ -84,6 +82,11 @@ const HideMobile = styled.nav`
     }
 `;
 const NavbarStyled = styled.div`
+    padding: ${props => (props.showNavBar ? "20px" : "0px")};
+    display: ${props => (props.showNavBar ? "block" : "flex")};
+    margin-left: ${props => (props.showNavBar ? "0px" : "50px")};
+`;
+const LogoutLinkStyled = styled.div`
     margin-top: 24px;
     transition: 0.2s;
     :hover {
@@ -91,12 +94,15 @@ const NavbarStyled = styled.div`
     }
 `;
 const NavLinkStyled = styled(NavLink)`
+    margin-top: ${props => (props.showNavBar ? "24px" : "8px")};
+
     display: flex;
     transition: 0.2s;
     :hover {
         transform: scale(1.1);
     }
 `;
+const LogoLinkStyled = styled(NavLink)``;
 const Close = styled(CloseIcon)`
     display: flex;
     position: absolute;
@@ -108,7 +114,7 @@ const Close = styled(CloseIcon)`
 `;
 const Black = styled.div`
     color: #000;
-    margin: 0px 5px;
+    margin: 0px 10px;
     @media ${device.laptopL} {
         display: flex;
     }
@@ -118,6 +124,15 @@ const Black = styled.div`
         }
     }
 `;
+const HideBlack = styled.div`
+    display: ${props => (props.showNavBar ? "flex" : "none")};
+    color: #000;
+    margin: 0px 5px;
+    @media ${device.desktop} {
+        display: flex;
+    }
+`;
+
 const Flex = styled.div`
     display: flex;
 `;
@@ -126,6 +141,12 @@ const Hide = styled.div`
     @media ${device.desktop} {
         display: none;
     }
+`;
+const Cover = styled.div`
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    z-index: 98;
 `;
 
 const NavInfoIcon = styled(CallToActionIcon)``;
@@ -153,7 +174,9 @@ function SideBar({ signOut }) {
         <>
             <Orange showNavBar={showNavBar}>
                 <Header showNavBar={showNavBar}>
-                    <Logo showNavBar={showNavBar} options={options} />
+                    <LogoLinkStyled style={{ textDecoration: "none" }} to="/">
+                        <Logo showNavBar={showNavBar} options={options} />
+                    </LogoLinkStyled>
                     <Title>
                         {!showNavBar && (
                             <Hide>
@@ -162,31 +185,41 @@ function SideBar({ signOut }) {
                         )}
                         <Design>Quote System</Design>
                     </Title>
-
-                    <HideMobile showNavBar={showNavBar}>
+                    <NavbarStyled showNavBar={showNavBar}>
                         {linkArray.map((e, index) => (
-                            <NavbarStyled key={index}>
-                                <NavLinkStyled
-                                    style={{ textDecoration: "none" }}
-                                    to={e[0]}
-                                >
-                                    <Black>{e[1]}</Black>
-                                    <Black>{e[2]}</Black>
-                                </NavLinkStyled>
-                            </NavbarStyled>
+                            <NavLinkStyled
+                                showNavBar={showNavBar}
+                                key={index}
+                                style={{ textDecoration: "none" }}
+                                to={e[0]}
+                            >
+                                <Black>{e[1]}</Black>
+                                <HideBlack showNavBar={showNavBar}>
+                                    {e[2]}
+                                </HideBlack>
+                            </NavLinkStyled>
                         ))}
-                        <NavbarStyled>
+                    </NavbarStyled>
+                    <HideMobile showNavBar={showNavBar}>
+                        <LogoutLinkStyled>
                             <Flex>
                                 <Black>
                                     <LogoutIcon />
                                 </Black>
                                 <Black onClick={() => signOut()}>登出</Black>
                             </Flex>
-                        </NavbarStyled>
+                        </LogoutLinkStyled>
                     </HideMobile>
                 </Header>
                 {showNavBar && <Close onClick={() => setShowNavBar(false)} />}
             </Orange>
+            {showNavBar ? (
+                <Cover
+                    showNavBar={showNavBar}
+                    onClick={() => setShowNavBar(false)}
+                />
+            ) : null}
+
             <Outlet />
         </>
     );
