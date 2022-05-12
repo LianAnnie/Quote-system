@@ -44,24 +44,20 @@ const Orange = styled.div`
         }
     }
 `;
-
 const Burger = styled(MenuIcon)`
     display: flex;
     margin: 6px 20px 6px 10px;
     width: 20px;
 `;
-
 const Header = styled.div`
     display: ${props => (props.showNavBar ? "block" : "flex")};
     @media ${device.desktop} {
         display: block;
     }
 `;
-
 const Title = styled.div`
     display: ${props => (props.showNavBar ? "block" : "flex")};
 `;
-
 const Design = styled.div`
     font-weight: 700;
     font-size: 24px;
@@ -95,14 +91,28 @@ const LogoutLinkStyled = styled.div`
 `;
 const NavLinkStyled = styled(NavLink)`
     margin-top: ${props => (props.showNavBar ? "24px" : "8px")};
-
+    padding: 2px;
     display: flex;
-    transition: 0.2s;
+    transition: 0.5s;
+    border-radius: 5px;
     :hover {
-        transform: scale(1.1);
+        transform: ${props =>
+            props.showNavBar ? "translateX(20px)" : "translateY(15px)"};
+
+        background-color: #fefae2;
+        // &:after {
+        //     position: relative;
+        //     width: 10px;
+        //     height: 10px;
+        //     content: "";
+        //     background-color: #c3d6af;
+        //     top: -12px;
+        //     left: -8px;
+        //     box-shadow: 2px 3px 0 0 #fefae2;
+        //     border-bottom-right-radius: 10px;
+        // }
     }
 `;
-const LogoLinkStyled = styled(NavLink)``;
 const Close = styled(CloseIcon)`
     display: flex;
     position: absolute;
@@ -119,9 +129,7 @@ const Black = styled.div`
         display: flex;
     }
     @media ${device.desktop} {
-        .css-i4bv87-MuiSvgIcon-root {
-            display: flex;
-        }
+        display: flex;
     }
 `;
 const HideBlack = styled.div`
@@ -132,7 +140,6 @@ const HideBlack = styled.div`
         display: flex;
     }
 `;
-
 const Flex = styled.div`
     display: flex;
 `;
@@ -149,13 +156,11 @@ const Cover = styled.div`
     z-index: 98;
 `;
 
-const NavInfoIcon = styled(CallToActionIcon)``;
-
 function SideBar({ signOut }) {
     const [showNavBar, setShowNavBar] = useState(false);
 
     const linkArray = [
-        ["/", <NavInfoIcon styled={{ transition: "2s" }} />, "待辦通知"],
+        ["/", <CallToActionIcon />, "待辦通知"],
         ["/overview", <PublicIcon />, "銷售概覽"],
         ["/company", <BusinessIcon />, "客戶廠商"],
         ["/bom", <CategoryIcon />, "產品零件"],
@@ -174,9 +179,9 @@ function SideBar({ signOut }) {
         <>
             <Orange showNavBar={showNavBar}>
                 <Header showNavBar={showNavBar}>
-                    <LogoLinkStyled style={{ textDecoration: "none" }} to="/">
+                    <NavLink style={{ textDecoration: "none" }} to="/">
                         <Logo showNavBar={showNavBar} options={options} />
-                    </LogoLinkStyled>
+                    </NavLink>
                     <Title>
                         {!showNavBar && (
                             <Hide>

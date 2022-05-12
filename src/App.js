@@ -9,6 +9,7 @@ import Analysis from "./Analysis";
 import Quote from "./Quote";
 import Order from "./Order";
 import SideBar from "./component/SideBar";
+import Loading from "./component/Loading";
 import {
     BrowserRouter as Router,
     Routes,
@@ -29,7 +30,9 @@ function RequireAuth({ children, loginStatus }) {
     if (loginStatus === 0) {
         return <Navigate to="/login" state={{ from: location }} replace />;
     }
-
+    if (loginStatus === 2) {
+        return <Loading />;
+    }
     return children;
 }
 
@@ -107,32 +110,28 @@ function App() {
                             />
                         }
                     />
-                    {loginStatus === 1 ? (
-                        <Route
-                            element={
-                                <SideBar
-                                    signOut={runFirebaseSignOut}
-                                    viewMode={viewMode}
-                                    setViewMode={setViewMode}
-                                />
-                            }
-                        >
-                            {RouteArray.map((e, index) => (
-                                <Route
-                                    key={index}
-                                    path={e[0]}
-                                    element={
-                                        <RequireAuth loginStatus={loginStatus}>
-                                            {e[1]}
-                                        </RequireAuth>
-                                    }
-                                />
-                            ))}
-                            <Route path="/*" element={<Navigate to="/" />} />
-                        </Route>
-                    ) : (
-                        <Route path="/*" element={<Navigate to="/login" />} />
-                    )}
+                    <Route
+                        element={
+                            <SideBar
+                                signOut={runFirebaseSignOut}
+                                viewMode={viewMode}
+                                setViewMode={setViewMode}
+                            />
+                        }
+                    >
+                        {RouteArray.map((e, index) => (
+                            <Route
+                                key={index}
+                                path={e[0]}
+                                element={
+                                    <RequireAuth loginStatus={loginStatus}>
+                                        {e[1]}
+                                    </RequireAuth>
+                                }
+                            />
+                        ))}
+                        <Route path="/*" element={<Navigate to="/" />} />
+                    </Route>
                 </Routes>
             </Router>
         </Container>
