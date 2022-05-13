@@ -91,7 +91,7 @@ function BulletinBoard() {
         date: "",
         type: "Order",
         status: 0,
-        comment: "comment",
+        comment: "請輸入待辦事項",
     };
     const [columns, setColumns] = useState([]);
     const [card, setCard] = useState(cardDataRule);
@@ -117,7 +117,7 @@ function BulletinBoard() {
             items: [],
         },
         5: {
-            name: "刪除",
+            name: "請拖曳至此刪除",
             items: [],
         },
     };
@@ -246,10 +246,11 @@ function BulletinBoard() {
                                         onChange={e => handleCardChange(e)}
                                         rows="3"
                                         cols="20"
-                                        value={card.comment}
+                                        placeholder={card.comment}
                                     />
                                 </SingleLine>
                                 <AddButton
+                                    sx={{ width: "30px", height: "30px" }}
                                     onClick={() => {
                                         addCard();
                                     }}

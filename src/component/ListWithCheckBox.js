@@ -14,6 +14,8 @@ import {
     Tr,
     Flex,
     CancelSelectedButton,
+    CancelSelectedText,
+    ShowTextForButton,
     ThTitle,
     UpdateInput,
     AddScrollbar,
@@ -86,11 +88,15 @@ function ListWithRadio({
                 <Title>
                     請選擇包含的{data.listCollections[collectionName][0]}
                 </Title>
-                <CancelSelectedButton
-                    onClick={() => {
-                        handleConditionChange(0);
-                    }}
-                />
+                <ShowTextForButton>
+                    <CancelSelectedButton
+                        sx={{ width: "30px", height: "30px" }}
+                        onClick={() => {
+                            handleConditionChange(0);
+                        }}
+                    />
+                    <CancelSelectedText> 取消篩選</CancelSelectedText>
+                </ShowTextForButton>
             </Flex>
             <AddScrollbar mode={mode} page="4">
                 <Table>

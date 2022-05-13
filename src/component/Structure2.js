@@ -312,6 +312,7 @@ function Structure2({
                         ) : null}
                         {page === 5 ? (
                             <BackButton
+                                sx={{ width: "30px", height: "30px" }}
                                 mode={assembleCollectionName}
                                 page={page}
                                 onClick={() => pageChange(-1)}
@@ -319,6 +320,7 @@ function Structure2({
                         ) : null}
                         {page === 4 ? (
                             <NextButton
+                                sx={{ width: "30px", height: "30px" }}
                                 mode={assembleCollectionName}
                                 page={page}
                                 onClick={() => pageChange(1)}

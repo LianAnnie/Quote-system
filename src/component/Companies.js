@@ -149,7 +149,10 @@ function Companies({
                         ))}
                     </SelectStyled>
                 </SingleLine>
-                <AddButton onClick={() => submit()} />
+                <AddButton
+                    sx={{ width: "30px", height: "30px" }}
+                    onClick={() => submit()}
+                />
             </Form>
         </Article>
     );

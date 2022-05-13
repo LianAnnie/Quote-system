@@ -22,7 +22,9 @@ import {
     DeleteButton,
     SaveButton,
     CancelEditButton,
+    CancelSelectedText,
     CancelSelectedButton,
+    ShowTextForButton,
     ThTitle,
     UpdateInput,
     AddScrollbar,
@@ -62,8 +64,10 @@ function List({ collectionName, list, setList, mode }) {
             newFilterList = handleListChange(newFilterCondition, list);
             setFilterCondition(newFilterCondition);
         } else {
+            console.log(list);
             newFilterList = handleListChange(filterCondition, list);
             setFilterCondition(filterCondition);
+            return;
         }
         if (newFilterList.length === 0) {
             console.log(
@@ -233,6 +237,7 @@ function List({ collectionName, list, setList, mode }) {
             );
             api.deleteDoc(collectionName, deleteIdArray);
         } else {
+            console.log(123);
             api.deleteDoc(collectionName, deleteData.id.join(""));
         }
         console.log(newList);
@@ -240,18 +245,21 @@ function List({ collectionName, list, setList, mode }) {
         setFilterList(newFilterList);
     }
 
-    console.log(mode);
-    console.log(data.listCollections[collectionName][1].length);
+    console.log(list);
 
     return (
         <Section>
             <Flex>
                 <Title>{data.listCollections[collectionName][0]}列表</Title>
-                <CancelSelectedButton
-                    onClick={() => {
-                        handleConditionChange(0);
-                    }}
-                />
+                <ShowTextForButton>
+                    <CancelSelectedButton
+                        sx={{ width: "30px", height: "30px" }}
+                        onClick={() => {
+                            handleConditionChange(0);
+                        }}
+                    />
+                    <CancelSelectedText> 取消篩選</CancelSelectedText>
+                </ShowTextForButton>
             </Flex>
             <AddScrollbar
                 mode={mode}
@@ -348,6 +356,10 @@ function List({ collectionName, list, setList, mode }) {
                                         ))}
                                         <TBodyTdButton>
                                             <UpdatedButton
+                                                sx={{
+                                                    width: "30px",
+                                                    height: "30px",
+                                                }}
                                                 onClick={() =>
                                                     handleRevisedStatus(index)
                                                 }
@@ -359,6 +371,10 @@ function List({ collectionName, list, setList, mode }) {
                                                 ""
                                             ) : (
                                                 <DeleteButton
+                                                    sx={{
+                                                        width: "30px",
+                                                        height: "30px",
+                                                    }}
                                                     onClick={() =>
                                                         deleteData(index)
                                                     }
@@ -401,6 +417,10 @@ function List({ collectionName, list, setList, mode }) {
                                         )}
                                         <Td>
                                             <SaveButton
+                                                sx={{
+                                                    width: "30px",
+                                                    height: "30px",
+                                                }}
                                                 onClick={() =>
                                                     handleRevisedStatus(
                                                         index,
@@ -411,6 +431,10 @@ function List({ collectionName, list, setList, mode }) {
                                         </Td>
                                         <Td>
                                             <CancelEditButton
+                                                sx={{
+                                                    width: "30px",
+                                                    height: "30px",
+                                                }}
                                                 onClick={() =>
                                                     handleRevisedStatus(
                                                         index,

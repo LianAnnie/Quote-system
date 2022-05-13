@@ -44,7 +44,11 @@ function AssembleData2({ collectionName, processingData, setProcessingData }) {
                                 data.assembleDataCollections[
                                     collectionName
                                 ][3].map((e, index) => (
-                                    <ThTitle mode="bom" key={index}>
+                                    <ThTitle
+                                        mode="anlysis"
+                                        key={index}
+                                        index={index}
+                                    >
                                         {e}
                                     </ThTitle>
                                 ))}

@@ -12,7 +12,7 @@ function Input({ title, type, handleDataChange, data, name, inputWidth }) {
                     onChange={e => {
                         handleDataChange(e);
                     }}
-                    value={data[name]}
+                    placeholder={data[name]}
                 />
             ) : (
                 <InputStyled
@@ -23,7 +23,7 @@ function Input({ title, type, handleDataChange, data, name, inputWidth }) {
                     onChange={e => {
                         handleDataChange(e);
                     }}
-                    value={data[name]}
+                    placeholder={data[name]}
                 />
             )}
         </SingleLine>

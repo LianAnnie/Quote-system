@@ -406,14 +406,18 @@ function Structure({
 
                     {page === 5 ? (
                         <AddButton
+                            sx={{ width: "30px", height: "30px", fontSize: 26 }}
                             mode="structure"
                             page={page}
-                            sx={{ fontSize: 26 }}
                             fix="fix"
                             onClick={() => submit()}
                         />
                     ) : null}
-                    <CloseButton page={page} onClick={() => close()} />
+                    <CloseButton
+                        sx={{ width: "30px", height: "30px" }}
+                        page={page}
+                        onClick={() => close()}
+                    />
                     {assembleCollectionName === "bom" &&
                     page === 3 ? null : assembleCollectionName === "order" &&
                       page === 2 ? null : assembleCollectionName ===
@@ -421,12 +425,17 @@ function Structure({
                       page === 2 ? null : assembleCollectionName ===
                           "productQuotations2" && page === 2 ? null : (
                         <BackButton
+                            sx={{ width: "30px", height: "30px" }}
                             page={page}
                             onClick={() => pageChange(-1)}
                         />
                     )}
                     {page === 5 ? null : (
-                        <NextButton page={page} onClick={() => pageChange(1)} />
+                        <NextButton
+                            sx={{ width: "30px", height: "30px" }}
+                            page={page}
+                            onClick={() => pageChange(1)}
+                        />
                     )}
                 </NewDataForm>
             </NewDataContainer>

@@ -51,44 +51,73 @@ const Button = styled.div`
     }
 `;
 const UpdatedButton = styled(DriveFileRenameOutlineIcon)`
-    color: #fff;
+    color: #8a9b77;
     border-radius: 5px;
     cursor: pointer;
     background-color: #c4d6b0;
+    padding: 5px;
     :hover {
         background-color: #513c2c;
+        color: #fff;
     }
 `;
 const DeleteButton = styled(ClearIcon)`
-    color: #fff;
+    color: #8a9b77;
     border-radius: 5px;
     cursor: pointer;
     background-color: #c4d6b0;
+    padding: 5px;
     :hover {
         background-color: #513c2c;
+        color: #fff;
     }
 `;
 const CancelSelectedButton = styled(DeselectIcon)`
-    color: #fff;
+    color: #8a9b77;
     border-radius: 5px;
-    margin: 0px 20px;
+    margin: 0 0 0 20px;
     cursor: pointer;
     background-color: #c4d6b0;
+    padding: 5px;
     :hover {
         background-color: #513c2c;
+        color: #fff;
     }
 `;
+const ShowTextForButton = styled.div`
+    overflow: hidden;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    :hover {
+        width: 150px;
+    }
+`;
+const CancelSelectedText = styled.div`
+    margin-top: 5px;
+    margin-left: 8px;
+`;
 const SaveButton = styled(UpgradeIcon)`
-    color: #fff;
-    background-color: #513c2c;
+    color: #8a9b77;
     border-radius: 5px;
     cursor: pointer;
+    background-color: #c4d6b0;
+    padding: 2px;
+    :hover {
+        background-color: #513c2c;
+        color: #fff;
+    }
 `;
 const CancelEditButton = styled(EditOffIcon)`
-    color: #fff;
-    background-color: #513c2c;
+    color: #8a9b77;
     border-radius: 5px;
     cursor: pointer;
+    background-color: #c4d6b0;
+    padding: 5px;
+    :hover {
+        background-color: #513c2c;
+        color: #fff;
+    }
 `;
 const ExportButton = styled(FileDownloadIcon)`
     color: #fff;
@@ -131,11 +160,12 @@ const LogoutButton = styled(LogoutIcon)`
 `;
 const AddButton = styled(AddIcon)`
     text-align: right;
-    margin-left: 80%;
+    margin-left: 84%;
     cursor: pointer;
-    color: #fff;
+    color: #8a9b77;
     margin-top: auto;
     border-radius: 5px;
+    padding: 5px;
     position: ${props => (props.fix === "fix" ? "fixed" : "static")};
     top: 380px;
     right: 17.2%;
@@ -143,6 +173,7 @@ const AddButton = styled(AddIcon)`
     z-index: 11;
     :hover {
         background-color: #513c2c;
+        color: #fff;
     }
     .css-i4bv87-MuiSvgIcon-root {
         width: 24px;
@@ -150,7 +181,8 @@ const AddButton = styled(AddIcon)`
     }
 `; //companies
 const NextButton = styled(ArrowForwardIosIcon)`
-    color: #fffae3;
+    color: #8a9b77;
+    padding: 5px;
     height: 10px;
     border-radius: 5px;
     margin: 0px 20px;
@@ -162,11 +194,13 @@ const NextButton = styled(ArrowForwardIosIcon)`
     right: 20%;
     :hover {
         background-color: #513c2c;
+        color: #fff;
     }
 `;
 const BackButton = styled(ArrowBackIosNewIcon)`
-    color: #fffae3;
+    color: #8a9b77;
     border-radius: 5px;
+    padding: 5px;
     margin: 0px 20px;
     cursor: pointer;
     position: fixed;
@@ -176,11 +210,13 @@ const BackButton = styled(ArrowBackIosNewIcon)`
     background-color: #c4d6b0;
     :hover {
         background-color: #513c2c;
+        color: #fff;
     }
 `;
 const CloseButton = styled(CloseIcon)`
-    color: #fffae3;
+    color: #8a9b77;
     border-radius: 5px;
+    padding: 5px;
     margin: 0px 20px;
     cursor: pointer;
     position: fixed;
@@ -190,6 +226,7 @@ const CloseButton = styled(CloseIcon)`
     background-color: #c4d6b0;
     :hover {
         background-color: #513c2c;
+        color: #fff;
     }
 `;
 const CreatNewData = styled(FiberNewIcon)`
@@ -376,6 +413,8 @@ const AddScrollbar = styled.div`
             ? "600px"
             : props.mode === "origin"
             ? "600px"
+            : props.mode === "analysis"
+            ? "295px"
             : "320px"};
     overflow-x: scroll;
     overflow-y: scroll;
@@ -383,6 +422,8 @@ const AddScrollbar = styled.div`
     padding: ${props =>
         props.mode === "structure" && props.page === "5"
             ? "0px 15%"
+            : props.mode === "structure" && props.columnQty === 10
+            ? "0px 2%"
             : props.mode === "structure"
             ? "0px 5%"
             : props.columnQty === 4
@@ -391,7 +432,9 @@ const AddScrollbar = styled.div`
             ? "0px 6%"
             : props.columnQty === 7
             ? "0px 6%"
-            : "0px 2%"};
+            : props.columnQty === 6
+            ? "0px 4%"
+            : "0px 1%"};
     border: solid 1px #e4e4e4;
     box-shadow: 1px 1px 6px 0 #dfdfdf;
     ::-webkit-scrollbar {
@@ -415,6 +458,10 @@ const StructureScrollbar = styled.div`
     }
 `;
 const Table = styled.table`
+    table-layout: fixed;
+    word-wrap: break-word;
+    cellspacing: 0;
+    cellpadding: 0;
     border-collapse: collapse;
     width: ${props =>
         props.mode === "structure"
@@ -450,13 +497,33 @@ const Td = styled.td`
             ? "160px"
             : "90px"};
     padding: ${props =>
-        props.mode === "structure" ? "5px 10px" : "20px 0px 5px 10px"};
+        props.mode === "structure"
+            ? "5px 10px"
+            : props.mode === "anlysis"
+            ? "5px 0px 0px 0px"
+            : "20px 0px 5px 10px"};
+    height: ${props => (props.mode === "anlysis" ? "45px" : "auto")};
+    text-align: ${props => (props.mode === "anlysis" ? "center" : "left")};
 `;
 const ThTitle = styled.th`
+    min-width: ${props =>
+        props.mode === "structure"
+            ? "100px"
+            : props.mode === "anlysis" && props.index === 0
+            ? "150px"
+            : props.mode === "anlysis"
+            ? "130px"
+            : "auto"};
     padding-left: 10px;
     height: 50px;
     font-weight: 500;
-    width: ${props => (props.mode === "structure" ? "170px" : "auto")};
+    width: ${props =>
+        props.mode === "structure"
+            ? "150px"
+            : props.mode === "anlysis"
+            ? "150px"
+            : "auto"};
+    text-align: ${props => (props.mode === "anlysis" ? "center" : "left")};
 `;
 const ThButtonTitle = styled.th`
     width: 50px;
@@ -473,10 +540,10 @@ const TableSelectSearch = styled.select`
             : props.columnQty === 4
             ? "150px"
             : props.columnQty === 7
-            ? "105px"
-            : props.columnQty === 8 && props.index === 4
-            ? "95px"
-            : props.columnQty === 8
+            ? "100px"
+            : // : props.columnQty === 8 && props.index === 4
+            // ? "95px" 客戶訂單列表會有問題
+            props.columnQty === 8
             ? "85px"
             : props.columnQty === 10
             ? "68px"
@@ -499,14 +566,14 @@ const TableInputSearch = styled.input`
         props.index === 0
             ? "143px"
             : props.index === 6 || props.index === 7 || props.index === 8
-            ? "87px"
+            ? "88px"
             : props.columnQty === 4
             ? "140px"
             : props.columnQty === 7
             ? "87px"
-            : props.columnQty === 8 || props.index === 4
-            ? "80px"
-            : props.columnQty === 8
+            : // : props.columnQty === 8 || props.index === 4
+            // ? "80px" >客戶訂單列表會有問題
+            props.columnQty === 8
             ? "73px"
             : props.columnQty === 10
             ? "51px"
@@ -624,6 +691,8 @@ const DivStyled = styled.div`
 `;
 
 export {
+    CancelSelectedText,
+    ShowTextForButton,
     TrBody,
     StructrueSingleLine,
     StructureForm,

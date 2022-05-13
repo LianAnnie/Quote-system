@@ -66,7 +66,7 @@ function AnalysisForm({ handleDataChange, processingData, setProcessingData }) {
     }
 
     return (
-        <Article>
+        <Article mode="origin">
             <Form>
                 {/* <div> */}
                 {inputComponentArray.map(e => (

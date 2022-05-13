@@ -71,6 +71,7 @@ const InputStyled = styled.input`
     border: 1px solid #c4d6b0;
     text-align: center;
     letter-spacing: 1px;
+    front-size: 16px;
 `;
 
 const LogInAndRegisterButton = styled(Button)`
@@ -81,12 +82,25 @@ const LogInAndRegisterButton = styled(Button)`
     padding: 8px;
 `;
 
+const MessageContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+`;
+
 const Message = styled.div`
-    font-size: 5px;
+    font-size: 15px;
     text-align: right;
     margin-top: 5px;
     margin-bottom: 20px;
     letter-spacing: 0;
+`;
+
+const ErrorMessage = styled.div`
+    font-size: 15px;
+    text-align: right;
+    margin-top: 5px;
+    letter-spacing: 0;
+    color: red;
 `;
 
 const Status = styled.div`
@@ -208,11 +222,15 @@ function LogIn({
                                     type={e.type}
                                     placeholder={e.placeholder}
                                 />
-                                {meta.error && meta.touched && (
-                                    <span>{meta.error}</span>
-                                )}
+                                <MessageContainer>
+                                    <Message>{e.accountInformation}</Message>
+                                    {meta.error && meta.touched && (
+                                        <ErrorMessage>
+                                            {meta.error}
+                                        </ErrorMessage>
+                                    )}
+                                </MessageContainer>
                             </div>
-                            <Message>{e.accountInformation}</Message>
                         </>
                     )}
                 </Field>
@@ -239,7 +257,7 @@ function LogIn({
 
     return (
         <Container>
-            <Model />
+            {/* <Model /> */}
             <MainContainer>
                 <MainHeader>
                     <LogoImg src={require("./images/log.png")} alt="logo" />

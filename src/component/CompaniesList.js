@@ -1,5 +1,6 @@
 import List from "./List";
 import styled from "styled-components";
+import ErrorBoundary from "../admin/ErrorBoundary";
 
 const CompaniesListLayout = styled.div`
     flex-direction: column;
@@ -15,12 +16,14 @@ function CompaniesList({
 }) {
     return (
         <CompaniesListLayout>
-            <List
-                columnQty={4}
-                collectionName={"customers2"}
-                list={customerList}
-                setList={setCustomerList}
-            />
+            <ErrorBoundary>
+                <List
+                    columnQty={4}
+                    collectionName={"customers2"}
+                    list={customerList}
+                    setList={setCustomerList}
+                />
+            </ErrorBoundary>
             <List
                 columnQty={4}
                 collectionName={"suppliers2"}

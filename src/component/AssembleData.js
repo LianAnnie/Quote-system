@@ -152,7 +152,7 @@ function AssembleData({
                                                                         key={
                                                                             keyName
                                                                         }
-                                                                        value="請填寫"
+                                                                        placeholder="請填寫"
                                                                     />
                                                                 </Td>
                                                             ) : (

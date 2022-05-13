@@ -81,12 +81,15 @@ const NavbarStyled = styled.div`
     padding: ${props => (props.showNavBar ? "20px" : "0px")};
     display: ${props => (props.showNavBar ? "block" : "flex")};
     margin-left: ${props => (props.showNavBar ? "0px" : "50px")};
+    :ho ;
 `;
 const LogoutLinkStyled = styled.div`
     margin-top: 24px;
-    transition: 0.2s;
+    transition: 0.5s;
+    padding: 10px;
     :hover {
-        transform: scale(1.1);
+        background-color: #fefae2;
+        border-radius: 10px;
     }
 `;
 const NavLinkStyled = styled(NavLink)`
@@ -95,23 +98,6 @@ const NavLinkStyled = styled(NavLink)`
     display: flex;
     transition: 0.5s;
     border-radius: 5px;
-    :hover {
-        transform: ${props =>
-            props.showNavBar ? "translateX(20px)" : "translateY(15px)"};
-
-        background-color: #fefae2;
-        // &:after {
-        //     position: relative;
-        //     width: 10px;
-        //     height: 10px;
-        //     content: "";
-        //     background-color: #c3d6af;
-        //     top: -12px;
-        //     left: -8px;
-        //     box-shadow: 2px 3px 0 0 #fefae2;
-        //     border-bottom-right-radius: 10px;
-        // }
-    }
 `;
 const Close = styled(CloseIcon)`
     display: flex;
@@ -156,6 +142,27 @@ const Cover = styled.div`
     z-index: 98;
 `;
 
+const ActiveDiv = styled.div`
+    transition: 0.5s;
+    width: ${props => (props.showNavBar ? "130px" : "")};
+    display: flex;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-top-right-radius: ${props => (props.showNavBar ? "0px" : "10px")};
+    padding: 5px;
+    transform: ${props =>
+        props.showNavBar && props.active
+            ? "translateX(58px)"
+            : props.active
+            ? "translateY(20px)"
+            : ""};
+    background-color: ${props => (props.active ? "#fefae2" : "")};
+    :hover {
+        background-color: #fefae2;
+        border-radius: 10px;
+    }
+`;
+
 function SideBar({ signOut }) {
     const [showNavBar, setShowNavBar] = useState(false);
 
@@ -198,10 +205,17 @@ function SideBar({ signOut }) {
                                 style={{ textDecoration: "none" }}
                                 to={e[0]}
                             >
-                                <Black>{e[1]}</Black>
-                                <HideBlack showNavBar={showNavBar}>
-                                    {e[2]}
-                                </HideBlack>
+                                {({ isActive }) => (
+                                    <ActiveDiv
+                                        showNavBar={showNavBar}
+                                        active={isActive}
+                                    >
+                                        <Black>{e[1]}</Black>
+                                        <HideBlack showNavBar={showNavBar}>
+                                            {e[2]}
+                                        </HideBlack>
+                                    </ActiveDiv>
+                                )}
                             </NavLinkStyled>
                         ))}
                     </NavbarStyled>

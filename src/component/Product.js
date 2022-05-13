@@ -109,7 +109,10 @@ function Product({ collectionName, list, setList }) {
                     name="mark"
                     value={exportData.mark}
                 />
-                <AddButton onClick={() => submit()} />
+                <AddButton
+                    sx={{ width: "30px", height: "30px" }}
+                    onClick={() => submit()}
+                />
             </Form>
         </Article>
     );

@@ -47,6 +47,7 @@ const form = {
     handleListChange(condition, data) {
         const filterKeyArray = Object.keys(condition);
         let copyFilterList = [...data];
+        console.log(copyFilterList);
         const newFilterList = copyFilterList.filter(
             m =>
                 !filterKeyArray
