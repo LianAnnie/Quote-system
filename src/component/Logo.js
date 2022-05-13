@@ -12,9 +12,27 @@ const LogoImage = styled.div`
     margin: ${props => (props.showNavBar ? "10px" : "0px 0px 0px 10px ")};
     background-image: url(${require("../images/log.png")});
     filter: drop-shadow(0 30px 30px rgba(0, 0, 0, 0.2));
+    @media ${device.mobileS} {
+        width: ${props => (props.showNavBar ? "50%" : "40px")};
+        height: 100px;
+        margin: ${props =>
+            props.showNavBar ? "10px 10px 10px 25px" : "0px 0px 0px 10px "};
+    }
+    @media ${device.mobileL} {
+        width: ${props => (props.showNavBar ? "65%" : "40px")};
+        height: 100px;
+        margin: ${props =>
+            props.showNavBar ? "10px 10px 10px 25px" : "0px 0px 0px 10px "};s
+    }
+    @media ${device.tablet} {
+        width: ${props => (props.showNavBar ? "80%" : "40px")};
+        height: 100px;
+        margin: ${props =>
+            props.showNavBar ? "10px 10px 10px 25px" : "0px 0px 0px 10px "};
+    }
     @media ${device.desktop} {
         width: 80%;
-        height: 200px;
+        height: ${props => (props.showNavBar ? "100px" : "180px")};
     }
 `;
 

@@ -18,7 +18,7 @@ const Orange = styled.div`
     width: ${props => (props.showNavBar ? "250px" : "100vw")};
     height: ${props => (props.showNavBar ? "100vh" : "68px")};
     display: ${props => (props.showNavBar ? "flex" : "block")};
-    padding: ${props => (props.showNavBar ? "100px 40px" : "16px 0px")};
+    padding: ${props => (props.showNavBar ? "50px 40px" : "16px 0px")};
     justify-content: space-between;
     text-align: left;
     color: #000;
@@ -26,22 +26,21 @@ const Orange = styled.div`
     position: fixed;
     z-index: 99;
     @media ${device.mobileS} {
-        padding: ${props => (props.showNavBar ? "20px 40px" : "16px 0px")};
+        padding: ${props => (props.showNavBar ? "20px 20px" : "16px 0px")};
+        width: ${props => (props.showNavBar ? "200px" : "100vw")};
     }
     @media ${device.mobileL} {
-        padding: ${props => (props.showNavBar ? "30px 40px" : "16px 0px")};
+        padding: ${props => (props.showNavBar ? "20px 20px" : "16px 0px")};
+        width: ${props => (props.showNavBar ? "200px" : "100vw")};
     }
     @media ${device.tablet} {
         padding: ${props => (props.showNavBar ? "50px 40px" : "16px 0px")};
+        width: ${props => (props.showNavBar ? "250px" : "100vw")};
     }
     @media ${device.desktop} {
-        padding: ${props => (props.showNavBar ? "100px 40px" : "16px 0px")};
-        width: 300px;
-        height: 100vh;
-        padding: 100px 48px;
-        .css-i4bv87-MuiSvgIcon-root {
-            display: none;
-        }
+        width: 250px;
+        height: 100vw;
+        padding: 50px 40px;
     }
 `;
 const Burger = styled(MenuIcon)`
@@ -63,7 +62,7 @@ const Design = styled.div`
     font-size: 24px;
     line-height: 36px;
     @media ${device.desktop} {
-        padding-left: 20px;
+        padding-left: ${props => (props.showNavBar ? "20px" : "0px")};
     }
 `;
 const HideMobile = styled.nav`
@@ -81,7 +80,22 @@ const NavbarStyled = styled.div`
     padding: ${props => (props.showNavBar ? "20px" : "0px")};
     display: ${props => (props.showNavBar ? "block" : "flex")};
     margin-left: ${props => (props.showNavBar ? "0px" : "50px")};
-    :ho ;
+    @media ${device.mobileS} {
+        display: ${props => (props.showNavBar ? "block" : "none")};
+    }
+    @media ${device.mobileL} {
+        display: ${props => (props.showNavBar ? "block" : "none")};
+    }
+    @media ${device.tablet} {
+        padding: ${props => (props.showNavBar ? "20px" : "0px")};
+        display: ${props => (props.showNavBar ? "block" : "flex")};
+        margin-left: ${props => (props.showNavBar ? "0px" : "50px")};
+    }
+    @media ${device.desktop} {
+        padding: 20px;
+        display: block;
+        margin-left: 0px;
+    }
 `;
 const LogoutLinkStyled = styled.div`
     margin-top: 24px;
@@ -91,6 +105,16 @@ const LogoutLinkStyled = styled.div`
         background-color: #fefae2;
         border-radius: 10px;
     }
+    @media ${device.mobileS} {
+        margin-top: 10px;
+        padding: 1px;
+        font-size: 10px;
+    }
+    @media ${device.mobileL} {
+        margin-top: 10px;
+        padding: 1px;
+        font-size: 10px;
+    }
 `;
 const NavLinkStyled = styled(NavLink)`
     margin-top: ${props => (props.showNavBar ? "24px" : "8px")};
@@ -98,12 +122,30 @@ const NavLinkStyled = styled(NavLink)`
     display: flex;
     transition: 0.5s;
     border-radius: 5px;
+    @media ${device.mobileS} {
+        margin-top: ${props => (props.showNavBar ? "10px" : "0px")};
+    }
+    @media ${device.mobileL} {
+        margin-top: ${props => (props.showNavBar ? "10px" : "0px")};
+    }
 `;
 const Close = styled(CloseIcon)`
     display: flex;
     position: absolute;
     top: 27px;
     left: 200px;
+    @media ${device.mobileS} {
+        top: 10px;
+        left: 165px;
+    }
+    @media ${device.mobileL} {
+        top: 10px;
+        left: 165px;
+    }
+    @media ${device.tablet} {
+        top: 27px;
+        left: 200px;
+    }
     @media ${device.desktop} {
         display: none;
     }
@@ -111,9 +153,6 @@ const Close = styled(CloseIcon)`
 const Black = styled.div`
     color: #000;
     margin: 0px 10px;
-    @media ${device.laptopL} {
-        display: flex;
-    }
     @media ${device.desktop} {
         display: flex;
     }
@@ -127,6 +166,7 @@ const HideBlack = styled.div`
     }
 `;
 const Flex = styled.div`
+    align-items: center;
     display: flex;
 `;
 const Hide = styled.div`
@@ -149,17 +189,41 @@ const ActiveDiv = styled.div`
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
     border-top-right-radius: ${props => (props.showNavBar ? "0px" : "10px")};
+    border-bottom-right-radius: ${props => (props.showNavBar ? "0px" : "10px")};
     padding: 5px;
+    align-items: center;
     transform: ${props =>
-        props.showNavBar && props.active
-            ? "translateX(58px)"
-            : props.active
-            ? "translateY(20px)"
-            : ""};
+        props.showNavBar && props.active ? "translateX(58px)" : ""};
     background-color: ${props => (props.active ? "#fefae2" : "")};
     :hover {
         background-color: #fefae2;
         border-radius: 10px;
+    }
+    @media ${device.mobileS} {
+        padding: 1px;
+        font-size: 10px;
+        margin-bottom: ${props => (props.showNavBar ? "0px" : "55px")};
+        transform: ${props =>
+            props.showNavBar && props.active ? "translateX(38px)" : ""};
+        width: ${props => (props.showNavBar ? "120px" : "")};
+    }
+    @media ${device.mobileL} {
+        padding: 1px;
+        font-size: 10px;
+        margin-bottom: ${props => (props.showNavBar ? "0px" : "55px")};
+        transform: ${props =>
+            props.showNavBar && props.active ? "translateX(38px)" : ""};
+        width: ${props => (props.showNavBar ? "120px" : "")};
+    }
+    @media ${device.tablet} {
+        padding: ${props => (props.showNavBar ? "1px" : "5px")};
+        margin-bottom: ${props => (props.showNavBar ? "0px" : "55px")};
+        transform: ${props =>
+            props.showNavBar && props.active ? "translateX(58px)" : ""};
+        width: ${props => (props.showNavBar ? "130px" : "")};
+    }
+    @media ${device.desktop} {
+        margin-bottom: 5px;
     }
 `;
 

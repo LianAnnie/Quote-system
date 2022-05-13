@@ -23,6 +23,8 @@ const Boards = styled.div`
     justify-content: center;
     height: 100%;
     flex-wrap: wrap;
+    @media (min-width: 768px) {
+    }
 `;
 
 const BoardContainer = styled.div`
