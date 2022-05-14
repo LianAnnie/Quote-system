@@ -105,7 +105,7 @@ function Companies({
     }
 
     return (
-        <Article mode="origin">
+        <Article mode="origin" fileName="companies">
             <Title>公司資料表</Title>
             <Form>
                 <SingleLine>
@@ -125,6 +125,8 @@ function Companies({
                 </SingleLine>
                 {data.companies.inputComponentArray.map(e => (
                     <Input
+                        inputWidth={100}
+                        fileName="companies"
                         key={e.name}
                         title={e.title}
                         type="text"

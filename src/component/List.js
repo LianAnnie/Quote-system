@@ -36,10 +36,12 @@ function List({ collectionName, list, setList, mode }) {
     const [filterList, setFilterList] = useState([]);
     const [filterCondition, setFilterCondition] = useState(filterConditionRule);
     const [revisedStatus, setRevisedStatus] = useState([]);
-    const [revisedData, setRevisedData] = useState({});
+    const [revisedData, setRevisedData] = useState([]);
+    console.log(revisedData);
 
     useEffect(() => {
         setFilterList(list);
+        setRevisedData(list);
         if (Object.keys(list).length > 0) {
             handleConditionChange(1);
         }
@@ -99,6 +101,7 @@ function List({ collectionName, list, setList, mode }) {
     }
 
     function handleRevisedStatus(index, save) {
+        console.log(index);
         const newRevisedStatus = [...revisedStatus];
         const newRevisedData = [...revisedData];
         const newfilterList = [...filterList];
@@ -248,7 +251,7 @@ function List({ collectionName, list, setList, mode }) {
     console.log(list);
 
     return (
-        <Section>
+        <Section mode={mode}>
             <Flex>
                 <Title>{data.listCollections[collectionName][0]}列表</Title>
                 <ShowTextForButton>

@@ -47,7 +47,8 @@ const form = {
     handleListChange(condition, data) {
         const filterKeyArray = Object.keys(condition);
         let copyFilterList = [...data];
-        console.log(copyFilterList);
+        console.log(condition);
+        console.log(data);
         const newFilterList = copyFilterList.filter(
             m =>
                 !filterKeyArray
@@ -57,6 +58,8 @@ const form = {
                                   .join("")
                                   .toLowerCase()
                                   .includes(condition[key].toLowerCase())
+                            : key === "inquiryQty"
+                            ? Number(m[key]) === Number(condition[key])
                             : m[key]
                                   .toLowerCase()
                                   .includes(condition[key].toLowerCase()),

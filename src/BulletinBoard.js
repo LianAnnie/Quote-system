@@ -1,4 +1,5 @@
 import {
+    device,
     Container,
     Main,
     Form,
@@ -23,21 +24,19 @@ const Boards = styled.div`
     justify-content: center;
     height: 100%;
     flex-wrap: wrap;
-    @media (min-width: 768px) {
+    @media ${device.tablet} {
+        margin-top: 50px;
     }
 `;
-
 const BoardContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-end;
 `;
-
 const CardsContainer = styled.div`
     margin: 8px;
 `;
-
 const Cards = styled.div`
     border-radius: 10px;
     background: #f1d9a7b3;
@@ -48,7 +47,6 @@ const Cards = styled.div`
         background: #f1d9a7;
     }
 `;
-
 const Cards2 = styled(DeleteButton)`
     border-radius: 10px;
     background-color: #bdbdbd6b;
@@ -60,7 +58,6 @@ const Cards2 = styled(DeleteButton)`
         background-color: #00000066;
     }
 `;
-
 const CardStyled = styled.div`
     user-select: none;
     padding: 16px;
@@ -73,17 +70,29 @@ const CardStyled = styled.div`
         background-color: #513c2c;
     }
 `;
-
-const Hover = styled.div``;
-
+const Hover = styled.div`
+    margin-left: 5%;
+`;
 const Card = styled.div`
     width: 20vw;
     display: none;
     ${Hover}:hover & {
         display: block;
         position: absolute;
-        left: 10%;
-        top: 14%;
+        left: 5s%;
+        top: 10%;
+    }
+    @media ${device.mobileS} {
+        width: 90vw;
+        top: 12%;
+    }
+    @media ${device.mobileL} {
+        width: 90vw;
+        top: 12%;
+    }
+    @media ${device.tablet} {
+        width: 25vw;
+        top: 10%;
     }
 `;
 
@@ -168,7 +177,6 @@ function BulletinBoard() {
             });
         }
     };
-
     useEffect(() => {
         const q = query(collection(db, "boards"));
         const unsubscribe = onSnapshot(q, querySnapshot => {
@@ -188,11 +196,9 @@ function BulletinBoard() {
         });
         return () => unsubscribe();
     }, []);
-
     function updateCard(card) {
         api.updateDoc("boards", card.id, card, 0);
     }
-
     function handleCardChange(e) {
         const data = form.handleChange("_", e, card);
         setCard(data);
@@ -206,60 +212,60 @@ function BulletinBoard() {
     return (
         <Container>
             <Main>
-                <Boards>
-                    <Hover>
-                        <Button>新增卡片</Button>
-                        <Card>
-                            <Form>
-                                <SingleLine>
-                                    <LabelStyled>工作類型</LabelStyled>
-                                    <SelectStyled
-                                        name="type"
-                                        onChange={e => {
-                                            handleCardChange(e);
-                                        }}
-                                        value={card.type}
-                                    >
-                                        <option value="Inquiry">Inquiry</option>
-                                        <option value="Order">Order</option>
-                                    </SelectStyled>
-                                </SingleLine>
-                                <SingleLine>
-                                    <LabelStyled>分配部門</LabelStyled>
-                                    <SelectStyled
-                                        name="status"
-                                        onChange={e => {
-                                            handleCardChange(e);
-                                        }}
-                                        value={card.status}
-                                    >
-                                        <option value={1}>工程</option>
-                                        <option value={2}>採購</option>
-                                        <option value={3}>生產</option>
-                                        <option value={4}>船務</option>
-                                        <option value={0}>暫停</option>
-                                    </SelectStyled>
-                                </SingleLine>
-                                <SingleLine>
-                                    <LabelStyled>提醒事項</LabelStyled>
-                                    <TextareaStyled
-                                        type="text"
-                                        name="comment"
-                                        onChange={e => handleCardChange(e)}
-                                        rows="3"
-                                        cols="20"
-                                        placeholder={card.comment}
-                                    />
-                                </SingleLine>
-                                <AddButton
-                                    sx={{ width: "30px", height: "30px" }}
-                                    onClick={() => {
-                                        addCard();
+                <Hover>
+                    <Button>新增卡片</Button>
+                    <Card>
+                        <Form>
+                            <SingleLine>
+                                <LabelStyled>工作類型</LabelStyled>
+                                <SelectStyled
+                                    name="type"
+                                    onChange={e => {
+                                        handleCardChange(e);
                                     }}
+                                    value={card.type}
+                                >
+                                    <option value="Inquiry">Inquiry</option>
+                                    <option value="Order">Order</option>
+                                </SelectStyled>
+                            </SingleLine>
+                            <SingleLine>
+                                <LabelStyled>分配部門</LabelStyled>
+                                <SelectStyled
+                                    name="status"
+                                    onChange={e => {
+                                        handleCardChange(e);
+                                    }}
+                                    value={card.status}
+                                >
+                                    <option value={1}>工程</option>
+                                    <option value={2}>採購</option>
+                                    <option value={3}>生產</option>
+                                    <option value={4}>船務</option>
+                                    <option value={0}>暫停</option>
+                                </SelectStyled>
+                            </SingleLine>
+                            <SingleLine>
+                                <LabelStyled>提醒事項</LabelStyled>
+                                <TextareaStyled
+                                    type="text"
+                                    name="comment"
+                                    onChange={e => handleCardChange(e)}
+                                    rows="3"
+                                    cols="20"
+                                    placeholder={card.comment}
                                 />
-                            </Form>
-                        </Card>
-                    </Hover>
+                            </SingleLine>
+                            <AddButton
+                                sx={{ width: "30px", height: "30px" }}
+                                onClick={() => {
+                                    addCard();
+                                }}
+                            />
+                        </Form>
+                    </Card>
+                </Hover>
+                <Boards>
                     <DragDropContext
                         onDragEnd={result =>
                             onDragEnd(result, columns, setColumns)

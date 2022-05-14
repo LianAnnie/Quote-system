@@ -8,9 +8,12 @@ import {
     Container,
     Main,
     Button,
-    Flex,
     LefttMargi5,
+    Flex,
 } from "./component/StyleComponent";
+import styled from "styled-components";
+
+const FlexLayout = styled.div``;
 
 function Bom() {
     const [page, setPage] = useState(0);
@@ -46,7 +49,7 @@ function Bom() {
                 </LefttMargi5>
 
                 {page === 0 ? (
-                    <Flex>
+                    <FlexLayout>
                         <Product
                             collectionName={parentCollectionName}
                             list={productList}
@@ -59,9 +62,9 @@ function Bom() {
                             list={productList}
                             setList={setProductList}
                         />
-                    </Flex>
+                    </FlexLayout>
                 ) : page === 1 ? (
-                    <Flex>
+                    <FlexLayout>
                         <Part
                             columnQty={7}
                             collectionName={childCollectionName}
@@ -76,7 +79,7 @@ function Bom() {
                             list={partList}
                             setList={setPartList}
                         />
-                    </Flex>
+                    </FlexLayout>
                 ) : (
                     <Structure
                         parentCollectionName={parentCollectionName}

@@ -202,7 +202,7 @@ const ActiveDiv = styled.div`
     @media ${device.mobileS} {
         padding: 1px;
         font-size: 10px;
-        margin-bottom: ${props => (props.showNavBar ? "0px" : "55px")};
+        margin-bottom: ${props => (props.showNavBar ? "0px" : "5px")};
         transform: ${props =>
             props.showNavBar && props.active ? "translateX(38px)" : ""};
         width: ${props => (props.showNavBar ? "120px" : "")};
@@ -210,14 +210,14 @@ const ActiveDiv = styled.div`
     @media ${device.mobileL} {
         padding: 1px;
         font-size: 10px;
-        margin-bottom: ${props => (props.showNavBar ? "0px" : "55px")};
+        margin-bottom: ${props => (props.showNavBar ? "0px" : "5px")};
         transform: ${props =>
             props.showNavBar && props.active ? "translateX(38px)" : ""};
         width: ${props => (props.showNavBar ? "120px" : "")};
     }
     @media ${device.tablet} {
         padding: ${props => (props.showNavBar ? "1px" : "5px")};
-        margin-bottom: ${props => (props.showNavBar ? "0px" : "55px")};
+        margin-bottom: ${props => (props.showNavBar ? "0px" : "5px")};
         transform: ${props =>
             props.showNavBar && props.active ? "translateX(58px)" : ""};
         width: ${props => (props.showNavBar ? "130px" : "")};

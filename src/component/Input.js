@@ -6,7 +6,7 @@ function Input({ title, type, handleDataChange, data, name, inputWidth }) {
             <LabelStyled>{title}</LabelStyled>
             {type === "text" ? (
                 <InputStyled
-                    wiinputWidthdth={inputWidth}
+                    inputWidth={inputWidth}
                     type={type}
                     name={name}
                     onChange={e => {

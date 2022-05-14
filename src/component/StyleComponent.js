@@ -252,6 +252,18 @@ const Article = styled.div`
     padding: ${props =>
         props.mode === "origin" ? "20px 0px 20px 4%" : "20px 0px 20px 8%"};
     width: ${props => (props.mode === "origin" ? "23vw" : "80%")};
+    @media ${device.mobileSs} {
+        width: 95%;
+    }
+    @media ${device.mobileL} {
+        width: 95%;
+    }
+    @media ${device.tablet} {
+        width: ${props => (props.mode === "origin" ? "45%" : "80%")};
+    }
+    @media ${device.laptop} {
+        width: ${props => (props.mode === "origin" ? "23vw" : "80%")};
+    }
 `;
 const NewDataContainer = styled.div`
     width: 100%;
@@ -628,17 +640,34 @@ const Main = styled.div`
     @media ${device.laptop} {
         padding: 80px 0px 0px;
     }
+    @media ${device.desktop} {
+        margin-left: 250px;
+    }
     @media ${device.desktopL} {
         padding: 80px 10% 0px;
-    }
-    @media ${device.desktop} {
-        margin-left: 300px;
     }
 `;
 const Section = styled.div`
     padding: ${props => (props.mode === "structure" ? "10px 5%" : "20px 5%")};
     width: ${props => (props.mode === "analysis" ? "68vw" : "77vw")};
     margin: auto;
+    @media ${device.mobileS} {
+        width: ${props => (props.mode === "analysis" ? "68vw" : "95vw")};
+    }
+    @media ${device.mobileL} {
+        width: ${props => (props.mode === "analysis" ? "68vw" : "95vw")};
+    }
+    @media ${device.tablet} {
+        width: ${props => (props.mode === "analysis" ? "68vw" : "95%")};
+    }
+    @media ${device.desktop} {
+        width: ${props =>
+            props.mode === "analysis"
+                ? "68vw"
+                : props.mode === "company"
+                ? "90%"
+                : "calc(77vw - 250px)"};
+    }
 `;
 const Flex = styled.div`
     display: ${props => (props.page === 5 ? "block" : "flex")};
