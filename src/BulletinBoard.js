@@ -1,16 +1,4 @@
-import {
-    device,
-    Container,
-    Main,
-    Form,
-    SingleLine,
-    LabelStyled,
-    SelectStyled,
-    AddButton,
-    Button,
-    TextareaStyled,
-    DeleteButton,
-} from "./component/StyleComponent";
+import * as S from "./component/StyleComponent";
 import { useState, useEffect } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { db } from "./utils/firebase";
@@ -24,7 +12,7 @@ const Boards = styled.div`
     justify-content: center;
     height: 100%;
     flex-wrap: wrap;
-    @media ${device.tablet} {
+    @media ${S.device.tablet} {
         margin-top: 50px;
     }
 `;
@@ -47,7 +35,7 @@ const Cards = styled.div`
         background: #f1d9a7;
     }
 `;
-const Cards2 = styled(DeleteButton)`
+const Cards2 = styled(S.DeleteButton)`
     border-radius: 10px;
     background-color: #bdbdbd6b;
     padding: 10px;
@@ -82,15 +70,15 @@ const Card = styled.div`
         left: 5s%;
         top: 10%;
     }
-    @media ${device.mobileS} {
+    @media ${S.device.mobileS} {
         width: 90vw;
         top: 12%;
     }
-    @media ${device.mobileL} {
+    @media ${S.device.mobileL} {
         width: 90vw;
         top: 12%;
     }
-    @media ${device.tablet} {
+    @media ${S.device.tablet} {
         width: 25vw;
         top: 10%;
     }
@@ -210,15 +198,15 @@ function BulletinBoard() {
     }
 
     return (
-        <Container>
-            <Main>
+        <S.Container>
+            <S.Main>
                 <Hover>
-                    <Button>新增卡片</Button>
+                    <S.Button>新增卡片</S.Button>
                     <Card>
-                        <Form>
-                            <SingleLine>
-                                <LabelStyled>工作類型</LabelStyled>
-                                <SelectStyled
+                        <S.Form>
+                            <S.SingleLine>
+                                <S.LabelStyled>工作類型</S.LabelStyled>
+                                <S.SelectStyled
                                     name="type"
                                     onChange={e => {
                                         handleCardChange(e);
@@ -227,11 +215,11 @@ function BulletinBoard() {
                                 >
                                     <option value="Inquiry">Inquiry</option>
                                     <option value="Order">Order</option>
-                                </SelectStyled>
-                            </SingleLine>
-                            <SingleLine>
-                                <LabelStyled>分配部門</LabelStyled>
-                                <SelectStyled
+                                </S.SelectStyled>
+                            </S.SingleLine>
+                            <S.SingleLine>
+                                <S.LabelStyled>分配部門</S.LabelStyled>
+                                <S.SelectStyled
                                     name="status"
                                     onChange={e => {
                                         handleCardChange(e);
@@ -243,11 +231,11 @@ function BulletinBoard() {
                                     <option value={3}>生產</option>
                                     <option value={4}>船務</option>
                                     <option value={0}>暫停</option>
-                                </SelectStyled>
-                            </SingleLine>
-                            <SingleLine>
-                                <LabelStyled>提醒事項</LabelStyled>
-                                <TextareaStyled
+                                </S.SelectStyled>
+                            </S.SingleLine>
+                            <S.SingleLine>
+                                <S.LabelStyled>提醒事項</S.LabelStyled>
+                                <S.TextareaStyled
                                     type="text"
                                     name="comment"
                                     onChange={e => handleCardChange(e)}
@@ -255,14 +243,14 @@ function BulletinBoard() {
                                     cols="20"
                                     placeholder={card.comment}
                                 />
-                            </SingleLine>
-                            <AddButton
+                            </S.SingleLine>
+                            <S.AddButton
                                 sx={{ width: "30px", height: "30px" }}
                                 onClick={() => {
                                     addCard();
                                 }}
                             />
-                        </Form>
+                        </S.Form>
                     </Card>
                 </Hover>
                 <Boards>
@@ -418,8 +406,8 @@ function BulletinBoard() {
                         )}
                     </DragDropContext>
                 </Boards>
-            </Main>
-        </Container>
+            </S.Main>
+        </S.Container>
     );
 }
 

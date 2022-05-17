@@ -1,19 +1,14 @@
 import Input from "./Input";
 import Select from "./Select";
-import {
-    Article,
-    Form,
-    StructureForm,
-    StructrueSingleLine,
-} from "./StyleComponent";
+import * as S from "./StyleComponent";
 import data from "../utils/data";
 
 function Orders({ handleDataChange, processingData, mode }) {
     return (
-        <Article>
-            <StructureForm mode={mode}>
+        <S.Article>
+            <S.StructureForm mode={mode}>
                 {data.order.inputComponentArray.map(e => (
-                    <StructrueSingleLine>
+                    <S.StructrueSingleLine>
                         <Input
                             width={170}
                             key={e.title}
@@ -23,19 +18,19 @@ function Orders({ handleDataChange, processingData, mode }) {
                             data={processingData}
                             name={e.name}
                         />
-                    </StructrueSingleLine>
+                    </S.StructrueSingleLine>
                 ))}
 
-                <StructrueSingleLine>
+                <S.StructrueSingleLine>
                     <Select
                         title="幣別"
                         handleDataChange={handleDataChange}
                         name="currency"
                         optionArray={data.currencyList}
                     />
-                </StructrueSingleLine>
-            </StructureForm>
-        </Article>
+                </S.StructrueSingleLine>
+            </S.StructureForm>
+        </S.Article>
     );
 }
 

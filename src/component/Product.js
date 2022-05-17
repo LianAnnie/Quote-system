@@ -3,15 +3,7 @@ import Select from "./Select";
 import { useState, useEffect } from "react";
 import api from "../utils/firebaseApi";
 import form from "../utils/formChange";
-import {
-    Article,
-    Title,
-    Form,
-    SingleLine,
-    LabelStyled,
-    DataStyled,
-    AddButton,
-} from "./StyleComponent";
+import * as S from "./StyleComponent";
 import data from "../utils/data";
 
 function Product({ collectionName, list, setList }) {
@@ -84,13 +76,13 @@ function Product({ collectionName, list, setList }) {
     }
 
     return (
-        <Article mode="origin">
-            <Title>產品資料表</Title>
-            <Form>
-                <SingleLine>
-                    <LabelStyled>產品編號</LabelStyled>
-                    <DataStyled>{exportData.id}</DataStyled>
-                </SingleLine>
+        <S.Article mode="origin">
+            <S.Title>產品資料表</S.Title>
+            <S.Form>
+                <S.SingleLine>
+                    <S.LabelStyled>產品編號</S.LabelStyled>
+                    <S.DataStyled>{exportData.id}</S.DataStyled>
+                </S.SingleLine>
                 {data.product.selectComponentArray.map((e, index) => (
                     <Select
                         key={index}
@@ -109,12 +101,12 @@ function Product({ collectionName, list, setList }) {
                     name="mark"
                     value={exportData.mark}
                 />
-                <AddButton
+                <S.AddButton
                     sx={{ width: "30px", height: "30px" }}
                     onClick={() => submit()}
                 />
-            </Form>
-        </Article>
+            </S.Form>
+        </S.Article>
     );
 }
 

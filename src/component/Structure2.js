@@ -3,14 +3,7 @@ import AssembleData2 from "./AssembleData2";
 import ListWithRadio2 from "./ListWithRadio2";
 import AnalysisForm from "./AnalysisForm";
 import Drawing from "./Drawing";
-import {
-    AnalysisDataContainer,
-    AnalysisDataForm,
-    NextButton,
-    BackButton,
-    AnalysisDrawingContainer,
-    Flex,
-} from "./StyleComponent";
+import * as S from "./StyleComponent";
 import { useState, useEffect } from "react";
 import data from "../utils/data";
 import ExportExcel from "./ExportExcel";
@@ -283,10 +276,10 @@ function Structure2({
 
     return (
         <>
-            <AnalysisDataContainer>
+            <S.AnalysisDataContainer>
                 <ExportExcel data={processingData} />
-                <AnalysisDataForm>
-                    <Flex>
+                <S.AnalysisDataForm>
+                    <S.Flex>
                         <AnalysisForm
                             mode={assembleCollectionName}
                             handleDataChange={handleProcessingDataChange}
@@ -312,7 +305,7 @@ function Structure2({
                             />
                         ) : null}
                         {page === 5 ? (
-                            <BackButton
+                            <S.BackButton
                                 sx={{ width: "30px", height: "30px" }}
                                 mode={assembleCollectionName}
                                 page={page}
@@ -320,24 +313,24 @@ function Structure2({
                             />
                         ) : null}
                         {page === 4 ? (
-                            <NextButton
+                            <S.NextButton
                                 sx={{ width: "30px", height: "30px" }}
                                 mode={assembleCollectionName}
                                 page={page}
                                 onClick={() => pageChange(1)}
                             />
                         ) : null}
-                    </Flex>
-                </AnalysisDataForm>
-                <AnalysisDrawingContainer>
+                    </S.Flex>
+                </S.AnalysisDataForm>
+                <S.AnalysisDrawingContainer>
                     <AssembleData2
                         collectionName={assembleCollectionName}
                         processingData={processingData}
                         setProcessingData={setProcessingData}
                     />
                     <Drawing profitMargin={margin} pieData={pieData} />
-                </AnalysisDrawingContainer>
-            </AnalysisDataContainer>
+                </S.AnalysisDrawingContainer>
+            </S.AnalysisDataContainer>
         </>
     );
 }

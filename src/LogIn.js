@@ -8,7 +8,6 @@ import {
     signInWithEmailAndPassword,
 } from "firebase/auth";
 import { useNavigate, useLocation } from "react-router-dom";
-import Model from "./component/Model";
 
 const Container = styled.div`
     background-color: #fffae3;

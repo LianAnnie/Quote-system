@@ -1,85 +1,76 @@
-import {
-    Table,
-    Thead,
-    AnalysisAssembledContainer,
-    Td,
-    TBody,
-    Tr,
-    ThTitle,
-    StructureScrollbar,
-} from "./StyleComponent";
+import * as S from "./StyleComponent";
 import data from "../utils/data";
 
-function AssembleData2({ collectionName, processingData, setProcessingData }) {
+function AssembleData2({ collectionName, processingData }) {
     return (
-        <AnalysisAssembledContainer>
-            <Table>
-                <Thead>
-                    <Tr>
+        <S.AnalysisAssembledContainer>
+            <S.Table>
+                <S.Thead>
+                    <S.Tr>
                         {data.assembleDataCollections[collectionName][1].map(
                             (e, index) => (
-                                <ThTitle mode="anlysis" key={index}>
+                                <S.ThTitle mode="anlysis" key={index}>
                                     {e}
-                                </ThTitle>
+                                </S.ThTitle>
                             ),
                         )}
-                    </Tr>
-                </Thead>
-                <TBody>
-                    <Tr>
+                    </S.Tr>
+                </S.Thead>
+                <S.TBody>
+                    <S.Tr>
                         {processingData &&
                             data.assembleDataCollections[collectionName][2].map(
                                 (keyName, index) =>
                                     keyName === "currency" ? (
-                                        <Td mode="anlysis" key={index}>
+                                        <S.Td mode="anlysis" key={index}>
                                             {processingData.parentData[
                                                 keyName
                                             ]?.replace(",", "/")}
-                                        </Td>
+                                        </S.Td>
                                     ) : (
-                                        <Td mode="anlysis" key={index}>
+                                        <S.Td mode="anlysis" key={index}>
                                             {processingData.parentData[keyName]}
-                                        </Td>
+                                        </S.Td>
                                     ),
                             )}
-                    </Tr>
-                </TBody>
-            </Table>
-            <StructureScrollbar mode="assemble">
-                <Table>
-                    <Thead>
-                        <Tr>
+                    </S.Tr>
+                </S.TBody>
+            </S.Table>
+            <S.StructureScrollbar mode="assemble">
+                <S.Table>
+                    <S.Thead>
+                        <S.Tr>
                             {data &&
                                 data.assembleDataCollections[
                                     collectionName
                                 ][3].map((e, index) => (
-                                    <ThTitle
+                                    <S.ThTitle
                                         mode="anlysis"
                                         key={index}
                                         index={index}
                                     >
                                         {e}
-                                    </ThTitle>
+                                    </S.ThTitle>
                                 ))}
-                        </Tr>
-                    </Thead>
-                    <TBody>
+                        </S.Tr>
+                    </S.Thead>
+                    <S.TBody>
                         {processingData &&
                             processingData.childData.map((e, index) => (
-                                <Tr key={[e.id, index]}>
+                                <S.Tr key={[e.id, index]}>
                                     {data.assembleDataCollections[
                                         collectionName
                                     ][4].map(keyName => (
-                                        <Td key={keyName} mode="anlysis">
+                                        <S.Td key={keyName} mode="anlysis">
                                             {e[keyName]}
-                                        </Td>
+                                        </S.Td>
                                     ))}
-                                </Tr>
+                                </S.Tr>
                             ))}
-                    </TBody>
-                </Table>
-            </StructureScrollbar>
-        </AnalysisAssembledContainer>
+                    </S.TBody>
+                </S.Table>
+            </S.StructureScrollbar>
+        </S.AnalysisAssembledContainer>
     );
 }
 

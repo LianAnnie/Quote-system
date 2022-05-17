@@ -1,14 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-    Form,
-    SingleLine,
-    LabelStyled,
-    SelectStyled,
-    DataStyled,
-    AddButton,
-    Title,
-    Article,
-} from "./StyleComponent";
+import * as S from "./StyleComponent";
 import api from "../utils/firebaseApi";
 import form from "../utils/formChange";
 import data from "../utils/data";
@@ -68,7 +59,6 @@ function Companies({
     function handleExportDataInputChange(e) {
         const newExportData = exportData;
         const data = form.handleChange("_", e, newExportData);
-        // console.log(data);
         setExportData(data);
     }
 
@@ -105,24 +95,24 @@ function Companies({
     }
 
     return (
-        <Article mode="origin" fileName="companies">
-            <Title>公司資料表</Title>
-            <Form>
-                <SingleLine>
-                    <LabelStyled>供應類別</LabelStyled>
-                    <SelectStyled
+        <S.Article mode="origin" fileName="companies">
+            <S.Title>公司資料表</S.Title>
+            <S.Form>
+                <S.SingleLine>
+                    <S.LabelStyled>供應類別</S.LabelStyled>
+                    <S.SelectStyled
                         name="id0"
                         value={exportData.id[0]}
                         onChange={e => handleExportDataIdChange(e)}
                     >
                         <option value="F">供應商</option>
                         <option value="C">客戶</option>
-                    </SelectStyled>
-                </SingleLine>
-                <SingleLine>
-                    <LabelStyled>公司編號</LabelStyled>
-                    <DataStyled>{exportData.id}</DataStyled>
-                </SingleLine>
+                    </S.SelectStyled>
+                </S.SingleLine>
+                <S.SingleLine>
+                    <S.LabelStyled>公司編號</S.LabelStyled>
+                    <S.DataStyled>{exportData.id}</S.DataStyled>
+                </S.SingleLine>
                 {data.companies.inputComponentArray.map(e => (
                     <Input
                         fileName="companies"
@@ -134,9 +124,9 @@ function Companies({
                         data={exportData}
                     />
                 ))}
-                <SingleLine>
-                    <LabelStyled>地區</LabelStyled>
-                    <SelectStyled
+                <S.SingleLine>
+                    <S.LabelStyled>地區</S.LabelStyled>
+                    <S.SelectStyled
                         name="country"
                         value={exportData.country}
                         onChange={e => {
@@ -148,14 +138,14 @@ function Companies({
                                 {country[1]}
                             </option>
                         ))}
-                    </SelectStyled>
-                </SingleLine>
-                <AddButton
+                    </S.SelectStyled>
+                </S.SingleLine>
+                <S.AddButton
                     sx={{ width: "30px", height: "30px" }}
                     onClick={() => submit()}
                 />
-            </Form>
-        </Article>
+            </S.Form>
+        </S.Article>
     );
 }
 

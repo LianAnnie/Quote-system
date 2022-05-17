@@ -4,22 +4,15 @@ import Part from "./component/Part";
 import List from "./component/List";
 import Structure from "./component/Structure";
 import api from "./utils/firebaseApi";
-import {
-    Container,
-    Main,
-    Button,
-    LefttMargi5,
-    Flex,
-    device,
-} from "./component/StyleComponent";
+import * as S from "./component/StyleComponent";
 import styled from "styled-components";
 
 const FlexLayout = styled.div`
     display: flex;
-    @media ${device.mobileL} {
+    @media ${S.device.mobileL} {
         flex-wrap: wrap;
     }
-    @media ${device.tablet} {
+    @media ${S.device.tablet} {
         flex-wrap: nowrap;
     }
 `;
@@ -47,15 +40,15 @@ function Bom() {
     }
 
     return (
-        <Container>
-            <Main>
-                <LefttMargi5>
-                    <Flex>
-                        <Button onClick={() => setPage(0)}>產品</Button>
-                        <Button onClick={() => setPage(1)}>零件</Button>
-                        <Button onClick={() => setPage(2)}>結構</Button>
-                    </Flex>
-                </LefttMargi5>
+        <S.Container>
+            <S.Main>
+                <S.LefttMargi5>
+                    <S.Flex>
+                        <S.Button onClick={() => setPage(0)}>產品</S.Button>
+                        <S.Button onClick={() => setPage(1)}>零件</S.Button>
+                        <S.Button onClick={() => setPage(2)}>結構</S.Button>
+                    </S.Flex>
+                </S.LefttMargi5>
 
                 {page === 0 ? (
                     <FlexLayout>
@@ -100,8 +93,8 @@ function Bom() {
                         setAssembleList={setBomList}
                     />
                 )}
-            </Main>
-        </Container>
+            </S.Main>
+        </S.Container>
     );
 }
 export default Bom;

@@ -1,11 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-    Container,
-    Main,
-    Flex,
-    Button,
-    LefttMargi5,
-} from "./component/StyleComponent";
+import * as S from "./component/StyleComponent";
 import Structure from "./component/Structure";
 import api from "./utils/firebaseApi";
 
@@ -44,14 +38,14 @@ function Quote() {
     }
 
     return (
-        <Container>
-            <Main>
-                <LefttMargi5>
-                    <Flex>
-                        <Button onClick={() => setPage(0)}>零件報價</Button>
-                        <Button onClick={() => setPage(1)}>產品報價</Button>
-                    </Flex>
-                </LefttMargi5>
+        <S.Container>
+            <S.Main>
+                <S.LefttMargi5>
+                    <S.Flex>
+                        <S.Button onClick={() => setPage(0)}>零件報價</S.Button>
+                        <S.Button onClick={() => setPage(1)}>產品報價</S.Button>
+                    </S.Flex>
+                </S.LefttMargi5>
                 {page === 0 ? (
                     <Structure
                         parentCollectionName={parentCollectionName}
@@ -73,8 +67,8 @@ function Quote() {
                         setAssembleList={setAssembleList1}
                     />
                 )}
-            </Main>
-        </Container>
+            </S.Main>
+        </S.Container>
     );
 }
 

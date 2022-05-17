@@ -3,15 +3,7 @@ import ListWithCheckBox from "./ListWithCheckBox";
 import AssembleData from "./AssembleData";
 import List from "./List";
 import { useState, useEffect } from "react";
-import {
-    NewDataContainer,
-    NewDataForm,
-    AddButton,
-    NextButton,
-    BackButton,
-    CloseButton,
-    CreatNewData,
-} from "./StyleComponent";
+import * as S from "./StyleComponent";
 import api from "../utils/firebaseApi";
 import Quotes from "./Quotes";
 import Orders from "./Orders";
@@ -341,13 +333,13 @@ function Structure({
 
     return (
         <>
-            <CreatNewData
+            <S.CreatNewData
                 page={page}
                 sx={{ fontSize: 70 }}
                 onClick={() => pageChange(startPage[assembleCollectionName])}
             />
-            <NewDataContainer>
-                <NewDataForm page={page}>
+            <S.NewDataContainer>
+                <S.NewDataForm page={page}>
                     {page === 0 ? null : (
                         <>
                             <AssembleData
@@ -407,7 +399,7 @@ function Structure({
                     ) : null}
 
                     {page === 5 ? (
-                        <AddButton
+                        <S.AddButton
                             sx={{ width: "30px", height: "30px", fontSize: 26 }}
                             mode="structure"
                             page={page}
@@ -415,7 +407,7 @@ function Structure({
                             onClick={() => submit()}
                         />
                     ) : null}
-                    <CloseButton
+                    <S.CloseButton
                         sx={{ width: "30px", height: "30px" }}
                         page={page}
                         onClick={() => close()}
@@ -426,21 +418,21 @@ function Structure({
                           "partQuotations2" &&
                       page === 2 ? null : assembleCollectionName ===
                           "productQuotations2" && page === 2 ? null : (
-                        <BackButton
+                        <S.BackButton
                             sx={{ width: "30px", height: "30px" }}
                             page={page}
                             onClick={() => pageChange(-1)}
                         />
                     )}
                     {page === 5 ? null : (
-                        <NextButton
+                        <S.NextButton
                             sx={{ width: "30px", height: "30px" }}
                             page={page}
                             onClick={() => pageChange(1)}
                         />
                     )}
-                </NewDataForm>
-            </NewDataContainer>
+                </S.NewDataForm>
+            </S.NewDataContainer>
             <ErrorBoundary>
                 <List
                     mode="structure"

@@ -6,7 +6,6 @@ const Article = styled.div`
     width: 80%;
     margin: auto;
 `;
-
 const SkRotate = keyframes`
     100% { transform: rotate(360deg)}
 `;
@@ -20,7 +19,6 @@ const skBounce = keyframes`
         -webkit-transform: scale(1.0);
     }
 `;
-
 const Spinner = styled.div`
     margin: 100px auto;
     width: 100px;

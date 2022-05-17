@@ -1,26 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-    TBodyTdContext,
-    TBodyTdButton,
-    Section,
-    Title,
-    Table,
-    Thead,
-    ThText,
-    ThButtonTitle,
-    TableSelectSearch,
-    TableInputSearch,
-    TBody,
-    Tr,
-    Flex,
-    CancelSelectedButton,
-    ShowTextForButton,
-    CancelSelectedText,
-    ThTitle,
-    UpdateInput,
-    AddScrollbar,
-    TrBody,
-} from "./StyleComponent";
+import * as S from "./StyleComponent";
 import data from "../utils/data";
 import form from "../utils/formChange";
 
@@ -73,44 +52,46 @@ function ListWithRadio({
     }
 
     return (
-        <Section mode={mode} listPosition={listPosition}>
-            <Flex>
-                <Title>
+        <S.Section mode={mode} listPosition={listPosition}>
+            <S.Flex>
+                <S.Title>
                     請選擇一個{data.listCollections[collectionName][0]}
-                </Title>
-                <ShowTextForButton>
-                    <CancelSelectedButton
+                </S.Title>
+                <S.ShowTextForButton>
+                    <S.CancelSelectedButton
                         sx={{ width: "30px", height: "30px" }}
                         onClick={() => {
                             handleConditionChange(0);
                         }}
                     />
-                    <CancelSelectedText> 取消篩選</CancelSelectedText>
-                </ShowTextForButton>
-            </Flex>
-            <AddScrollbar mode={mode} page="3" listPosition={listPosition}>
-                <Table>
-                    <Thead>
-                        <Tr>
+                    <S.CancelSelectedText> 取消篩選</S.CancelSelectedText>
+                </S.ShowTextForButton>
+            </S.Flex>
+            <S.AddScrollbar mode={mode} page="3" listPosition={listPosition}>
+                <S.Table>
+                    <S.Thead>
+                        <S.Tr>
                             {data.listCollections[collectionName][1].map(
                                 (e, index) => (
-                                    <ThTitle key={index} index={index}>
+                                    <S.ThTitle key={index} index={index}>
                                         {e}
-                                    </ThTitle>
+                                    </S.ThTitle>
                                 ),
                             )}
                             {data.listCollections.select.map((e, index) => (
-                                <ThButtonTitle key={index}>{e}</ThButtonTitle>
+                                <S.ThButtonTitle key={index}>
+                                    {e}
+                                </S.ThButtonTitle>
                             ))}
-                        </Tr>
-                        <Tr>
+                        </S.Tr>
+                        <S.Tr>
                             {data.listCollections[collectionName][2].map(
                                 (keyName, indexForStyled) => (
-                                    <ThText
+                                    <S.ThText
                                         key={keyName}
                                         index={indexForStyled}
                                     >
-                                        <TableInputSearch
+                                        <S.TableInputSearch
                                             index={indexForStyled}
                                             columnQty={
                                                 data.listCollections[
@@ -124,7 +105,7 @@ function ListWithRadio({
                                             }
                                             value={list[keyName]}
                                         />
-                                        <TableSelectSearch
+                                        <S.TableSelectSearch
                                             index={indexForStyled}
                                             columnQty={
                                                 data.listCollections[
@@ -153,30 +134,30 @@ function ListWithRadio({
                                                         {o[keyName]}
                                                     </option>
                                                 ))}
-                                        </TableSelectSearch>
-                                    </ThText>
+                                        </S.TableSelectSearch>
+                                    </S.ThText>
                                 ),
                             )}
                             <th></th>
                             <th></th>
-                        </Tr>
-                    </Thead>
-                    <TBody>
+                        </S.Tr>
+                    </S.Thead>
+                    <S.TBody>
                         {filterList &&
                             filterList.map((e, index) => (
-                                <TrBody key={e.id}>
+                                <S.TrBody key={e.id}>
                                     {data.listCollections[
                                         collectionName
                                     ][2].map((keyName, indexForStyled) => (
-                                        <TBodyTdContext
+                                        <S.TBodyTdContext
                                             key={keyName}
                                             index={indexForStyled}
                                         >
                                             {e[keyName]}
-                                        </TBodyTdContext>
+                                        </S.TBodyTdContext>
                                     ))}
-                                    <TBodyTdButton>
-                                        <UpdateInput
+                                    <S.TBodyTdButton>
+                                        <S.UpdateInput
                                             type="radio"
                                             name="main"
                                             defaultChecked={
@@ -188,13 +169,13 @@ function ListWithRadio({
                                                 handleImportProduct(e)
                                             }
                                         />
-                                    </TBodyTdButton>
-                                </TrBody>
+                                    </S.TBodyTdButton>
+                                </S.TrBody>
                             ))}
-                    </TBody>
-                </Table>
-            </AddScrollbar>
-        </Section>
+                    </S.TBody>
+                </S.Table>
+            </S.AddScrollbar>
+        </S.Section>
     );
 }
 

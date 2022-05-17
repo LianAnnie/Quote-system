@@ -1,34 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../utils/firebaseApi";
 import form from "../utils/formChange";
-import {
-    TBodyTdContext,
-    TBodyTdButton,
-    TBodyTr,
-    Section,
-    Title,
-    Table,
-    Thead,
-    ThText,
-    ThButtonTitle,
-    TableSelectSearch,
-    TableInputSearch,
-    Td,
-    TBody,
-    Tr,
-    UpdatedTr,
-    Flex,
-    UpdatedButton,
-    DeleteButton,
-    SaveButton,
-    CancelEditButton,
-    CancelSelectedText,
-    CancelSelectedButton,
-    ShowTextForButton,
-    ThTitle,
-    UpdateInput,
-    AddScrollbar,
-} from "./StyleComponent";
+import * as S from "./StyleComponent";
 import data from "../utils/data";
 
 function List({ collectionName, list, setList, mode }) {
@@ -248,48 +221,48 @@ function List({ collectionName, list, setList, mode }) {
         setFilterList(newFilterList);
     }
 
-    console.log(collectionName);
-
     return (
-        <Section mode={mode} collectionName={collectionName}>
-            <Flex>
-                <Title>{data.listCollections[collectionName][0]}列表</Title>
-                <ShowTextForButton>
-                    <CancelSelectedButton
+        <S.Section mode={mode} collectionName={collectionName}>
+            <S.Flex>
+                <S.Title>{data.listCollections[collectionName][0]}列表</S.Title>
+                <S.ShowTextForButton>
+                    <S.CancelSelectedButton
                         sx={{ width: "30px", height: "30px" }}
                         onClick={() => {
                             handleConditionChange(0);
                         }}
                     />
-                    <CancelSelectedText> 取消篩選</CancelSelectedText>
-                </ShowTextForButton>
-            </Flex>
-            <AddScrollbar
+                    <S.CancelSelectedText> 取消篩選</S.CancelSelectedText>
+                </S.ShowTextForButton>
+            </S.Flex>
+            <S.AddScrollbar
                 mode={mode}
                 columnQty={data.listCollections[collectionName][1].length}
             >
-                <Table>
-                    <Thead>
-                        <Tr>
+                <S.Table>
+                    <S.Thead>
+                        <S.Tr>
                             {data.listCollections[collectionName][1].map(
                                 (e, index) => (
-                                    <ThTitle key={index} index={index}>
+                                    <S.ThTitle key={index} index={index}>
                                         {e}
-                                    </ThTitle>
+                                    </S.ThTitle>
                                 ),
                             )}
                             {data.listCollections.all.map((e, index) => (
-                                <ThButtonTitle key={index}>{e}</ThButtonTitle>
+                                <S.ThButtonTitle key={index}>
+                                    {e}
+                                </S.ThButtonTitle>
                             ))}
-                        </Tr>
-                        <Tr>
+                        </S.Tr>
+                        <S.Tr>
                             {data.listCollections[collectionName][2].map(
                                 (keyName, indexForStyled) => (
-                                    <ThText
+                                    <S.ThText
                                         key={keyName}
                                         index={indexForStyled}
                                     >
-                                        <TableInputSearch
+                                        <S.TableInputSearch
                                             index={indexForStyled}
                                             columnQty={
                                                 data.listCollections[
@@ -303,7 +276,7 @@ function List({ collectionName, list, setList, mode }) {
                                             }
                                             value={filterCondition[keyName]}
                                         />
-                                        <TableSelectSearch
+                                        <S.TableSelectSearch
                                             index={indexForStyled}
                                             columnQty={
                                                 data.listCollections[
@@ -333,32 +306,32 @@ function List({ collectionName, list, setList, mode }) {
                                                         {o[keyName]}
                                                     </option>
                                                 ))}
-                                        </TableSelectSearch>
-                                    </ThText>
+                                        </S.TableSelectSearch>
+                                    </S.ThText>
                                 ),
                             )}
                             <th></th>
                             <th></th>
-                        </Tr>
-                    </Thead>
+                        </S.Tr>
+                    </S.Thead>
 
-                    <TBody>
+                    <S.TBody>
                         {filterList &&
                             filterList.map((e, index) =>
                                 !revisedStatus[index] ? (
-                                    <TBodyTr key={index}>
+                                    <S.TBodyTr key={index}>
                                         {data.listCollections[
                                             collectionName
                                         ][2].map((keyName, indexForStyled) => (
-                                            <TBodyTdContext
+                                            <S.TBodyTdContext
                                                 key={keyName}
                                                 index={indexForStyled}
                                             >
                                                 {e[keyName]}
-                                            </TBodyTdContext>
+                                            </S.TBodyTdContext>
                                         ))}
-                                        <TBodyTdButton>
-                                            <UpdatedButton
+                                        <S.TBodyTdButton>
+                                            <S.UpdatedButton
                                                 sx={{
                                                     width: "30px",
                                                     height: "30px",
@@ -367,11 +340,11 @@ function List({ collectionName, list, setList, mode }) {
                                                     handleRevisedStatus(index)
                                                 }
                                             />
-                                        </TBodyTdButton>
-                                        <TBodyTdButton>
+                                        </S.TBodyTdButton>
+                                        <S.TBodyTdButton>
                                             {e.dependency &&
                                             e.dependency.length !== 0 ? (
-                                                <DeleteButton
+                                                <S.DeleteButton
                                                     sx={{
                                                         width: "30px",
                                                         height: "30px",
@@ -379,7 +352,7 @@ function List({ collectionName, list, setList, mode }) {
                                                     dependency={true}
                                                 />
                                             ) : (
-                                                <DeleteButton
+                                                <S.DeleteButton
                                                     sx={{
                                                         width: "30px",
                                                         height: "30px",
@@ -389,20 +362,20 @@ function List({ collectionName, list, setList, mode }) {
                                                     }
                                                 />
                                             )}
-                                        </TBodyTdButton>
-                                    </TBodyTr>
+                                        </S.TBodyTdButton>
+                                    </S.TBodyTr>
                                 ) : (
-                                    <UpdatedTr key={index}>
+                                    <S.UpdatedTr key={index}>
                                         {data.listCollections[
                                             collectionName
                                         ][2].map((keyName, keyIndex) =>
                                             keyName.includes("id") ? (
-                                                <Td key={[keyName, keyIndex]}>
+                                                <S.Td key={[keyName, keyIndex]}>
                                                     {e[keyName]}
-                                                </Td>
+                                                </S.Td>
                                             ) : (
-                                                <Td>
-                                                    <UpdateInput
+                                                <S.Td>
+                                                    <S.UpdateInput
                                                         mode="list"
                                                         key={[
                                                             keyName,
@@ -420,12 +393,12 @@ function List({ collectionName, list, setList, mode }) {
                                                                 e,
                                                             )
                                                         }
-                                                    ></UpdateInput>
-                                                </Td>
+                                                    ></S.UpdateInput>
+                                                </S.Td>
                                             ),
                                         )}
-                                        <Td>
-                                            <SaveButton
+                                        <S.Td>
+                                            <S.SaveButton
                                                 sx={{
                                                     width: "30px",
                                                     height: "30px",
@@ -437,9 +410,9 @@ function List({ collectionName, list, setList, mode }) {
                                                     )
                                                 }
                                             />
-                                        </Td>
-                                        <Td>
-                                            <CancelEditButton
+                                        </S.Td>
+                                        <S.Td>
+                                            <S.CancelEditButton
                                                 sx={{
                                                     width: "30px",
                                                     height: "30px",
@@ -451,14 +424,14 @@ function List({ collectionName, list, setList, mode }) {
                                                     )
                                                 }
                                             />
-                                        </Td>
-                                    </UpdatedTr>
+                                        </S.Td>
+                                    </S.UpdatedTr>
                                 ),
                             )}
-                    </TBody>
-                </Table>
-            </AddScrollbar>
-        </Section>
+                    </S.TBody>
+                </S.Table>
+            </S.AddScrollbar>
+        </S.Section>
     );
 }
 

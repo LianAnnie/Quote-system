@@ -3,15 +3,7 @@ import Select from "./Select";
 import { useState, useEffect } from "react";
 import api from "../utils/firebaseApi";
 import form from "../utils/formChange";
-import {
-    Form,
-    SingleLine,
-    LabelStyled,
-    DataStyled,
-    AddButton,
-    Title,
-    Article,
-} from "./StyleComponent";
+import * as S from "./StyleComponent";
 import data from "../utils/data";
 
 function Part({ collectionName, list, setList, columnQty }) {
@@ -88,17 +80,17 @@ function Part({ collectionName, list, setList, columnQty }) {
     }
 
     return (
-        <Article mode="origin">
-            <Title>零件資料表</Title>
-            <Form columnQty={columnQty}>
-                <SingleLine>
-                    <LabelStyled>零件編號</LabelStyled>
-                    <DataStyled>{exportData.id}</DataStyled>
-                </SingleLine>
-                <SingleLine>
-                    <LabelStyled>項目</LabelStyled>
-                    <DataStyled>半成品</DataStyled>
-                </SingleLine>
+        <S.Article mode="origin">
+            <S.Title>零件資料表</S.Title>
+            <S.Form columnQty={columnQty}>
+                <S.SingleLine>
+                    <S.LabelStyled>零件編號</S.LabelStyled>
+                    <S.DataStyled>{exportData.id}</S.DataStyled>
+                </S.SingleLine>
+                <S.SingleLine>
+                    <S.LabelStyled>項目</S.LabelStyled>
+                    <S.DataStyled>半成品</S.DataStyled>
+                </S.SingleLine>
                 {data.part.selectComponentArray.map(
                     (e, index) =>
                         index !== 0 && (
@@ -153,12 +145,12 @@ function Part({ collectionName, list, setList, columnQty }) {
                     name="mark"
                     value={exportData.mark}
                 />
-                <AddButton
+                <S.AddButton
                     sx={{ width: "30px", height: "30px" }}
                     onClick={() => submit()}
                 />
-            </Form>
-        </Article>
+            </S.Form>
+        </S.Article>
     );
 }
 

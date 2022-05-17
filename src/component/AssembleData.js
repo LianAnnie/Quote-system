@@ -1,19 +1,4 @@
-import {
-    Section,
-    Title,
-    Table,
-    Thead,
-    TableInput,
-    Td,
-    TBody,
-    Tr,
-    DeleteButton,
-    ThTitle,
-    StructureScrollbar,
-    TBodyTdButton,
-    Flex,
-    AddScrollbar,
-} from "./StyleComponent";
+import * as S from "./StyleComponent";
 import form from "../utils/formChange";
 import data from "../utils/data";
 
@@ -60,69 +45,72 @@ function AssembleData({
         return "數量單價尚不完整";
     }
     return (
-        <Section mode={mode + "assemble"}>
-            <Title mode={mode}>
+        <S.Section mode={mode + "assemble"}>
+            <S.Title mode={mode}>
                 {data.assembleDataCollections[collectionName][0]}
-            </Title>
-            <Flex page={page}>
-                <AddScrollbar mode="assemble" page={page}>
-                    <Table mode={mode + "assemble"}>
-                        <Thead>
-                            <Tr>
+            </S.Title>
+            <S.Flex page={page}>
+                <S.AddScrollbar mode="assemble" page={page}>
+                    <S.Table mode={mode + "assemble"}>
+                        <S.Thead>
+                            <S.Tr>
                                 {data.assembleDataCollections[
                                     collectionName
                                 ][1].map((e, index) => (
-                                    <ThTitle mode={mode} key={index}>
+                                    <S.ThTitle mode={mode} key={index}>
                                         {e}
-                                    </ThTitle>
+                                    </S.ThTitle>
                                 ))}
-                            </Tr>
-                        </Thead>
-                        <TBody>
-                            <Tr>
+                            </S.Tr>
+                        </S.Thead>
+                        <S.TBody>
+                            <S.Tr>
                                 {processingData &&
                                     data.assembleDataCollections[
                                         collectionName
                                     ][2].map((keyName, index) => (
-                                        <Td mode={mode} key={index}>
+                                        <S.Td mode={mode} key={index}>
                                             {processingData.parentData[keyName]}
-                                        </Td>
+                                        </S.Td>
                                     ))}
-                            </Tr>
-                        </TBody>
-                    </Table>
-                    <StructureScrollbar page={page}>
-                        <Table page={page} mode="assemble">
-                            <Thead>
-                                <Tr>
+                            </S.Tr>
+                        </S.TBody>
+                    </S.Table>
+                    <S.StructureScrollbar page={page}>
+                        <S.Table page={page} mode="assemble">
+                            <S.Thead>
+                                <S.Tr>
                                     {data.assembleDataCollections[
                                         collectionName
                                     ][3].map((e, index) => (
-                                        <ThTitle mode={mode} key={index}>
+                                        <S.ThTitle mode={mode} key={index}>
                                             {e}
-                                        </ThTitle>
+                                        </S.ThTitle>
                                     ))}
                                     {page === 5
                                         ? data.assembleDataCollections[
                                               collectionName
                                           ][5].map((e, index) => (
-                                              <ThTitle mode={mode} key={index}>
+                                              <S.ThTitle
+                                                  mode={mode}
+                                                  key={index}
+                                              >
                                                   {e}
-                                              </ThTitle>
+                                              </S.ThTitle>
                                           ))
                                         : null}
-                                </Tr>
-                            </Thead>
-                            <TBody>
+                                </S.Tr>
+                            </S.Thead>
+                            <S.TBody>
                                 {processingData &&
                                     processingData.childData.map((e, index) => (
-                                        <Tr key={[e.id, index]}>
+                                        <S.Tr key={[e.id, index]}>
                                             {data.assembleDataCollections[
                                                 collectionName
                                             ][4].map(keyName => (
-                                                <Td mode={mode} key={keyName}>
+                                                <S.Td mode={mode} key={keyName}>
                                                     {e[keyName]}
-                                                </Td>
+                                                </S.Td>
                                             ))}
                                             {page === 5 ? (
                                                 <>
@@ -136,12 +124,12 @@ function AssembleData({
                                                             <>
                                                                 {e[keyName] ===
                                                                 undefined ? (
-                                                                    <Td
+                                                                    <S.Td
                                                                         key={
                                                                             indexArray
                                                                         }
                                                                     >
-                                                                        <TableInput
+                                                                        <S.TableInput
                                                                             columnQty={
                                                                                 8
                                                                             }
@@ -159,14 +147,14 @@ function AssembleData({
                                                                             }
                                                                             placeholder="請填寫"
                                                                         />
-                                                                    </Td>
+                                                                    </S.Td>
                                                                 ) : (
-                                                                    <Td
+                                                                    <S.Td
                                                                         key={
                                                                             indexArray
                                                                         }
                                                                     >
-                                                                        <TableInput
+                                                                        <S.TableInput
                                                                             columnQty={
                                                                                 7
                                                                             }
@@ -188,13 +176,13 @@ function AssembleData({
                                                                                 ]
                                                                             }
                                                                         />
-                                                                    </Td>
+                                                                    </S.Td>
                                                                 )}
                                                             </>
                                                         ),
                                                     )}
-                                                    <TBodyTdButton>
-                                                        <DeleteButton
+                                                    <S.TBodyTdButton>
+                                                        <S.DeleteButton
                                                             onClick={() =>
                                                                 handleAddDataChange(
                                                                     index,
@@ -202,17 +190,17 @@ function AssembleData({
                                                                 )
                                                             }
                                                         />
-                                                    </TBodyTdButton>
+                                                    </S.TBodyTdButton>
                                                 </>
                                             ) : null}
-                                        </Tr>
+                                        </S.Tr>
                                     ))}
-                            </TBody>
-                        </Table>
-                    </StructureScrollbar>
-                </AddScrollbar>
-            </Flex>
-        </Section>
+                            </S.TBody>
+                        </S.Table>
+                    </S.StructureScrollbar>
+                </S.AddScrollbar>
+            </S.Flex>
+        </S.Section>
     );
 }
 

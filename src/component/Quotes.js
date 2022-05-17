@@ -4,7 +4,6 @@ import { Article, StructureForm, StructrueSingleLine } from "./StyleComponent";
 import data from "../utils/data";
 
 function Quotes({ handleDataChange, processingData, mode }) {
-    // console.log(processingData);
     const inputComponentArray = [
         {
             title: "報價日期",
