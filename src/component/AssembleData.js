@@ -12,6 +12,7 @@ import {
     StructureScrollbar,
     TBodyTdButton,
     Flex,
+    AddScrollbar,
 } from "./StyleComponent";
 import form from "../utils/formChange";
 import data from "../utils/data";
@@ -64,147 +65,152 @@ function AssembleData({
                 {data.assembleDataCollections[collectionName][0]}
             </Title>
             <Flex page={page}>
-                <Table mode={mode + "assemble"}>
-                    <Thead>
-                        <Tr>
-                            {data.assembleDataCollections[
-                                collectionName
-                            ][1].map((e, index) => (
-                                <ThTitle mode={mode} key={index}>
-                                    {e}
-                                </ThTitle>
-                            ))}
-                        </Tr>
-                    </Thead>
-                    <TBody>
-                        <Tr>
-                            {processingData &&
-                                data.assembleDataCollections[
-                                    collectionName
-                                ][2].map((keyName, index) => (
-                                    <Td mode={mode} key={index}>
-                                        {processingData.parentData[keyName]}
-                                    </Td>
-                                ))}
-                        </Tr>
-                    </TBody>
-                </Table>
-                <StructureScrollbar page={page}>
-                    <Table page={page} mode="assemble">
+                <AddScrollbar mode="assemble" page={page}>
+                    <Table mode={mode + "assemble"}>
                         <Thead>
                             <Tr>
                                 {data.assembleDataCollections[
                                     collectionName
-                                ][3].map((e, index) => (
+                                ][1].map((e, index) => (
                                     <ThTitle mode={mode} key={index}>
                                         {e}
                                     </ThTitle>
                                 ))}
-                                {page === 5
-                                    ? data.assembleDataCollections[
-                                          collectionName
-                                      ][5].map((e, index) => (
-                                          <ThTitle mode={mode} key={index}>
-                                              {e}
-                                          </ThTitle>
-                                      ))
-                                    : null}
                             </Tr>
                         </Thead>
                         <TBody>
-                            {processingData &&
-                                processingData.childData.map((e, index) => (
-                                    <Tr key={[e.id, index]}>
-                                        {data.assembleDataCollections[
-                                            collectionName
-                                        ][4].map(keyName => (
-                                            <Td mode={mode} key={keyName}>
-                                                {e[keyName]}
-                                            </Td>
-                                        ))}
-                                        {page === 5 ? (
-                                            <>
-                                                {data.assembleDataCollections[
-                                                    collectionName
-                                                ][6].map(
-                                                    (keyName, indexArray) => (
-                                                        <>
-                                                            {e[keyName] ===
-                                                            undefined ? (
-                                                                <Td
-                                                                    key={
-                                                                        indexArray
-                                                                    }
-                                                                >
-                                                                    <TableInput
-                                                                        columnQty={
-                                                                            8
-                                                                        }
-                                                                        name={
-                                                                            keyName
-                                                                        }
-                                                                        onChange={e =>
-                                                                            handleAddDataChange(
-                                                                                index,
-                                                                                e,
-                                                                            )
-                                                                        }
-                                                                        key={
-                                                                            keyName
-                                                                        }
-                                                                        placeholder="請填寫"
-                                                                    />
-                                                                </Td>
-                                                            ) : (
-                                                                <Td
-                                                                    key={
-                                                                        indexArray
-                                                                    }
-                                                                >
-                                                                    <TableInput
-                                                                        columnQty={
-                                                                            7
-                                                                        }
-                                                                        name={
-                                                                            keyName
-                                                                        }
-                                                                        onChange={e =>
-                                                                            handleAddDataChange(
-                                                                                index,
-                                                                                e,
-                                                                            )
-                                                                        }
-                                                                        key={
-                                                                            keyName
-                                                                        }
-                                                                        value={
-                                                                            e[
-                                                                                keyName
-                                                                            ]
-                                                                        }
-                                                                    />
-                                                                </Td>
-                                                            )}
-                                                        </>
-                                                    ),
-                                                )}
-                                                <TBodyTdButton>
-                                                    <DeleteButton
-                                                        onClick={() =>
-                                                            handleAddDataChange(
-                                                                index,
-                                                                e,
-                                                            )
-                                                        }
-                                                    />
-                                                </TBodyTdButton>
-                                            </>
-                                        ) : null}
-                                    </Tr>
-                                ))}
+                            <Tr>
+                                {processingData &&
+                                    data.assembleDataCollections[
+                                        collectionName
+                                    ][2].map((keyName, index) => (
+                                        <Td mode={mode} key={index}>
+                                            {processingData.parentData[keyName]}
+                                        </Td>
+                                    ))}
+                            </Tr>
                         </TBody>
                     </Table>
-                </StructureScrollbar>
+                    <StructureScrollbar page={page}>
+                        <Table page={page} mode="assemble">
+                            <Thead>
+                                <Tr>
+                                    {data.assembleDataCollections[
+                                        collectionName
+                                    ][3].map((e, index) => (
+                                        <ThTitle mode={mode} key={index}>
+                                            {e}
+                                        </ThTitle>
+                                    ))}
+                                    {page === 5
+                                        ? data.assembleDataCollections[
+                                              collectionName
+                                          ][5].map((e, index) => (
+                                              <ThTitle mode={mode} key={index}>
+                                                  {e}
+                                              </ThTitle>
+                                          ))
+                                        : null}
+                                </Tr>
+                            </Thead>
+                            <TBody>
+                                {processingData &&
+                                    processingData.childData.map((e, index) => (
+                                        <Tr key={[e.id, index]}>
+                                            {data.assembleDataCollections[
+                                                collectionName
+                                            ][4].map(keyName => (
+                                                <Td mode={mode} key={keyName}>
+                                                    {e[keyName]}
+                                                </Td>
+                                            ))}
+                                            {page === 5 ? (
+                                                <>
+                                                    {data.assembleDataCollections[
+                                                        collectionName
+                                                    ][6].map(
+                                                        (
+                                                            keyName,
+                                                            indexArray,
+                                                        ) => (
+                                                            <>
+                                                                {e[keyName] ===
+                                                                undefined ? (
+                                                                    <Td
+                                                                        key={
+                                                                            indexArray
+                                                                        }
+                                                                    >
+                                                                        <TableInput
+                                                                            columnQty={
+                                                                                8
+                                                                            }
+                                                                            name={
+                                                                                keyName
+                                                                            }
+                                                                            onChange={e =>
+                                                                                handleAddDataChange(
+                                                                                    index,
+                                                                                    e,
+                                                                                )
+                                                                            }
+                                                                            key={
+                                                                                keyName
+                                                                            }
+                                                                            placeholder="請填寫"
+                                                                        />
+                                                                    </Td>
+                                                                ) : (
+                                                                    <Td
+                                                                        key={
+                                                                            indexArray
+                                                                        }
+                                                                    >
+                                                                        <TableInput
+                                                                            columnQty={
+                                                                                7
+                                                                            }
+                                                                            name={
+                                                                                keyName
+                                                                            }
+                                                                            onChange={e =>
+                                                                                handleAddDataChange(
+                                                                                    index,
+                                                                                    e,
+                                                                                )
+                                                                            }
+                                                                            key={
+                                                                                keyName
+                                                                            }
+                                                                            value={
+                                                                                e[
+                                                                                    keyName
+                                                                                ]
+                                                                            }
+                                                                        />
+                                                                    </Td>
+                                                                )}
+                                                            </>
+                                                        ),
+                                                    )}
+                                                    <TBodyTdButton>
+                                                        <DeleteButton
+                                                            onClick={() =>
+                                                                handleAddDataChange(
+                                                                    index,
+                                                                    e,
+                                                                )
+                                                            }
+                                                        />
+                                                    </TBodyTdButton>
+                                                </>
+                                            ) : null}
+                                        </Tr>
+                                    ))}
+                            </TBody>
+                        </Table>
+                    </StructureScrollbar>
+                </AddScrollbar>
             </Flex>
         </Section>
     );

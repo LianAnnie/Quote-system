@@ -1,7 +1,6 @@
 import styled from "styled-components";
-import { NavLink } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 import { useState } from "react";
-import { device } from "./StyleComponent";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import CallToActionIcon from "@mui/icons-material/CallToAction";
@@ -12,7 +11,7 @@ import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
 import HandshakeIcon from "@mui/icons-material/Handshake";
 import InsertChartIcon from "@mui/icons-material/InsertChart";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { Outlet } from "react-router-dom";
+import { device } from "./StyleComponent";
 import Logo from "./Logo";
 const Orange = styled.div`
     width: ${props => (props.showNavBar ? "250px" : "100vw")};
@@ -47,6 +46,7 @@ const Burger = styled(MenuIcon)`
     display: flex;
     margin: 6px 20px 6px 10px;
     width: 20px;
+    cursor: pointer;
 `;
 const Header = styled.div`
     display: ${props => (props.showNavBar ? "block" : "flex")};
@@ -98,6 +98,7 @@ const NavbarStyled = styled.div`
     }
 `;
 const LogoutLinkStyled = styled.div`
+    cursor: pointer;
     margin-top: 24px;
     transition: 0.5s;
     padding: 10px;
@@ -134,7 +135,8 @@ const Close = styled(CloseIcon)`
     position: absolute;
     top: 27px;
     left: 200px;
-    @media ${device.mobileS} {
+    cursor: pointer;
+    p @media ${device.mobileS} {
         top: 10px;
         left: 165px;
     }

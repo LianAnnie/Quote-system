@@ -387,6 +387,7 @@ function Structure({
                         <ListWithRadio
                             mode="structure"
                             page={page}
+                            listPosition="inner"
                             collectionName={parentCollectionName}
                             list={parentList}
                             setProcessingData={setParentData}
@@ -397,6 +398,7 @@ function Structure({
                         <ListWithCheckBox
                             mode="structure"
                             page={page}
+                            listPosition="inner"
                             collectionName={childCollectionName}
                             list={childList}
                             setProcessingData={setChildData}

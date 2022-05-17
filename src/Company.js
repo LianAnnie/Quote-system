@@ -7,22 +7,12 @@ import styled from "styled-components";
 
 const Flex = styled.div`
     display: flex;
-    @media ${device.mobileS} {
-        flex-direction: column;
-        width: 100vw;
-    }
     @media ${device.mobileL} {
-        flex-direction: column;
-        width: 100vw;
+        flex-wrap: wrap;
     }
     @media ${device.tablet} {
-        flex-direction: row;
-        width: 98vw;
+        flex-wrap: nowrap;
     }
-    @media ${device.desktop} {
-        flex-direction: row;
-        width: calc(98vw - 250px);
-    } ;
 `;
 
 function Company() {

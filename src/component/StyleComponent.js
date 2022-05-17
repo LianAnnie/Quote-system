@@ -13,7 +13,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import CloseIcon from "@mui/icons-material/Close";
-import FiberNewIcon from "@mui/icons-material/FiberNew";
+import CreateNewFolderIcon from "@mui/icons-material/CreateNewFolder";
 
 const size = {
     mobile: "320px",
@@ -44,7 +44,6 @@ const Button = styled.div`
     color: #513c2c;
     background-color: #f1d9a7;
     border-radius: 5px;
-    cursor: pointer;
     :hover {
         background-color: #513c2c;
         color: #fff;
@@ -62,14 +61,15 @@ const UpdatedButton = styled(DriveFileRenameOutlineIcon)`
     }
 `;
 const DeleteButton = styled(ClearIcon)`
-    color: #8a9b77;
+    color: ${props => (props.dependency ? "#b5b1b1" : "#8a9b77")};
     border-radius: 5px;
-    cursor: pointer;
-    background-color: #c4d6b0;
+    cursor: ${props => (props.dependency ? "not-allowed" : "pointer")};
+    background-color: ${props => (props.dependency ? "#eeefec" : "#c4d6b0")};
     padding: 5px;
     :hover {
-        background-color: #513c2c;
-        color: #fff;
+        background-color: ${props =>
+            props.dependency ? "#eeefec" : "#513c2c"};
+        color: ${props => (props.dependency ? "#b5b1b1" : " #fff")};
     }
 `;
 const CancelSelectedButton = styled(DeselectIcon)`
@@ -120,14 +120,19 @@ const CancelEditButton = styled(EditOffIcon)`
     }
 `;
 const ExportButton = styled(FileDownloadIcon)`
-    color: #fff;
     border-radius: 5px;
     cursor: pointer;
     margin-top: 10px;
     margin-left: 90%;
+    color: #8a9b77;
+    padding: 5px;
+    height: 10px;
     background-color: #c4d6b0;
+    top: ${props => (props.mode === "analysis" ? "180px" : "380px")};
+    right: 20%;
     :hover {
         background-color: #513c2c;
+        color: #fff;
     }
 `;
 const RegisterButton = styled(PersonAddIcon)`
@@ -190,7 +195,7 @@ const NextButton = styled(ArrowForwardIosIcon)`
     position: fixed;
     background-color: #c4d6b0;
     z-index: 11;
-    top: ${props => (props.mode === "analysis" ? "145px" : "380px")};
+    top: ${props => (props.mode === "analysis" ? "205px" : "380px")};
     right: 20%;
     :hover {
         background-color: #513c2c;
@@ -205,7 +210,7 @@ const BackButton = styled(ArrowBackIosNewIcon)`
     cursor: pointer;
     position: fixed;
     z-index: 11;
-    top: ${props => (props.mode === "analysis" ? "145px" : "380px")};
+    top: ${props => (props.mode === "analysis" ? "205px" : "380px")};
     right: 23%;
     background-color: #c4d6b0;
     :hover {
@@ -229,12 +234,13 @@ const CloseButton = styled(CloseIcon)`
         color: #fff;
     }
 `;
-const CreatNewData = styled(FiberNewIcon)`
+const CreatNewData = styled(CreateNewFolderIcon)`
+    padding: 5px;
     border-radius: 5px;
     margin: 0px 20px;
     cursor: pointer;
     position: fixed;
-    top: 100px;
+    top: 115px;
     right: 10%;
     color: ${props => (props.page !== 0 ? "#513c2c" : "#c4d6b0")};
     :hover {
@@ -252,7 +258,7 @@ const Article = styled.div`
     padding: ${props =>
         props.mode === "origin" ? "20px 0px 20px 4%" : "20px 0px 20px 8%"};
     width: ${props => (props.mode === "origin" ? "23vw" : "80%")};
-    @media ${device.mobileSs} {
+    @media ${device.mobileS} {
         width: 95%;
     }
     @media ${device.mobileL} {
@@ -263,6 +269,10 @@ const Article = styled.div`
     }
     @media ${device.laptop} {
         width: ${props => (props.mode === "origin" ? "23vw" : "80%")};
+    }
+    @media ${device.laptop} {
+        width: ${props => (props.mode === "origin" ? "23vw" : "80%")};
+        max-width: 550px;
     }
 `;
 const NewDataContainer = styled.div`
@@ -282,6 +292,22 @@ const NewDataForm = styled.div`
     top: 360px;
     z-index: ${props => (props.page === 0 ? "0" : "10")};
     display: ${props => (props.page === 0 ? "none" : "block")};
+    @media ${device.mobileS} {
+        position: static;
+    }
+    @media ${device.mobileL} {
+        position: static;
+    }
+    @media ${device.tablet} {
+        position: static;
+    }
+    @media ${device.laptop} {
+        position: fixed;
+        top: 340px;
+    }
+    @media ${device.laptopL} {
+        top: 360px;
+    }
 `;
 /*--------Analysis --------*/
 const AnalysisDataContainer = styled.div`
@@ -292,7 +318,6 @@ const AnalysisDataContainer = styled.div`
 `;
 const AnalysisDataForm = styled.div`
     width: 90%;
-    height: 45vh;
     border-radius: 30px;
     padding: 10px;
     background-color: #fff;
@@ -312,8 +337,8 @@ const AnalysisAssembledContainer = styled.div`
     border-radius: 30px;
     background-color: #fff;
     box-shadow: 4px 3px 20px 8px #dddaca;
-    width: 45vw;
     padding: 2%;
+    margin-right: 20px;
 `;
 const Border = styled.div`
     width: 40vw;
@@ -340,9 +365,20 @@ const Form = styled.div`
 `;
 const StructureForm = styled.div`
     display: flex;
+    margin-bottom: 20px;
+    @media ${device.mobileS} {
+        flex-wrap: wrap;
+    }
+    @media ${device.mobileL} {
+        flex-wrap: wrap;
+    }
+    @media ${device.laptopL} {
+        flex-wrap: nowrap;
+    }
 `;
 const StructrueSingleLine = styled.div`
-    margin-right: 50px;
+    // width: 230px;
+    margin-right: 30px;
     border-radius: 10px;
     box-shadow: 1px 1px 6px 0 #dfdfdf;
     border: solid 1px #e4e4e4;
@@ -384,7 +420,7 @@ const DataListStyled = styled.datalist`
     text-align: center;
 `;
 const InputStyled = styled.input`
-    font-size: 16px;
+    font-size: 15px;
     width: ${props =>
         props.inputWidth !== undefined ? `${props.inputWidth}px` : "120px"};
     border: 1px solid #bebebe;
@@ -417,7 +453,11 @@ const AddScrollbar = styled.div`
     background-color: #fff;
     white-space: pre-wrap;
     height: ${props =>
-        props.mode === "structure" && props.page === "3"
+        props.mode === "assemble" && props.page === 5
+            ? "400px"
+            : props.mode === "assemble"
+            ? "160px"
+            : props.mode === "structure" && props.page === "3"
             ? "180px"
             : props.mode === "structure" && props.page === "4"
             ? "180px"
@@ -428,6 +468,7 @@ const AddScrollbar = styled.div`
             : props.mode === "analysis"
             ? "295px"
             : "320px"};
+    display: ${props => (props.mode === "assemble" ? "flex" : "block")};
     overflow-x: scroll;
     overflow-y: scroll;
     scrollbar-width: none;
@@ -452,9 +493,41 @@ const AddScrollbar = styled.div`
     ::-webkit-scrollbar {
         display: none;
     }
+    @media ${device.mobileS} {
+        flex-wrap: ${props => (props.mode === "assemble" ? "wrap" : "nowrap")};
+        width: ${props =>
+            props.mode === "assemble"
+                ? "70%"
+                : props.listPosition === "inner"
+                ? "70%"
+                : "auto"};
+    }
+    @media ${device.mobileL} {
+        flex-wrap: ${props => (props.mode === "assemble" ? "wrap" : "nowrap")};
+        width: ${props =>
+            props.mode === "assemble"
+                ? "78%"
+                : props.listPosition === "inner"
+                ? "78%"
+                : "auto"};
+    }
+    @media ${device.tablet} {
+        width: ${props => (props.mode === "assemble" ? "52vw" : "auto")};
+        margin: auto;
+        padding: ${props => props.columnQty === 4 && "0px 5%"};
+    }
+    @media ${device.laptop} {
+        width: ${props => (props.mode === "assemble" ? "77vw" : "auto")};
+        flex-wrap: nowrap;
+        flex-direction: ${props => (props.page === 5 ? "column" : "row")};
+    }
+    @media ${device.laptopL} {
+        width: ${props => (props.mode === "assemble" ? "77vw" : "auto")};
+    }
 `;
 const StructureScrollbar = styled.div`
     background-color: #fff;
+    margin-top: 29px;
     margin-left: ${props => (props.page === 5 ? "70px" : "20px")};
     height: ${props =>
         props.page === 5
@@ -468,12 +541,16 @@ const StructureScrollbar = styled.div`
     ::-webkit-scrollbar {
         display: none;
     }
+    @media ${device.mobileS} {
+        margin-left: ${props => (props.page === 5 ? "70px" : "10px")};
+    }
+    @media ${device.mobileL} {
+        margin-left: ${props => (props.page === 5 ? "70px" : "10px")};
+    }
 `;
 const Table = styled.table`
     table-layout: fixed;
     word-wrap: break-word;
-    cellspacing: 0;
-    cellpadding: 0;
     border-collapse: collapse;
     width: ${props =>
         props.mode === "structure"
@@ -483,9 +560,23 @@ const Table = styled.table`
             : props.mode === "assemble"
             ? "340px"
             : "auto"};
-    margin-left: ${props =>
-        props.mode === "structureassemble" ? "70px" : "0px"};
     height: ${props => (props.mode === "structureassemble" ? "100px" : "auto")};
+    @media ${device.mobileS} {
+        margin-left: ${props => props.mode === "structureassemble" && "10px"};
+        margin: auto;
+    }
+    @media ${device.mobileL} {
+        margin-left: ${props => props.mode === "structureassemble" && "10px"};
+        margin: auto;
+    }
+    @media ${device.laptop} {
+        margin-left: ${props => props.mode === "structureassemble" && "20px"};
+        margin: auto;
+    }
+    @media ${device.laptopL} {
+        margin-left: ${props => props.mode === "structureassemble" && "70px"};
+        margin: auto;
+    }
 `;
 const Thead = styled.thead`
     background-color: #fff;
@@ -643,9 +734,6 @@ const Main = styled.div`
     @media ${device.desktop} {
         margin-left: 250px;
     }
-    @media ${device.desktopL} {
-        padding: 80px 10% 0px;
-    }
 `;
 const Section = styled.div`
     padding: ${props => (props.mode === "structure" ? "10px 5%" : "20px 5%")};
@@ -658,7 +746,32 @@ const Section = styled.div`
         width: ${props => (props.mode === "analysis" ? "68vw" : "95vw")};
     }
     @media ${device.tablet} {
-        width: ${props => (props.mode === "analysis" ? "68vw" : "95%")};
+        width: ${props =>
+            props.mode === "analysis"
+                ? "68vw"
+                : props.listPosition === "inner"
+                ? "60vw"
+                : props.collectionName === "products2"
+                ? "60vw"
+                : props.collectionName === "parts2"
+                ? "60vw"
+                : props.mode === "structure"
+                ? "95%"
+                : "95%"};
+    }
+    @media ${device.laptop} {
+        width: ${props =>
+            props.mode === "analysis"
+                ? "68vw"
+                : props.listPosition === "inner"
+                ? "77vw"
+                : props.collectionName === "products2"
+                ? "77vw"
+                : props.collectionName === "parts2"
+                ? "77vw"
+                : props.mode === "structure"
+                ? "95%"
+                : "95%"};
     }
     @media ${device.desktop} {
         width: ${props =>
@@ -667,17 +780,17 @@ const Section = styled.div`
                 : props.mode === "company"
                 ? "90%"
                 : "calc(77vw - 250px)"};
+        max-width: 1700px;
     }
 `;
 const Flex = styled.div`
-    display: ${props => (props.page === 5 ? "block" : "flex")};
+    display: flex;
 `;
 
 /* -----------待整理-----------*/
 const TdContext = styled.td`
     padding-left: 10px;
 `;
-const Th = styled.th``;
 
 const UpdatedTr = styled.tr`
     @media ${device.mobileS} {
@@ -709,11 +822,6 @@ const TableStyled = styled.table`
     border-radius: 10px;
     width: 100%;
     background-color: #fff;
-`;
-
-const Question = styled.div`
-    display: flex;
-    margin: 5px;
 `;
 const DivStyled = styled.div`
     width: 160px;
@@ -756,7 +864,6 @@ export {
     Thead,
     TableStyled,
     Border,
-    Question,
     LabelStyled,
     InputStyled,
     SelectStyled,
@@ -764,7 +871,6 @@ export {
     Tr,
     TBody,
     Td,
-    Th,
     UpdatedTr,
     Button,
     Flex,

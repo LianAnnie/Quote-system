@@ -125,7 +125,6 @@ function Companies({
                 </SingleLine>
                 {data.companies.inputComponentArray.map(e => (
                     <Input
-                        inputWidth={100}
                         fileName="companies"
                         key={e.name}
                         title={e.title}

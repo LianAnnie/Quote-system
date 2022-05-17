@@ -190,6 +190,8 @@ function ListWithRadio2({
                                     </ThText>
                                 ),
                             )}
+                            <th></th>
+                            <th></th>
                         </Tr>
                     </Thead>
                     <TBody>

@@ -18,7 +18,9 @@ function AssembleData2({ collectionName, processingData, setProcessingData }) {
                     <Tr>
                         {data.assembleDataCollections[collectionName][1].map(
                             (e, index) => (
-                                <ThTitle key={index}>{e}</ThTitle>
+                                <ThTitle mode="anlysis" key={index}>
+                                    {e}
+                                </ThTitle>
                             ),
                         )}
                     </Tr>
@@ -27,11 +29,18 @@ function AssembleData2({ collectionName, processingData, setProcessingData }) {
                     <Tr>
                         {processingData &&
                             data.assembleDataCollections[collectionName][2].map(
-                                (keyName, index) => (
-                                    <Td mode="anlysis" key={index}>
-                                        {processingData.parentData[keyName]}
-                                    </Td>
-                                ),
+                                (keyName, index) =>
+                                    keyName === "currency" ? (
+                                        <Td mode="anlysis" key={index}>
+                                            {processingData.parentData[
+                                                keyName
+                                            ]?.replace(",", "/")}
+                                        </Td>
+                                    ) : (
+                                        <Td mode="anlysis" key={index}>
+                                            {processingData.parentData[keyName]}
+                                        </Td>
+                                    ),
                             )}
                     </Tr>
                 </TBody>

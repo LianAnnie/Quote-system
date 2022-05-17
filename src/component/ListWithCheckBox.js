@@ -29,6 +29,7 @@ function ListWithRadio({
     setProcessingData,
     processingData,
     mode,
+    listPosition,
 }) {
     const filterConditionRule = {};
     const [filterList, setFilterList] = useState([]);
@@ -83,7 +84,7 @@ function ListWithRadio({
     }
 
     return (
-        <Section mode={mode}>
+        <Section mode={mode} listPosition={listPosition}>
             <Flex>
                 <Title>
                     請選擇包含的{data.listCollections[collectionName][0]}
@@ -98,7 +99,7 @@ function ListWithRadio({
                     <CancelSelectedText> 取消篩選</CancelSelectedText>
                 </ShowTextForButton>
             </Flex>
-            <AddScrollbar mode={mode} page="4">
+            <AddScrollbar mode={mode} page="4" listPosition={listPosition}>
                 <Table>
                     <Thead>
                         <Tr>
@@ -167,6 +168,8 @@ function ListWithRadio({
                                     </ThText>
                                 ),
                             )}
+                            <th></th>
+                            <th></th>
                         </Tr>
                     </Thead>
                     <TBody>

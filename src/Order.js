@@ -1,7 +1,16 @@
-import { Container, Main } from "./component/StyleComponent";
+import { Main } from "./component/StyleComponent";
 import Structure from "./component/Structure";
 import { useState, useEffect } from "react";
 import api from "./utils/firebaseApi";
+import styled from "styled-components";
+
+const Container = styled.div`
+    text-align: left;
+    background-color: #fffae3;
+    min-height: 100vh;
+    letter-spacing: 1px;
+    padding-top: 45px;
+`;
 
 function Order() {
     const [parentList, setParentList] = useState([]);

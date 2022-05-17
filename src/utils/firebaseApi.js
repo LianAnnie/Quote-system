@@ -140,7 +140,7 @@ const api = {
     },
     async updateDoc(collectionName, docId, data, state) {
         console.log(`update firebase`);
-        let newData;
+        let newData = data;
         if (collectionName === "products2" || collectionName === "parts2") {
             if (state === 0) {
                 newData = {

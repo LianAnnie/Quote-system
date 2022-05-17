@@ -165,6 +165,8 @@ function ListWithRadio({
                                         </ThText>
                                     ),
                                 )}
+                            <th></th>
+                            <th></th>
                         </Tr>
                     </Thead>
                     <TBody>

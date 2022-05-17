@@ -284,6 +284,7 @@ function Structure2({
     return (
         <>
             <AnalysisDataContainer>
+                <ExportExcel data={processingData} />
                 <AnalysisDataForm>
                     <Flex>
                         <AnalysisForm
@@ -336,7 +337,6 @@ function Structure2({
                     />
                     <Drawing profitMargin={margin} pieData={pieData} />
                 </AnalysisDrawingContainer>
-                <ExportExcel data={processingData} />
             </AnalysisDataContainer>
         </>
     );

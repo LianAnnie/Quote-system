@@ -10,10 +10,19 @@ import {
     Button,
     LefttMargi5,
     Flex,
+    device,
 } from "./component/StyleComponent";
 import styled from "styled-components";
 
-const FlexLayout = styled.div``;
+const FlexLayout = styled.div`
+    display: flex;
+    @media ${device.mobileL} {
+        flex-wrap: wrap;
+    }
+    @media ${device.tablet} {
+        flex-wrap: nowrap;
+    }
+`;
 
 function Bom() {
     const [page, setPage] = useState(0);

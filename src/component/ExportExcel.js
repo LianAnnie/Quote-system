@@ -97,7 +97,12 @@ function ExportExcel({ data }) {
         });
     }
 
-    return <ExportButton onClick={() => exportDataToExcel()} />;
+    return (
+        <ExportButton
+            sx={{ fontSize: 50 }}
+            onClick={() => exportDataToExcel()}
+        />
+    );
 }
 
 export default ExportExcel;

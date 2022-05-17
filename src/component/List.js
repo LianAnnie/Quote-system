@@ -248,10 +248,10 @@ function List({ collectionName, list, setList, mode }) {
         setFilterList(newFilterList);
     }
 
-    console.log(list);
+    console.log(collectionName);
 
     return (
-        <Section mode={mode}>
+        <Section mode={mode} collectionName={collectionName}>
             <Flex>
                 <Title>{data.listCollections[collectionName][0]}列表</Title>
                 <ShowTextForButton>
@@ -371,7 +371,13 @@ function List({ collectionName, list, setList, mode }) {
                                         <TBodyTdButton>
                                             {e.dependency &&
                                             e.dependency.length !== 0 ? (
-                                                ""
+                                                <DeleteButton
+                                                    sx={{
+                                                        width: "30px",
+                                                        height: "30px",
+                                                    }}
+                                                    dependency={true}
+                                                />
                                             ) : (
                                                 <DeleteButton
                                                     sx={{
