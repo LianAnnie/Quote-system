@@ -9,6 +9,7 @@ import Quotes from "./Quotes";
 import Orders from "./Orders";
 import data from "../utils/data";
 import ErrorBoundary from "../admin/ErrorBoundary";
+import PropTypes from "prop-types";
 
 function Structure({
     parentCollectionName,
@@ -90,22 +91,20 @@ function Structure({
             processingData,
             assembleCollectionName,
         );
-        if (!result) {
-            return;
-        } else {
-            const newDataArray = await api.setDocWithId(
-                assembleCollectionName,
-                0,
-                processingData,
-            );
-            if (assembleCollectionName === "bom") {
-                bomDependency(newDataArray);
-            }
-            if (assembleCollectionName === "order") {
-                orderDependency(newDataArray);
-            }
-            setAssembleList(prev => prev.concat(newDataArray));
+        if (!result) return;
+
+        const newDataArray = await api.setDocWithId(
+            assembleCollectionName,
+            0,
+            processingData,
+        );
+        if (assembleCollectionName === "bom") {
+            bomDependency(newDataArray);
         }
+        if (assembleCollectionName === "order") {
+            orderDependency(newDataArray);
+        }
+        setAssembleList(prev => prev.concat(newDataArray));
         setProcessingData(processingDataRule);
         setParentData({});
         setChildData([]);
@@ -131,15 +130,16 @@ function Structure({
     }
 
     function checkProcessingData(parameterData, collectionName) {
+        const error = data.errorMessage[collectionName];
         if (
             Object.keys(parameterData.parentData).length === 0 ||
-            parameterData.parentData.id === undefined
+            !parameterData.parentData.id
         ) {
-            alert(data.errorMessage[collectionName][0]);
+            alert(error[0]);
             return false;
         }
         if (parameterData.childData.length === 0) {
-            alert(data.errorMessage[collectionName][1]);
+            alert(error[1]);
             return false;
         }
 
@@ -148,7 +148,7 @@ function Structure({
                 .map(e => e.qty)
                 .filter(e => isNaN(Number(e)));
             if (qtyArry.length > 0) {
-                alert(data.errorMessage[collectionName][2]);
+                alert(error[2]);
                 return false;
             }
             const indexArray = parameterData.childData.map(e =>
@@ -156,7 +156,7 @@ function Structure({
             );
             const array = [...new Set(indexArray)];
             if (indexArray.length !== array.length) {
-                alert(data.errorMessage[collectionName][3]);
+                alert(error[3]);
                 return false;
             }
         }
@@ -165,8 +165,8 @@ function Structure({
             collectionName === "productQuotations2" ||
             collectionName === "order"
         ) {
-            if (parameterData.parentData.date === undefined) {
-                alert(data.errorMessage[collectionName][5]);
+            if (!parameterData.parentData.date) {
+                alert(error[5]);
                 return false;
             }
 
@@ -174,39 +174,39 @@ function Structure({
                 collectionName === "partQuotations2" ||
                 collectionName === "productQuotations2"
             ) {
-                if (parameterData.parentData.valid === undefined) {
-                    alert(data.errorMessage[collectionName][5]);
+                if (!parameterData.parentData.valid) {
+                    alert(error[5]);
                     return false;
                 }
                 const qtyArry = parameterData.childData
                     .map(e => e.inquiryQty)
                     .filter(e => isNaN(Number(e)));
                 if (qtyArry.length > 0) {
-                    alert(data.errorMessage[collectionName][2]);
+                    alert(error[2]);
                     return false;
                 }
             }
 
             if (collectionName === "order") {
-                if (parameterData.parentData.requestedDate === undefined) {
-                    alert(data.errorMessage[collectionName][5]);
+                if (!parameterData.parentData.requestedDate) {
+                    alert(error[5]);
                     return false;
                 }
-                if (parameterData.parentData.orderId === undefined) {
-                    alert(data.errorMessage[collectionName][6]);
+                if (!parameterData.parentData.orderId) {
+                    alert(error[6]);
                     return false;
                 }
                 const qtyArry = parameterData.childData
                     .map(e => e.qty)
                     .filter(e => isNaN(Number(e)));
                 if (qtyArry.length > 0) {
-                    alert(data.errorMessage[collectionName][2]);
+                    alert(error[2]);
                     return false;
                 }
             }
 
-            if (parameterData.parentData.currency === undefined) {
-                alert(data.errorMessage[collectionName][4]);
+            if (!parameterData.parentData.currency) {
+                alert(error[4]);
                 return false;
             }
 
@@ -214,7 +214,7 @@ function Structure({
                 .map(e => e.price)
                 .filter(e => isNaN(Number(e)));
             if (priceArry.length > 0) {
-                alert(data.errorMessage[collectionName][3]);
+                alert(error[3]);
                 return false;
             }
         }
@@ -225,10 +225,9 @@ function Structure({
             childKeys.filter(key => e[key] === undefined),
         );
         if (checkValeus.filter(e => e.length !== 0).length > 0) {
-            alert(data.errorMessage[collectionName][7]);
+            alert(error[7]);
             return false;
         }
-
         return true;
     }
 
@@ -430,5 +429,15 @@ function Structure({
         </>
     );
 }
+
+Structure.propTypes = {
+    parentCollectionName: PropTypes.string,
+    parentList: PropTypes.array,
+    childCollectionName: PropTypes.string,
+    childList: PropTypes.array,
+    assembleCollectionName: PropTypes.string,
+    assembleList: PropTypes.array,
+    setAssembleList: PropTypes.func,
+};
 
 export default Structure;

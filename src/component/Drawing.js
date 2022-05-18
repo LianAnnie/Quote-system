@@ -2,6 +2,7 @@ import { Border } from "./StyleComponent";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import more from "highcharts/highcharts-more";
+import PropTypes from "prop-types";
 more(Highcharts);
 require("highcharts/modules/solid-gauge")(Highcharts);
 
@@ -119,5 +120,10 @@ function Drawing({ profitMargin, pieData }) {
         </Border>
     );
 }
+
+Drawing.propTypes = {
+    profitMargin: PropTypes.number,
+    pieData: PropTypes.array,
+};
 
 export default Drawing;

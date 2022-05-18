@@ -1,6 +1,7 @@
 import * as S from "./StyleComponent";
 import form from "../utils/formChange";
 import data from "../utils/data";
+import PropTypes from "prop-types";
 
 function AssembleData({
     collectionName,
@@ -202,5 +203,13 @@ function AssembleData({
         </S.Section>
     );
 }
+
+AssembleData.propTypes = {
+    collectionName: PropTypes.string.isRequired,
+    processingData: PropTypes.object.isRequired,
+    setProcessingData: PropTypes.func.isRequired,
+    mode: PropTypes.string.isRequired,
+    page: PropTypes.number.isRequired,
+};
 
 export default AssembleData;

@@ -1,5 +1,6 @@
 import * as S from "./StyleComponent";
 import data from "../utils/data";
+import PropTypes from "prop-types";
 
 function AssembleData2({ collectionName, processingData }) {
     return (
@@ -73,5 +74,10 @@ function AssembleData2({ collectionName, processingData }) {
         </S.AnalysisAssembledContainer>
     );
 }
+
+AssembleData2.propTypes = {
+    collectionName: PropTypes.string.isRequired,
+    processingData: PropTypes.object.isRequired,
+};
 
 export default AssembleData2;

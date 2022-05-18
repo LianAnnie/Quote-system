@@ -8,6 +8,7 @@ import {
     signInWithEmailAndPassword,
 } from "firebase/auth";
 import { useNavigate, useLocation } from "react-router-dom";
+import PropTypes from "prop-types";
 
 const Container = styled.div`
     background-color: #fffae3;
@@ -271,5 +272,14 @@ function LogIn({
         </Container>
     );
 }
+
+LogIn.propTypes = {
+    setLoginStatus: PropTypes.func.isRequired,
+    loginStatus: PropTypes.number.isRequired,
+    signOut: PropTypes.func.isRequired,
+    setMessage: PropTypes.func.isRequired,
+    checkErrorMessage: PropTypes.func.isRequired,
+    message: PropTypes.string.isRequired,
+};
 
 export default LogIn;

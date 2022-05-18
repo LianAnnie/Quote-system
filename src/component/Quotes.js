@@ -2,6 +2,7 @@ import Input from "./Input";
 import Select from "./Select";
 import { Article, StructureForm, StructrueSingleLine } from "./StyleComponent";
 import data from "../utils/data";
+import PropTypes from "prop-types";
 
 function Quotes({ handleDataChange, processingData, mode }) {
     const inputComponentArray = [
@@ -43,5 +44,11 @@ function Quotes({ handleDataChange, processingData, mode }) {
         </Article>
     );
 }
+
+Quotes.propTypes = {
+    handleDataChange: PropTypes.func.isRequired,
+    processingData: PropTypes.object.isRequired,
+    mode: PropTypes.string.isRequired,
+};
 
 export default Quotes;

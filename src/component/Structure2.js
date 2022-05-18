@@ -7,6 +7,7 @@ import * as S from "./StyleComponent";
 import { useState, useEffect } from "react";
 import data from "../utils/data";
 import ExportExcel from "./ExportExcel";
+import PropTypes from "prop-types";
 
 function Structure2({
     parentCollectionName,
@@ -298,5 +299,13 @@ function Structure2({
         </>
     );
 }
+
+Structure2.propTypes = {
+    parentCollectionName: PropTypes.string.isRequired,
+    parentList: PropTypes.array.isRequired,
+    childCollectionName: PropTypes.string.isRequired,
+    childList: PropTypes.array.isRequired,
+    assembleCollectionName: PropTypes.string.isRequired,
+};
 
 export default Structure2;

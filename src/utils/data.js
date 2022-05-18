@@ -508,7 +508,6 @@ const data = {
             },
         ],
     },
-
     keylimitQty: {
         products2: {
             class: 1,

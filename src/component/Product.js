@@ -5,6 +5,7 @@ import api from "../utils/api";
 import form from "../utils/formChange";
 import * as S from "./StyleComponent";
 import data from "../utils/data";
+import PropTypes from "prop-types";
 
 function Product({ collectionName, list, setList }) {
     const ruleData = {
@@ -109,5 +110,11 @@ function Product({ collectionName, list, setList }) {
         </S.Article>
     );
 }
+
+Product.propTypes = {
+    collectionName: PropTypes.string.isRequired,
+    list: PropTypes.array.isRequired,
+    setList: PropTypes.func.isRequired,
+};
 
 export default Product;

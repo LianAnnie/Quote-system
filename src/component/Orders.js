@@ -2,6 +2,7 @@ import Input from "./Input";
 import Select from "./Select";
 import * as S from "./StyleComponent";
 import data from "../utils/data";
+import PropTypes from "prop-types";
 
 function Orders({ handleDataChange, processingData, mode }) {
     return (
@@ -33,5 +34,11 @@ function Orders({ handleDataChange, processingData, mode }) {
         </S.Article>
     );
 }
+
+Orders.propTypes = {
+    handleDataChange: PropTypes.func.isRequired,
+    processingData: PropTypes.object.isRequired,
+    mode: PropTypes.string,
+};
 
 export default Orders;

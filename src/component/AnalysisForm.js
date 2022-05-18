@@ -2,6 +2,7 @@ import Input from "./Input";
 import Select from "./Select";
 import * as S from "./StyleComponent";
 import data from "../utils/data";
+import PropTypes from "prop-types";
 
 function AnalysisForm({ handleDataChange, processingData }) {
     const inputComponentArray = [
@@ -61,5 +62,10 @@ function AnalysisForm({ handleDataChange, processingData }) {
         </S.Article>
     );
 }
+
+AnalysisForm.propTypes = {
+    handleDataChange: PropTypes.func.isRequired,
+    processingData: PropTypes.object.isRequired,
+};
 
 export default AnalysisForm;

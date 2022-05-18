@@ -13,6 +13,8 @@ import InsertChartIcon from "@mui/icons-material/InsertChart";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { device } from "./StyleComponent";
 import Logo from "./Logo";
+import PropTypes from "prop-types";
+
 const Orange = styled.div`
     width: ${props => (props.showNavBar ? "250px" : "100vw")};
     height: ${props => (props.showNavBar ? "100vh" : "68px")};
@@ -183,7 +185,6 @@ const Cover = styled.div`
     position: fixed;
     z-index: 98;
 `;
-
 const ActiveDiv = styled.div`
     transition: 0.5s;
     width: ${props => (props.showNavBar ? "130px" : "")};
@@ -309,5 +310,9 @@ function SideBar({ signOut }) {
         </>
     );
 }
+
+SideBar.propTypes = {
+    signOut: PropTypes.func,
+};
 
 export default SideBar;

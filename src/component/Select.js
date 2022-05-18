@@ -1,4 +1,5 @@
 import * as S from "./StyleComponent";
+import PropTypes from "prop-types";
 
 function Select({ title, handleDataChange, name, optionArray }) {
     return (
@@ -28,5 +29,12 @@ function Select({ title, handleDataChange, name, optionArray }) {
         </>
     );
 }
+
+Select.propTypes = {
+    title: PropTypes.string,
+    handleDataChange: PropTypes.func.isRequired,
+    name: PropTypes.string,
+    optionArray: PropTypes.array,
+};
 
 export default Select;

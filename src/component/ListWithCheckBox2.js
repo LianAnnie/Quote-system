@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import * as S from "./StyleComponent";
 import data from "../utils/data";
 import form from "../utils/formChange";
+import PropTypes from "prop-types";
 
 function ListWithRadio({
     collectionName,
@@ -197,5 +198,13 @@ function ListWithRadio({
         </S.Section>
     );
 }
+
+ListWithRadio.propTypes = {
+    collectionName: PropTypes.string.isRequired,
+    list: PropTypes.array.isRequired,
+    setProcessingData: PropTypes.func.isRequired,
+    processingData: PropTypes.array.isRequired,
+    mode: PropTypes.string.isRequired,
+};
 
 export default ListWithRadio;

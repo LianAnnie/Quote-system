@@ -1,19 +1,15 @@
 import ExcelJs from "exceljs";
 import { ExportButton } from "./StyleComponent";
+import PropTypes from "prop-types";
 
 function ExportExcel({ data }) {
     function exportDataToExcel() {
         const workbook = new ExcelJs.Workbook();
         const sheet = workbook.addWorksheet("analysisData");
-        // const imageURL =
-        //     "https://firebasestorage.googleapis.com/v0/b/sideproject2022-erpsystem.appspot.com/o/images%2F%E6%88%AA%E5%9C%96%202022-04-06%20%E4%B8%8B%E5%8D%8811.46.07.png?alt=media&token=c5d09f1d-e280-4cce-9c32-7960f46363bf";
-        // const imageId1 = workbook.addImage({
-        //     filename: imageURL,
-        //     extension: "png",
-        // });
+
         sheet.addTable({
-            name: "firstAnalysisData", // 表格內看不到的，算是key值，讓你之後想要針對這個table去做額外設定的時候，可以指定到這個table
-            ref: "A1", // 從A1開始
+            name: "firstAnalysisData",
+            ref: "A1",
             columns: [
                 { name: "分析日期" },
                 { name: "分析有效日期" },
@@ -22,7 +18,6 @@ function ExportExcel({ data }) {
                 { name: "分析數量" },
                 { name: "總成本" },
                 { name: "幣別" },
-                // { name: "產品圖片" },
             ],
             rows: [
                 [
@@ -33,7 +28,6 @@ function ExportExcel({ data }) {
                     data.parentData.quoteQty,
                     data.parentData.sum,
                     data.parentData.currency,
-                    // imageId1
                 ],
             ],
         });
@@ -103,5 +97,9 @@ function ExportExcel({ data }) {
         />
     );
 }
+
+ExportExcel.propTypes = {
+    data: PropTypes.object.isRequired,
+};
 
 export default ExportExcel;

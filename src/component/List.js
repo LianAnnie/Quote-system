@@ -3,6 +3,7 @@ import api from "../utils/api";
 import form from "../utils/formChange";
 import * as S from "./StyleComponent";
 import data from "../utils/data";
+import PropTypes from "prop-types";
 
 function List({ collectionName, list, setList, mode }) {
     const filterConditionRule = {};
@@ -15,53 +16,62 @@ function List({ collectionName, list, setList, mode }) {
         setFilterList(list);
         setRevisedData(list);
         if (Object.keys(list).length > 0) {
-            handleConditionChange(1);
+            handleRenderListData(1);
         }
     }, [list]);
 
-    function handleConditionChange(e) {
-        let newFilterList;
-        let name;
-        let value;
-        if (e === 0) {
-            setFilterList(list);
-            revisedStatusArray(list);
-            setRevisedData(list);
+    function resetList() {
+        return list;
+    }
+
+    function renderListWithCondition(condition, list) {
+        const newFilterList = form.handleListChange(condition, list);
+        return newFilterList;
+    }
+
+    function getNewCondition(name, value, originCondition) {
+        const newFilterCondition = originCondition;
+        newFilterCondition[name] = value;
+        return newFilterCondition;
+    }
+
+    function setNewDatatoRender(data) {
+        setFilterList(data);
+        revisedStatusArray(data);
+        setRevisedData(data);
+    }
+
+    function handleRenderListData(name, value) {
+        if (name === 0) {
+            setNewDatatoRender(resetList());
             return;
         }
-        if (e !== 1) {
-            name = e.target.name;
-            value = e.target.value;
-            const newFilterCondition = filterCondition;
-            newFilterCondition[name] = value;
-            newFilterList = handleListChange(newFilterCondition, list);
-            setFilterCondition(newFilterCondition);
-        } else {
-            newFilterList = handleListChange(filterCondition, list);
-            setFilterCondition(filterCondition);
+        if (name === 1) {
+            const newFilterList = renderListWithCondition(
+                filterCondition,
+                list,
+            );
+            setNewDatatoRender(newFilterList);
             return;
         }
+        const newFilterList = renderListWithCondition(
+            getNewCondition(name, value, filterCondition),
+            list,
+        );
         if (newFilterList.length === 0) {
             console.log(
                 `沒有符合篩選結果,清除原本篩選條件,按最後一次需求篩選資料`,
             );
-            const newFilterCondition = filterConditionRule;
-            newFilterCondition[name] = value;
-            setFilterCondition(newFilterCondition);
-            const resetList = handleListChange({ [name]: value }, list);
-            setFilterList(resetList);
-            revisedStatusArray(resetList);
-            setRevisedData(resetList);
+            getNewCondition(name, value, {});
+            const newFilterList = renderListWithCondition(
+                getNewCondition(name, value, filterCondition),
+                list,
+            );
+            setNewDatatoRender(newFilterList);
             return;
         }
-        setFilterList(newFilterList);
-        revisedStatusArray(newFilterList);
-        setRevisedData(newFilterList);
-    }
-
-    function handleListChange(condition, data) {
-        const newFilterList = form.handleListChange(condition, data);
-        return newFilterList;
+        setFilterCondition(getNewCondition(name, value, filterCondition));
+        setNewDatatoRender(newFilterList);
     }
 
     function revisedStatusArray(filterList) {
@@ -215,7 +225,7 @@ function List({ collectionName, list, setList, mode }) {
                     <S.CancelSelectedButton
                         sx={{ width: "30px", height: "30px" }}
                         onClick={() => {
-                            handleConditionChange(0);
+                            handleRenderListData(0);
                         }}
                     />
                     <S.CancelSelectedText> 取消篩選</S.CancelSelectedText>
@@ -258,7 +268,10 @@ function List({ collectionName, list, setList, mode }) {
                                             type="text"
                                             name={keyName}
                                             onChange={e =>
-                                                handleConditionChange(e)
+                                                handleRenderListData(
+                                                    e.target.name,
+                                                    e.target.value,
+                                                )
                                             }
                                             value={filterCondition[keyName]}
                                         />
@@ -272,7 +285,10 @@ function List({ collectionName, list, setList, mode }) {
                                             id={keyName}
                                             name={keyName}
                                             onChange={e =>
-                                                handleConditionChange(e)
+                                                handleRenderListData(
+                                                    e.target.name,
+                                                    e.target.value,
+                                                )
                                             }
                                             value={list[keyName]}
                                         >
@@ -420,5 +436,12 @@ function List({ collectionName, list, setList, mode }) {
         </S.Section>
     );
 }
+
+List.propTypes = {
+    collectionName: PropTypes.string.isRequired,
+    list: PropTypes.array.isRequired,
+    setList: PropTypes.func.isRequired,
+    mode: PropTypes.string.isRequired,
+};
 
 export default List;

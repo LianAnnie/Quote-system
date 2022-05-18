@@ -4,6 +4,7 @@ import data from "../utils/data";
 import form from "../utils/formChange";
 import { db } from "../utils/firebase";
 import { doc, getDoc } from "firebase/firestore";
+import PropTypes from "prop-types";
 
 function ListWithRadio2({
     collectionName,
@@ -206,5 +207,13 @@ function ListWithRadio2({
         </S.Section>
     );
 }
+
+ListWithRadio2.propTypes = {
+    collectionName: PropTypes.string,
+    list: PropTypes.array.isRequired,
+    setProcessingData: PropTypes.func,
+    processingData: PropTypes.object,
+    mode: PropTypes.string,
+};
 
 export default ListWithRadio2;
