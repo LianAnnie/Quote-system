@@ -3,7 +3,6 @@ import { ExportButton } from "./StyleComponent";
 
 function ExportExcel({ data }) {
     function exportDataToExcel() {
-        console.log(data);
         const workbook = new ExcelJs.Workbook();
         const sheet = workbook.addWorksheet("analysisData");
         // const imageURL =

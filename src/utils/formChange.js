@@ -20,13 +20,10 @@ const form = {
         if (originData.length === undefined) {
             data = JSON.parse(JSON.stringify(originData));
             //waiting check: 這樣寫才rerender,真的是拷貝問題？
-            // console.log(e.target.name);
             data[e.target.name] = e.target.value;
         }
         if (originData.length > 0) {
             data = JSON.parse(JSON.stringify(originData));
-            // console.log(data);
-            // console.log(itemIndex);
             data[itemIndex][e.target.name] = e.target.value;
         }
         return data;
@@ -47,8 +44,6 @@ const form = {
     handleListChange(condition, data) {
         const filterKeyArray = Object.keys(condition);
         let copyFilterList = [...data];
-        console.log(condition);
-        console.log(data);
         const newFilterList = copyFilterList.filter(
             m =>
                 !filterKeyArray
@@ -83,7 +78,6 @@ const form = {
         return form.transformId(maxsn, 2);
     },
     checkChangeData(collectionName, key, value) {
-        console.log(key, value);
         const option = [];
 
         const limitQty = data.keylimitQty[collectionName][key];
@@ -98,9 +92,6 @@ const form = {
             value.shift();
             option[1] = value.join("");
         }
-        console.log(option);
-        console.log(`型號輸入為${option[0]}`);
-        console.log(`輸入內容為${option[1]}`);
         return option;
     },
 };

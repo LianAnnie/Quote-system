@@ -36,15 +36,12 @@ function ListWithRadio2({
 
     function getRenderListId(data, idIndex) {
         const idArray = data.map(e => e.id[idIndex]);
-        // console.log(idArray);
         const idArrayWithuniqueness = [...new Set(idArray)];
-        // console.log(idArrayWithuniqueness);
         return idArrayWithuniqueness;
     }
 
     async function getPartsQtationsFromFireBase(idList) {
         const quotationDataPromise = idList.map(async id => {
-            // console.log(id.toString().trim());
             const docRef = doc(db, parameters.parentRenderCollectionName, id);
             const data = await getDoc(docRef);
             return data.data();
@@ -62,7 +59,6 @@ function ListWithRadio2({
         }
         const name = e.target.name;
         const value = e.target.value;
-        console.log(name, value);
         const newFilterCondition = JSON.parse(JSON.stringify(filterCondition));
         newFilterCondition[name] = value;
         const newFilterList = handleListChange(newFilterCondition, filterList);
@@ -80,13 +76,11 @@ function ListWithRadio2({
     }
 
     function handleListChange(condition, data) {
-        console.log(data);
         const newFilterList = form.handleListChange(condition, data);
         return newFilterList;
     }
 
     function handleImportProduct(e) {
-        // console.log(e);
         setProcessingData(e);
     }
 

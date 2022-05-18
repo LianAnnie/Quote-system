@@ -10,7 +10,6 @@ function List({ collectionName, list, setList, mode }) {
     const [filterCondition, setFilterCondition] = useState(filterConditionRule);
     const [revisedStatus, setRevisedStatus] = useState([]);
     const [revisedData, setRevisedData] = useState([]);
-    console.log(revisedData);
 
     useEffect(() => {
         setFilterList(list);
@@ -35,11 +34,9 @@ function List({ collectionName, list, setList, mode }) {
             value = e.target.value;
             const newFilterCondition = filterCondition;
             newFilterCondition[name] = value;
-            console.log(newFilterCondition);
             newFilterList = handleListChange(newFilterCondition, list);
             setFilterCondition(newFilterCondition);
         } else {
-            console.log(list);
             newFilterList = handleListChange(filterCondition, list);
             setFilterCondition(filterCondition);
             return;
@@ -74,7 +71,6 @@ function List({ collectionName, list, setList, mode }) {
     }
 
     function handleRevisedStatus(index, save) {
-        console.log(index);
         const newRevisedStatus = [...revisedStatus];
         const newRevisedData = [...revisedData];
         const newfilterList = [...filterList];
@@ -89,15 +85,11 @@ function List({ collectionName, list, setList, mode }) {
                     collectionName === "order"
                 ) {
                     const newData = transListToffirebase(revisedData[index]);
-                    console.log(revisedData[index]);
                     api.updateDoc(collectionName, newData.id.join(""), newData);
                 } else {
                     const itemIndexInList = list
                         .map(e => e.id.join(""))
                         .indexOf(revisedData[index].id.join(""));
-                    console.log(revisedData[index].id.join(""));
-                    console.log(list.map(e => e.id.join("")));
-                    console.log("這裡數字不應該都出現0", itemIndexInList);
                     newList[itemIndexInList] = revisedData[index];
                     api.updateDoc(
                         collectionName,
@@ -140,7 +132,6 @@ function List({ collectionName, list, setList, mode }) {
             };
         }
         if (collectionName === "order") {
-            console.log(data);
             newObject = {
                 id: [data.id0, data.id1, data.id2, data.id3],
                 orderId: data.orderId,
@@ -163,7 +154,6 @@ function List({ collectionName, list, setList, mode }) {
 
     function deleteData(itemIndex) {
         const deleteData = filterList[itemIndex];
-        console.log(deleteData);
         let newList;
         if (collectionName === "bom") {
             newList = list.filter(
@@ -197,7 +187,6 @@ function List({ collectionName, list, setList, mode }) {
                 deleteData.id2,
             );
             api.deleteDoc(collectionName, deleteIdArray);
-            console.log(deleteData.id1, deleteData.id2);
             api.updateDoc("products2", deleteData.id0, deleteData.id1, 0);
             api.updateDoc("parts2", deleteData.id1, deleteData.id0, 0);
         } else if (
@@ -205,7 +194,6 @@ function List({ collectionName, list, setList, mode }) {
             collectionName === "productQuotations2" ||
             collectionName === "order"
         ) {
-            console.log(deleteData);
             const deleteIdArray = deleteData.id0.concat(
                 deleteData.id1,
                 deleteData.id2,
@@ -213,10 +201,8 @@ function List({ collectionName, list, setList, mode }) {
             );
             api.deleteDoc(collectionName, deleteIdArray);
         } else {
-            console.log(123);
             api.deleteDoc(collectionName, deleteData.id.join(""));
         }
-        console.log(newList);
         setList(newList);
         setFilterList(newFilterList);
     }

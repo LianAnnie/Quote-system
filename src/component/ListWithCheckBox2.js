@@ -31,7 +31,6 @@ function ListWithRadio({
         value = e.target.value;
         const newFilterCondition = filterCondition;
         newFilterCondition[name] = value;
-        console.log(newFilterCondition);
         newFilterList = handleListChange(newFilterCondition, list);
         setFilterCondition(newFilterCondition);
         if (newFilterList.length === 0) {

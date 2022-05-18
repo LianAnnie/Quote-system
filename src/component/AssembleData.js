@@ -32,7 +32,6 @@ function AssembleData({
     }
 
     function sumForOrder(data) {
-        console.log(data);
         const qtyAvailable = data.filter(e => isNaN(Number(e.qty)));
         const priceAvailable = data.filter(e => isNaN(Number(e.price)));
         if ((qtyAvailable.length === 0) & (priceAvailable.length === 0)) {

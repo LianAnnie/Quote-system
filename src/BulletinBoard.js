@@ -130,11 +130,6 @@ function BulletinBoard() {
             const sourceItems = [...sourceColumn.items];
             const destItems = [...destColumn.items];
             const [removed] = sourceItems.splice(source.index, 1);
-            console.log(`sourceColumn`, sourceColumn);
-            console.log(`destColumn`, destColumn);
-            console.log(`sourceItems`, sourceItems);
-            console.log(`destItems`, destItems);
-            console.log(`removed`, removed);
             destItems.splice(destination.index, 0, removed);
             setColumns({
                 ...columns,
@@ -173,13 +168,11 @@ function BulletinBoard() {
                 pmWorks.push(doc.data());
                 console.log(`note!!!`);
             });
-            console.log(pmWorks);
             for (let i = 0; i < 5; i++) {
                 columnsFromBackend[i].items = pmWorks.filter(
                     item => Number(item.status) === i && item,
                 );
             }
-            console.log(columnsFromBackend);
             setColumns(columnsFromBackend);
         });
         return () => unsubscribe();

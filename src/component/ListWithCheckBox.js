@@ -54,10 +54,8 @@ function ListWithRadio({
     }
 
     function handleImportProduct(e) {
-        console.log(e);
         const dataId = e.id;
         const filterData = processingData.filter(data => data.id !== dataId);
-        console.log(processingData);
         filterData.length === processingData.length
             ? setProcessingData(prev => [...prev, e])
             : setProcessingData(filterData);

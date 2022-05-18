@@ -29,7 +29,6 @@ function Structure2({
     const [page, setPage] = useState(4);
 
     function pageChange(value) {
-        console.log(value);
         if (value === 0) {
             setPage(0);
             return;
@@ -48,12 +47,10 @@ function Structure2({
     }, [childData]);
 
     function getPieData(data, totalPrice) {
-        console.log(data);
         const getDataArray = data.map(e => [
             e.idP,
             Math.floor(((e.price * e.qty) / totalPrice) * 100),
         ]);
-        console.log(getDataArray);
         setPieData(getDataArray);
     }
 
@@ -71,12 +68,9 @@ function Structure2({
                 key => (newProcessingData.parentData[key] = data[key]),
             );
             const childIdArray = getChildDataId(data, parentList);
-            // console.log(childIdArray);
             const newFilterList = getFilterChildList(childIdArray, childList);
             setFilterChildList(newFilterList);
-            // console.log(newProcessingData);
         } else {
-            // console.log(data);
             newProcessingData.childData = transProcessingChildDataToRender(
                 assembleCollectionName,
                 data,
@@ -87,16 +81,13 @@ function Structure2({
         const sum = getSum(newProcessingData);
         if (sum !== undefined) {
             newProcessingData.parentData[sum[0]] = sum[1];
-            console.log(newProcessingData);
             const margin = getMargin(newProcessingData, sum[1]);
             const price = getPrice(newProcessingData, sum[1]);
             if (margin !== undefined) {
-                console.log(margin);
                 newProcessingData.parentData[margin[0]] = margin[1];
                 setMargin(margin[1]);
             }
             if (price !== undefined) {
-                console.log(price);
                 newProcessingData.parentData[price[0]] = price[1];
             }
             getPieData(newProcessingData.childData, sum[1]);
@@ -132,34 +123,13 @@ function Structure2({
         assembleCollectionName,
         childDataArray,
         parentList,
-        processingData,
     ) {
         if (assembleCollectionName === "analysis") {
-            console.log(parentList);
-            console.log(processingData.parentData);
-            console.log(childDataArray);
-
             const renderChildDataArray = [...childDataArray];
             const newChildArray = renderChildDataArray.map(e => {
                 if (e.idP === undefined) {
                     const getQty = parentList.filter(p =>
                         p.id.includes(e.id[0]),
-                    );
-                    // .filter(p =>
-                    //     p.id.includes(
-                    //         processingData.parentData.id.join(""),
-                    //     ),
-                    // );
-                    console.log(parentList);
-                    console.log(parentList.filter(p => p.id.includes(e.id[0])));
-                    console.log(
-                        parentList
-                            .filter(p => p.id.includes(e.id[0]))
-                            .filter(p =>
-                                p.id.includes(
-                                    processingData.parentData.id.join(""),
-                                ),
-                            ),
                     );
                     const childData = {
                         idP: e.id[0],
@@ -226,8 +196,6 @@ function Structure2({
     }
 
     function getPrice(dataParameter, sum) {
-        console.log(Number(sum));
-        console.log(Number(dataParameter.parentData.expoectedMargin));
         if (dataParameter.parentData.expoectedMargin !== undefined) {
             return [
                 "caculatedPrice",
@@ -241,7 +209,6 @@ function Structure2({
     }
 
     function getMargin(dataParameter, sum) {
-        console.log(Number(dataParameter.parentData.expectedPrice));
         if (
             dataParameter.parentData.expectedPrice !== undefined &&
             !isNaN(dataParameter.parentData.expectedPrice)
@@ -259,7 +226,6 @@ function Structure2({
     }
 
     function getValid(dataParameter) {
-        console.log(dataParameter);
         if (dataParameter.childData && dataParameter.childData.length > 0) {
             const minValid = dataParameter.childData.reduce(
                 (min, e) =>
@@ -271,8 +237,6 @@ function Structure2({
             return ["valid", minValid];
         }
     }
-
-    console.log(processingData);
 
     return (
         <>

@@ -32,7 +32,6 @@ function Overview() {
                 Number(data.exchangeData[e.currency.split(",")[0]]),
             ];
         });
-        console.log(mapData);
         setMapData(sumOrderPrice(mapData));
     }
 
@@ -52,7 +51,6 @@ function Overview() {
                     e,
                     orderSum[index],
                 ]);
-                console.log(mapData);
                 return mapData;
             }
         }

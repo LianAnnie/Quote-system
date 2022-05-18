@@ -75,7 +75,6 @@ function App() {
     }
 
     function checkErrorMessage(msg) {
-        console.log(msg);
         const errorInformation = {
             "auth/too-many-requests": "嘗試次數過多",
             "auth/email-already-in-use": "此帳號已註冊",

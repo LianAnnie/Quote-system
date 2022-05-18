@@ -72,7 +72,6 @@ function Companies({
             }
             if (docId[0] === "F") {
                 api.setDocWithId("suppliers2", docId, exportData);
-                console.log(exportData);
                 setSupplierList(prev => [...prev, exportData]);
             }
             const resetCompanyRuleData = { ...exportData };

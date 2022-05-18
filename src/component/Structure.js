@@ -68,7 +68,6 @@ function Structure({
                 assembleCollectionName !== "partQuotations2" &&
                 assembleCollectionName !== "productQuotations2"
             ) {
-                console.log(assembleCollectionName);
                 newProcessingData.childData = parameterData;
             } else {
                 const newData = parameterData.map(e =>
@@ -83,7 +82,6 @@ function Structure({
                 newProcessingData.childData = newData.flat(1);
             }
         }
-        console.log(newProcessingData);
         setProcessingData(newProcessingData);
     }
 
@@ -92,7 +90,6 @@ function Structure({
             processingData,
             assembleCollectionName,
         );
-        console.log(result);
         if (!result) {
             return;
         } else {
@@ -116,7 +113,6 @@ function Structure({
     }
 
     function orderDependency(data) {
-        console.log(data);
         if (data.length > 0) {
             const productsId = data.map(e => e.id[1]);
             productsId.forEach((e, index) => {
@@ -126,7 +122,6 @@ function Structure({
     }
 
     function bomDependency(data) {
-        console.log(data);
         if (data.length > 0) {
             data.forEach(e => {
                 api.updateDoc("products2", e.id[0], e.id[1], 1);
@@ -136,8 +131,6 @@ function Structure({
     }
 
     function checkProcessingData(parameterData, collectionName) {
-        console.log(collectionName, parameterData);
-        console.log(Object.values(parameterData.parentData));
         if (
             Object.keys(parameterData.parentData).length === 0 ||
             parameterData.parentData.id === undefined
@@ -155,7 +148,6 @@ function Structure({
                 .map(e => e.qty)
                 .filter(e => isNaN(Number(e)));
             if (qtyArry.length > 0) {
-                console.log(qtyArry);
                 alert(data.errorMessage[collectionName][2]);
                 return false;
             }
@@ -173,7 +165,6 @@ function Structure({
             collectionName === "productQuotations2" ||
             collectionName === "order"
         ) {
-            console.log(parameterData.parentData);
             if (parameterData.parentData.date === undefined) {
                 alert(data.errorMessage[collectionName][5]);
                 return false;
@@ -191,7 +182,6 @@ function Structure({
                     .map(e => e.inquiryQty)
                     .filter(e => isNaN(Number(e)));
                 if (qtyArry.length > 0) {
-                    console.log(qtyArry);
                     alert(data.errorMessage[collectionName][2]);
                     return false;
                 }
@@ -210,7 +200,6 @@ function Structure({
                     .map(e => e.qty)
                     .filter(e => isNaN(Number(e)));
                 if (qtyArry.length > 0) {
-                    console.log(qtyArry);
                     alert(data.errorMessage[collectionName][2]);
                     return false;
                 }
@@ -224,7 +213,6 @@ function Structure({
             const priceArry = parameterData.childData
                 .map(e => e.price)
                 .filter(e => isNaN(Number(e)));
-            console.log(priceArry);
             if (priceArry.length > 0) {
                 alert(data.errorMessage[collectionName][3]);
                 return false;
@@ -305,7 +293,6 @@ function Structure({
     }
 
     function pageChange(value) {
-        console.log(value);
         if (value === startPage[assembleCollectionName]) {
             setPage(startPage[assembleCollectionName]);
             return;
@@ -320,7 +307,6 @@ function Structure({
                 return;
             }
         } else if (page + value < 6 && page + value > 1) {
-            console.log(page + value);
             setPage(prev => prev + value);
             return;
         }

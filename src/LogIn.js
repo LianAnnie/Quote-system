@@ -165,7 +165,6 @@ function LogIn({
     }, [loginStatus]);
 
     async function runFirebaseLogin(values) {
-        console.log(values);
         if (loginStatus === 1) {
             setMessage("您已經登入了");
             return;

@@ -26,13 +26,11 @@ function Company() {
 
     async function getCustomerListFromFirebase() {
         const list = await api.getCompleteCollection("customers2");
-        console.log(list);
         setCustomerList(list);
     }
 
     async function getSupplierListFromFirebase() {
         const list = await api.getCompleteCollection("suppliers2");
-        console.log(list);
         setSupplierList(list);
     }
 
