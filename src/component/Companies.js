@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import * as S from "./StyleComponent";
-import api from "../utils/firebaseApi";
+import api from "../utils/api";
 import form from "../utils/formChange";
 import data from "../utils/data";
 import Input from "./Input";

@@ -1,7 +1,7 @@
 import Input from "./Input";
 import Select from "./Select";
 import { useState, useEffect } from "react";
-import api from "../utils/firebaseApi";
+import api from "../utils/api";
 import form from "../utils/formChange";
 import * as S from "./StyleComponent";
 import data from "../utils/data";

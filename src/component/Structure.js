@@ -4,7 +4,7 @@ import AssembleData from "./AssembleData";
 import List from "./List";
 import { useState, useEffect } from "react";
 import * as S from "./StyleComponent";
-import api from "../utils/firebaseApi";
+import api from "../utils/api";
 import Quotes from "./Quotes";
 import Orders from "./Orders";
 import data from "../utils/data";

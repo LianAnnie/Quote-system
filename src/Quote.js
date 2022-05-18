@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import * as S from "./component/StyleComponent";
 import Structure from "./component/Structure";
-import api from "./utils/firebaseApi";
+import api from "./utils/api";
 
 function Quote() {
     const [page, setPage] = useState(0);

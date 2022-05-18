@@ -1,5 +1,5 @@
 import Structure2 from "./component/Structure2";
-import api from "./utils/firebaseApi";
+import api from "./utils/api";
 import { useState, useEffect } from "react";
 import { Container, Main } from "./component/StyleComponent";
 import ErrorBoundary from "./admin/ErrorBoundary";

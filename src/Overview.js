@@ -2,7 +2,7 @@ import { Container, Main, Section } from "./component/StyleComponent";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import data from "./utils/data";
-import api from "./utils/firebaseApi";
+import api from "./utils/api";
 import HighchartsReact from "highcharts-react-official";
 let Highcharts = require("highcharts/highmaps.js");
 let topojson = require("@highcharts/map-collection/custom/world.topo.json");

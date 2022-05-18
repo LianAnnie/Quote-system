@@ -41,7 +41,7 @@ function AssembleData({
             );
             return sum;
         }
-        return "數量單價尚不完整";
+        return "資料不完整";
     }
     return (
         <S.Section mode={mode + "assemble"}>

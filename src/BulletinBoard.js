@@ -4,7 +4,7 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { db } from "./utils/firebase";
 import { collection, query, onSnapshot } from "firebase/firestore";
 import form from "./utils/formChange";
-import api from "./utils/firebaseApi";
+import api from "./utils/api";
 import styled from "styled-components";
 
 const Boards = styled.div`

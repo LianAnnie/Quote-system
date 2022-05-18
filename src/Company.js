@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Companies from "./component/Companies";
 import CompaniesList from "./component/CompaniesList";
-import api from "./utils/firebaseApi";
+import api from "./utils/api";
 import { Container, Main, device } from "./component/StyleComponent";
 import styled from "styled-components";
 
