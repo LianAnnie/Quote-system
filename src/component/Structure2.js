@@ -58,11 +58,11 @@ function Structure2({
     function handleProcessingDataChange(data, parentList, childList) {
         const newProcessingData = JSON.parse(JSON.stringify(processingData));
 
-        if (data.target !== undefined) {
+        if (data.target) {
             const name = data.target.name;
             const value = data.target.value;
             newProcessingData.parentData[name] = value;
-        } else if (data.length === undefined) {
+        } else if (!data.length) {
             newProcessingData.childData = [];
             const keyArray = Object.keys(data);
             keyArray.forEach(
@@ -80,15 +80,15 @@ function Structure2({
             );
         }
         const sum = getSum(newProcessingData);
-        if (sum !== undefined) {
+        if (sum) {
             newProcessingData.parentData[sum[0]] = sum[1];
             const margin = getMargin(newProcessingData, sum[1]);
             const price = getPrice(newProcessingData, sum[1]);
-            if (margin !== undefined) {
+            if (margin) {
                 newProcessingData.parentData[margin[0]] = margin[1];
                 setMargin(margin[1]);
             }
-            if (price !== undefined) {
+            if (price) {
                 newProcessingData.parentData[price[0]] = price[1];
             }
             getPieData(newProcessingData.childData, sum[1]);
@@ -128,7 +128,7 @@ function Structure2({
         if (assembleCollectionName === "analysis") {
             const renderChildDataArray = [...childDataArray];
             const newChildArray = renderChildDataArray.map(e => {
-                if (e.idP === undefined) {
+                if (!e.idP) {
                     const getQty = parentList.filter(p =>
                         p.id.includes(e.id[0]),
                     );
@@ -153,8 +153,8 @@ function Structure2({
 
     function getSum(dataParameter) {
         if (
-            dataParameter.parentData.currency !== undefined &&
-            dataParameter.childData !== undefined &&
+            dataParameter.parentData.currency &&
+            dataParameter.childData &&
             dataParameter.childData.length > 0
         ) {
             const parentCurrency = dataParameter.parentData.currency.split(",");
@@ -164,7 +164,7 @@ function Structure2({
                 const parentCurrencyExchangeRate = data.exchangeRate.filter(
                     e => e[0] === parentCurrency[0],
                 )[0][2];
-                if (parentCurrencyExchangeRate === undefined) {
+                if (!parentCurrencyExchangeRate) {
                     return ["sum", "請確認已選擇正確幣值"];
                 } else {
                     const childCurrencyExchangeRateArray =
@@ -197,7 +197,7 @@ function Structure2({
     }
 
     function getPrice(dataParameter, sum) {
-        if (dataParameter.parentData.expoectedMargin !== undefined) {
+        if (dataParameter.parentData.expoectedMargin) {
             return [
                 "caculatedPrice",
                 Math.floor(
@@ -211,7 +211,7 @@ function Structure2({
 
     function getMargin(dataParameter, sum) {
         if (
-            dataParameter.parentData.expectedPrice !== undefined &&
+            dataParameter.parentData.expectedPrice &&
             !isNaN(dataParameter.parentData.expectedPrice)
         ) {
             return [

@@ -180,8 +180,8 @@ function BulletinBoard() {
     function updateCard(card) {
         api.updateDoc("boards", card.id, card, 0);
     }
-    function handleCardChange(e) {
-        const data = form.handleChange("_", e, card);
+    function handleCardChange(name, value) {
+        const data = form.handleDataChange("_", name, value, card);
         setCard(data);
     }
     async function addCard() {
@@ -202,7 +202,10 @@ function BulletinBoard() {
                                 <S.SelectStyled
                                     name="type"
                                     onChange={e => {
-                                        handleCardChange(e);
+                                        handleCardChange(
+                                            e.target.name,
+                                            e.target.value,
+                                        );
                                     }}
                                     value={card.type}
                                 >
@@ -215,7 +218,10 @@ function BulletinBoard() {
                                 <S.SelectStyled
                                     name="status"
                                     onChange={e => {
-                                        handleCardChange(e);
+                                        handleCardChange(
+                                            e.target.name,
+                                            e.target.value,
+                                        );
                                     }}
                                     value={card.status}
                                 >
@@ -231,7 +237,12 @@ function BulletinBoard() {
                                 <S.TextareaStyled
                                     type="text"
                                     name="comment"
-                                    onChange={e => handleCardChange(e)}
+                                    onChange={e =>
+                                        handleCardChange(
+                                            e.target.name,
+                                            e.target.value,
+                                        )
+                                    }
                                     rows="3"
                                     cols="20"
                                     placeholder={card.comment}

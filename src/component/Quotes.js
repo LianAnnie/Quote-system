@@ -19,11 +19,11 @@ function Quotes({ handleDataChange, processingData, mode }) {
     return (
         <Article>
             <StructureForm mode={mode}>
-                {inputComponentArray.map(e => (
+                {inputComponentArray.map((e, index) => (
                     <StructrueSingleLine>
                         <Input
                             inputWidth={170}
-                            key={e.title}
+                            key={index}
                             title={e.title}
                             type="date"
                             handleDataChange={handleDataChange}
@@ -47,7 +47,20 @@ function Quotes({ handleDataChange, processingData, mode }) {
 
 Quotes.propTypes = {
     handleDataChange: PropTypes.func.isRequired,
-    processingData: PropTypes.object.isRequired,
+    processingData: PropTypes.shape({
+        id: PropTypes.string,
+        childData: PropTypes.array,
+        parentData: PropTypes.shape({
+            company: PropTypes.string,
+            contacts: PropTypes.string,
+            country: PropTypes.string,
+            currency: PropTypes.string,
+            date: PropTypes.string,
+            dependency: PropTypes.array,
+            id: PropTypes.array,
+            valid: PropTypes.array,
+        }),
+    }),
     mode: PropTypes.string.isRequired,
 };
 

@@ -65,7 +65,30 @@ function AnalysisForm({ handleDataChange, processingData }) {
 
 AnalysisForm.propTypes = {
     handleDataChange: PropTypes.func.isRequired,
-    processingData: PropTypes.object.isRequired,
+    processingData: PropTypes.shape({
+        id: PropTypes.string,
+        children: PropTypes.array,
+        parentData: PropTypes.shape({
+            caculatedMargin: PropTypes.number,
+            caculatedPrice: PropTypes.number,
+            class: PropTypes.string,
+            color: PropTypes.string,
+            currency: PropTypes.string,
+            date: PropTypes.string,
+            dependency: PropTypes.array,
+            expectedPrice: PropTypes.string,
+            expoectedMargin: PropTypes.string,
+            group: PropTypes.string,
+            id: PropTypes.array,
+            mark: PropTypes.string,
+            material: PropTypes.string,
+            quoteQty: PropTypes.string,
+            special: PropTypes.string,
+            sum: PropTypes.number,
+            type: PropTypes.string,
+            valid: PropTypes.number,
+        }),
+    }),
 };
 
 export default AnalysisForm;

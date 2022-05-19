@@ -15,16 +15,16 @@ const form = {
         }, 0);
         return listMaxId;
     },
-    handleChange(itemIndex, e, originData) {
+    handleDataChange(itemIndex, name, value, originData) {
         let data;
-        if (originData.length === undefined) {
+        if (!originData.length) {
             data = JSON.parse(JSON.stringify(originData));
-            //waiting check: 這樣寫才rerender,真的是拷貝問題？
-            data[e.target.name] = e.target.value;
+            //waiting check: 這樣寫才rerender
+            data[name] = value;
         }
         if (originData.length > 0) {
             data = JSON.parse(JSON.stringify(originData));
-            data[itemIndex][e.target.name] = e.target.value;
+            data[itemIndex][name] = value;
         }
         return data;
     },

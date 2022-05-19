@@ -92,6 +92,9 @@ function ExportExcel({ data }) {
 
     return (
         <ExportButton
+            css={`
+                color: red;
+            `}
             sx={{ fontSize: 50 }}
             onClick={() => exportDataToExcel()}
         />
@@ -99,7 +102,30 @@ function ExportExcel({ data }) {
 }
 
 ExportExcel.propTypes = {
-    data: PropTypes.object.isRequired,
+    data: PropTypes.shape({
+        id: PropTypes.string,
+        childData: PropTypes.array,
+        parentData: PropTypes.shape({
+            caculatedMargin: PropTypes.number,
+            caculatedPrice: PropTypes.number,
+            class: PropTypes.string,
+            color: PropTypes.string,
+            currency: PropTypes.string,
+            date: PropTypes.string,
+            dependency: PropTypes.array,
+            expectedPrice: PropTypes.string,
+            expoectedMargin: PropTypes.string,
+            group: PropTypes.string,
+            id: PropTypes.array,
+            mark: PropTypes.string,
+            material: PropTypes.string,
+            quoteQty: PropTypes.string,
+            special: PropTypes.string,
+            sum: PropTypes.number,
+            type: PropTypes.string,
+            valid: PropTypes.number,
+        }),
+    }),
 };
 
 export default ExportExcel;

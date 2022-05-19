@@ -157,8 +157,8 @@ function List({ collectionName, list, setList, mode }) {
         return newObject;
     }
 
-    function handleRevisedData(index, e) {
-        const data = form.handleChange(index, e, revisedData);
+    function handleRevisedData(index, name, value) {
+        const data = form.handleDataChange(index, name, value, revisedData);
         setRevisedData(data);
     }
 
@@ -392,7 +392,8 @@ function List({ collectionName, list, setList, mode }) {
                                                         onChange={e =>
                                                             handleRevisedData(
                                                                 index,
-                                                                e,
+                                                                e.target.name,
+                                                                e.target.value,
                                                             )
                                                         }
                                                     ></S.UpdateInput>

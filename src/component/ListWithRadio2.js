@@ -212,7 +212,17 @@ ListWithRadio2.propTypes = {
     collectionName: PropTypes.string,
     list: PropTypes.array.isRequired,
     setProcessingData: PropTypes.func,
-    processingData: PropTypes.object,
+    processingData: PropTypes.shape({
+        class: PropTypes.string,
+        color: PropTypes.string,
+        dependency: PropTypes.array,
+        group: PropTypes.string,
+        id: PropTypes.array,
+        mark: PropTypes.string,
+        material: PropTypes.string,
+        special: PropTypes.string,
+        type: PropTypes.string,
+    }),
     mode: PropTypes.string,
 };
 

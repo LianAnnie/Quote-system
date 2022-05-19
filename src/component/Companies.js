@@ -39,10 +39,8 @@ function Companies({
         setExportData(newExportData);
     }
 
-    function handleExportDataIdChange(e) {
+    function handleExportDataIdChange(name, value) {
         const newExportData = JSON.parse(JSON.stringify(exportData));
-        const name = e.target.name;
-        const value = e.target.value;
 
         if (name === "id0") {
             newExportData.id[0] = value;
@@ -58,7 +56,12 @@ function Companies({
 
     function handleExportDataInputChange(e) {
         const newExportData = exportData;
-        const data = form.handleChange("_", e, newExportData);
+        const data = form.handleDataChange(
+            "_",
+            e.target.name,
+            e.target.value,
+            newExportData,
+        );
         setExportData(data);
     }
 
@@ -102,7 +105,12 @@ function Companies({
                     <S.SelectStyled
                         name="id0"
                         value={exportData.id[0]}
-                        onChange={e => handleExportDataIdChange(e)}
+                        onChange={e =>
+                            handleExportDataIdChange(
+                                e.target.name,
+                                e.target.value,
+                            )
+                        }
                     >
                         <option value="F">供應商</option>
                         <option value="C">客戶</option>
@@ -129,7 +137,10 @@ function Companies({
                         name="country"
                         value={exportData.country}
                         onChange={e => {
-                            handleExportDataIdChange(e);
+                            handleExportDataIdChange(
+                                e.target.name,
+                                e.target.value,
+                            );
                         }}
                     >
                         {data.countryList.map(country => (

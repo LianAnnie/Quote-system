@@ -421,8 +421,7 @@ const DataListStyled = styled.datalist`
 `;
 const InputStyled = styled.input`
     font-size: 15px;
-    width: ${props =>
-        props.inputWidth !== undefined ? `${props.inputWidth}px` : "120px"};
+    width: ${props => (props.inputWidth ? `${props.inputWidth}px` : "120px")};
     border: 1px solid #bebebe;
     padding-right: 5px;
     border-radius: 5px;

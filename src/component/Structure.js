@@ -55,11 +55,11 @@ function Structure({
 
     function handleProcessingDataChange(parameterData) {
         const newProcessingData = JSON.parse(JSON.stringify(processingData));
-        if (parameterData.target !== undefined) {
+        if (parameterData.target) {
             const name = parameterData.target.name;
             const value = parameterData.target.value;
             newProcessingData.parentData[name] = value;
-        } else if (parameterData.length === undefined) {
+        } else if (!parameterData.length) {
             const keyArray = Object.keys(parameterData);
             keyArray.forEach(
                 key => (newProcessingData.parentData[key] = parameterData[key]),
@@ -238,7 +238,7 @@ function Structure({
         }
         const childKeys = data.assembleDataCollections[collectionName][6];
         const checkValeus = parameterData.childData.map(e =>
-            childKeys.filter(key => e[key] === undefined),
+            childKeys.filter(key => !e[key]),
         );
         if (checkValeus.filter(e => e.length !== 0).length > 0) {
             alert(error[7]);
@@ -251,7 +251,7 @@ function Structure({
         let newListtoRender;
         if (assembleCollectionName === "bom") {
             newListtoRender = assembleList.map(e =>
-                e.id === undefined
+                !e.id
                     ? e
                     : {
                           id0: e.id[0],
@@ -268,7 +268,7 @@ function Structure({
             assembleCollectionName === "productQuotations2"
         ) {
             newListtoRender = assembleList.map(e =>
-                e.id === undefined
+                !e.id
                     ? e
                     : {
                           id0: e.id[0],
@@ -286,7 +286,7 @@ function Structure({
         }
         if (assembleCollectionName === "order") {
             newListtoRender = assembleList.map(e =>
-                e.id === undefined
+                !e.id
                     ? e
                     : {
                           id0: e.id[0],
@@ -341,42 +341,36 @@ function Structure({
             />
             <S.NewDataContainer>
                 <S.NewDataForm page={page}>
-                    {page === 0 ? null : (
-                        <>
-                            <AssembleData
-                                mode="structure"
-                                page={page}
-                                collectionName={assembleCollectionName}
-                                processingData={processingData}
-                                setProcessingData={setProcessingData}
-                                childData={childData}
-                            />
-                        </>
+                    {page !== 0 && (
+                        <AssembleData
+                            mode="structure"
+                            page={page}
+                            collectionName={assembleCollectionName}
+                            processingData={processingData}
+                            setProcessingData={setProcessingData}
+                            childData={childData}
+                        />
                     )}
-                    {page === 2
-                        ? (assembleCollectionName === "partQuotations2" ||
-                              assembleCollectionName ===
-                                  "productQuotations2") && (
-                              <Quotes
-                                  mode="strucutre"
-                                  page={page}
-                                  handleDataChange={handleProcessingDataChange}
-                                  processingData={processingData}
-                              />
-                          )
-                        : null}
-                    {page === 2
-                        ? (assembleCollectionName === "order" ||
-                              assembleCollectionName === "purchase") && (
-                              <Orders
-                                  mode="strucutre"
-                                  page={page}
-                                  handleDataChange={handleProcessingDataChange}
-                                  processingData={processingData}
-                              />
-                          )
-                        : null}
-                    {page === 3 ? (
+                    {page === 2 &&
+                        (assembleCollectionName === "partQuotations2" ||
+                            assembleCollectionName ===
+                                "productQuotations2") && (
+                            <Quotes
+                                mode="strucutre"
+                                page={page}
+                                handleDataChange={handleProcessingDataChange}
+                                processingData={processingData}
+                            />
+                        )}
+                    {page === 2 && assembleCollectionName === "order" && (
+                        <Orders
+                            mode="strucutre"
+                            page={page}
+                            handleDataChange={handleProcessingDataChange}
+                            processingData={processingData}
+                        />
+                    )}
+                    {page === 3 && (
                         <ListWithRadio
                             mode="structure"
                             page={page}
@@ -386,8 +380,8 @@ function Structure({
                             setProcessingData={setParentData}
                             processingData={parentData}
                         />
-                    ) : null}
-                    {page === 4 ? (
+                    )}
+                    {page === 4 && (
                         <ListWithCheckBox
                             mode="structure"
                             page={page}
@@ -397,9 +391,8 @@ function Structure({
                             setProcessingData={setChildData}
                             processingData={childData}
                         />
-                    ) : null}
-
-                    {page === 5 ? (
+                    )}
+                    {page === 5 && (
                         <S.AddButton
                             sx={{ width: "30px", height: "30px", fontSize: 26 }}
                             mode="structure"
@@ -407,7 +400,7 @@ function Structure({
                             fix="fix"
                             onClick={() => submit()}
                         />
-                    ) : null}
+                    )}
                     <S.CloseButton
                         sx={{ width: "30px", height: "30px" }}
                         page={page}
@@ -425,7 +418,7 @@ function Structure({
                             onClick={() => pageChange(-1)}
                         />
                     )}
-                    {page === 5 ? null : (
+                    {page !== 5 && (
                         <S.NextButton
                             sx={{ width: "30px", height: "30px" }}
                             page={page}

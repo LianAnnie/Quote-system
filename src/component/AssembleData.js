@@ -13,10 +13,11 @@ function AssembleData({
     function handleAddDataChange(itemIndex, e) {
         const newProcessingData = JSON.parse(JSON.stringify(processingData));
         let newChildData;
-        if (e.id === undefined) {
-            newChildData = form.handleChange(
+        if (!e.id) {
+            newChildData = form.handleDataChange(
                 itemIndex,
-                e,
+                e.target.name,
+                e.target.value,
                 processingData.childData,
             );
         } else {
@@ -122,8 +123,7 @@ function AssembleData({
                                                             indexArray,
                                                         ) => (
                                                             <>
-                                                                {e[keyName] ===
-                                                                undefined ? (
+                                                                {!e[keyName] ? (
                                                                     <S.Td
                                                                         key={
                                                                             indexArray
@@ -206,7 +206,21 @@ function AssembleData({
 
 AssembleData.propTypes = {
     collectionName: PropTypes.string.isRequired,
-    processingData: PropTypes.object.isRequired,
+    processingData: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        children: PropTypes.array,
+        parentData: PropTypes.shape({
+            class: PropTypes.string,
+            color: PropTypes.string,
+            dependency: PropTypes.array,
+            group: PropTypes.string,
+            id: PropTypes.array,
+            mark: PropTypes.string,
+            material: PropTypes.string,
+            special: PropTypes.string,
+            type: PropTypes.string,
+        }),
+    }),
     setProcessingData: PropTypes.func.isRequired,
     mode: PropTypes.string.isRequired,
     page: PropTypes.number.isRequired,

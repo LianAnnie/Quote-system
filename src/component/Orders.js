@@ -37,7 +37,22 @@ function Orders({ handleDataChange, processingData, mode }) {
 
 Orders.propTypes = {
     handleDataChange: PropTypes.func.isRequired,
-    processingData: PropTypes.object.isRequired,
+    processingData: PropTypes.shape({
+        id: PropTypes.string,
+        childData: PropTypes.array,
+        parentData: PropTypes.shape({
+            company: PropTypes.string,
+            contacts: PropTypes.string,
+            country: PropTypes.string,
+            currency: PropTypes.string,
+            date: PropTypes.string,
+            dependency: PropTypes.array,
+            id: PropTypes.array,
+            orderId: PropTypes.string,
+            requestedDate: PropTypes.string,
+            sum: PropTypes.number,
+        }),
+    }),
     mode: PropTypes.string,
 };
 

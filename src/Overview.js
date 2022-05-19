@@ -36,7 +36,7 @@ function Overview() {
     }
 
     function sumOrderPrice(parameterData) {
-        if (parameterData !== undefined) {
+        if (parameterData) {
             if (parameterData.length > 0) {
                 const country = parameterData.map(e => e[0]);
                 const countryWithUniqueness = [...new Set(country)];
