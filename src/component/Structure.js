@@ -101,23 +101,11 @@ function Structure({
         if (assembleCollectionName === "bom") {
             bomDependency(newDataArray);
         }
-        if (assembleCollectionName === "order") {
-            orderDependency(newDataArray);
-        }
         setAssembleList(prev => prev.concat(newDataArray));
         setProcessingData(processingDataRule);
         setParentData({});
         setChildData([]);
         setPage(0);
-    }
-
-    function orderDependency(data) {
-        if (data.length > 0) {
-            const productsId = data.map(e => e.id[1]);
-            productsId.forEach((e, index) => {
-                // api.updateDoc("products2", e, { dependency: [] });
-            });
-        }
     }
 
     function bomDependency(data) {
@@ -127,6 +115,83 @@ function Structure({
                 api.updateDoc("parts2", e.id[1], e.id[0], 1);
             });
         }
+    }
+
+    function checkBomProcessingData(parameterData) {
+        const error = data.errorMessage["bom"];
+        const qtyArry = parameterData.childData
+            .map(e => e.qty)
+            .filter(e => isNaN(Number(e)));
+        if (qtyArry.length > 0) {
+            alert(error[2]);
+            return false;
+        }
+        const indexArray = parameterData.childData.map(e => Number(e.index));
+        const array = [...new Set(indexArray)];
+        if (indexArray.length !== array.length) {
+            alert(error[3]);
+            return false;
+        }
+        return true;
+    }
+
+    function checkOrderProcessingData(parameterData) {
+        const error = data.errorMessage["order"];
+        if (!parameterData.parentData.requestedDate) {
+            alert(error[5]);
+            return false;
+        }
+        if (!parameterData.parentData.orderId) {
+            alert(error[6]);
+            return false;
+        }
+        const qtyArry = parameterData.childData
+            .map(e => e.qty)
+            .filter(e => isNaN(Number(e)));
+        if (qtyArry.length > 0) {
+            alert(error[2]);
+            return false;
+        }
+        return true;
+    }
+
+    function checkQuotationProcessingData(parameterData, collectionName) {
+        const error = data.errorMessage[collectionName];
+        if (!parameterData.parentData.valid) {
+            alert(error[5]);
+            return false;
+        }
+        const qtyArry = parameterData.childData
+            .map(e => e.inquiryQty)
+            .filter(e => isNaN(Number(e)));
+        if (qtyArry.length > 0) {
+            alert(error[2]);
+            return false;
+        }
+        return true;
+    }
+
+    function checkQutationAndOrderProcessingData(
+        parameterData,
+        collectionName,
+    ) {
+        const error = data.errorMessage[collectionName];
+        if (!parameterData.parentData.date) {
+            alert(error[5]);
+            return false;
+        }
+        if (!parameterData.parentData.currency) {
+            alert(error[4]);
+            return false;
+        }
+        const priceArry = parameterData.childData
+            .map(e => e.price)
+            .filter(e => isNaN(Number(e)));
+        if (priceArry.length > 0) {
+            alert(error[3]);
+            return false;
+        }
+        return true;
     }
 
     function checkProcessingData(parameterData, collectionName) {
@@ -144,19 +209,7 @@ function Structure({
         }
 
         if (collectionName === "bom") {
-            const qtyArry = parameterData.childData
-                .map(e => e.qty)
-                .filter(e => isNaN(Number(e)));
-            if (qtyArry.length > 0) {
-                alert(error[2]);
-                return false;
-            }
-            const indexArray = parameterData.childData.map(e =>
-                Number(e.index),
-            );
-            const array = [...new Set(indexArray)];
-            if (indexArray.length !== array.length) {
-                alert(error[3]);
+            if (!checkBomProcessingData(parameterData)) {
                 return false;
             }
         }
@@ -165,60 +218,23 @@ function Structure({
             collectionName === "productQuotations2" ||
             collectionName === "order"
         ) {
-            if (!parameterData.parentData.date) {
-                alert(error[5]);
+            if (!checkQutationAndOrderProcessingData(parameterData)) {
                 return false;
             }
-
             if (
                 collectionName === "partQuotations2" ||
                 collectionName === "productQuotations2"
             ) {
-                if (!parameterData.parentData.valid) {
-                    alert(error[5]);
-                    return false;
-                }
-                const qtyArry = parameterData.childData
-                    .map(e => e.inquiryQty)
-                    .filter(e => isNaN(Number(e)));
-                if (qtyArry.length > 0) {
-                    alert(error[2]);
+                if (!checkQuotationProcessingData(parameterData)) {
                     return false;
                 }
             }
 
             if (collectionName === "order") {
-                if (!parameterData.parentData.requestedDate) {
-                    alert(error[5]);
-                    return false;
-                }
-                if (!parameterData.parentData.orderId) {
-                    alert(error[6]);
-                    return false;
-                }
-                const qtyArry = parameterData.childData
-                    .map(e => e.qty)
-                    .filter(e => isNaN(Number(e)));
-                if (qtyArry.length > 0) {
-                    alert(error[2]);
+                if (!checkOrderProcessingData(parameterData)) {
                     return false;
                 }
             }
-
-            if (!parameterData.parentData.currency) {
-                alert(error[4]);
-                return false;
-            }
-
-            const priceArry = parameterData.childData
-                .map(e => e.price)
-                .filter(e => isNaN(Number(e)));
-            if (priceArry.length > 0) {
-                alert(error[3]);
-                return false;
-            }
-        }
-        if (collectionName === "productQuotations2") {
         }
         const childKeys = data.assembleDataCollections[collectionName][6];
         const checkValeus = parameterData.childData.map(e =>
