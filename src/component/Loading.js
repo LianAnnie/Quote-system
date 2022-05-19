@@ -1,5 +1,5 @@
-import { Container } from "./StyleComponent";
 import styled, { keyframes } from "styled-components";
+import { Container } from "./StyleComponent";
 
 const Article = styled.div`
     padding-top: 20vh;

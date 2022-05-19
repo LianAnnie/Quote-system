@@ -1,5 +1,5 @@
-import { SingleLine, LabelStyled, InputStyled } from "./StyleComponent";
 import PropTypes from "prop-types";
+import { SingleLine, LabelStyled, InputStyled } from "./StyleComponent";
 
 function Input({ title, type, handleDataChange, data, name, inputWidth }) {
     return (

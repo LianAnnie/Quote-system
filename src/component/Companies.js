@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import * as S from "./StyleComponent";
+import PropTypes from "prop-types";
 import api from "../utils/api";
 import form from "../utils/formChange";
 import data from "../utils/data";
+import * as S from "./StyleComponent";
 import Input from "./Input";
 
 function Companies({
@@ -158,5 +159,12 @@ function Companies({
         </S.Article>
     );
 }
+
+Companies.propTypes = {
+    customerList: PropTypes.array,
+    setCustomerList: PropTypes.func,
+    supplierList: PropTypes.array,
+    setSupplierList: PropTypes.func,
+};
 
 export default Companies;

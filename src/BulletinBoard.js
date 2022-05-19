@@ -1,11 +1,11 @@
-import * as S from "./component/StyleComponent";
 import { useState, useEffect } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { db } from "./utils/firebase";
 import { collection, query, onSnapshot } from "firebase/firestore";
+import styled from "styled-components";
+import * as S from "./component/StyleComponent";
+import { db } from "./utils/firebase";
 import form from "./utils/formChange";
 import api from "./utils/api";
-import styled from "styled-components";
 
 const Boards = styled.div`
     display: flex;

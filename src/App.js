@@ -1,5 +1,15 @@
 import styled from "styled-components";
 import "./App.css";
+import {
+    BrowserRouter as Router,
+    Routes,
+    Route,
+    Navigate,
+    useLocation,
+} from "react-router-dom";
+import { useState, useEffect } from "react";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import PropTypes from "prop-types";
 import LogIn from "./LogIn";
 import BulletinBoard from "./BulletinBoard";
 import Overview from "./Overview";
@@ -10,16 +20,6 @@ import Quote from "./Quote";
 import Order from "./Order";
 import SideBar from "./component/SideBar";
 import Loading from "./component/Loading";
-import {
-    BrowserRouter as Router,
-    Routes,
-    Route,
-    Navigate,
-    useLocation,
-} from "react-router-dom";
-import { useState } from "react";
-import { useEffect } from "react";
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 
 const Container = styled.div`
     text-align: left;
@@ -36,19 +36,24 @@ function RequireAuth({ children, loginStatus }) {
     return children;
 }
 
+RequireAuth.propTypes = {
+    children: PropTypes.object.isRequired,
+    loginStatus: PropTypes.number.isRequired,
+};
+
 function App() {
     const [loginStatus, setLoginStatus] = useState(2);
     const [message, setMessage] = useState("");
     const auth = getAuth();
     const [viewMode, setViewMode] = useState(1);
     const RouteArray = [
-        ["/", <BulletinBoard />],
-        ["/overview", <Overview />],
-        ["/company", <Company />],
-        ["/bom", <Bom />],
-        ["/analysis", <Analysis />],
-        ["/quote", <Quote />],
-        ["/order", <Order />],
+        ["/", BulletinBoard],
+        ["/overview", Overview],
+        ["/company", Company],
+        ["/bom", Bom],
+        ["/analysis", Analysis],
+        ["/quote", Quote],
+        ["/order", Order],
     ];
 
     useEffect(() => {
@@ -118,13 +123,13 @@ function App() {
                             />
                         }
                     >
-                        {RouteArray.map((e, index) => (
+                        {RouteArray.map(([path, Component]) => (
                             <Route
-                                key={index}
-                                path={e[0]}
+                                key={path}
+                                path={path}
                                 element={
                                     <RequireAuth loginStatus={loginStatus}>
-                                        {e[1]}
+                                        <Component />
                                     </RequireAuth>
                                 }
                             />

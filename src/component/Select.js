@@ -1,5 +1,5 @@
-import * as S from "./StyleComponent";
 import PropTypes from "prop-types";
+import * as S from "./StyleComponent";
 
 function Select({ title, handleDataChange, name, optionArray }) {
     return (

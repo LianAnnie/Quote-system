@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import * as S from "./StyleComponent";
+import { doc, getDoc } from "firebase/firestore";
+import PropTypes from "prop-types";
 import data from "../utils/data";
 import form from "../utils/formChange";
 import { db } from "../utils/firebase";
-import { doc, getDoc } from "firebase/firestore";
-import PropTypes from "prop-types";
+import * as S from "./StyleComponent";
 
 function ListWithRadio2({
     collectionName,

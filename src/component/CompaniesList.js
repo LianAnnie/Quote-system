@@ -1,8 +1,8 @@
-import List from "./List";
+import PropTypes from "prop-types";
 import styled from "styled-components";
 import ErrorBoundary from "../admin/ErrorBoundary";
 import { device } from "./StyleComponent";
-import PropTypes from "prop-types";
+import List from "./List";
 
 const CompaniesListLayout = styled.div`
     flex-direction: column;

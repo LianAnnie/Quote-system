@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
+import styled from "styled-components";
 import Product from "./component/Product";
 import Part from "./component/Part";
 import List from "./component/List";
 import Structure from "./component/Structure";
 import api from "./utils/api";
 import * as S from "./component/StyleComponent";
-import styled from "styled-components";
 
 const FlexLayout = styled.div`
     display: flex;

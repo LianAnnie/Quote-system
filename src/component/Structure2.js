@@ -1,13 +1,13 @@
+import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import data from "../utils/data";
 import ListWithCheckBox2 from "./ListWithCheckBox2";
 import AssembleData2 from "./AssembleData2";
 import ListWithRadio2 from "./ListWithRadio2";
 import AnalysisForm from "./AnalysisForm";
 import Drawing from "./Drawing";
 import * as S from "./StyleComponent";
-import { useState, useEffect } from "react";
-import data from "../utils/data";
 import ExportExcel from "./ExportExcel";
-import PropTypes from "prop-types";
 
 function Structure2({
     parentCollectionName,

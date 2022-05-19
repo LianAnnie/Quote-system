@@ -1,6 +1,6 @@
 import ExcelJs from "exceljs";
-import { ExportButton } from "./StyleComponent";
 import PropTypes from "prop-types";
+import { ExportButton } from "./StyleComponent";
 
 function ExportExcel({ data }) {
     function exportDataToExcel() {

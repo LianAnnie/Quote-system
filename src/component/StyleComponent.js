@@ -23,7 +23,8 @@ const size = {
     desktop: "1920px",
     desktopL: "2560px",
 };
-export const device = {
+
+const device = {
     mobileS: `(max-width: ${size.mobile})`,
     mobileL: `(min-width: ${size.mobile})`,
     tablet: `(min-width: ${size.tablet})`,
@@ -827,6 +828,7 @@ const DivStyled = styled.div`
 `;
 
 export {
+    device,
     CancelSelectedText,
     ShowTextForButton,
     TrBody,

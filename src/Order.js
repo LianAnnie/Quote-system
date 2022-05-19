@@ -1,8 +1,8 @@
+import { useState, useEffect } from "react";
+import styled from "styled-components";
 import { Main } from "./component/StyleComponent";
 import Structure from "./component/Structure";
-import { useState, useEffect } from "react";
 import api from "./utils/api";
-import styled from "styled-components";
 
 const Container = styled.div`
     text-align: left;

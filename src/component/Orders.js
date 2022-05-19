@@ -1,15 +1,15 @@
+import PropTypes from "prop-types";
+import data from "../utils/data";
 import Input from "./Input";
 import Select from "./Select";
 import * as S from "./StyleComponent";
-import data from "../utils/data";
-import PropTypes from "prop-types";
 
 function Orders({ handleDataChange, processingData, mode }) {
     return (
         <S.Article>
             <S.StructureForm mode={mode}>
-                {data.order.inputComponentArray.map(e => (
-                    <S.StructrueSingleLine>
+                {data.order.inputComponentArray.map((e, index) => (
+                    <S.StructrueSingleLine key={index}>
                         <Input
                             width={170}
                             key={e.title}

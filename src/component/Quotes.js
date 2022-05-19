@@ -1,8 +1,8 @@
+import PropTypes from "prop-types";
+import data from "../utils/data";
 import Input from "./Input";
 import Select from "./Select";
 import { Article, StructureForm, StructrueSingleLine } from "./StyleComponent";
-import data from "../utils/data";
-import PropTypes from "prop-types";
 
 function Quotes({ handleDataChange, processingData, mode }) {
     const inputComponentArray = [
@@ -20,7 +20,7 @@ function Quotes({ handleDataChange, processingData, mode }) {
         <Article>
             <StructureForm mode={mode}>
                 {inputComponentArray.map((e, index) => (
-                    <StructrueSingleLine>
+                    <StructrueSingleLine key={index}>
                         <Input
                             inputWidth={170}
                             key={index}

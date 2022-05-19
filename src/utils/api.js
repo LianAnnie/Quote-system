@@ -1,4 +1,3 @@
-import { db } from "../utils/firebase";
 import {
     doc,
     setDoc,
@@ -13,6 +12,7 @@ import {
     arrayUnion,
     arrayRemove,
 } from "firebase/firestore";
+import { db } from "../utils/firebase";
 import form from "../utils/formChange";
 
 const api = {

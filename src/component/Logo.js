@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
 import VanillaTilt from "vanilla-tilt";
 import styled from "styled-components";
-import { device } from "./StyleComponent";
 import PropTypes from "prop-types";
+import { device } from "./StyleComponent";
 
 const LogoImage = styled.div`
     background-size: contain;
@@ -46,6 +46,7 @@ function Logo({ options, showNavBar, ...rest }) {
 
 Logo.propTypes = {
     showNavBar: PropTypes.bool,
+    options: PropTypes.object.isRequired,
 };
 
 export default Logo;

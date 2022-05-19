@@ -1,7 +1,7 @@
-import * as S from "./StyleComponent";
-import form from "../utils/formChange";
-import data from "../utils/data";
 import PropTypes from "prop-types";
+import * as S from "./StyleComponent";
+import data from "../utils/data";
+import form from "../utils/formChange";
 
 function AssembleData({
     collectionName,

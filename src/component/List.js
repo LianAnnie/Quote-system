@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import api from "../utils/api";
 import form from "../utils/formChange";
-import * as S from "./StyleComponent";
 import data from "../utils/data";
-import PropTypes from "prop-types";
+import * as S from "./StyleComponent";
 
 function List({ collectionName, list, setList, mode }) {
     const filterConditionRule = {};

@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
+import styled from "styled-components";
 import Companies from "./component/Companies";
 import CompaniesList from "./component/CompaniesList";
 import api from "./utils/api";
 import { Container, Main, device } from "./component/StyleComponent";
-import styled from "styled-components";
 
 const Flex = styled.div`
     display: flex;

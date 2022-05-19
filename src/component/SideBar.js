@@ -11,9 +11,9 @@ import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
 import HandshakeIcon from "@mui/icons-material/Handshake";
 import InsertChartIcon from "@mui/icons-material/InsertChart";
 import LogoutIcon from "@mui/icons-material/Logout";
+import PropTypes from "prop-types";
 import { device } from "./StyleComponent";
 import Logo from "./Logo";
-import PropTypes from "prop-types";
 
 const Orange = styled.div`
     width: ${props => (props.showNavBar ? "250px" : "100vw")};
@@ -234,13 +234,13 @@ function SideBar({ signOut }) {
     const [showNavBar, setShowNavBar] = useState(false);
 
     const linkArray = [
-        ["/", <CallToActionIcon />, "待辦通知"],
-        ["/overview", <PublicIcon />, "銷售概覽"],
-        ["/company", <BusinessIcon />, "客戶廠商"],
-        ["/bom", <CategoryIcon />, "產品零件"],
-        ["/quote", <RequestQuoteIcon />, "報價表單"],
-        ["/order", <HandshakeIcon />, "訂單資料"],
-        ["/analysis", <InsertChartIcon />, "成本分析"],
+        ["/", CallToActionIcon, "待辦通知"],
+        ["/overview", PublicIcon, "銷售概覽"],
+        ["/company", BusinessIcon, "客戶廠商"],
+        ["/bom", CategoryIcon, "產品零件"],
+        ["/quote", RequestQuoteIcon, "報價表單"],
+        ["/order", HandshakeIcon, "訂單資料"],
+        ["/analysis", InsertChartIcon, "成本分析"],
     ];
 
     const options = {
@@ -265,21 +265,23 @@ function SideBar({ signOut }) {
                         <Design>Quote System</Design>
                     </Title>
                     <NavbarStyled showNavBar={showNavBar}>
-                        {linkArray.map((e, index) => (
+                        {linkArray.map(([path, Component, title], index) => (
                             <NavLinkStyled
                                 showNavBar={showNavBar}
                                 key={index}
                                 style={{ textDecoration: "none" }}
-                                to={e[0]}
+                                to={path}
                             >
                                 {({ isActive }) => (
                                     <ActiveDiv
                                         showNavBar={showNavBar}
                                         active={isActive}
                                     >
-                                        <Black>{e[1]}</Black>
+                                        <Black>
+                                            <Component />
+                                        </Black>
                                         <HideBlack showNavBar={showNavBar}>
-                                            {e[2]}
+                                            {title}
                                         </HideBlack>
                                     </ActiveDiv>
                                 )}

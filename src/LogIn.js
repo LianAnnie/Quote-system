@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { Button } from "./component/StyleComponent";
 import { Form, Field } from "react-final-form";
 import { useEffect } from "react";
 import {
@@ -9,6 +8,7 @@ import {
 } from "firebase/auth";
 import { useNavigate, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
+import { Button } from "./component/StyleComponent";
 
 const Container = styled.div`
     background-color: #fffae3;
@@ -202,13 +202,7 @@ function LogIn({
             });
     }
 
-    const FormRender = ({
-        handleSubmit,
-        form,
-        submitting,
-        pristine,
-        values,
-    }) => (
+    const FormRender = ({ handleSubmit, submitting, values }) => (
         <FormStyled onSubmit={handleSubmit}>
             {loginData.map(e => (
                 <Field name={e.name} key={e.name}>
@@ -256,7 +250,6 @@ function LogIn({
 
     return (
         <Container>
-            {/* <Model /> */}
             <MainContainer>
                 <MainHeader>
                     <LogoImg src={require("./images/log.png")} alt="logo" />

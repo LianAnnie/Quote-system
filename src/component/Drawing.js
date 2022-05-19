@@ -1,8 +1,9 @@
-import { Border } from "./StyleComponent";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import more from "highcharts/highcharts-more";
 import PropTypes from "prop-types";
+import { Border } from "./StyleComponent";
+
 more(Highcharts);
 require("highcharts/modules/solid-gauge")(Highcharts);
 
@@ -51,7 +52,10 @@ function Drawing({ profitMargin, pieData }) {
             },
             labels: {
                 y: 16,
+                text: "利潤率",
             },
+            min: -100,
+            max: 100,
         },
 
         plotOptions: {
@@ -61,13 +65,6 @@ function Drawing({ profitMargin, pieData }) {
                     borderWidth: 0,
                     useHTML: true,
                 },
-            },
-        },
-        yAxis: {
-            min: -100,
-            max: 100,
-            title: {
-                text: "利潤率",
             },
         },
         credits: {
@@ -81,7 +78,7 @@ function Drawing({ profitMargin, pieData }) {
                     format:
                         '<div style="text-align:center">' +
                         '<span style="font-size:25px">{y}</span><br/>' +
-                        '<span style="font-size:12px;opacity:0.4">％</span>' +
+                        '<span style="font-size:12px;opacity:0.4">%</span>' +
                         "</div>",
                 },
                 tooltip: {

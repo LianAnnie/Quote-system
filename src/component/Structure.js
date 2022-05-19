@@ -1,15 +1,15 @@
+import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import api from "../utils/api";
+import data from "../utils/data";
+import ErrorBoundary from "../admin/ErrorBoundary";
 import ListWithRadio from "./ListWithRadio";
 import ListWithCheckBox from "./ListWithCheckBox";
 import AssembleData from "./AssembleData";
 import List from "./List";
-import { useState, useEffect } from "react";
 import * as S from "./StyleComponent";
-import api from "../utils/api";
 import Quotes from "./Quotes";
 import Orders from "./Orders";
-import data from "../utils/data";
-import ErrorBoundary from "../admin/ErrorBoundary";
-import PropTypes from "prop-types";
 
 function Structure({
     parentCollectionName,

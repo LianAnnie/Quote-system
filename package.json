@@ -17,7 +17,6 @@
         "exceljs": "^4.3.0",
         "firebase": "^9.6.10",
         "highcharts-react-official": "^3.1.0",
-        "perfect-scrollbar": "^1.5.5",
         "proj4": "^2.8.0",
         "react": "^17.0.2",
         "react-beautiful-dnd": "^13.1.0",
@@ -28,9 +27,7 @@
         "react-scripts": "5.0.0",
         "styled-components": "^5.3.5",
         "styled-icons": "^10.45.0",
-        "three": "^0.140.0",
-        "vanilla-tilt": "^1.7.2",
-        "web-vitals": "^2.1.4"
+        "vanilla-tilt": "^1.7.2"
     },
     "scripts": {
         "start": "react-scripts start",
@@ -60,6 +57,9 @@
         ]
     },
     "devDependencies": {
+        "eslint": "^8.15.0",
+        "eslint-plugin-import": "^2.26.0",
+        "eslint-plugin-react": "^7.30.0",
         "husky": "^7.0.4",
         "lint-staged": "^12.3.7",
         "prettier": "^2.6.2",

@@ -1,8 +1,8 @@
-import Input from "./Input";
-import Select from "./Select";
+import PropTypes from "prop-types";
 import * as S from "./StyleComponent";
 import data from "../utils/data";
-import PropTypes from "prop-types";
+import Input from "./Input";
+import Select from "./Select";
 
 function AnalysisForm({ handleDataChange, processingData }) {
     const inputComponentArray = [

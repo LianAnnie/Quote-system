@@ -1,11 +1,11 @@
-import Input from "./Input";
-import Select from "./Select";
 import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import api from "../utils/api";
 import form from "../utils/formChange";
-import * as S from "./StyleComponent";
 import data from "../utils/data";
-import PropTypes from "prop-types";
+import Input from "./Input";
+import Select from "./Select";
+import * as S from "./StyleComponent";
 
 function Part({ collectionName, list, setList, columnQty }) {
     const ruleData = {

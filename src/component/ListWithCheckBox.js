@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import * as S from "./StyleComponent";
+import PropTypes from "prop-types";
 import data from "../utils/data";
 import form from "../utils/formChange";
-import PropTypes from "prop-types";
+import * as S from "./StyleComponent";
 
 function ListWithRadio({
     collectionName,
@@ -155,7 +155,7 @@ function ListWithRadio({
                     </S.Thead>
                     <S.TBody>
                         {filterList &&
-                            filterList.map((e, index) => (
+                            filterList.map(e => (
                                 <S.Tr key={e.id}>
                                     {data.listCollections[
                                         collectionName
@@ -194,6 +194,11 @@ function ListWithRadio({
 
 ListWithRadio.propTypes = {
     collectionName: PropTypes.string.isRequired,
+    list: PropTypes.array.isRequired,
+    setProcessingData: PropTypes.func.isRequired,
+    processingData: PropTypes.array,
+    mode: PropTypes.string,
+    listPosition: PropTypes.string,
 };
 
 export default ListWithRadio;
