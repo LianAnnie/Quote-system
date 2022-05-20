@@ -220,7 +220,9 @@ function List({ collectionName, list, setList, mode }) {
     return (
         <S.Section mode={mode} collectionName={collectionName}>
             <S.Flex>
-                <S.Title>{data.listCollections[collectionName][0]}列表</S.Title>
+                <S.Title>
+                    {data.listInformation[collectionName]["listName"]}列表
+                </S.Title>
                 <S.ShowTextForButton>
                     <S.CancelSelectedButton
                         sx={{ width: "30px", height: "30px" }}
@@ -233,85 +235,83 @@ function List({ collectionName, list, setList, mode }) {
             </S.Flex>
             <S.AddScrollbar
                 mode={mode}
-                columnQty={data.listCollections[collectionName][1].length}
+                columnQty={
+                    data.listInformation[collectionName]["listTitle"].length
+                }
             >
                 <S.Table>
                     <S.Thead>
                         <S.Tr>
-                            {data.listCollections[collectionName][1].map(
+                            {data.listInformation[collectionName][
+                                "listTitle"
+                            ].map((e, index) => (
+                                <S.ThTitle key={index} index={index}>
+                                    {e}
+                                </S.ThTitle>
+                            ))}
+                            {data.listInformation.updateAndDeleteTitle.map(
                                 (e, index) => (
-                                    <S.ThTitle key={index} index={index}>
+                                    <S.ThButtonTitle key={index}>
                                         {e}
-                                    </S.ThTitle>
+                                    </S.ThButtonTitle>
                                 ),
                             )}
-                            {data.listCollections.all.map((e, index) => (
-                                <S.ThButtonTitle key={index}>
-                                    {e}
-                                </S.ThButtonTitle>
-                            ))}
                         </S.Tr>
                         <S.Tr>
-                            {data.listCollections[collectionName][2].map(
-                                (keyName, indexForStyled) => (
-                                    <S.ThText
-                                        key={keyName}
+                            {data.listInformation[collectionName][
+                                "listDataKey"
+                            ].map((keyName, indexForStyled) => (
+                                <S.ThText key={keyName} index={indexForStyled}>
+                                    <S.TableInputSearch
                                         index={indexForStyled}
+                                        columnQty={
+                                            data.listInformation[
+                                                collectionName
+                                            ]["listTitle"].length
+                                        }
+                                        type="text"
+                                        name={keyName}
+                                        onChange={e =>
+                                            handleRenderListData(
+                                                e.target.name,
+                                                e.target.value,
+                                            )
+                                        }
+                                        value={filterCondition[keyName]}
+                                    />
+                                    <S.TableSelectSearch
+                                        index={indexForStyled}
+                                        columnQty={
+                                            data.listInformation[
+                                                collectionName
+                                            ]["listTitle"].length
+                                        }
+                                        id={keyName}
+                                        name={keyName}
+                                        onChange={e =>
+                                            handleRenderListData(
+                                                e.target.name,
+                                                e.target.value,
+                                            )
+                                        }
+                                        value={list[keyName]}
                                     >
-                                        <S.TableInputSearch
-                                            index={indexForStyled}
-                                            columnQty={
-                                                data.listCollections[
-                                                    collectionName
-                                                ][1].length
-                                            }
-                                            type="text"
-                                            name={keyName}
-                                            onChange={e =>
-                                                handleRenderListData(
-                                                    e.target.name,
-                                                    e.target.value,
-                                                )
-                                            }
-                                            value={filterCondition[keyName]}
-                                        />
-                                        <S.TableSelectSearch
-                                            index={indexForStyled}
-                                            columnQty={
-                                                data.listCollections[
-                                                    collectionName
-                                                ][1].length
-                                            }
-                                            id={keyName}
-                                            name={keyName}
-                                            onChange={e =>
-                                                handleRenderListData(
-                                                    e.target.name,
-                                                    e.target.value,
-                                                )
-                                            }
-                                            value={list[keyName]}
-                                        >
-                                            {list
-                                                .filter(
-                                                    (m, index, array) =>
-                                                        array
-                                                            .map(
-                                                                n => n[keyName],
-                                                            )
-                                                            .indexOf(
-                                                                m[keyName],
-                                                            ) === index,
-                                                )
-                                                .map((o, index) => (
-                                                    <option key={index}>
-                                                        {o[keyName]}
-                                                    </option>
-                                                ))}
-                                        </S.TableSelectSearch>
-                                    </S.ThText>
-                                ),
-                            )}
+                                        {list
+                                            .filter(
+                                                (m, index, array) =>
+                                                    array
+                                                        .map(n => n[keyName])
+                                                        .indexOf(m[keyName]) ===
+                                                    index,
+                                            )
+                                            .map((o, index) => (
+                                                <option key={index}>
+                                                    {o[keyName]}
+                                                </option>
+                                            ))}
+                                    </S.TableSelectSearch>
+                                </S.ThText>
+                            ))}
                             <th></th>
                             <th></th>
                         </S.Tr>
@@ -322,9 +322,9 @@ function List({ collectionName, list, setList, mode }) {
                             filterList.map((e, index) =>
                                 !revisedStatus[index] ? (
                                     <S.TBodyTr key={index}>
-                                        {data.listCollections[
-                                            collectionName
-                                        ][2].map((keyName, indexForStyled) => (
+                                        {data.listInformation[collectionName][
+                                            "listDataKey"
+                                        ].map((keyName, indexForStyled) => (
                                             <S.TBodyTdContext
                                                 key={keyName}
                                                 index={indexForStyled}
@@ -368,9 +368,9 @@ function List({ collectionName, list, setList, mode }) {
                                     </S.TBodyTr>
                                 ) : (
                                     <S.UpdatedTr key={index}>
-                                        {data.listCollections[
-                                            collectionName
-                                        ][2].map((keyName, keyIndex) =>
+                                        {data.listInformation[collectionName][
+                                            "listDataKey"
+                                        ].map((keyName, keyIndex) =>
                                             keyName.includes("id") ? (
                                                 <S.Td key={[keyName, keyIndex]}>
                                                     {e[keyName]}

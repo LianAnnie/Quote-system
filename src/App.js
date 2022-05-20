@@ -8,7 +8,6 @@ import {
     useLocation,
 } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import PropTypes from "prop-types";
 import LogIn from "./LogIn";
 import BulletinBoard from "./BulletinBoard";
@@ -20,6 +19,7 @@ import Quote from "./Quote";
 import Order from "./Order";
 import SideBar from "./component/SideBar";
 import Loading from "./component/Loading";
+import api from "./utils/api";
 
 const Container = styled.div`
     text-align: left;
@@ -44,7 +44,7 @@ RequireAuth.propTypes = {
 function App() {
     const [loginStatus, setLoginStatus] = useState(2);
     const [message, setMessage] = useState("");
-    const auth = getAuth();
+
     const [viewMode, setViewMode] = useState(1);
     const RouteArray = [
         ["/", BulletinBoard],
@@ -57,27 +57,8 @@ function App() {
     ];
 
     useEffect(() => {
-        onAuthStateChanged(auth, user => {
-            if (user) {
-                setLoginStatus(1);
-                setMessage(`歡迎回來`);
-            } else {
-                setLoginStatus(0);
-            }
-        });
+        api.checkLogInState(setLoginStatus, setMessage);
     }, []);
-
-    function runFirebaseSignOut() {
-        signOut(auth)
-            .then(() => {
-                setMessage(`您已登出`);
-                setLoginStatus(0);
-            })
-            .catch(error => {
-                const errorCode = error.code;
-                checkErrorMessage(errorCode);
-            });
-    }
 
     function checkErrorMessage(msg) {
         const errorInformation = {
@@ -97,6 +78,10 @@ function App() {
         setMessage(`${msg}請聯繫客服確認問題解決方法`);
     }
 
+    function signOut() {
+        api.runFirebaseSignOut(setMessage, setLoginStatus, checkErrorMessage);
+    }
+
     return (
         <Container>
             <Router>
@@ -107,7 +92,7 @@ function App() {
                             <LogIn
                                 loginStatus={loginStatus}
                                 setLoginStatus={setLoginStatus}
-                                signOut={runFirebaseSignOut}
+                                signOut={signOut}
                                 setMessage={setMessage}
                                 message={message}
                                 checkErrorMessage={checkErrorMessage}
@@ -117,7 +102,7 @@ function App() {
                     <Route
                         element={
                             <SideBar
-                                signOut={runFirebaseSignOut}
+                                signOut={signOut}
                                 viewMode={viewMode}
                                 setViewMode={setViewMode}
                             />

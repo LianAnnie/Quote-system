@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
-import * as S from "./StyleComponent";
 import data from "../utils/data";
+import * as S from "./StyleComponent";
 import Input from "./Input";
 import Select from "./Select";
 

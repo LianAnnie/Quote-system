@@ -64,7 +64,8 @@ function ListWithRadio({
         <S.Section mode={mode}>
             <S.Flex>
                 <S.Title>
-                    請選擇需包含分析的{data.listCollections[collectionName][0]}
+                    請選擇需包含分析的
+                    {data.listInformation[collectionName]["listName"]}
                 </S.Title>
                 <S.ShowTextForButton>
                     <S.CancelSelectedButton
@@ -80,73 +81,72 @@ function ListWithRadio({
                 <S.Table>
                     <S.Thead>
                         <S.Tr>
-                            {data.listCollections[collectionName][3].map(
+                            {data.listInformation[collectionName][
+                                "newDataListTitle"
+                            ].map((e, index) => (
+                                <S.ThTitle
+                                    key={index}
+                                    index={index}
+                                    mode="structure"
+                                >
+                                    {e}
+                                </S.ThTitle>
+                            ))}
+                            {data.listInformation.selectTitle.map(
                                 (e, index) => (
-                                    <S.ThTitle
-                                        key={index}
-                                        index={index}
-                                        mode="structure"
-                                    >
+                                    <S.ThButtonTitle key={index}>
                                         {e}
-                                    </S.ThTitle>
+                                    </S.ThButtonTitle>
                                 ),
                             )}
-                            {data.listCollections.select.map((e, index) => (
-                                <S.ThButtonTitle key={index}>
-                                    {e}
-                                </S.ThButtonTitle>
-                            ))}
                         </S.Tr>
                         <S.Tr>
                             {list &&
-                                data.listCollections[collectionName][4].map(
-                                    (keyName, indexForStyled) => (
-                                        <S.ThText
-                                            key={keyName}
+                                data.listInformation[collectionName][
+                                    "newDataListKey"
+                                ].map((keyName, indexForStyled) => (
+                                    <S.ThText
+                                        key={keyName}
+                                        index={indexForStyled}
+                                    >
+                                        <S.TableInputSearch
                                             index={indexForStyled}
+                                            columnQty={7}
+                                            type="text"
+                                            name={keyName}
+                                            onChange={e =>
+                                                handleConditionChange(e)
+                                            }
+                                            value={list[keyName]}
+                                        />
+                                        <S.TableSelectSearch
+                                            index={indexForStyled}
+                                            columnQty={7}
+                                            name={keyName}
+                                            onChange={e =>
+                                                handleConditionChange(e)
+                                            }
+                                            value={list[keyName]}
                                         >
-                                            <S.TableInputSearch
-                                                index={indexForStyled}
-                                                columnQty={7}
-                                                type="text"
-                                                name={keyName}
-                                                onChange={e =>
-                                                    handleConditionChange(e)
-                                                }
-                                                value={list[keyName]}
-                                            />
-                                            <S.TableSelectSearch
-                                                index={indexForStyled}
-                                                columnQty={7}
-                                                name={keyName}
-                                                onChange={e =>
-                                                    handleConditionChange(e)
-                                                }
-                                                value={list[keyName]}
-                                            >
-                                                {list
-                                                    .filter(
-                                                        (m, index, array) =>
-                                                            array
-                                                                .map(
-                                                                    n =>
-                                                                        n[
-                                                                            keyName
-                                                                        ],
-                                                                )
-                                                                .indexOf(
-                                                                    m[keyName],
-                                                                ) === index,
-                                                    )
-                                                    .map((o, index) => (
-                                                        <option key={index}>
-                                                            {o[keyName]}
-                                                        </option>
-                                                    ))}
-                                            </S.TableSelectSearch>
-                                        </S.ThText>
-                                    ),
-                                )}
+                                            {list
+                                                .filter(
+                                                    (m, index, array) =>
+                                                        array
+                                                            .map(
+                                                                n => n[keyName],
+                                                            )
+                                                            .indexOf(
+                                                                m[keyName],
+                                                            ) === index,
+                                                )
+                                                .map((o, index) => (
+                                                    <option key={index}>
+                                                        {o[keyName]}
+                                                    </option>
+                                                ))}
+                                        </S.TableSelectSearch>
+                                    </S.ThText>
+                                ))}
                             <th></th>
                             <th></th>
                         </S.Tr>
@@ -155,9 +155,9 @@ function ListWithRadio({
                         {filterList &&
                             filterList.map(e => (
                                 <S.Tr key={e.id}>
-                                    {data.listCollections[
-                                        collectionName
-                                    ][4].map((keyName, indexForStyled) =>
+                                    {data.listInformation[collectionName][
+                                        "newDataListKey"
+                                    ].map((keyName, indexForStyled) =>
                                         indexForStyled === 0 ? (
                                             <S.TBodyTdContext
                                                 key={keyName}

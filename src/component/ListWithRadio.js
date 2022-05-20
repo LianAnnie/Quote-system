@@ -56,7 +56,7 @@ function ListWithRadio({
         <S.Section mode={mode} listPosition={listPosition}>
             <S.Flex>
                 <S.Title>
-                    請選擇一個{data.listCollections[collectionName][0]}
+                    請選擇一個{data.listInformation[collectionName]["listName"]}
                 </S.Title>
                 <S.ShowTextForButton>
                     <S.CancelSelectedButton
@@ -72,73 +72,65 @@ function ListWithRadio({
                 <S.Table>
                     <S.Thead>
                         <S.Tr>
-                            {data.listCollections[collectionName][1].map(
+                            {data.listInformation[collectionName][
+                                "listTitle"
+                            ].map((e, index) => (
+                                <S.ThTitle key={index} index={index}>
+                                    {e}
+                                </S.ThTitle>
+                            ))}
+                            {data.listInformation.selectTitle.map(
                                 (e, index) => (
-                                    <S.ThTitle key={index} index={index}>
+                                    <S.ThButtonTitle key={index}>
                                         {e}
-                                    </S.ThTitle>
+                                    </S.ThButtonTitle>
                                 ),
                             )}
-                            {data.listCollections.select.map((e, index) => (
-                                <S.ThButtonTitle key={index}>
-                                    {e}
-                                </S.ThButtonTitle>
-                            ))}
                         </S.Tr>
                         <S.Tr>
-                            {data.listCollections[collectionName][2].map(
-                                (keyName, indexForStyled) => (
-                                    <S.ThText
-                                        key={keyName}
+                            {data.listInformation[collectionName][
+                                "listDataKey"
+                            ].map((keyName, indexForStyled) => (
+                                <S.ThText key={keyName} index={indexForStyled}>
+                                    <S.TableInputSearch
                                         index={indexForStyled}
+                                        columnQty={
+                                            data.listInformation[
+                                                collectionName
+                                            ]["listTitle"].length
+                                        }
+                                        type="text"
+                                        name={keyName}
+                                        onChange={e => handleConditionChange(e)}
+                                        value={list[keyName]}
+                                    />
+                                    <S.TableSelectSearch
+                                        index={indexForStyled}
+                                        columnQty={
+                                            data.listInformation[
+                                                collectionName
+                                            ]["listTitle"].length
+                                        }
+                                        name={keyName}
+                                        onChange={e => handleConditionChange(e)}
+                                        value={list[keyName]}
                                     >
-                                        <S.TableInputSearch
-                                            index={indexForStyled}
-                                            columnQty={
-                                                data.listCollections[
-                                                    collectionName
-                                                ][1].length
-                                            }
-                                            type="text"
-                                            name={keyName}
-                                            onChange={e =>
-                                                handleConditionChange(e)
-                                            }
-                                            value={list[keyName]}
-                                        />
-                                        <S.TableSelectSearch
-                                            index={indexForStyled}
-                                            columnQty={
-                                                data.listCollections[
-                                                    collectionName
-                                                ][1].length
-                                            }
-                                            name={keyName}
-                                            onChange={e =>
-                                                handleConditionChange(e)
-                                            }
-                                            value={list[keyName]}
-                                        >
-                                            {list
-                                                .filter(
-                                                    (m, index, array) =>
-                                                        array
-                                                            .map(
-                                                                n => n[keyName],
-                                                            )
-                                                            .indexOf(
-                                                                m[keyName],
-                                                            ) === index,
-                                                )
-                                                .map((o, index) => (
-                                                    <option key={index}>
-                                                        {o[keyName]}
-                                                    </option>
-                                                ))}
-                                        </S.TableSelectSearch>
-                                    </S.ThText>
-                                ),
-                            )}
+                                        {list
+                                            .filter(
+                                                (m, index, array) =>
+                                                    array
+                                                        .map(n => n[keyName])
+                                                        .indexOf(m[keyName]) ===
+                                                    index,
+                                            )
+                                            .map((o, index) => (
+                                                <option key={index}>
+                                                    {o[keyName]}
+                                                </option>
+                                            ))}
+                                    </S.TableSelectSearch>
+                                </S.ThText>
+                            ))}
                             <th></th>
                             <th></th>
                         </S.Tr>
@@ -147,9 +139,9 @@ function ListWithRadio({
                         {filterList &&
                             filterList.map(e => (
                                 <S.TrBody key={e.id}>
-                                    {data.listCollections[
-                                        collectionName
-                                    ][2].map((keyName, indexForStyled) => (
+                                    {data.listInformation[collectionName][
+                                        "listDataKey"
+                                    ].map((keyName, indexForStyled) => (
                                         <S.TBodyTdContext
                                             key={keyName}
                                             index={indexForStyled}

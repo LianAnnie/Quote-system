@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { collection, query, onSnapshot } from "firebase/firestore";
 import styled from "styled-components";
 import * as S from "./component/StyleComponent";
-import { db } from "./utils/firebase";
 import form from "./utils/formChange";
 import api from "./utils/api";
 
@@ -161,21 +159,7 @@ function BulletinBoard() {
         }
     };
     useEffect(() => {
-        const q = query(collection(db, "boards"));
-        const unsubscribe = onSnapshot(q, querySnapshot => {
-            const pmWorks = [];
-            querySnapshot.forEach(doc => {
-                pmWorks.push(doc.data());
-                console.log(`note!!!`);
-            });
-            for (let i = 0; i < 5; i++) {
-                columnsFromBackend[i].items = pmWorks.filter(
-                    item => Number(item.status) === i && item,
-                );
-            }
-            setColumns(columnsFromBackend);
-        });
-        return () => unsubscribe();
+        api.listenerBoardsData(columnsFromBackend, setColumns);
     }, []);
     function updateCard(card) {
         api.updateDoc("boards", card.id, card, 0);

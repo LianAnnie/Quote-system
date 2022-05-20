@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
-import * as S from "./StyleComponent";
 import data from "../utils/data";
 import form from "../utils/formChange";
+import * as S from "./StyleComponent";
 
 function AssembleData({
     collectionName,
@@ -208,7 +208,7 @@ AssembleData.propTypes = {
     collectionName: PropTypes.string.isRequired,
     processingData: PropTypes.shape({
         id: PropTypes.string.isRequired,
-        children: PropTypes.array,
+        childData: PropTypes.array,
         parentData: PropTypes.shape({
             class: PropTypes.string,
             color: PropTypes.string,

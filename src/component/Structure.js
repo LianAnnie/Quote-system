@@ -123,13 +123,13 @@ function Structure({
             .map(e => e.qty)
             .filter(e => isNaN(Number(e)));
         if (qtyArry.length > 0) {
-            alert(error[2]);
+            alert(error.checkSubDataExist);
             return false;
         }
         const indexArray = parameterData.childData.map(e => Number(e.index));
         const array = [...new Set(indexArray)];
         if (indexArray.length !== array.length) {
-            alert(error[3]);
+            alert(error.checkNumebrUnique);
             return false;
         }
         return true;
@@ -138,18 +138,18 @@ function Structure({
     function checkOrderProcessingData(parameterData) {
         const error = data.errorMessage["order"];
         if (!parameterData.parentData.requestedDate) {
-            alert(error[5]);
+            alert(error.checkDateDataExist);
             return false;
         }
         if (!parameterData.parentData.orderId) {
-            alert(error[6]);
+            alert(error.checkOrderNumberExist);
             return false;
         }
         const qtyArry = parameterData.childData
             .map(e => e.qty)
             .filter(e => isNaN(Number(e)));
         if (qtyArry.length > 0) {
-            alert(error[2]);
+            alert(error.checkNumberGreaterThan0);
             return false;
         }
         return true;
@@ -158,14 +158,14 @@ function Structure({
     function checkQuotationProcessingData(parameterData, collectionName) {
         const error = data.errorMessage[collectionName];
         if (!parameterData.parentData.valid) {
-            alert(error[5]);
+            alert(error.checkDateDataExist);
             return false;
         }
         const qtyArry = parameterData.childData
             .map(e => e.inquiryQty)
             .filter(e => isNaN(Number(e)));
         if (qtyArry.length > 0) {
-            alert(error[2]);
+            alert(error.checkNumberGreaterThan0);
             return false;
         }
         return true;
@@ -177,18 +177,18 @@ function Structure({
     ) {
         const error = data.errorMessage[collectionName];
         if (!parameterData.parentData.date) {
-            alert(error[5]);
+            alert(error.checkDateDataExist);
             return false;
         }
         if (!parameterData.parentData.currency) {
-            alert(error[4]);
+            alert(error.checkCurrencyData);
             return false;
         }
         const priceArry = parameterData.childData
             .map(e => e.price)
             .filter(e => isNaN(Number(e)));
         if (priceArry.length > 0) {
-            alert(error[3]);
+            alert(error.checkPriceGreaterThan0);
             return false;
         }
         return true;
@@ -200,11 +200,11 @@ function Structure({
             Object.keys(parameterData.parentData).length === 0 ||
             !parameterData.parentData.id
         ) {
-            alert(error[0]);
+            alert(error.checkMainDataExist);
             return false;
         }
         if (parameterData.childData.length === 0) {
-            alert(error[1]);
+            alert(error.checkSubDataExist);
             return false;
         }
 
@@ -241,7 +241,7 @@ function Structure({
             childKeys.filter(key => !e[key]),
         );
         if (checkValeus.filter(e => e.length !== 0).length > 0) {
-            alert(error[7]);
+            alert(error.checkAllDataExist);
             return false;
         }
         return true;

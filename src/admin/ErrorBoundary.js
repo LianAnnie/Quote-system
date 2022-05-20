@@ -1,4 +1,5 @@
 import { Component } from "react";
+import PropTypes from "prop-types";
 
 class ErrorBoundary extends Component {
     constructor(props) {
@@ -6,7 +7,7 @@ class ErrorBoundary extends Component {
         this.state = { hasError: false };
     }
 
-    static getDerivedStateFromError(error) {
+    static getDerivedStateFromError() {
         // 更新 state 以至於下一個 render 會顯示 fallback UI
         return { hasError: true };
     }
@@ -24,5 +25,9 @@ class ErrorBoundary extends Component {
         return this.props.children;
     }
 }
+
+ErrorBoundary.propTypes = {
+    children: PropTypes.object.isRequired,
+};
 
 export default ErrorBoundary;

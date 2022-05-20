@@ -36,22 +36,22 @@ const data = {
         JPY: 130.33,
     },
     inquiryQty: [10, 250, 1000, 5000],
-    listCollections: {
-        all: ["更新", "刪除"],
-        select: ["選擇"],
-        customers2: [
-            "客戶",
-            ["客戶編號", "公司名稱", "聯繫", "地區"],
-            ["id", "company", "contacts", "country"],
-        ],
-        suppliers2: [
-            "廠商",
-            ["廠商編號", "公司名稱", "聯繫", "地區"],
-            ["id", "company", "contacts", "country"],
-        ],
-        products2: [
-            "產品",
-            [
+    listInformation: {
+        updateAndDeleteTitle: ["更新", "刪除"],
+        selectTitle: ["選擇"],
+        customers2: {
+            listName: "客戶",
+            listTitle: ["客戶編號", "公司名稱", "聯繫", "地區"],
+            listDataKey: ["id", "company", "contacts", "country"],
+        },
+        suppliers2: {
+            listName: "廠商",
+            listTitle: ["廠商編號", "公司名稱", "聯繫", "地區"],
+            listDataKey: ["id", "company", "contacts", "country"],
+        },
+        products2: {
+            listName: "產品",
+            listTitle: [
                 "產品編號",
                 "類別",
                 "系列",
@@ -61,7 +61,7 @@ const data = {
                 "特殊",
                 "備註",
             ],
-            [
+            listDataKey: [
                 "id",
                 "class",
                 "group",
@@ -71,22 +71,54 @@ const data = {
                 "special",
                 "mark",
             ],
-        ],
-        parts2: [
-            "零件",
-            ["零件編號", "型號", "項目", "系列", "規格1", "規格2", "規格3"],
-            ["id", "mark", "class", "group", "spec1", "spec2", "spec3"],
-        ],
-        bom: [
-            "結構",
-            ["產品編號", "零件編號", "SN", "用量", "單位"],
-            ["id0", "id1", "id2", "qty", "unit"],
-            ["產品編號", "類別", "系列", "材質", "色碼", "款式", "特殊"],
-            ["id", "class", "group", "material", "color", "type", "special"],
-        ],
-        partQuotations2: [
-            "零件報價",
-            [
+        },
+        parts2: {
+            listName: "零件",
+            listTitle: [
+                "零件編號",
+                "型號",
+                "項目",
+                "系列",
+                "規格1",
+                "規格2",
+                "規格3",
+            ],
+            listDataKey: [
+                "id",
+                "mark",
+                "class",
+                "group",
+                "spec1",
+                "spec2",
+                "spec3",
+            ],
+        },
+        bom: {
+            listName: "結構",
+            listTitle: ["產品編號", "零件編號", "SN", "用量", "單位"],
+            listDataKey: ["id0", "id1", "id2", "qty", "unit"],
+            newDataListTitle: [
+                "產品編號",
+                "類別",
+                "系列",
+                "材質",
+                "色碼",
+                "款式",
+                "特殊",
+            ],
+            newDataListKey: [
+                "id",
+                "class",
+                "group",
+                "material",
+                "color",
+                "type",
+                "special",
+            ],
+        },
+        partQuotations2: {
+            listName: "零件報價",
+            listTitle: [
                 "零件編號",
                 "廠商編號",
                 "數量",
@@ -96,7 +128,7 @@ const data = {
                 "報價日期",
                 "報價效期",
             ],
-            [
+            listDataKey: [
                 "id0",
                 "id1",
                 "inquiryQty",
@@ -106,12 +138,26 @@ const data = {
                 "date",
                 "valid",
             ],
-            ["零件廠商", "數量", "單價", "幣別", "報價日期", "報價效期"],
-            ["id", "inquiryQty", "price", "currency", "date", "valid"],
-        ],
-        productQuotations2: [
-            "產品報價",
-            [
+            newDataListTitle: [
+                "零件廠商",
+                "數量",
+                "單價",
+                "幣別",
+                "報價日期",
+                "報價效期",
+            ],
+            newDataListKey: [
+                "id",
+                "inquiryQty",
+                "price",
+                "currency",
+                "date",
+                "valid",
+            ],
+        },
+        productQuotations2: {
+            listName: "產品報價",
+            listTitle: [
                 "產品編號",
                 "客戶編號",
                 "數量",
@@ -121,7 +167,7 @@ const data = {
                 "報價日期",
                 "報價效期",
             ],
-            [
+            listDataKey: [
                 "id0",
                 "id1",
                 "inquiryQty",
@@ -131,10 +177,10 @@ const data = {
                 "date",
                 "valid",
             ],
-        ],
-        order: [
-            "客戶訂單",
-            [
+        },
+        order: {
+            listName: "客戶訂單",
+            listTitle: [
                 "產品編號",
                 "客戶編號",
                 "訂單編號",
@@ -146,7 +192,7 @@ const data = {
                 "需求交期",
                 "備註",
             ],
-            [
+            listDataKey: [
                 "id1",
                 "id0",
                 "orderId",
@@ -159,39 +205,51 @@ const data = {
                 "requestedDate",
                 "remark",
             ],
-        ],
+        },
     },
     assembleDataCollections: {
-        bom: [
-            "結構",
-            ["產品編號", "系列", "材質", "色碼", "款式"],
-            ["id", "group", "material", "color", "type"],
-            ["零件編號", "型號"],
-            ["id", "mark"],
-            ["使用量", "單位", "順序", "刪除"],
-            ["qty", "unit", "index"],
-        ],
-        partQuotations2: [
-            "零件報價",
-            ["報價日期", "有效日期", "幣別", "廠商編號", "公司名稱"],
-            ["date", "valid", "currency", "id", "company"],
-            ["零件編號", "型號"],
-            ["id", "mark"],
-            ["數量", "單價", "交期", "刪除"],
-            ["inquiryQty", "price", "leadTime"],
-        ],
-        productQuotations2: [
-            "產品報價",
-            ["報價日期", "有效日期", "幣別", "客戶編號", "公司名稱"],
-            ["date", "valid", "currency", "id", "company"],
-            ["產品編號", "系列"],
-            ["id", "group"],
-            ["數量", "單價", "交期", "刪除"],
-            ["inquiryQty", "price", "leadTime"],
-        ],
-        order: [
-            "訂單",
-            [
+        bom: {
+            newDataListName: "結構",
+            mainDataTitle: ["產品編號", "系列", "材質", "色碼", "款式"],
+            mainDataKey: ["id", "group", "material", "color", "type"],
+            subDataTitle: ["零件編號", "型號"],
+            subDataKey: ["id", "mark"],
+            inputDataTitle: ["使用量", "單位", "順序", "刪除"],
+            inputDataKey: ["qty", "unit", "index"],
+        },
+        partQuotations2: {
+            newDataListName: "零件報價",
+            mainDataTitle: [
+                "報價日期",
+                "有效日期",
+                "幣別",
+                "廠商編號",
+                "公司名稱",
+            ],
+            mainDataKey: ["date", "valid", "currency", "id", "company"],
+            subDataTitle: ["零件編號", "型號"],
+            subDataKey: ["id", "mark"],
+            inputDataTitle: ["數量", "單價", "交期", "刪除"],
+            inputDataKey: ["inquiryQty", "price", "leadTime"],
+        },
+        productQuotations2: {
+            newDataListName: "產品報價",
+            mainDataTitle: [
+                "報價日期",
+                "有效日期",
+                "幣別",
+                "客戶編號",
+                "公司名稱",
+            ],
+            mainDataKey: ["date", "valid", "currency", "id", "company"],
+            subDataTitle: ["產品編號", "系列"],
+            subDataKey: ["id", "group"],
+            inputDataTitle: ["數量", "單價", "交期", "刪除"],
+            inputDataKey: ["inquiryQty", "price", "leadTime"],
+        },
+        order: {
+            newDataListName: "訂單",
+            mainDataTitle: [
                 "訂單編號",
                 "訂單日期",
                 "需求交期",
@@ -200,7 +258,7 @@ const data = {
                 "客戶編號",
                 "公司名稱",
             ],
-            [
+            mainDataKey: [
                 "orderId",
                 "date",
                 "requestedDate",
@@ -209,14 +267,14 @@ const data = {
                 "id",
                 "company",
             ],
-            ["產品編號", "系列"],
-            ["id", "group"],
-            ["數量", "單價", "備註", "刪除"],
-            ["qty", "price", "remark"],
-        ],
-        analysis: [
-            "分析資料",
-            [
+            subDataTitle: ["產品編號", "系列"],
+            subDataKey: ["id", "group"],
+            inputDataTitle: ["數量", "單價", "備註", "刪除"],
+            inputDataKey: ["qty", "price", "remark"],
+        },
+        analysis: {
+            newDataListName: "分析資料",
+            mainDataTitle: [
                 "總成本",
                 "幣別",
                 "期望單價",
@@ -224,7 +282,7 @@ const data = {
                 "對應單價",
                 "期望利潤(%)",
             ],
-            [
+            mainDataKey: [
                 "sum",
                 "currency",
                 "expectedPrice",
@@ -232,51 +290,46 @@ const data = {
                 "caculatedPrice",
                 "expoectedMargin",
             ],
-            ["零件編號", "使用量", "單價", "幣別", "廠商編號"],
-            ["idP", "qty", "price", "currency", "idF"],
-        ],
+            subDataTitle: ["零件編號", "使用量", "單價", "幣別", "廠商編號"],
+            subDataKey: ["idP", "qty", "price", "currency", "idF"],
+        },
     },
     errorMessage: {
-        bom: [
-            "請選擇一個產品",
-            "請選擇產品對應零件",
-            "使用量需要填寫數字,不能小於或為0",
-            "順序需要為數字且唯一",
-            "",
-            "",
-            "",
-            "請再確認備註欄是否有重新填寫好資料",
-        ],
-        partQuotations2: [
-            "請選擇報價廠商",
-            "請選擇需報價零件",
-            "數量需要填寫數字,不能小於或為0",
-            "單價不能小於或為0",
-            "請選擇幣別",
-            "請選擇日期",
-            "",
-            "請再確認備註欄是否有重新填寫好資料",
-        ],
-        productQuotations2: [
-            "請選擇客戶資料",
-            "請選擇需報價產品",
-            "數量需要填寫數字,不能小於或為0",
-            "單價不能小於或為0",
-            "請選擇幣別",
-            "請選擇日期",
-            "",
-            "請再確認備註欄是否有重新填寫好資料",
-        ],
-        order: [
-            "請選擇客戶資料",
-            "請選擇下單產品",
-            "數量需要填寫數字,不能小於或為0",
-            "單價不能小於或為0",
-            "請選擇幣別",
-            "請選擇日期",
-            "請填寫訂單編號",
-            "請再確認備註欄是否有重新填寫好資料",
-        ],
+        bom: {
+            checkMainDataExist: "請選擇一個產品",
+            checkSubDataExist: "請選擇產品對應零件",
+            checkNumberGreaterThan0: "使用量需要填寫數字,不能小於或為0",
+            checkNumebrUnique: "順序需要為數字且唯一",
+            checkAllDataExist: "請再確認備註欄是否有重新填寫好資料",
+        },
+        partQuotations2: {
+            checkMainDataExist: "請選擇報價廠商",
+            checkSubDataExist: "請選擇需報價零件",
+            checkNumberGreaterThan0: "數量需要填寫數字,不能小於或為0",
+            checkPriceGreaterThan0: "單價不能小於或為0",
+            checkCurrencyDataExist: "請選擇幣別",
+            checkDateDataExist: "請選擇日期",
+            checkAllDataExist: "請再確認備註欄是否有重新填寫好資料",
+        },
+        productQuotations2: {
+            checkMainDataExist: "請選擇客戶資料",
+            checkSubDataExist: "請選擇需報價產品",
+            checkNumberGreaterThan0: "數量需要填寫數字,不能小於或為0",
+            checkPriceGreaterThan0: "單價不能小於或為0",
+            checkCurrencyData: "請選擇幣別",
+            checkDateDataExist: "請選擇日期",
+            checkAllDataExist: "請再確認備註欄是否有重新填寫好資料",
+        },
+        order: {
+            checkMainDataExist: "請選擇客戶資料",
+            checkSubDataExist: "請選擇下單產品",
+            checkNumberGreaterThan0: "數量需要填寫數字,不能小於或為0",
+            checkPriceGreaterThan0: "單價不能小於或為0",
+            checkCurrencyData: "請選擇幣別",
+            checkDateDataExist: "請選擇日期",
+            checkOrderNumberExist: "請填寫訂單編號",
+            checkAllDataExist: "請再確認備註欄是否有重新填寫好資料",
+        },
     },
     companies: {
         inputComponentArray: [

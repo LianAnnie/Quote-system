@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
-import * as S from "./StyleComponent";
 import data from "../utils/data";
+import * as S from "./StyleComponent";
 
 function AssembleData2({ collectionName, processingData }) {
     return (
@@ -79,7 +79,7 @@ AssembleData2.propTypes = {
     collectionName: PropTypes.string.isRequired,
     processingData: PropTypes.shape({
         id: PropTypes.string,
-        children: PropTypes.array,
+        childData: PropTypes.array,
         parentData: PropTypes.shape({
             caculatedMargin: PropTypes.number,
             caculatedPrice: PropTypes.number,

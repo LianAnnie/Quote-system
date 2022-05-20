@@ -162,7 +162,8 @@ function Structure2({
                 return ["sum", "請確認已選擇正確幣值"];
             } else {
                 const parentCurrencyExchangeRate = data.exchangeRate.filter(
-                    e => e[0] === parentCurrency[0],
+                    ([compareCurrency]) =>
+                        compareCurrency === parentCurrency[0],
                 )[0][2];
                 if (!parentCurrencyExchangeRate) {
                     return ["sum", "請確認已選擇正確幣值"];
@@ -171,8 +172,9 @@ function Structure2({
                         dataParameter.childData.map(
                             e =>
                                 data.exchangeRate.filter(
-                                    rate =>
-                                        rate[0] === e.currency.split(",")[0],
+                                    ([compareCurrency]) =>
+                                        compareCurrency ===
+                                        e.currency.split(",")[0],
                                 )[0][2],
                         );
                     const sum =

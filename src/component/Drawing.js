@@ -49,10 +49,10 @@ function Drawing({ profitMargin, pieData }) {
             tickAmount: 2,
             title: {
                 y: -70,
+                text: "利潤率",
             },
             labels: {
                 y: 16,
-                text: "利潤率",
             },
             min: -100,
             max: 100,

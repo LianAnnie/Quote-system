@@ -103,70 +103,65 @@ function ListWithRadio2({
                 <S.Table>
                     <S.Thead>
                         <S.Tr>
-                            {data.listCollections[collectionName][3].map(
+                            {data.listInformation[collectionName][
+                                "newDataListTitle"
+                            ].map((e, index) => (
+                                <S.ThTitle key={index} index={index}>
+                                    {e}
+                                </S.ThTitle>
+                            ))}
+                            {data.listInformation.selectTitle.map(
                                 (e, index) => (
-                                    <S.ThTitle key={index} index={index}>
+                                    <S.ThButtonTitle key={index}>
                                         {e}
-                                    </S.ThTitle>
+                                    </S.ThButtonTitle>
                                 ),
                             )}
-                            {data.listCollections.select.map((e, index) => (
-                                <S.ThButtonTitle key={index}>
-                                    {e}
-                                </S.ThButtonTitle>
-                            ))}
                         </S.Tr>
                         <S.Tr>
-                            {data.listCollections[collectionName][4].map(
-                                (keyName, indexForStyled) => (
-                                    <S.ThText
-                                        key={keyName}
+                            {data.listInformation[collectionName][
+                                "newDataListKey"
+                            ].map((keyName, indexForStyled) => (
+                                <S.ThText
+                                    key={keyName}
+                                    index={indexForStyled}
+                                    columnQty={
+                                        data.listInformation[collectionName][
+                                            "newDataListKey"
+                                        ].length
+                                    }
+                                >
+                                    <S.TableInputSearch
+                                        type="text"
                                         index={indexForStyled}
-                                        columnQty={
-                                            data.listCollections[
-                                                collectionName
-                                            ][4].length
-                                        }
+                                        columnQty={7}
+                                        name={keyName}
+                                        onChange={e => handleConditionChange(e)}
+                                        value={list[keyName]}
+                                    />
+                                    <S.TableSelectSearch
+                                        index={indexForStyled}
+                                        columnQty={7}
+                                        name={keyName}
+                                        onChange={e => handleConditionChange(e)}
+                                        value={renderList[keyName]}
                                     >
-                                        <S.TableInputSearch
-                                            type="text"
-                                            index={indexForStyled}
-                                            columnQty={7}
-                                            name={keyName}
-                                            onChange={e =>
-                                                handleConditionChange(e)
-                                            }
-                                            value={list[keyName]}
-                                        />
-                                        <S.TableSelectSearch
-                                            index={indexForStyled}
-                                            columnQty={7}
-                                            name={keyName}
-                                            onChange={e =>
-                                                handleConditionChange(e)
-                                            }
-                                            value={renderList[keyName]}
-                                        >
-                                            {renderList
-                                                .filter(
-                                                    (m, index, array) =>
-                                                        array
-                                                            .map(
-                                                                n => n[keyName],
-                                                            )
-                                                            .indexOf(
-                                                                m[keyName],
-                                                            ) === index,
-                                                )
-                                                .map((o, index) => (
-                                                    <option key={index}>
-                                                        {o[keyName]}
-                                                    </option>
-                                                ))}
-                                        </S.TableSelectSearch>
-                                    </S.ThText>
-                                ),
-                            )}
+                                        {renderList
+                                            .filter(
+                                                (m, index, array) =>
+                                                    array
+                                                        .map(n => n[keyName])
+                                                        .indexOf(m[keyName]) ===
+                                                    index,
+                                            )
+                                            .map((o, index) => (
+                                                <option key={index}>
+                                                    {o[keyName]}
+                                                </option>
+                                            ))}
+                                    </S.TableSelectSearch>
+                                </S.ThText>
+                            ))}
                             <th></th>
                             <th></th>
                         </S.Tr>
@@ -175,9 +170,9 @@ function ListWithRadio2({
                         {filterList &&
                             filterList.map(e => (
                                 <S.Tr key={e.id}>
-                                    {data.listCollections[
-                                        collectionName
-                                    ][4].map((keyName, indexForStyled) => (
+                                    {data.listInformation[collectionName][
+                                        "newDataListKey"
+                                    ].map((keyName, indexForStyled) => (
                                         <S.TBodyTdContext
                                             key={keyName}
                                             index={indexForStyled}

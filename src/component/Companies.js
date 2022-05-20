@@ -144,9 +144,9 @@ function Companies({
                             );
                         }}
                     >
-                        {data.countryList.map(country => (
-                            <option key={country[0]} value={country[1]}>
-                                {country[1]}
+                        {data.countryList.map(([countryCode, countryName]) => (
+                            <option key={countryCode} value={countryName}>
+                                {countryName}
                             </option>
                         ))}
                     </S.SelectStyled>

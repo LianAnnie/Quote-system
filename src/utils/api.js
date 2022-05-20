@@ -11,11 +11,55 @@ import {
     where,
     arrayUnion,
     arrayRemove,
+    onSnapshot,
 } from "firebase/firestore";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { db } from "../utils/firebase";
 import form from "../utils/formChange";
 
 const api = {
+    checkLogInState(callBack1, callBack2) {
+        const auth = getAuth();
+        onAuthStateChanged(auth, user => {
+            if (user) {
+                callBack1(1);
+                callBack2(`歡迎回來`);
+            } else {
+                callBack1(0);
+            }
+        });
+    },
+    runFirebaseSignOut(callback1, callback2, callback3) {
+        const auth = getAuth();
+        signOut(auth)
+            .then(() => {
+                callback1(`您已登出`);
+                callback2(0);
+            })
+            .catch(error => {
+                const errorCode = error.code;
+                callback3(errorCode);
+            });
+    },
+
+    listenerBoardsData(objectData, callback) {
+        const q = query(collection(db, "boards"));
+        const unsubscribe = onSnapshot(q, querySnapshot => {
+            const pmWorks = [];
+            querySnapshot.forEach(doc => {
+                pmWorks.push(doc.data());
+                console.log(`note!!!`);
+            });
+            for (let i = 0; i < 5; i++) {
+                objectData[i].items = pmWorks.filter(
+                    item => Number(item.status) === i && item,
+                );
+            }
+            callback(objectData);
+        });
+        return () => unsubscribe();
+    },
+
     async getCompleteCollection(collectionName) {
         const collectionRef = collection(db, collectionName);
         const q = query(collectionRef, orderBy("id", "asc"));
