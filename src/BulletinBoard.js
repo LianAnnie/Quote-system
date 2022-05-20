@@ -165,7 +165,7 @@ function BulletinBoard() {
         api.updateDoc("boards", card.id, card, 0);
     }
     function handleCardChange(name, value) {
-        const data = form.handleDataChange("_", name, value, card);
+        const data = form.handleObjectDataChange(name, value, card);
         setCard(data);
     }
     async function addCard() {

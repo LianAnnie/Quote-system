@@ -14,7 +14,7 @@ function AssembleData({
         const newProcessingData = JSON.parse(JSON.stringify(processingData));
         let newChildData;
         if (!e.id) {
-            newChildData = form.handleDataChange(
+            newChildData = form.handleArrayDataChange(
                 itemIndex,
                 e.target.name,
                 e.target.value,

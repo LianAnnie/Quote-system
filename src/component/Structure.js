@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import api from "../utils/api";
 import data from "../utils/data";
 import ErrorBoundary from "../admin/ErrorBoundary";
+import api from "../utils/api";
 import ListWithRadio from "./ListWithRadio";
 import ListWithCheckBox from "./ListWithCheckBox";
 import AssembleData from "./AssembleData";
@@ -286,6 +286,7 @@ function Structure({
         }
         if (assembleCollectionName === "order") {
             newListtoRender = assembleList.map(e =>
+                // const {id[0], }
                 !e.id
                     ? e
                     : {

@@ -28,6 +28,16 @@ const form = {
         }
         return data;
     },
+    handleObjectDataChange(name, value, originData) {
+        const data = JSON.parse(JSON.stringify(originData));
+        data[name] = value;
+        return data;
+    },
+    handleArrayDataChange(itemIndex, name, value, originData) {
+        const data = JSON.parse(JSON.stringify(originData));
+        data[itemIndex][name] = value;
+        return data;
+    },
     deleteProduct(itemIndex, originData) {
         const data = originData.filter((_, index) => index !== itemIndex);
         return data;
