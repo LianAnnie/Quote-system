@@ -57,7 +57,14 @@ function App() {
     ];
 
     useEffect(() => {
-        api.checkLogInState(setLoginStatus, setMessage);
+        api.checkLogInState(user => {
+            if (user) {
+                setLoginStatus(1);
+                setMessage(`歡迎回來`);
+            } else {
+                setLoginStatus(0);
+            }
+        });
     }, []);
 
     function checkErrorMessage(msg) {

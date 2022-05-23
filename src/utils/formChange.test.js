@@ -2,7 +2,7 @@ import form from "./formChange";
 
 describe("transformId function", () => {
     test("renders learn react link", () => {
-        const linkElement = screen.getByText(/learn react/i);
-        expect(linkElement).toBeInTheDocument();
+        const result = form.transformId(12, 3);
+        expect(result).toBe("012");
     });
 });

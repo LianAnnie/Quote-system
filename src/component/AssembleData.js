@@ -48,16 +48,20 @@ function AssembleData({
     return (
         <S.Section mode={mode + "assemble"}>
             <S.Title mode={mode}>
-                {data.assembleDataCollections[collectionName][0]}
+                {
+                    data.assembleDataCollections[collectionName][
+                        "newDataListName"
+                    ]
+                }
             </S.Title>
             <S.Flex page={page}>
                 <S.AddScrollbar mode="assemble" page={page}>
                     <S.Table mode={mode + "assemble"}>
                         <S.Thead>
                             <S.Tr>
-                                {data.assembleDataCollections[
-                                    collectionName
-                                ][1].map((e, index) => (
+                                {data.assembleDataCollections[collectionName][
+                                    "mainDataTitle"
+                                ].map((e, index) => (
                                     <S.ThTitle mode={mode} key={index}>
                                         {e}
                                     </S.ThTitle>
@@ -69,7 +73,7 @@ function AssembleData({
                                 {processingData &&
                                     data.assembleDataCollections[
                                         collectionName
-                                    ][2].map((keyName, index) => (
+                                    ]["mainDataKey"].map((keyName, index) => (
                                         <S.Td mode={mode} key={index}>
                                             {processingData.parentData[keyName]}
                                         </S.Td>
@@ -83,23 +87,19 @@ function AssembleData({
                                 <S.Tr>
                                     {data.assembleDataCollections[
                                         collectionName
-                                    ][3].map((e, index) => (
+                                    ]["subDataTitle"].map((e, index) => (
                                         <S.ThTitle mode={mode} key={index}>
                                             {e}
                                         </S.ThTitle>
                                     ))}
-                                    {page === 5
-                                        ? data.assembleDataCollections[
-                                              collectionName
-                                          ][5].map((e, index) => (
-                                              <S.ThTitle
-                                                  mode={mode}
-                                                  key={index}
-                                              >
-                                                  {e}
-                                              </S.ThTitle>
-                                          ))
-                                        : null}
+                                    {page === 5 &&
+                                        data.assembleDataCollections[
+                                            collectionName
+                                        ]["inputDataTitle"].map((e, index) => (
+                                            <S.ThTitle mode={mode} key={index}>
+                                                {e}
+                                            </S.ThTitle>
+                                        ))}
                                 </S.Tr>
                             </S.Thead>
                             <S.TBody>
@@ -117,7 +117,7 @@ function AssembleData({
                                                 <>
                                                     {data.assembleDataCollections[
                                                         collectionName
-                                                    ][6].map(
+                                                    ]["inputDataKey"].map(
                                                         (
                                                             keyName,
                                                             indexArray,

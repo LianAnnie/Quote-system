@@ -8,31 +8,32 @@ function AssembleData2({ collectionName, processingData }) {
             <S.Table>
                 <S.Thead>
                     <S.Tr>
-                        {data.assembleDataCollections[collectionName][1].map(
-                            (e, index) => (
-                                <S.ThTitle mode="anlysis" key={index}>
-                                    {e}
-                                </S.ThTitle>
-                            ),
-                        )}
+                        {data.assembleDataCollections[collectionName][
+                            "mainDataTitle"
+                        ].map((e, index) => (
+                            <S.ThTitle mode="anlysis" key={index}>
+                                {e}
+                            </S.ThTitle>
+                        ))}
                     </S.Tr>
                 </S.Thead>
                 <S.TBody>
                     <S.Tr>
                         {processingData &&
-                            data.assembleDataCollections[collectionName][2].map(
-                                (keyName, index) =>
-                                    keyName === "currency" ? (
-                                        <S.Td mode="anlysis" key={index}>
-                                            {processingData.parentData[
-                                                keyName
-                                            ]?.replace(",", "/")}
-                                        </S.Td>
-                                    ) : (
-                                        <S.Td mode="anlysis" key={index}>
-                                            {processingData.parentData[keyName]}
-                                        </S.Td>
-                                    ),
+                            data.assembleDataCollections[collectionName][
+                                "mainDataKey"
+                            ].map((keyName, index) =>
+                                keyName === "currency" ? (
+                                    <S.Td mode="anlysis" key={index}>
+                                        {processingData.parentData[
+                                            keyName
+                                        ]?.replace(",", "/")}
+                                    </S.Td>
+                                ) : (
+                                    <S.Td mode="anlysis" key={index}>
+                                        {processingData.parentData[keyName]}
+                                    </S.Td>
+                                ),
                             )}
                     </S.Tr>
                 </S.TBody>
@@ -42,9 +43,9 @@ function AssembleData2({ collectionName, processingData }) {
                     <S.Thead>
                         <S.Tr>
                             {data &&
-                                data.assembleDataCollections[
-                                    collectionName
-                                ][3].map((e, index) => (
+                                data.assembleDataCollections[collectionName][
+                                    "subDataTitle"
+                                ].map((e, index) => (
                                     <S.ThTitle
                                         mode="anlysis"
                                         key={index}
@@ -61,7 +62,7 @@ function AssembleData2({ collectionName, processingData }) {
                                 <S.Tr key={[e.id, index]}>
                                     {data.assembleDataCollections[
                                         collectionName
-                                    ][4].map(keyName => (
+                                    ]["subDataKey"].map(keyName => (
                                         <S.Td key={keyName} mode="anlysis">
                                             {e[keyName]}
                                         </S.Td>

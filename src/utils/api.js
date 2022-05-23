@@ -18,15 +18,10 @@ import { db } from "../utils/firebase";
 import form from "../utils/formChange";
 
 const api = {
-    checkLogInState(callBack1, callBack2) {
+    checkLogInState(callBack) {
         const auth = getAuth();
         onAuthStateChanged(auth, user => {
-            if (user) {
-                callBack1(1);
-                callBack2(`歡迎回來`);
-            } else {
-                callBack1(0);
-            }
+            callBack(user);
         });
     },
     runFirebaseSignOut(callback1, callback2, callback3) {

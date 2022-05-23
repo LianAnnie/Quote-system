@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Structure2 from "./component/Structure2";
+import Structure2 from "./component/AnakysisStructure";
 import api from "./utils/api";
 import { Container, Main } from "./component/StyleComponent";
 import ErrorBoundary from "./admin/ErrorBoundary";
