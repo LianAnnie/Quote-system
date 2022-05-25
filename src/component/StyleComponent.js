@@ -202,6 +202,15 @@ const NextButton = styled(ArrowForwardIosIcon)`
         background-color: #513c2c;
         color: #fff;
     }
+    @media ${device.tablet} {
+        top: ${props => (props.mode === "analysis" ? "205px" : "140px")};
+    }
+    @media ${device.laptop} {
+        top: ${props => (props.mode === "analysis" ? "205px" : "360px")};
+    }
+    @media ${device.laptopL} {
+        top: ${props => (props.mode === "analysis" ? "205px" : "380px")};
+    }
 `;
 const BackButton = styled(ArrowBackIosNewIcon)`
     color: #8a9b77;
@@ -217,6 +226,12 @@ const BackButton = styled(ArrowBackIosNewIcon)`
     :hover {
         background-color: #513c2c;
         color: #fff;
+    }
+    @media ${device.tablet} {
+        top: ${props => (props.mode === "analysis" ? "205px" : "140px")};
+    }
+    @media ${device.laptop} {
+        top: ${props => (props.mode === "analysis" ? "205px" : "380px")};
     }
 `;
 const CloseButton = styled(CloseIcon)`
@@ -273,7 +288,7 @@ const Article = styled.div`
     }
     @media ${device.laptop} {
         width: ${props => (props.mode === "origin" ? "23vw" : "80%")};
-        max-width: 550px;
+        // max-width: 550px;
     }
 `;
 const NewDataContainer = styled.div`
@@ -333,6 +348,15 @@ const AnalysisDrawingContainer = styled.div`
     height: 30vh;
     margin: 1% 5% 0;
     justify-content: space-between;
+    @media ${device.mobileS} {
+        flex-wrap: wrap;
+    }
+    @media ${device.mobileL} {
+        flex-wrap: wrap;
+    }
+    @media ${device.laptopL} {
+        flex-wrap: nowrap;
+    }
 `;
 const AnalysisAssembledContainer = styled.div`
     border-radius: 30px;
@@ -340,6 +364,9 @@ const AnalysisAssembledContainer = styled.div`
     box-shadow: 4px 3px 20px 8px #dddaca;
     padding: 2%;
     margin-right: 20px;
+    @media ${device.laptopL} {
+        width: 45vw;
+    }
 `;
 const Border = styled.div`
     width: 40vw;
@@ -349,6 +376,17 @@ const Border = styled.div`
     background-color: #fff;
     justify-content: space-between;
     box-shadow: 4px 3px 20px 8px #dddaca;x;
+    @media ${device.mobileS} {
+        margin: 3% 0px;
+        width: 80vw;
+    }
+    @media ${device.mobileL} {
+        margin: 3% 0px;
+        width: 80vw;
+    }
+    @media ${device.laptopL} {
+        margin: 0px;
+    }
 `;
 const Pie = styled.div``;
 /* -----------表單區-companies----------*/

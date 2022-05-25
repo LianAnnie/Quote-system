@@ -11,7 +11,7 @@ const LogoImage = styled.div`
     height: ${props => (props.shownavbar === 1 ? "20%" : "40px")};
     padding: ${props => (props.shownavbar === 1 ? "20px" : "0px 20px")};
     margin: ${props => (props.shownavbar === 1 ? "10px" : "0px 0px 0px 10px ")};
-    background-image: url(${require("../images/log.png")});
+    background-image: url(${require("../images/logo.png")});
     filter: drop-shadow(0 30px 30px rgba(0, 0, 0, 0.2));
     @media ${device.mobileS} {
         width: ${props => (props.shownavbar === 1 ? "50%" : "40px")};

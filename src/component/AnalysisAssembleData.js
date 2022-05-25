@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import data from "../utils/data";
 import * as S from "./StyleComponent";
 
-function AssembleData2({ collectionName, processingData }) {
+function AnalysisAssembleData({ collectionName, processingData }) {
     return (
         <S.AnalysisAssembledContainer>
             <S.Table>
@@ -76,7 +76,7 @@ function AssembleData2({ collectionName, processingData }) {
     );
 }
 
-AssembleData2.propTypes = {
+AnalysisAssembleData.propTypes = {
     collectionName: PropTypes.string.isRequired,
     processingData: PropTypes.shape({
         id: PropTypes.string,
@@ -104,4 +104,4 @@ AssembleData2.propTypes = {
     }),
 };
 
-export default AssembleData2;
+export default AnalysisAssembleData;

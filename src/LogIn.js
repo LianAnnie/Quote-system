@@ -253,7 +253,7 @@ function LogIn({
         <Container>
             <MainContainer>
                 <MainHeader>
-                    <LogoImg src={require("./images/log.png")} alt="logo" />
+                    <LogoImg src={require("./images/logo.png")} alt="logo" />
                 </MainHeader>
                 <MainBody>
                     <Form

@@ -6,7 +6,7 @@ import form from "../utils/formChange";
 import { db } from "../utils/firebase";
 import * as S from "./StyleComponent";
 
-function ListWithRadio2({
+function AnalysisListWithRadio({
     collectionName,
     list,
     setProcessingData,
@@ -203,7 +203,7 @@ function ListWithRadio2({
     );
 }
 
-ListWithRadio2.propTypes = {
+AnalysisListWithRadio.propTypes = {
     collectionName: PropTypes.string,
     list: PropTypes.array.isRequired,
     setProcessingData: PropTypes.func,
@@ -221,4 +221,4 @@ ListWithRadio2.propTypes = {
     mode: PropTypes.string,
 };
 
-export default ListWithRadio2;
+export default AnalysisListWithRadio;

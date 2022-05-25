@@ -4,7 +4,7 @@ import data from "../utils/data";
 import form from "../utils/formChange";
 import * as S from "./StyleComponent";
 
-function ListWithRadio({
+function AnalysisListWithCheckBox({
     collectionName,
     list,
     setProcessingData,
@@ -199,7 +199,7 @@ function ListWithRadio({
     );
 }
 
-ListWithRadio.propTypes = {
+AnalysisListWithCheckBox.propTypes = {
     collectionName: PropTypes.string.isRequired,
     list: PropTypes.array.isRequired,
     setProcessingData: PropTypes.func.isRequired,
@@ -207,4 +207,4 @@ ListWithRadio.propTypes = {
     mode: PropTypes.string.isRequired,
 };
 
-export default ListWithRadio;
+export default AnalysisListWithCheckBox;

@@ -1,15 +1,15 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import data from "../utils/data";
-import ListWithCheckBox2 from "./AnalysisListWithCheckBox";
-import AssembleData2 from "./AnakysisAssembleData";
+import AnalysisListWithCheckBox from "./AnalysisListWithCheckBox";
+import AnalysisAssembleData from "./AnalysisAssembleData";
 import ListWithRadio2 from "./AnalysisListWithRadio";
 import AnalysisForm from "./AnalysisForm";
 import Drawing from "./Drawing";
 import * as S from "./StyleComponent";
 import ExportExcel from "./ExportExcel";
 
-function Structure2({
+function AnalysisStructure({
     parentCollectionName,
     parentList,
     childCollectionName,
@@ -263,7 +263,7 @@ function Structure2({
                             />
                         ) : null}
                         {page === 5 ? (
-                            <ListWithCheckBox2
+                            <AnalysisListWithCheckBox
                                 mode={assembleCollectionName}
                                 collectionName={childCollectionName}
                                 list={filterChildList}
@@ -290,7 +290,7 @@ function Structure2({
                     </S.Flex>
                 </S.AnalysisDataForm>
                 <S.AnalysisDrawingContainer>
-                    <AssembleData2
+                    <AnalysisAssembleData
                         collectionName={assembleCollectionName}
                         processingData={processingData}
                         setProcessingData={setProcessingData}
@@ -302,7 +302,7 @@ function Structure2({
     );
 }
 
-Structure2.propTypes = {
+AnalysisStructure.propTypes = {
     parentCollectionName: PropTypes.string.isRequired,
     parentList: PropTypes.array.isRequired,
     childCollectionName: PropTypes.string.isRequired,
@@ -310,4 +310,4 @@ Structure2.propTypes = {
     assembleCollectionName: PropTypes.string.isRequired,
 };
 
-export default Structure2;
+export default AnalysisStructure;
