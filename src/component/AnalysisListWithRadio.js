@@ -21,6 +21,29 @@ function AnalysisListWithRadio({
         idIndex: 0,
     };
 
+    async function getPartsQtationsFromFireBase(idList) {
+        const quotationDataPromise = idList.map(async id => {
+            const docRef = doc(db, parameters.parentRenderCollectionName, id);
+            const newData = await getDoc(docRef);
+            return newData.data();
+        });
+
+        const quotationData = await Promise.all(quotationDataPromise);
+        return quotationData;
+    }
+
+    function getRenderListId(parameterData, idIndex) {
+        const idArray = parameterData.map(e => e.id[idIndex]);
+        const idArrayWithuniqueness = [...new Set(idArray)];
+        return idArrayWithuniqueness;
+    }
+
+    async function getParentRenderList(parameterList) {
+        const idArray = getRenderListId(parameterList, parameters.idIndex);
+        const renderData = await getPartsQtationsFromFireBase(idArray);
+        setRenderList(renderData);
+    }
+
     useEffect(() => {
         getParentRenderList(list);
     }, [list]);
@@ -29,27 +52,9 @@ function AnalysisListWithRadio({
         setFilterList(renderList);
     }, [renderList]);
 
-    async function getParentRenderList(list) {
-        const idArray = getRenderListId(list, parameters.idIndex);
-        const renderData = await getPartsQtationsFromFireBase(idArray);
-        setRenderList(renderData);
-    }
-
-    function getRenderListId(data, idIndex) {
-        const idArray = data.map(e => e.id[idIndex]);
-        const idArrayWithuniqueness = [...new Set(idArray)];
-        return idArrayWithuniqueness;
-    }
-
-    async function getPartsQtationsFromFireBase(idList) {
-        const quotationDataPromise = idList.map(async id => {
-            const docRef = doc(db, parameters.parentRenderCollectionName, id);
-            const data = await getDoc(docRef);
-            return data.data();
-        });
-
-        const quotationData = await Promise.all(quotationDataPromise);
-        return quotationData;
+    function handleListChange(condition, parameterData) {
+        const newFilterList = form.handleListChange(condition, parameterData);
+        return newFilterList;
     }
 
     function handleConditionChange(e) {
@@ -58,8 +63,7 @@ function AnalysisListWithRadio({
             setFilterList(renderList);
             return;
         }
-        const name = e.target.name;
-        const value = e.target.value;
+        const { name, value } = e.target;
         const newFilterCondition = JSON.parse(JSON.stringify(filterCondition));
         newFilterCondition[name] = value;
         const newFilterList = handleListChange(newFilterCondition, filterList);
@@ -74,11 +78,6 @@ function AnalysisListWithRadio({
         }
         setFilterCondition(newFilterCondition);
         setFilterList(newFilterList);
-    }
-
-    function handleListChange(condition, data) {
-        const newFilterList = form.handleListChange(condition, data);
-        return newFilterList;
     }
 
     function handleImportProduct(e) {
@@ -103,32 +102,27 @@ function AnalysisListWithRadio({
                 <S.Table>
                     <S.Thead>
                         <S.Tr>
-                            {data.listInformation[collectionName][
-                                "newDataListTitle"
-                            ].map((e, index) => (
-                                <S.ThTitle key={index} index={index}>
+                            {data.listInformation[
+                                collectionName
+                            ].newDataListTitle.map((e, index) => (
+                                <S.ThTitle key={e} index={index}>
                                     {e}
                                 </S.ThTitle>
                             ))}
-                            {data.listInformation.selectTitle.map(
-                                (e, index) => (
-                                    <S.ThButtonTitle key={index}>
-                                        {e}
-                                    </S.ThButtonTitle>
-                                ),
-                            )}
+                            {data.listInformation.selectTitle.map(e => (
+                                <S.ThButtonTitle key={e}>{e}</S.ThButtonTitle>
+                            ))}
                         </S.Tr>
                         <S.Tr>
-                            {data.listInformation[collectionName][
-                                "newDataListKey"
-                            ].map((keyName, indexForStyled) => (
+                            {data.listInformation[
+                                collectionName
+                            ].newDataListKey.map((keyName, indexForStyled) => (
                                 <S.ThText
                                     key={keyName}
                                     index={indexForStyled}
                                     columnQty={
-                                        data.listInformation[collectionName][
-                                            "newDataListKey"
-                                        ].length
+                                        data.listInformation[collectionName]
+                                            .newDataListKey.length
                                     }
                                 >
                                     <S.TableInputSearch
@@ -154,32 +148,34 @@ function AnalysisListWithRadio({
                                                         .indexOf(m[keyName]) ===
                                                     index,
                                             )
-                                            .map((o, index) => (
-                                                <option key={index}>
+                                            .map(o => (
+                                                <option key={o}>
                                                     {o[keyName]}
                                                 </option>
                                             ))}
                                     </S.TableSelectSearch>
                                 </S.ThText>
                             ))}
-                            <th></th>
-                            <th></th>
+                            <th aria-label="forViewSpace" />
+                            <th aria-label="forViewSpace" />
                         </S.Tr>
                     </S.Thead>
                     <S.TBody>
                         {filterList &&
                             filterList.map(e => (
                                 <S.Tr key={e.id}>
-                                    {data.listInformation[collectionName][
-                                        "newDataListKey"
-                                    ].map((keyName, indexForStyled) => (
-                                        <S.TBodyTdContext
-                                            key={keyName}
-                                            index={indexForStyled}
-                                        >
-                                            {e[keyName]}
-                                        </S.TBodyTdContext>
-                                    ))}
+                                    {data.listInformation[
+                                        collectionName
+                                    ].newDataListKey.map(
+                                        (keyName, indexForStyled) => (
+                                            <S.TBodyTdContext
+                                                key={keyName}
+                                                index={indexForStyled}
+                                            >
+                                                {e[keyName]}
+                                            </S.TBodyTdContext>
+                                        ),
+                                    )}
                                     <S.TBodyTdButton>
                                         <S.UpdateInput
                                             type="radio"

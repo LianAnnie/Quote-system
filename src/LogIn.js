@@ -10,6 +10,7 @@ import {
 import { useNavigate, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Button } from "./component/StyleComponent";
+import logoImage from "./images/logo.png";
 
 const Container = styled.div`
     background-color: #fffae3;
@@ -151,10 +152,10 @@ function LogIn({
     message,
 }) {
     const auth = getAuth();
-    let navigate = useNavigate();
-    let location = useLocation();
+    const navigate = useNavigate();
+    const location = useLocation();
 
-    let from = location.state?.from?.pathname || "/";
+    const from = location.state?.from?.pathname || "/";
 
     useEffect(() => {
         if (loginStatus === 1) {
@@ -253,7 +254,7 @@ function LogIn({
         <Container>
             <MainContainer>
                 <MainHeader>
-                    <LogoImg src={require("./images/logo.png")} alt="logo" />
+                    <LogoImg src={logoImage} alt="logo" />
                 </MainHeader>
                 <MainBody>
                     <Form

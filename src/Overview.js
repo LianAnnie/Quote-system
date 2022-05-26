@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import HighchartsReact from "highcharts-react-official";
+import Highcharts from "highcharts/highmaps.js";
+import topojson from "@highcharts/map-collection/custom/world.topo.json";
 import { Container, Main, Section } from "./component/StyleComponent";
 import data from "./utils/data";
 import api from "./utils/api";
 
-let Highcharts = require("highcharts/highmaps.js");
-let topojson = require("@highcharts/map-collection/custom/world.topo.json");
+// const Highcharts = require("highcharts/highmaps.js");
+// const topojson = require("@highcharts/map-collection/custom/world.topo.json");
 
 const Border = styled.div`
     margin: 12vh 0px;
@@ -20,42 +22,41 @@ const Border = styled.div`
 function Overview() {
     const [mapData, setMapData] = useState([]);
 
-    useEffect(() => {
-        getListFromFirebase();
-    }, []);
+    function sumOrderPrice(parameterData) {
+        if (parameterData && parameterData.length > 0) {
+            const country = parameterData.map(e => e[0]);
+            const countryWithUniqueness = [...new Set(country)];
+            const orderSum = countryWithUniqueness.map(e =>
+                Math.floor(
+                    parameterData
+                        .filter(m => m[0] === e)
+                        .reduce((sum, n) => sum + n[1] / n[2], 0),
+                ),
+            );
+            const newMapData = countryWithUniqueness.map((e, index) => [
+                e,
+                orderSum[index],
+            ]);
+            return newMapData;
+        }
+        return null;
+    }
 
     async function getListFromFirebase() {
         const firebaseData = await api.getCompleteCollection("order");
-        const mapData = firebaseData.map(e => {
+        const mapDatafromFirebase = firebaseData.map(e => {
             return [
                 e.id[0].slice(1, 3).toLowerCase(),
                 Number(e.qty) * Number(e.price),
                 Number(data.exchangeData[e.currency.split(",")[0]]),
             ];
         });
-        setMapData(sumOrderPrice(mapData));
+        setMapData(sumOrderPrice(mapDatafromFirebase));
     }
 
-    function sumOrderPrice(parameterData) {
-        if (parameterData) {
-            if (parameterData.length > 0) {
-                const country = parameterData.map(e => e[0]);
-                const countryWithUniqueness = [...new Set(country)];
-                const orderSum = countryWithUniqueness.map(e =>
-                    Math.floor(
-                        parameterData
-                            .filter(m => m[0] === e)
-                            .reduce((sum, n) => sum + n[1] / n[2], 0),
-                    ),
-                );
-                const mapData = countryWithUniqueness.map((e, index) => [
-                    e,
-                    orderSum[index],
-                ]);
-                return mapData;
-            }
-        }
-    }
+    useEffect(() => {
+        getListFromFirebase();
+    }, []);
 
     const options = {
         chart: {

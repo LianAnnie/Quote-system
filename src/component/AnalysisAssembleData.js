@@ -8,10 +8,10 @@ function AnalysisAssembleData({ collectionName, processingData }) {
             <S.Table>
                 <S.Thead>
                     <S.Tr>
-                        {data.assembleDataCollections[collectionName][
-                            "mainDataTitle"
-                        ].map((e, index) => (
-                            <S.ThTitle mode="anlysis" key={index}>
+                        {data.assembleDataCollections[
+                            collectionName
+                        ].mainDataTitle.map(e => (
+                            <S.ThTitle mode="anlysis" key={e.id}>
                                 {e}
                             </S.ThTitle>
                         ))}
@@ -20,17 +20,17 @@ function AnalysisAssembleData({ collectionName, processingData }) {
                 <S.TBody>
                     <S.Tr>
                         {processingData &&
-                            data.assembleDataCollections[collectionName][
-                                "mainDataKey"
-                            ].map((keyName, index) =>
+                            data.assembleDataCollections[
+                                collectionName
+                            ].mainDataKey.map(keyName =>
                                 keyName === "currency" ? (
-                                    <S.Td mode="anlysis" key={index}>
+                                    <S.Td mode="anlysis" key={keyName}>
                                         {processingData.parentData[
                                             keyName
                                         ]?.replace(",", "/")}
                                     </S.Td>
                                 ) : (
-                                    <S.Td mode="anlysis" key={index}>
+                                    <S.Td mode="anlysis" key={keyName}>
                                         {processingData.parentData[keyName]}
                                     </S.Td>
                                 ),
@@ -43,12 +43,12 @@ function AnalysisAssembleData({ collectionName, processingData }) {
                     <S.Thead>
                         <S.Tr>
                             {data &&
-                                data.assembleDataCollections[collectionName][
-                                    "subDataTitle"
-                                ].map((e, index) => (
+                                data.assembleDataCollections[
+                                    collectionName
+                                ].subDataTitle.map((e, index) => (
                                     <S.ThTitle
                                         mode="anlysis"
-                                        key={index}
+                                        key={e}
                                         index={index}
                                     >
                                         {e}
@@ -62,7 +62,7 @@ function AnalysisAssembleData({ collectionName, processingData }) {
                                 <S.Tr key={[e.id, index]}>
                                     {data.assembleDataCollections[
                                         collectionName
-                                    ]["subDataKey"].map(keyName => (
+                                    ].subDataKey.map(keyName => (
                                         <S.Td key={keyName} mode="anlysis">
                                             {e[keyName]}
                                         </S.Td>
@@ -102,6 +102,10 @@ AnalysisAssembleData.propTypes = {
             valid: PropTypes.number,
         }),
     }),
+};
+
+processingData.defaultProps = {
+    foo: "foo",
 };
 
 export default AnalysisAssembleData;

@@ -19,11 +19,6 @@ function Company() {
     const [customerList, setCustomerList] = useState([]);
     const [supplierList, setSupplierList] = useState([]);
 
-    useEffect(() => {
-        getCustomerListFromFirebase();
-        getSupplierListFromFirebase();
-    }, []);
-
     async function getCustomerListFromFirebase() {
         const list = await api.getCompleteCollection("customers2");
         setCustomerList(list);
@@ -33,6 +28,11 @@ function Company() {
         const list = await api.getCompleteCollection("suppliers2");
         setSupplierList(list);
     }
+
+    useEffect(() => {
+        getCustomerListFromFirebase();
+        getSupplierListFromFirebase();
+    }, []);
 
     return (
         <Container>

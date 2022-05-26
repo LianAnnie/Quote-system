@@ -36,12 +36,8 @@ function AnalysisStructure({
         }
         if (page + value < 6 && page + value > 3) {
             setPage(prev => prev + value);
-            return;
         }
     }
-    useEffect(() => {
-        handleProcessingDataChange(parentData, parentList, childList);
-    }, [parentData]);
 
     useEffect(() => {
         handleProcessingDataChange(childData, parentList, childList);
@@ -55,52 +51,6 @@ function AnalysisStructure({
         setPieData(getDataArray);
     }
 
-    function handleProcessingDataChange(data, parentList, childList) {
-        const newProcessingData = JSON.parse(JSON.stringify(processingData));
-
-        if (data.target) {
-            const name = data.target.name;
-            const value = data.target.value;
-            newProcessingData.parentData[name] = value;
-        } else if (!data.length) {
-            newProcessingData.childData = [];
-            const keyArray = Object.keys(data);
-            keyArray.forEach(
-                key => (newProcessingData.parentData[key] = data[key]),
-            );
-            const childIdArray = getChildDataId(data, parentList);
-            const newFilterList = getFilterChildList(childIdArray, childList);
-            setFilterChildList(newFilterList);
-        } else {
-            newProcessingData.childData = transProcessingChildDataToRender(
-                assembleCollectionName,
-                data,
-                parentList,
-                processingData,
-            );
-        }
-        const sum = getSum(newProcessingData);
-        if (sum) {
-            newProcessingData.parentData[sum[0]] = sum[1];
-            const margin = getMargin(newProcessingData, sum[1]);
-            const price = getPrice(newProcessingData, sum[1]);
-            if (margin) {
-                newProcessingData.parentData[margin[0]] = margin[1];
-                setMargin(margin[1]);
-            }
-            if (price) {
-                newProcessingData.parentData[price[0]] = price[1];
-            }
-            getPieData(newProcessingData.childData, sum[1]);
-        }
-        const valid = getValid(newProcessingData);
-        if (valid) {
-            newProcessingData.parentData[valid[0]] = valid[1];
-        }
-
-        setProcessingData(newProcessingData);
-    }
-
     function getChildDataId(data, list) {
         if (Object.keys(data).length !== 0) {
             const checkId = data.id.join("");
@@ -109,6 +59,7 @@ function AnalysisStructure({
                 .map(e => e.id[1]);
             return result;
         }
+        return null;
     }
 
     function getFilterChildList(idArray, list) {
@@ -118,6 +69,7 @@ function AnalysisStructure({
             );
             return filterChildlist.flat(1);
         }
+        return null;
     }
 
     function transProcessingChildDataToRender(
@@ -149,6 +101,7 @@ function AnalysisStructure({
             });
             return newChildArray;
         }
+        return null;
     }
 
     function getSum(dataParameter) {
@@ -160,42 +113,34 @@ function AnalysisStructure({
             const parentCurrency = dataParameter.parentData.currency.split(",");
             if (parentCurrency.length !== 2) {
                 return ["sum", "請確認已選擇正確幣值"];
-            } else {
-                const parentCurrencyExchangeRate = data.exchangeRate.filter(
-                    ([compareCurrency]) =>
-                        compareCurrency === parentCurrency[0],
-                )[0][2];
-                if (!parentCurrencyExchangeRate) {
-                    return ["sum", "請確認已選擇正確幣值"];
-                } else {
-                    const childCurrencyExchangeRateArray =
-                        dataParameter.childData.map(
-                            e =>
-                                data.exchangeRate.filter(
-                                    ([compareCurrency]) =>
-                                        compareCurrency ===
-                                        e.currency.split(",")[0],
-                                )[0][2],
-                        );
-                    const sum =
-                        Math.floor(
-                            dataParameter.childData.reduce(
-                                (sum, e, index) =>
-                                    sum +
-                                    (e.qty * e.price * 10000) /
-                                        (Number(
-                                            childCurrencyExchangeRateArray[
-                                                index
-                                            ],
-                                        ) *
-                                            100),
-                                0,
-                            ) * parentCurrencyExchangeRate,
-                        ) / 100;
-                    return ["sum", sum];
-                }
             }
+            const parentCurrencyExchangeRate = data.exchangeRate.filter(
+                ([compareCurrency]) => compareCurrency === parentCurrency[0],
+            )[0][2];
+            if (!parentCurrencyExchangeRate) {
+                return ["sum", "請確認已選擇正確幣值"];
+            }
+            const childCurrencyExchangeRateArray = dataParameter.childData.map(
+                e =>
+                    data.exchangeRate.filter(
+                        ([compareCurrency]) =>
+                            compareCurrency === e.currency.split(",")[0],
+                    )[0][2],
+            );
+            const sum =
+                Math.floor(
+                    dataParameter.childData.reduce(
+                        (sum, e, index) =>
+                            sum +
+                            (e.qty * e.price * 10000) /
+                                (Number(childCurrencyExchangeRateArray[index]) *
+                                    100),
+                        0,
+                    ) * parentCurrencyExchangeRate,
+                ) / 100;
+            return ["sum", sum];
         }
+        return null;
     }
 
     function getPrice(dataParameter, sum) {
@@ -209,6 +154,7 @@ function AnalysisStructure({
                 ) / 100,
             ];
         }
+        return null;
     }
 
     function getMargin(dataParameter, sum) {
@@ -226,6 +172,7 @@ function AnalysisStructure({
                 ) / 100,
             ];
         }
+        return null;
     }
 
     function getValid(dataParameter) {
@@ -239,66 +186,124 @@ function AnalysisStructure({
             );
             return ["valid", minValid];
         }
+        return null;
     }
 
+    function handleProcessingDataChange(
+        parameterData,
+        parameterParentList,
+        parameterChildList,
+    ) {
+        const newProcessingData = JSON.parse(JSON.stringify(processingData));
+
+        if (parameterData.target) {
+            const { name, value } = parameterData.target;
+            newProcessingData.parentData[name] = value;
+        } else if (!parameterData.length) {
+            newProcessingData.childData = [];
+            const keyArray = Object.keys(parameterData);
+            keyArray.forEach(key => {
+                newProcessingData.parentData[key] = parameterData[key];
+            });
+            const childIdArray = getChildDataId(
+                parameterData,
+                parameterParentList,
+            );
+            const newFilterList = getFilterChildList(
+                childIdArray,
+                parameterChildList,
+            );
+            setFilterChildList(newFilterList);
+        } else {
+            newProcessingData.childData = transProcessingChildDataToRender(
+                assembleCollectionName,
+                parameterData,
+                parameterParentList,
+                processingData,
+            );
+        }
+        const sum = getSum(newProcessingData);
+        if (sum) {
+            newProcessingData.parentData[sum[0]] = sum[1];
+            const margin = getMargin(newProcessingData, sum[1]);
+            const price = getPrice(newProcessingData, sum[1]);
+            if (margin) {
+                newProcessingData.parentData[margin[0]] = margin[1];
+                setMargin(margin[1]);
+            }
+            if (price) {
+                newProcessingData.parentData[price[0]] = price[1];
+            }
+            getPieData(newProcessingData.childData, sum[1]);
+        }
+        const valid = getValid(newProcessingData);
+        if (valid) {
+            newProcessingData.parentData[valid[0]] = valid[1];
+        }
+
+        setProcessingData(newProcessingData);
+    }
+
+    useEffect(() => {
+        handleProcessingDataChange(parentData, parentList, childList);
+    }, [parentData]);
+
     return (
-        <>
-            <S.AnalysisDataContainer>
-                <ExportExcel data={processingData} />
-                <S.AnalysisDataForm>
-                    <S.Flex>
-                        <AnalysisForm
-                            mode={assembleCollectionName}
-                            handleDataChange={handleProcessingDataChange}
-                            processingData={processingData}
-                            setProcessingData={setProcessingData}
-                        />
-                        {page === 4 ? (
-                            <ListWithRadio2
-                                mode={assembleCollectionName}
-                                collectionName={parentCollectionName}
-                                list={parentList}
-                                setProcessingData={setParentData}
-                                processingData={parentData}
-                            />
-                        ) : null}
-                        {page === 5 ? (
-                            <AnalysisListWithCheckBox
-                                mode={assembleCollectionName}
-                                collectionName={childCollectionName}
-                                list={filterChildList}
-                                setProcessingData={setChildData}
-                                processingData={childData}
-                            />
-                        ) : null}
-                        {page === 5 ? (
-                            <S.BackButton
-                                sx={{ width: "30px", height: "30px" }}
-                                mode={assembleCollectionName}
-                                page={page}
-                                onClick={() => pageChange(-1)}
-                            />
-                        ) : null}
-                        {page === 4 ? (
-                            <S.NextButton
-                                sx={{ width: "30px", height: "30px" }}
-                                mode={assembleCollectionName}
-                                page={page}
-                                onClick={() => pageChange(1)}
-                            />
-                        ) : null}
-                    </S.Flex>
-                </S.AnalysisDataForm>
-                <S.AnalysisDrawingContainer>
-                    <AnalysisAssembleData
-                        collectionName={assembleCollectionName}
+        <S.AnalysisDataContainer>
+            <ExportExcel data={processingData} />
+            <S.AnalysisDataForm>
+                <S.Flex>
+                    <AnalysisForm
+                        mode={assembleCollectionName}
+                        handleDataChange={() => handleProcessingDataChange()}
                         processingData={processingData}
                         setProcessingData={setProcessingData}
                     />
-                    <Drawing profitMargin={margin} pieData={pieData} />
-                </S.AnalysisDrawingContainer>
-            </S.AnalysisDataContainer>
-        </>
+                    {page === 4 ? (
+                        <ListWithRadio2
+                            mode={assembleCollectionName}
+                            collectionName={parentCollectionName}
+                            list={parentList}
+                            setProcessingData={setParentData}
+                            processingData={parentData}
+                        />
+                    ) : null}
+                    {page === 5 ? (
+                        <AnalysisListWithCheckBox
+                            mode={assembleCollectionName}
+                            collectionName={childCollectionName}
+                            list={filterChildList}
+                            setProcessingData={setChildData}
+                            processingData={childData}
+                        />
+                    ) : null}
+                    {page === 5 ? (
+                        <S.BackButton
+                            sx={{ width: "30px", height: "30px" }}
+                            mode={assembleCollectionName}
+                            page={page}
+                            onClick={() => pageChange(-1)}
+                        />
+                    ) : null}
+                    {page === 4 ? (
+                        <S.NextButton
+                            sx={{ width: "30px", height: "30px" }}
+                            mode={assembleCollectionName}
+                            page={page}
+                            onClick={() => pageChange(1)}
+                        />
+                    ) : null}
+                </S.Flex>
+            </S.AnalysisDataForm>
+            <S.AnalysisDrawingContainer>
+                <AnalysisAssembleData
+                    collectionName={assembleCollectionName}
+                    processingData={processingData}
+                    setProcessingData={setProcessingData}
+                />
+                <Drawing profitMargin={margin} pieData={pieData} />
+            </S.AnalysisDrawingContainer>
+        </S.AnalysisDataContainer>
     );
 }
 

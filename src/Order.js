@@ -20,10 +20,6 @@ function Order() {
     const childCollectionName = "products2";
     const assembleCollectionName = "order";
 
-    useEffect(() => {
-        getListFromFirebase();
-    }, []);
-
     async function getListFromFirebase() {
         const list1 = await api.getCompleteCollection(parentCollectionName);
         setParentList(list1);
@@ -32,6 +28,10 @@ function Order() {
         const list3 = await api.getCompleteCollection(assembleCollectionName);
         setAssembleList(list3);
     }
+
+    useEffect(() => {
+        getListFromFirebase();
+    }, []);
 
     return (
         <Container>

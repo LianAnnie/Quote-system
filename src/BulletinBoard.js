@@ -118,19 +118,23 @@ function BulletinBoard() {
             items: [],
         },
     };
-    const onDragEnd = (result, columns, setColumns) => {
+
+    function updateCard(cardParameter) {
+        api.updateDoc("boards", cardParameter.id, cardParameter, 0);
+    }
+    const onDragEnd = (result, columnsParameter, setColumnsParameter) => {
         if (!result.destination) return;
         const { source, destination } = result;
 
         if (source.droppableId !== destination.droppableId) {
-            const sourceColumn = columns[source.droppableId];
-            const destColumn = columns[destination.droppableId];
+            const sourceColumn = columnsParameter[source.droppableId];
+            const destColumn = columnsParameter[destination.droppableId];
             const sourceItems = [...sourceColumn.items];
             const destItems = [...destColumn.items];
             const [removed] = sourceItems.splice(source.index, 1);
             destItems.splice(destination.index, 0, removed);
-            setColumns({
-                ...columns,
+            setColumnsParameter({
+                ...columnsParameter,
                 [source.droppableId]: {
                     ...sourceColumn,
                     items: sourceItems,
@@ -145,12 +149,12 @@ function BulletinBoard() {
                 updateCard(e);
             });
         } else {
-            const column = columns[source.droppableId];
+            const column = columnsParameter[source.droppableId];
             const copiedItems = [...column.items];
             const [removed] = copiedItems.splice(source.index, 1);
             copiedItems.splice(destination.index, 0, removed);
-            setColumns({
-                ...columns,
+            setColumnsParameter({
+                ...columnsParameter,
                 [source.droppableId]: {
                     ...column,
                     items: copiedItems,
@@ -161,9 +165,7 @@ function BulletinBoard() {
     useEffect(() => {
         api.listenerBoardsData(columnsFromBackend, setColumns);
     }, []);
-    function updateCard(card) {
-        api.updateDoc("boards", card.id, card, 0);
-    }
+
     function handleCardChange(name, value) {
         const data = form.handleObjectDataChange(name, value, card);
         setCard(data);
@@ -261,6 +263,7 @@ function BulletinBoard() {
                                                     return index !== 5 ? (
                                                         <Cards
                                                             snapshot={snapshot}
+                                                            // eslint-disable-next-line react/jsx-props-no-spreading
                                                             {...provided.droppableProps}
                                                             ref={
                                                                 provided.innerRef
@@ -269,7 +272,7 @@ function BulletinBoard() {
                                                             {column.items.map(
                                                                 (
                                                                     item,
-                                                                    index,
+                                                                    itemIndex,
                                                                 ) => {
                                                                     return (
                                                                         <Draggable
@@ -280,7 +283,7 @@ function BulletinBoard() {
                                                                                 item.id
                                                                             }
                                                                             index={
-                                                                                index
+                                                                                itemIndex
                                                                             }
                                                                         >
                                                                             {(
@@ -334,7 +337,7 @@ function BulletinBoard() {
                                                             {column.items.map(
                                                                 (
                                                                     item,
-                                                                    index,
+                                                                    itemIndex,
                                                                 ) => {
                                                                     return (
                                                                         <Draggable
@@ -345,7 +348,7 @@ function BulletinBoard() {
                                                                                 item.id
                                                                             }
                                                                             index={
-                                                                                index
+                                                                                itemIndex
                                                                             }
                                                                         >
                                                                             {(

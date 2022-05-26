@@ -26,7 +26,7 @@ const Container = styled.div`
 `;
 
 function RequireAuth({ children, loginStatus }) {
-    let location = useLocation();
+    const location = useLocation();
     if (loginStatus === 0) {
         return <Navigate to="/login" state={{ from: location }} replace />;
     }
@@ -99,10 +99,10 @@ function App() {
                             <LogIn
                                 loginStatus={loginStatus}
                                 setLoginStatus={setLoginStatus}
-                                signOut={signOut}
+                                signOut={() => signOut()}
                                 setMessage={setMessage}
                                 message={message}
-                                checkErrorMessage={checkErrorMessage}
+                                checkErrorMessage={() => checkErrorMessage()}
                             />
                         }
                     />

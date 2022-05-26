@@ -12,10 +12,6 @@ function Analysis() {
     const childCollectionName = "partQuotations2";
     const assembleCollectionName = "analysis";
 
-    useEffect(() => {
-        getListFromFirebase();
-    }, []);
-
     async function getListFromFirebase() {
         const list1 = await api.getCompleteCollection(parentCollectionName);
         setProductList(list1);
@@ -24,6 +20,10 @@ function Analysis() {
         const list3 = await api.getCompleteCollection(assembleCollectionName);
         setBomList(list3);
     }
+
+    useEffect(() => {
+        getListFromFirebase();
+    }, []);
 
     return (
         <Container>

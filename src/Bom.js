@@ -26,10 +26,6 @@ function Bom() {
     const childCollectionName = "parts2";
     const assembleCollectionName = "bom";
 
-    useEffect(() => {
-        getListFromFirebase();
-    }, []);
-
     async function getListFromFirebase() {
         const list1 = await api.getCompleteCollection(parentCollectionName);
         setProductList(list1);
@@ -38,6 +34,10 @@ function Bom() {
         const list3 = await api.getCompleteCollection(assembleCollectionName);
         setBomList(list3);
     }
+
+    useEffect(() => {
+        getListFromFirebase();
+    }, []);
 
     return (
         <S.Container>
@@ -50,7 +50,7 @@ function Bom() {
                     </S.Flex>
                 </S.LefttMargi5>
 
-                {page === 0 ? (
+                {page === 0 && (
                     <FlexLayout>
                         <Product
                             collectionName={parentCollectionName}
@@ -65,7 +65,8 @@ function Bom() {
                             setList={setProductList}
                         />
                     </FlexLayout>
-                ) : page === 1 ? (
+                )}
+                {page === 1 && (
                     <FlexLayout>
                         <Part
                             columnQty={7}
@@ -82,7 +83,8 @@ function Bom() {
                             setList={setPartList}
                         />
                     </FlexLayout>
-                ) : (
+                )}
+                {page === 2 && (
                     <Structure
                         parentCollectionName={parentCollectionName}
                         parentList={productList}
