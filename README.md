@@ -32,12 +32,20 @@ A part of Enterprise Resource Planning (ERP) included system data input interfac
 
 ## Demo
 
--   ### Customer Relationship Management
-    ![This is a alt text.](/image/sample.png "This is a sample image.")
--   ### Order Management
-    ![This is a alt text.](/image/sample.png "This is a sample image.")
--   ### Production Cost Management
-    ![This is a alt text.](/image/sample.png "This is a sample image.")
+-   ### Manage planning state
+    ![Add new card image](https://github.com/LianAnnie/Quote-system/blob/refactor/src/images/readmeImg/addNewCard.gif?raw=true "added new card demo image.")
+    Added new card to inform planning for concerned department.
+
+    ![Update card state.](https://github.com/LianAnnie/Quote-system/blob/refactor/src/images/readmeImg/updateNewCard.gif?raw=true "update card state demo image.")
+    Updated card to different department easily. 
+
+-   ### Customer & Supplier Management
+    ![Input customer data by form.](https://github.com/LianAnnie/Quote-system/blob/refactor/src/images/readmeImg/customerSupplierManagement.gif?raw=true "input customer data demo image.")
+    Input data by form then can see the ruslt in list immediately.
+
+-   ### Order & Production Cost Management
+    ![See analysis reuslt after import existing data.](https://github.com/LianAnnie/Quote-system/blob/refactor/src/images/readmeImg/productionCost.gif?raw=true "analysis demo image.")
+    Can analysis profit margin and get expected price from import data.
 
 ## Future Fatures
 
