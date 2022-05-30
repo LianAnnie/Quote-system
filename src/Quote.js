@@ -40,12 +40,12 @@ function Quote() {
     return (
         <S.Container>
             <S.Main>
-                <S.LefttMargi5>
+                <S.LeftMargin>
                     <S.Flex>
                         <S.Button onClick={() => setPage(0)}>零件報價</S.Button>
                         <S.Button onClick={() => setPage(1)}>產品報價</S.Button>
                     </S.Flex>
-                </S.LefttMargi5>
+                </S.LeftMargin>
                 {page === 0 ? (
                     <Structure
                         parentCollectionName={parentCollectionName}

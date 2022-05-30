@@ -851,7 +851,7 @@ const UpdateInput = styled.input`
     border: 1px solid #bebebe;
     padding: 10px 0px 5px 10px;
 `;
-const LefttMargi5 = styled.div`
+const LeftMargin = styled.div`
     margin-left: 5%;
 `;
 const TableStyled = styled.table`
@@ -913,7 +913,7 @@ export {
     UpdatedTr,
     Button,
     Flex,
-    LefttMargi5,
+    LeftMargin,
     AddButton,
     UpdatedButton,
     DeleteButton,

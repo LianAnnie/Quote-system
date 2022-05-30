@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Structure2 from "./component/AnalysisStructure";
+import AnalysisStructure from "./component/AnalysisStructure";
 import api from "./utils/api";
 import { Container, Main } from "./component/StyleComponent";
 import ErrorBoundary from "./admin/ErrorBoundary";
@@ -29,7 +29,7 @@ function Analysis() {
         <Container>
             <Main>
                 <ErrorBoundary>
-                    <Structure2
+                    <AnalysisStructure
                         parentCollectionName={parentCollectionName}
                         parentList={productList}
                         childCollectionName={childCollectionName}

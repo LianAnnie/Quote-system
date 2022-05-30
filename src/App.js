@@ -109,7 +109,7 @@ function App() {
                     <Route
                         element={
                             <SideBar
-                                signOut={signOut}
+                                signOut={() => signOut}
                                 viewMode={viewMode}
                                 setViewMode={setViewMode}
                             />

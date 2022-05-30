@@ -42,13 +42,13 @@ function Bom() {
     return (
         <S.Container>
             <S.Main>
-                <S.LefttMargi5>
+                <S.LefttMargin>
                     <S.Flex>
                         <S.Button onClick={() => setPage(0)}>產品</S.Button>
                         <S.Button onClick={() => setPage(1)}>零件</S.Button>
                         <S.Button onClick={() => setPage(2)}>結構</S.Button>
                     </S.Flex>
-                </S.LefttMargi5>
+                </S.LefttMargin>
 
                 {page === 0 && (
                     <FlexLayout>
